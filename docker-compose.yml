@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: planeserve-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: planeserve
+      POSTGRES_PASSWORD: planeserve
+      POSTGRES_DB: planeserve
+    ports:
+      - "54329:5432"
+    volumes:
+      - planeserve-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U planeserve -d planeserve"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  planeserve-postgres-data:
