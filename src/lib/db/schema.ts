@@ -1,5 +1,6 @@
 import {
   boolean,
+  index,
   integer,
   pgEnum,
   pgTable,
@@ -148,7 +149,10 @@ export const aircraft = pgTable(
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
-  (table) => [uniqueIndex("aircraft_registration_idx").on(table.registration)],
+  (table) => [
+    uniqueIndex("aircraft_registration_idx").on(table.registration),
+    index("aircraft_user_id_idx").on(table.userId),
+  ],
 );
 
 export const aogRequests = pgTable("aog_requests", {
@@ -186,7 +190,11 @@ export const aogRequests = pgTable("aog_requests", {
   handoverNotes: text("handover_notes").notNull().default(""),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
-});
+}, (table) => [
+  index("aog_requests_user_id_idx").on(table.userId),
+  index("aog_requests_aircraft_id_idx").on(table.aircraftId),
+  index("aog_requests_status_idx").on(table.status),
+]);
 
 export const aogRequestAttachments = pgTable("aog_request_attachments", {
   id: text("id").primaryKey(),
@@ -204,7 +212,7 @@ export const aircraftDocuments = pgTable("aircraft_documents", {
   fileName: text("file_name").notNull(),
   storageKey: text("storage_key").notNull().default(""),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
+}, (table) => [index("aircraft_documents_aircraft_id_idx").on(table.aircraftId)]);
 
 export const aogStatusEvents = pgTable("aog_status_events", {
   id: text("id").primaryKey(),
@@ -213,7 +221,7 @@ export const aogStatusEvents = pgTable("aog_status_events", {
   note: text("note").notNull().default(""),
   createdByUserId: text("created_by_user_id").notNull().default(""),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
+}, (table) => [index("aog_status_events_request_id_idx").on(table.requestId)]);
 
 export const subscriptions = pgTable("subscriptions", {
   id: text("id").primaryKey(),
@@ -226,7 +234,11 @@ export const subscriptions = pgTable("subscriptions", {
   stripeSubscriptionId: text("stripe_subscription_id"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
-});
+}, (table) => [
+  index("subscriptions_user_id_idx").on(table.userId),
+  index("subscriptions_aircraft_id_idx").on(table.aircraftId),
+  index("subscriptions_stripe_subscription_id_idx").on(table.stripeSubscriptionId),
+]);
 
 export const invoices = pgTable("invoices", {
   id: text("id").primaryKey(),
@@ -236,7 +248,10 @@ export const invoices = pgTable("invoices", {
   currency: text("currency").notNull().default("usd"),
   status: invoiceStatusEnum("status").notNull().default("Paid"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
+}, (table) => [
+  index("invoices_user_id_idx").on(table.userId),
+  index("invoices_subscription_id_idx").on(table.subscriptionId),
+]);
 
 export const adminNotes = pgTable("admin_notes", {
   id: text("id").primaryKey(),
@@ -265,7 +280,7 @@ export const supplierQuotes = pgTable("supplier_quotes", {
   awbNumber: text("awb_number").notNull().default(""),
   netPriceCents: integer("net_price_cents").notNull().default(0),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
+}, (table) => [index("supplier_quotes_request_id_idx").on(table.requestId)]);
 
 // ── New enums (v2) ────────────────────────────────────────────────────────────
 
@@ -294,7 +309,10 @@ export const messages = pgTable("messages", {
   body: text("body").notNull(),
   isRead: boolean("is_read").notNull().default(false),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
+}, (table) => [
+  index("messages_request_id_idx").on(table.requestId),
+  index("messages_user_id_idx").on(table.userId),
+]);
 
 export const notifications = pgTable("notifications", {
   id: text("id").primaryKey(),
@@ -305,7 +323,7 @@ export const notifications = pgTable("notifications", {
   requestId: text("request_id"),
   isRead: boolean("is_read").notNull().default(false),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
+}, (table) => [index("notifications_user_id_idx").on(table.userId)]);
 
 export const usmMarketSignals = pgTable("usm_market_signals", {
   id: text("id").primaryKey(),
@@ -331,7 +349,7 @@ export const caseFailureLog = pgTable("case_failure_log", {
   coFailureNotes: text("co_failure_notes").notNull().default(""),
   loggedBy: text("logged_by").notNull(),
   loggedAt: timestamp("logged_at", { withTimezone: true }).notNull().defaultNow(),
-});
+}, (table) => [index("case_failure_log_request_id_idx").on(table.requestId)]);
 
 export const supplierCompanies = pgTable("supplier_companies", {
   id: text("id").primaryKey(),
@@ -364,11 +382,24 @@ export const supplierCompanies = pgTable("supplier_companies", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+export const supplierComplianceDocs = pgTable(
+  "supplier_compliance_docs",
+  {
+    id: text("id").primaryKey(),
+    supplierCompanyId: text("supplier_company_id").notNull(),
+    docType: text("doc_type").notNull(), // e.g. 'FAA Part 145', 'Insurance Certificate'
+    fileName: text("file_name").notNull().default(""),
+    expiryDate: text("expiry_date").notNull().default(""), // ISO date string, may be empty
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [index("supplier_compliance_docs_company_id_idx").on(table.supplierCompanyId)],
+);
+
 export const supplierUsers = pgTable("supplier_users", {
   userId: text("user_id").primaryKey(),
   supplierCompanyId: text("supplier_company_id").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
+}, (table) => [index("supplier_users_company_id_idx").on(table.supplierCompanyId)]);
 
 export const supplierRfqs = pgTable("supplier_rfqs", {
   id: text("id").primaryKey(),
@@ -383,7 +414,10 @@ export const supplierRfqs = pgTable("supplier_rfqs", {
   sentAt: timestamp("sent_at", { withTimezone: true }).notNull().defaultNow(),
   respondedAt: timestamp("responded_at", { withTimezone: true }),
   quoteSubmitted: boolean("quote_submitted").notNull().default(false),
-});
+}, (table) => [
+  index("supplier_rfqs_request_id_idx").on(table.requestId),
+  index("supplier_rfqs_company_id_idx").on(table.supplierCompanyId),
+]);
 
 export const teamMembers = pgTable("team_members", {
   id: text("id").primaryKey(),

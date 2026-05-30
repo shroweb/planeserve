@@ -23,9 +23,21 @@ async function sendEmail(to: string, subject: string, html: string) {
   await resend.emails.send({ from, to, subject, html });
 }
 
+const baseURL = process.env.BETTER_AUTH_URL ?? "http://localhost:8080";
+
+// better-auth rejects state-changing requests (e.g. sign-out) whose Origin
+// isn't trusted. The configured baseURL is always trusted; in non-production
+// we also trust common localhost dev ports so a mismatched BETTER_AUTH_URL or
+// dev port can't silently break auth.
+const trustedOrigins =
+  process.env.NODE_ENV === "production"
+    ? [baseURL]
+    : [baseURL, "http://localhost:8080", "http://localhost:8083", "http://localhost:3000"];
+
 export const auth = betterAuth({
   appName: "PlaneServe",
-  baseURL: process.env.BETTER_AUTH_URL ?? "http://localhost:8080",
+  baseURL,
+  trustedOrigins,
   secret: process.env.BETTER_AUTH_SECRET,
   database: new Pool({ connectionString }),
   emailAndPassword: {

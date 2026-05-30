@@ -382,7 +382,9 @@ async function currentUser(): Promise<UserRecord> {
     };
   }
 
-  // First login — create profile from auth user data.
+  // First login — create the profile from auth user data. New accounts are
+  // never admins; admin is granted explicitly via `profiles.is_admin`
+  // (npm run db:admin), which is the single source of truth for admin access.
   await db
     .insert(schema.profiles)
     .values({
@@ -392,7 +394,7 @@ async function currentUser(): Promise<UserRecord> {
       company: "",
       phone: "",
       role: "Operator",
-      isAdmin: Boolean((session.user as { isAdmin?: boolean }).isAdmin),
+      isAdmin: false,
     })
     .onConflictDoNothing();
 
@@ -403,7 +405,7 @@ async function currentUser(): Promise<UserRecord> {
     company: "",
     phone: "",
     role: "Operator",
-    isAdmin: Boolean((session.user as { isAdmin?: boolean }).isAdmin),
+    isAdmin: false,
     createdAt: new Date().toISOString(),
   };
 }
@@ -1960,6 +1962,40 @@ export const getUnreadCounts = createServerFn({ method: "GET" }).handler(async (
 
 // ── Stripe ────────────────────────────────────────────────────────────────────
 
+type SubStatus = "Active" | "Pending" | "Cancelled";
+
+// Map a Stripe subscription status onto our internal enum.
+export function mapStripeStatus(stripeStatus: string): SubStatus {
+  switch (stripeStatus) {
+    case "active":
+    case "trialing":
+      return "Active";
+    case "past_due":
+    case "incomplete":
+      return "Pending";
+    default: // canceled, unpaid, incomplete_expired, paused
+      return "Cancelled";
+  }
+}
+
+// Sync a subscription's status (and its aircraft's cover) from a Stripe webhook
+// event. Looked up by stripeSubscriptionId; no-op if we don't track it.
+export async function syncStripeSubscription(stripeSubscriptionId: string, status: SubStatus) {
+  const { eq, db, schema } = await loadServerAuth();
+  const [sub] = await db
+    .update(schema.subscriptions)
+    .set({ status, updatedAt: new Date() })
+    .where(eq(schema.subscriptions.stripeSubscriptionId, stripeSubscriptionId))
+    .returning();
+  if (sub) {
+    await db
+      .update(schema.aircraft)
+      .set({ subscriptionStatus: status })
+      .where(eq(schema.aircraft.id, sub.aircraftId));
+  }
+  return sub ?? null;
+}
+
 export const createStripeSubscription = createServerFn({ method: "POST" })
   .inputValidator(
     z.object({
@@ -2742,6 +2778,14 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
       });
     }
 
+    // The account was created with a throwaway random password — send the
+    // customer a set-password link so they can actually sign in. (The enrol
+    // confirmation screen promises this email.) Don't let an email failure
+    // fail the enrolment; in dev with no Resend key the link logs to console.
+    await auth.api
+      .requestPasswordReset({ body: { email: data.email, redirectTo: "/set-password" } })
+      .catch(() => {});
+
     const ref = `PS-${data.registration.toUpperCase()}-${Date.now().toString(36).toUpperCase()}`;
     return { userId, aircraftId, ref };
   });
@@ -2777,6 +2821,16 @@ export const createSupplierApplication = createServerFn({ method: "POST" })
       firstName: z.string().min(1),
       lastName: z.string().min(1),
       email: z.string().email(),
+      // step 3 compliance documents
+      docs: z
+        .array(
+          z.object({
+            docType: z.string().min(1),
+            fileName: z.string().default(""),
+            expiry: z.string().default(""),
+          }),
+        )
+        .default([]),
     }),
   )
   .handler(async ({ data }) => {
@@ -2811,7 +2865,40 @@ export const createSupplierApplication = createServerFn({ method: "POST" })
       specialisms: data.aircraftTypes,
       createdAt: new Date(),
     });
+
+    // Persist compliance documents (with expiry) submitted in step 3.
+    const docs = data.docs.filter((d) => d.fileName || d.expiry);
+    if (docs.length) {
+      await db.insert(schema.supplierComplianceDocs).values(
+        docs.map((d) => ({
+          id: `scd_${crypto.randomUUID()}`,
+          supplierCompanyId: id,
+          docType: d.docType,
+          fileName: d.fileName,
+          expiryDate: d.expiry,
+        })),
+      );
+    }
+
     return { ok: true, id };
+  });
+
+// Compliance documents for a supplier company (admin only).
+export const getSupplierComplianceDocs = createServerFn({ method: "GET" })
+  .inputValidator(z.object({ companyId: z.string().min(1) }))
+  .handler(async ({ data }) => {
+    await currentAdmin();
+    const { eq, db, schema } = await loadServerAuth();
+    const rows = await db
+      .select()
+      .from(schema.supplierComplianceDocs)
+      .where(eq(schema.supplierComplianceDocs.supplierCompanyId, data.companyId));
+    return rows.map((r) => ({
+      id: r.id,
+      docType: r.docType,
+      fileName: r.fileName,
+      expiryDate: r.expiryDate,
+    }));
   });
 
 // ── New: supplier application admin actions ──────────────────────────────────
