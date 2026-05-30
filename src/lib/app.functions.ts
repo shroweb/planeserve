@@ -2913,8 +2913,60 @@ export const getSupplierComplianceDocs = createServerFn({ method: "GET" })
       id: r.id,
       docType: r.docType,
       fileName: r.fileName,
+      storageKey: r.storageKey,
       expiryDate: r.expiryDate,
     }));
+  });
+
+// Supplier-facing: the signed-in supplier's own compliance documents.
+export const getMyComplianceDocs = createServerFn({ method: "GET" }).handler(async () => {
+  const { company } = await currentSupplier();
+  const { eq, db, schema } = await loadServerAuth();
+  const rows = await db
+    .select()
+    .from(schema.supplierComplianceDocs)
+    .where(eq(schema.supplierComplianceDocs.supplierCompanyId, company.id));
+  return rows.map((r) => ({
+    id: r.id,
+    docType: r.docType,
+    fileName: r.fileName,
+    storageKey: r.storageKey,
+    expiryDate: r.expiryDate,
+  }));
+});
+
+// Supplier-facing: upload/replace one compliance document (the current doc of
+// a given type). Pairs with uploadFile (storageKey) for the actual bytes.
+export const saveMyComplianceDoc = createServerFn({ method: "POST" })
+  .inputValidator(
+    z.object({
+      docType: z.string().min(1),
+      fileName: z.string().default(""),
+      storageKey: z.string().default(""),
+      expiry: z.string().default(""),
+    }),
+  )
+  .handler(async ({ data }) => {
+    const { company } = await currentSupplier();
+    const { eq, and, db, schema } = await loadServerAuth();
+    // Keep one current doc per type per company — replace any existing.
+    await db
+      .delete(schema.supplierComplianceDocs)
+      .where(
+        and(
+          eq(schema.supplierComplianceDocs.supplierCompanyId, company.id),
+          eq(schema.supplierComplianceDocs.docType, data.docType),
+        ),
+      );
+    await db.insert(schema.supplierComplianceDocs).values({
+      id: `scd_${crypto.randomUUID()}`,
+      supplierCompanyId: company.id,
+      docType: data.docType,
+      fileName: data.fileName,
+      storageKey: data.storageKey,
+      expiryDate: data.expiry,
+    });
+    return { ok: true };
   });
 
 // ── File storage ──────────────────────────────────────────────────────────────

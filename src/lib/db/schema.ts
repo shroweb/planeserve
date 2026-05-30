@@ -389,6 +389,7 @@ export const supplierComplianceDocs = pgTable(
     supplierCompanyId: text("supplier_company_id").notNull(),
     docType: text("doc_type").notNull(), // e.g. 'FAA Part 145', 'Insurance Certificate'
     fileName: text("file_name").notNull().default(""),
+    storageKey: text("storage_key").notNull().default(""), // file_blobs id, may be empty
     expiryDate: text("expiry_date").notNull().default(""), // ISO date string, may be empty
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
