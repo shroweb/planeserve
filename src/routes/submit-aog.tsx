@@ -2,6 +2,7 @@ import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { AppShell } from "@/components/app/AppShell";
 import { createAogRequest, ensureSession, getAogFormData } from "@/lib/app.functions";
+import { componentsFor } from "@/lib/aircraft-components";
 import { Urgency } from "@/lib/db/schema";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -98,6 +99,9 @@ function SubmitAog() {
   });
 
   const [selectedSystem, setSelectedSystem] = useState("");
+  const [selectedComponent, setSelectedComponent] = useState("");
+  const [componentOther, setComponentOther] = useState("");
+  const OTHER_COMPONENT = "Other / not listed";
   const [pob, setPob] = useState(POB_OPTIONS[0]);
   const [flying, setFlying] = useState(FLYING_OPTIONS[0]);
   const [amoStatus, setAmoStatus] = useState(AMO_OPTIONS[0]);
@@ -127,10 +131,19 @@ function SubmitAog() {
       return;
     }
     try {
+      // Prefer the specific component when chosen; combine with the ATA system
+      // so the desk sees both (e.g. "Hydraulic pump · Hydraulic Power (ATA 29)").
+      const component =
+        selectedComponent === OTHER_COMPONENT ? componentOther.trim() : selectedComponent;
+      const affectedSystem =
+        (component && selectedSystem
+          ? `${component} · ${selectedSystem}`
+          : component || selectedSystem || form.affectedSystem) || "Not specified";
+
       const result = await createAogRequest({
         data: {
           ...form,
-          affectedSystem: selectedSystem || form.affectedSystem || "Not specified",
+          affectedSystem,
           peopleOnBoard: pob,
           flyingDeadline: flying,
           amoAware: amoStatus,
@@ -341,7 +354,11 @@ function SubmitAog() {
             </label>
             <select
               value={selectedSystem}
-              onChange={(e) => setSelectedSystem(e.target.value)}
+              onChange={(e) => {
+                setSelectedSystem(e.target.value);
+                setSelectedComponent("");
+                setComponentOther("");
+              }}
               className="mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
             >
               <option value="">Select the system that has failed…</option>
@@ -351,6 +368,45 @@ function SubmitAog() {
                 </option>
               ))}
             </select>
+
+            {/* Curated component picker — shown when we have a list for this
+                aircraft + system. Falls back to free text via "Other". */}
+            {(() => {
+              const curated = componentsFor(selectedAircraft?.makeModel, selectedSystem);
+              if (curated.length === 0) return null;
+              return (
+                <div className="mt-3">
+                  <label className="text-sm font-medium">
+                    Component{" "}
+                    <span className="text-muted-foreground font-normal">
+                      (common items for {selectedAircraft?.makeModel})
+                    </span>
+                  </label>
+                  <select
+                    value={selectedComponent}
+                    onChange={(e) => setSelectedComponent(e.target.value)}
+                    className="mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  >
+                    <option value="">Select a component…</option>
+                    {curated.map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                    <option value={OTHER_COMPONENT}>{OTHER_COMPONENT}</option>
+                  </select>
+                  {selectedComponent === OTHER_COMPONENT && (
+                    <input
+                      type="text"
+                      value={componentOther}
+                      onChange={(e) => setComponentOther(e.target.value)}
+                      placeholder="Describe the component or part"
+                      className="mt-2 w-full rounded-lg border border-border bg-card px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                    />
+                  )}
+                </div>
+              );
+            })()}
           </div>
 
           {/* Part number */}
