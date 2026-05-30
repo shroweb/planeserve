@@ -428,6 +428,23 @@ export const teamMembers = pgTable("team_members", {
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
 
+// Stored file bytes (base64). Backs document/attachment uploads. Postgres-backed
+// so it works locally and on serverless with no extra infra; can move behind
+// S3/R2 later via the same storage helpers. Suited to document-sized files.
+export const fileBlobs = pgTable(
+  "file_blobs",
+  {
+    id: text("id").primaryKey(),
+    fileName: text("file_name").notNull(),
+    contentType: text("content_type").notNull().default("application/octet-stream"),
+    sizeBytes: integer("size_bytes").notNull().default(0),
+    ownerUserId: text("owner_user_id").notNull(),
+    data: text("data").notNull(), // base64-encoded bytes
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [index("file_blobs_owner_idx").on(table.ownerUserId)],
+);
+
 // ── Type exports ──────────────────────────────────────────────────────────────
 
 export type Role = (typeof roleEnum.enumValues)[number];

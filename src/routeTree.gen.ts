@@ -52,6 +52,7 @@ import { Route as AdminAmoRouteImport } from './routes/admin/amo'
 import { Route as AdminAircraftRouteImport } from './routes/admin/aircraft'
 import { Route as ApiV1SplatRouteImport } from './routes/api/v1/$'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe/webhook'
+import { Route as ApiFilesIdRouteImport } from './routes/api/files/$id'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
 const ValueSummaryRoute = ValueSummaryRouteImport.update({
@@ -269,6 +270,11 @@ const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
   path: '/api/stripe/webhook',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiFilesIdRoute = ApiFilesIdRouteImport.update({
+  id: '/api/files/$id',
+  path: '/api/files/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -318,6 +324,7 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminIndexRoute
   '/supplier/': typeof SupplierIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/files/$id': typeof ApiFilesIdRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/api/v1/$': typeof ApiV1SplatRoute
 }
@@ -364,6 +371,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/supplier': typeof SupplierIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/files/$id': typeof ApiFilesIdRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/api/v1/$': typeof ApiV1SplatRoute
 }
@@ -411,6 +419,7 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/supplier/': typeof SupplierIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/files/$id': typeof ApiFilesIdRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/api/v1/$': typeof ApiV1SplatRoute
 }
@@ -459,6 +468,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/supplier/'
     | '/api/auth/$'
+    | '/api/files/$id'
     | '/api/stripe/webhook'
     | '/api/v1/$'
   fileRoutesByTo: FileRoutesByTo
@@ -505,6 +515,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/supplier'
     | '/api/auth/$'
+    | '/api/files/$id'
     | '/api/stripe/webhook'
     | '/api/v1/$'
   id:
@@ -551,6 +562,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/supplier/'
     | '/api/auth/$'
+    | '/api/files/$id'
     | '/api/stripe/webhook'
     | '/api/v1/$'
   fileRoutesById: FileRoutesById
@@ -598,6 +610,7 @@ export interface RootRouteChildren {
   AdminIndexRoute: typeof AdminIndexRoute
   SupplierIndexRoute: typeof SupplierIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  ApiFilesIdRoute: typeof ApiFilesIdRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
   ApiV1SplatRoute: typeof ApiV1SplatRoute
 }
@@ -905,6 +918,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiStripeWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/files/$id': {
+      id: '/api/files/$id'
+      path: '/api/files/$id'
+      fullPath: '/api/files/$id'
+      preLoaderRoute: typeof ApiFilesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
@@ -958,6 +978,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminIndexRoute: AdminIndexRoute,
   SupplierIndexRoute: SupplierIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  ApiFilesIdRoute: ApiFilesIdRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
   ApiV1SplatRoute: ApiV1SplatRoute,
 }

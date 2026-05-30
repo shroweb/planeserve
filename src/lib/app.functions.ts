@@ -560,6 +560,7 @@ export const getAircraftDocuments = createServerFn({ method: "GET" })
       id: r.id,
       documentType: r.documentType,
       fileName: r.fileName,
+      storageKey: r.storageKey,
       createdAt: r.createdAt.toISOString(),
     }));
   });
@@ -570,6 +571,7 @@ export const addAircraftDocument = createServerFn({ method: "POST" })
       aircraftId: z.string().min(1),
       documentType: z.string().min(1),
       fileName: z.string().min(1),
+      storageKey: z.string().default(""),
     }),
   )
   .handler(async ({ data }) => {
@@ -584,7 +586,7 @@ export const addAircraftDocument = createServerFn({ method: "POST" })
       userId: user.id,
       documentType: data.documentType,
       fileName: data.fileName,
-      storageKey: "",
+      storageKey: data.storageKey,
       createdAt: new Date(),
     });
     return { id };
@@ -2900,6 +2902,57 @@ export const getSupplierComplianceDocs = createServerFn({ method: "GET" })
       expiryDate: r.expiryDate,
     }));
   });
+
+// ── File storage ──────────────────────────────────────────────────────────────
+
+// Store an uploaded file's bytes (base64) and return a storage key. Backed by
+// Postgres (file_blobs); swap behind S3/R2 later without changing callers.
+export const uploadFile = createServerFn({ method: "POST" })
+  .inputValidator(
+    z.object({
+      fileName: z.string().min(1),
+      contentType: z.string().default("application/octet-stream"),
+      dataBase64: z.string().min(1),
+    }),
+  )
+  .handler(async ({ data }) => {
+    const user = await currentUser();
+    const { db, schema } = await loadServerAuth();
+    // ~10MB ceiling on the decoded size — these are documents, not media.
+    const sizeBytes = Math.floor((data.dataBase64.length * 3) / 4);
+    if (sizeBytes > 10 * 1024 * 1024) throw new Error("File too large (max 10MB).");
+
+    const id = `file_${crypto.randomUUID()}`;
+    await db.insert(schema.fileBlobs).values({
+      id,
+      fileName: data.fileName,
+      contentType: data.contentType,
+      sizeBytes,
+      ownerUserId: user.id,
+      data: data.dataBase64,
+    });
+    return { storageKey: id, fileName: data.fileName, sizeBytes };
+  });
+
+// Load a file blob if the requester (from session headers) owns it or is admin.
+// Used by the /api/files/$id download route. Returns a status + optional blob.
+export async function getAccessibleFileBlob(headers: Headers, id: string) {
+  const { auth, eq, db, schema } = await loadServerAuth();
+  const session = await auth.api.getSession({ headers });
+  if (!session?.user) return { status: 401 as const };
+
+  const [blob] = await db.select().from(schema.fileBlobs).where(eq(schema.fileBlobs.id, id));
+  if (!blob) return { status: 404 as const };
+
+  if (blob.ownerUserId !== session.user.id) {
+    const [profile] = await db
+      .select({ isAdmin: schema.profiles.isAdmin })
+      .from(schema.profiles)
+      .where(eq(schema.profiles.userId, session.user.id));
+    if (!profile?.isAdmin) return { status: 403 as const };
+  }
+  return { status: 200 as const, blob };
+}
 
 // ── New: supplier application admin actions ──────────────────────────────────
 

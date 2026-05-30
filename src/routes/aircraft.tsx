@@ -12,6 +12,7 @@ import {
   AircraftRecord,
   AogRecord,
 } from "@/lib/app.functions";
+import { uploadBrowserFile } from "@/lib/file-upload";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -420,18 +421,23 @@ function DocumentsTab({ aircraft }: { aircraft: AircraftRecord }) {
   });
 
   const upload = useMutation({
-    mutationFn: (input: { documentType: string; fileName: string }) =>
-      addAircraftDocument({ data: { aircraftId: aircraft.id, ...input } }),
+    mutationFn: async (input: { documentType: string; file: File }) => {
+      const { storageKey, fileName } = await uploadBrowserFile(input.file);
+      return addAircraftDocument({
+        data: { aircraftId: aircraft.id, documentType: input.documentType, fileName, storageKey },
+      });
+    },
     onSuccess: (_, vars) => {
       toast.success(`${vars.documentType} uploaded.`);
       qc.invalidateQueries({ queryKey: ["aircraft-documents", aircraft.id] });
     },
-    onError: () => toast.error("Upload failed. Please try again."),
+    onError: (err) =>
+      toast.error(err instanceof Error ? err.message : "Upload failed. Please try again."),
   });
 
   function handleFile(documentType: string, file: File | undefined) {
     if (!file) return;
-    upload.mutate({ documentType, fileName: file.name });
+    upload.mutate({ documentType, file });
   }
 
   return (
@@ -475,7 +481,18 @@ function DocumentsTab({ aircraft }: { aircraft: AircraftRecord }) {
                     key={d.id}
                     className="flex items-center justify-between gap-3 text-xs text-muted-foreground"
                   >
-                    <span className="truncate font-mono">{d.fileName}</span>
+                    {d.storageKey ? (
+                      <a
+                        href={`/api/files/${d.storageKey}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="truncate font-mono text-primary hover:underline"
+                      >
+                        {d.fileName}
+                      </a>
+                    ) : (
+                      <span className="truncate font-mono">{d.fileName}</span>
+                    )}
                     <span className="shrink-0">
                       {new Date(d.createdAt).toLocaleDateString("en-GB", {
                         day: "numeric",
