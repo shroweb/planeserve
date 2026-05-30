@@ -275,42 +275,35 @@ function SubmitAog() {
         <form onSubmit={submit} className="space-y-4">
           {/* Aircraft selector */}
           <div>
-            <p className="text-sm font-medium mb-2">Which aircraft?</p>
-            <div className="grid grid-cols-2 gap-2">
-              {aircraft.map((a) => (
-                <button
-                  key={a.id}
-                  type="button"
-                  onClick={() =>
-                    setForm((f) => ({ ...f, aircraftId: a.id, location: a.baseAirport ?? "" }))
-                  }
-                  className={`text-left rounded-xl px-4 py-3 border-2 transition-colors ${
-                    form.aircraftId === a.id
-                      ? "bg-foreground text-background border-foreground"
-                      : "bg-card border-border hover:border-muted-foreground"
-                  }`}
-                >
-                  <p className="text-base font-bold">{a.registration}</p>
-                  <p
-                    className={`text-xs mt-0.5 ${form.aircraftId === a.id ? "text-background/60" : "text-muted-foreground"}`}
-                  >
-                    {a.makeModel} ·{" "}
-                    {a.totalAirframeHours
-                      ? `${Number(a.totalAirframeHours).toLocaleString()} hrs`
-                      : "hrs not recorded"}
-                  </p>
-                </button>
-              ))}
-              {aircraft.length === 0 && (
-                <div className="col-span-2 p-4 text-sm text-muted-foreground border border-dashed border-border rounded-xl text-center">
-                  No aircraft enrolled.{" "}
-                  <a href="/enrol" className="underline">
-                    Enrol an aircraft
-                  </a>{" "}
-                  to submit an AOG request.
-                </div>
-              )}
-            </div>
+            <label className="text-sm font-medium">Which aircraft?</label>
+            {aircraft.length === 0 ? (
+              <div className="mt-1.5 p-4 text-sm text-muted-foreground border border-dashed border-border rounded-lg text-center">
+                No aircraft enrolled.{" "}
+                <a href="/enrol" className="underline">
+                  Enrol an aircraft
+                </a>{" "}
+                to submit an AOG request.
+              </div>
+            ) : (
+              <select
+                value={form.aircraftId}
+                onChange={(e) => {
+                  const a = aircraft.find((x) => x.id === e.target.value);
+                  setForm((f) => ({
+                    ...f,
+                    aircraftId: e.target.value,
+                    location: a?.baseAirport || f.location,
+                  }));
+                }}
+                className="mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+              >
+                {aircraft.map((a) => (
+                  <option key={a.id} value={a.id}>
+                    {a.registration} — {a.makeModel}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
 
           {/* Location */}
