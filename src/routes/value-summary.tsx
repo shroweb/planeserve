@@ -160,32 +160,35 @@ function ValueSummaryPage() {
         )}
 
         {/* Methodology */}
-        <div className="bg-card border border-border rounded-lg p-5 space-y-3">
-          <p className="text-sm font-semibold">How we calculate this</p>
-          <div className="space-y-2 text-xs text-muted-foreground">
-            <div className="flex gap-3">
-              <span className="shrink-0 font-medium text-foreground">AOG cost rate</span>
-              <span>
-                Industry standard $10,000/hr for grounded business jet operations (crew costs,
-                charter alternatives, schedule disruption)
-              </span>
-            </div>
-            <div className="flex gap-3">
-              <span className="shrink-0 font-medium text-foreground">Resolution time</span>
-              <span>
-                Time from case submission to Resolved status. Only Aircraft grounded cases are
-                included in the cost calculation.
-              </span>
-            </div>
-            <div className="flex gap-3">
-              <span className="shrink-0 font-medium text-foreground">Benchmark</span>
-              <span>
-                Compared against industry average of 48–72 hours without dedicated AOG support. We
-                calculate savings vs. that baseline.
-              </span>
-            </div>
-          </div>
-          <p className="text-xs text-muted-foreground pt-1 border-t border-border">
+        <div className="bg-card border border-border rounded-xl p-6">
+          <p className="text-sm font-semibold mb-2">How we calculate this</p>
+          <dl>
+            {[
+              {
+                term: "AOG cost rate",
+                def: "Industry standard $10,000/hr for grounded business jet operations — crew costs, charter alternatives and schedule disruption.",
+              },
+              {
+                term: "Resolution time",
+                def: "Time from case submission to Resolved status. Only Aircraft-grounded cases are included in the cost calculation.",
+              },
+              {
+                term: "Benchmark",
+                def: "Compared against the industry average of 48–72 hours without dedicated AOG support — savings are calculated against that baseline.",
+              },
+            ].map(({ term, def }) => (
+              <div
+                key={term}
+                className="grid grid-cols-1 gap-1 border-t border-border py-3 sm:grid-cols-[150px_1fr] sm:gap-6"
+              >
+                <dt className="text-xs font-semibold uppercase tracking-wide text-foreground">
+                  {term}
+                </dt>
+                <dd className="text-sm leading-relaxed text-muted-foreground">{def}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="mt-3 border-t border-border pt-4 text-xs leading-relaxed text-muted-foreground">
             Figures are indicative estimates only and not a guarantee of savings. Actual costs vary
             by aircraft type, operator model, and market conditions.
           </p>
