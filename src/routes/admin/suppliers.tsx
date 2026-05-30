@@ -7,6 +7,7 @@ import {
   getSupplierApplications,
   approveSupplierApplication,
   declineSupplierApplication,
+  getSupplierComplianceDocs,
 } from "@/lib/app.functions";
 import { AppShell } from "@/components/app/AppShell";
 import { Plus, Building2, CheckCircle2, XCircle, ChevronDown, ChevronUp } from "lucide-react";
@@ -320,11 +321,27 @@ function ApplicationCard({ app, onAction }: { app: Application; onAction: () => 
     },
   });
 
+  const { data: docs = [] } = useQuery({
+    queryKey: ["supplier-compliance-docs", app.id],
+    queryFn: () => getSupplierComplianceDocs({ data: { companyId: app.id } }),
+    enabled: expanded,
+  });
+
   const submitted = new Date(app.createdAt).toLocaleDateString("en-GB", {
     day: "numeric",
     month: "short",
     year: "numeric",
   });
+
+  function expiryStatus(expiry: string): { label: string; cls: string } {
+    if (!expiry) return { label: "No expiry on file", cls: "text-muted-foreground" };
+    const d = new Date(expiry);
+    if (isNaN(d.getTime())) return { label: expiry, cls: "text-muted-foreground" };
+    const days = Math.floor((d.getTime() - Date.now()) / 86_400_000);
+    if (days < 0) return { label: `Expired ${expiry}`, cls: "text-destructive font-medium" };
+    if (days <= 30) return { label: `Expires ${expiry} (${days}d)`, cls: "text-accent font-medium" };
+    return { label: `Valid · ${expiry}`, cls: "text-success" };
+  }
 
   function KV({ k, v }: { k: string; v: string }) {
     return (
@@ -410,6 +427,39 @@ function ApplicationCard({ app, onAction }: { app: Application; onAction: () => 
               <KV k="Currency" v={app.paymentCurrency} />
               <KV k="Terms" v={app.paymentTerms} />
             </div>
+          </div>
+
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">
+              Compliance Documents
+            </p>
+            {docs.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No compliance documents submitted.</p>
+            ) : (
+              <div className="space-y-1.5">
+                {docs.map((doc) => {
+                  const status = expiryStatus(doc.expiryDate);
+                  return (
+                    <div
+                      key={doc.id}
+                      className="flex items-center justify-between gap-4 rounded-md border border-border bg-background px-3 py-2 text-sm"
+                    >
+                      <div className="min-w-0">
+                        <div className="font-medium truncate">{doc.docType}</div>
+                        {doc.fileName && (
+                          <div className="text-xs text-muted-foreground truncate">
+                            {doc.fileName}
+                          </div>
+                        )}
+                      </div>
+                      <span className={`text-xs whitespace-nowrap ${status.cls}`}>
+                        {status.label}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           <div className="flex items-start gap-3">

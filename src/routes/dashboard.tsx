@@ -1,13 +1,8 @@
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { AppShell } from "@/components/app/AppShell";
-import {
-  ensureSession,
-  getDashboardData,
-  getUsmSignalsPublic,
-  getUnreadCounts,
-} from "@/lib/app.functions";
-import { AlertTriangle, MessageSquare, Bell, BarChart2, Network, TrendingUp } from "lucide-react";
+import { ensureSession, getDashboardData } from "@/lib/app.functions";
+import { AlertTriangle } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard")({
   beforeLoad: async () => {
@@ -26,26 +21,12 @@ function Dashboard() {
     queryFn: () => getDashboardData(),
   });
 
-  const { data: signals = [] } = useQuery({
-    queryKey: ["usm-signals-public"],
-    queryFn: () => getUsmSignalsPublic(),
-  });
-
-  const { data: unreadCounts } = useQuery({
-    queryKey: ["unread-counts"],
-    queryFn: () => getUnreadCounts(),
-    refetchInterval: 30_000,
-  });
-
   if (!data) return <AppShell>Loading...</AppShell>;
 
   const { user, aircraft, requests } = data;
   const pendingAircraft = aircraft.filter((a) => a.verificationStatus === "Pending");
-  const verifiedAircraft = aircraft.filter((a) => a.verificationStatus === "Verified");
   const activeAog = requests.filter((r) => !["Resolved", "Cancelled"].includes(r.status));
   const groundedCases = activeAog.filter((r) => r.urgency === "Aircraft grounded");
-  const highRiskParts = (signals as any[]).filter((s) => s.riskScore >= 70);
-  const unreadNotifs = (unreadCounts as any)?.notifications ?? 0;
 
   return (
     <AppShell>
@@ -75,29 +56,6 @@ function Dashboard() {
         </div>
       )}
 
-      {verifiedAircraft.length > 0 && pendingAircraft.length === 0 && (
-        <div className="mb-8 rounded-md border border-emerald-500/20 bg-emerald-500/5 p-4">
-          <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-white">
-              ✓
-            </div>
-            <div>
-              <div className="text-sm font-semibold tracking-tight">AOG cover active</div>
-              <p className="mt-0.5 text-xs text-muted-foreground">
-                Cover is active for{" "}
-                {verifiedAircraft.map((a) => a.registration).join(", ")}. You can submit AOG
-                requests 24/7.
-              </p>
-            </div>
-            <Link
-              to="/submit-aog"
-              className="ml-auto rounded-sm border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium"
-            >
-              Submit AOG
-            </Link>
-          </div>
-        </div>
-      )}
 
       {/* Active grounded alert */}
       {groundedCases.length > 0 && (
@@ -122,37 +80,6 @@ function Dashboard() {
           </div>
         </div>
       )}
-
-      {/* Quick access chips */}
-      <div className="mb-6 flex gap-2 flex-wrap">
-        {[
-          { to: "/aog-cases", label: "AOG Cases", icon: AlertTriangle, badge: activeAog.length },
-          { to: "/messages", label: "Messages", icon: MessageSquare, badge: 0 },
-          { to: "/notifications", label: "Notifications", icon: Bell, badge: unreadNotifs },
-          {
-            to: "/parts-intelligence",
-            label: "Parts Intel",
-            icon: BarChart2,
-            badge: highRiskParts.length,
-          },
-          { to: "/fleet-network", label: "Fleet", icon: Network, badge: 0 },
-          { to: "/value-summary", label: "Value", icon: TrendingUp, badge: 0 },
-        ].map(({ to, label, icon: Icon, badge }) => (
-          <Link
-            key={to}
-            to={to}
-            className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
-          >
-            <Icon className="h-3.5 w-3.5" />
-            {label}
-            {badge > 0 && (
-              <span className="ml-0.5 h-4 min-w-4 rounded-full bg-accent text-background text-[10px] font-bold flex items-center justify-center px-1">
-                {badge}
-              </span>
-            )}
-          </Link>
-        ))}
-      </div>
 
       <div className="flex items-center justify-between">
         <div>

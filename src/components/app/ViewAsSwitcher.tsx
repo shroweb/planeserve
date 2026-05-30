@@ -1,16 +1,25 @@
 import { useRouter } from "@tanstack/react-router";
-import { authClient } from "@/lib/auth-client";
+import { useQuery } from "@tanstack/react-query";
+import { getSessionUser } from "@/lib/app.functions";
 
 type View = "Subscriber" | "Admin" | "Supplier";
 
 export function ViewAsSwitcher({ current }: { current: View }) {
   const router = useRouter();
-  const session = authClient.useSession();
   // The view switcher is an operations tool — only PlaneServe admins may
   // jump between subscriber / admin / supplier surfaces. Hide it from
   // regular subscribers and suppliers.
-  const isAdmin = Boolean((session.data?.user as { isAdmin?: boolean } | undefined)?.isAdmin);
-  if (!isAdmin) return null;
+  //
+  // Admin status is read from `profiles.is_admin` (via getSessionUser) — the
+  // SAME field the server-side guards enforce — so the UI can never disagree
+  // with what the backend actually allows.
+  const { data: user } = useQuery({
+    queryKey: ["session-user"],
+    queryFn: () => getSessionUser(),
+    staleTime: 60_000,
+    retry: false,
+  });
+  if (!user?.isAdmin) return null;
 
   function switchTo(view: View) {
     if (view === "Admin") router.navigate({ to: "/admin" });

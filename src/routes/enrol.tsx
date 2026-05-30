@@ -171,7 +171,7 @@ function EnrolPage() {
       <div className="min-h-screen bg-background flex items-center justify-center p-6">
         <div className="max-w-md w-full text-center space-y-6">
           <div className="flex justify-center">
-            <CheckCircle2 className="h-16 w-16 text-emerald-500" />
+            <CheckCircle2 className="h-16 w-16 text-success" />
           </div>
           <div>
             <h1 className="text-2xl font-semibold mb-2">You're enrolled!</h1>
@@ -267,7 +267,7 @@ function EnrolPage() {
               <div
                 className={`h-7 w-7 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 ${
                   i + 1 < step
-                    ? "bg-emerald-500 text-white"
+                    ? "bg-success text-success-foreground"
                     : i + 1 === step
                       ? "bg-primary text-primary-foreground"
                       : "bg-muted text-muted-foreground"

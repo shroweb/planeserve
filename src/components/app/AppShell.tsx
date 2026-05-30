@@ -28,7 +28,7 @@ import {
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getUnreadCounts } from "@/lib/app.functions";
+import { getUnreadCounts, getDashboardData } from "@/lib/app.functions";
 import { signOutAndRedirect } from "@/lib/sign-out";
 import type { LucideIcon } from "lucide-react";
 
@@ -84,6 +84,19 @@ export function AppShell({ children, variant = "member" }: Props) {
     enabled: variant === "member" && !!session.data,
     refetchInterval: 30_000,
   });
+
+  // Cover is active once at least one aircraft is verified and none are still
+  // pending verification (shares the dashboard query cache — no extra fetch).
+  const { data: dashboard } = useQuery({
+    queryKey: ["dashboard"],
+    queryFn: () => getDashboardData(),
+    enabled: variant === "member" && !!session.data,
+  });
+  const coverActive =
+    variant === "member" &&
+    !!dashboard &&
+    dashboard.aircraft.some((a) => a.verificationStatus === "Verified") &&
+    !dashboard.aircraft.some((a) => a.verificationStatus === "Pending");
 
   function getBadge(to: string): number {
     if (!unreadCounts) return 0;
@@ -141,9 +154,16 @@ export function AppShell({ children, variant = "member" }: Props) {
         </nav>
         <div className="border-t border-white/10 p-4">
           <div className="text-xs font-medium text-white/80">{user?.name ?? "PlaneServe user"}</div>
-          <div className="text-[11px] text-white/40 mt-0.5">
-            AOG Cover · {variant === "member" ? "member" : "admin"}
-          </div>
+          {coverActive ? (
+            <div className="mt-1 flex items-center gap-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-success" />
+              <span className="text-[11px] font-medium text-success">AOG cover active</span>
+            </div>
+          ) : (
+            <div className="text-[11px] text-white/40 mt-0.5">
+              AOG Cover · {variant === "member" ? "member" : "admin"}
+            </div>
+          )}
           <button onClick={signOut} className="mt-3 text-xs text-white/40 hover:text-white/70">
             Sign out
           </button>
