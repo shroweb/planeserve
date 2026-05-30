@@ -2882,6 +2882,20 @@ export const createSupplierApplication = createServerFn({ method: "POST" })
       );
     }
 
+    // Confirmation email to the applicant (logs to console in dev without Resend).
+    const { sendEmail, emailLayout } = await import("@/lib/email.server");
+    await sendEmail(
+      data.email,
+      "We've received your PlaneServe supplier application",
+      emailLayout(
+        "Application received",
+        `<p>Hi ${data.firstName}, thanks for applying to join the PlaneServe supplier network for
+         <strong>${data.name}</strong>.</p>
+         <p>Our desk reviews applications within 24 hours. If approved, you'll receive a link to set
+         your password and access the supplier portal. If we need anything further, we'll be in touch.</p>`,
+      ),
+    ).catch(() => {});
+
     return { ok: true, id };
   });
 
@@ -3035,10 +3049,29 @@ export const declineSupplierApplication = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     await currentAdmin();
     const { eq, db, schema } = await loadServerAuth();
-    await db
+    const [company] = await db
       .update(schema.supplierCompanies)
       .set({ status: "declined", declineReason: data.reason })
-      .where(eq(schema.supplierCompanies.id, data.id));
+      .where(eq(schema.supplierCompanies.id, data.id))
+      .returning({ name: schema.supplierCompanies.name, email: schema.supplierCompanies.contactEmail });
+
+    // Notify the applicant with the reason (if we have an email on file).
+    if (company?.email) {
+      const { sendEmail, emailLayout } = await import("@/lib/email.server");
+      await sendEmail(
+        company.email,
+        "Update on your PlaneServe supplier application",
+        emailLayout(
+          "Application not approved",
+          `<p>Thank you for your interest in joining the PlaneServe supplier network${
+            company.name ? ` as <strong>${company.name}</strong>` : ""
+          }.</p>
+           <p>After review, we're unable to approve your application at this time.</p>
+           ${data.reason ? `<p><strong>Reason:</strong> ${data.reason}</p>` : ""}
+           <p>You're welcome to reapply once the points above are addressed.</p>`,
+        ),
+      ).catch(() => {});
+    }
     return { ok: true };
   });
 
