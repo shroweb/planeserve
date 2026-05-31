@@ -860,20 +860,63 @@ export const createAogRequest = createServerFn({ method: "POST" })
 
 export const getAdminOverview = createServerFn({ method: "GET" }).handler(async () => {
   await currentAdmin();
-  const { inArray, desc, db, schema } = await loadServerAuth();
+  const { inArray, asc, desc, db, schema } = await loadServerAuth();
 
-  const [profileRows, aircraftRows, requestRows] = await Promise.all([
+  const [profileRows, aircraftRows, requestRows, subRows, supplierRows] = await Promise.all([
     db.select().from(schema.profiles).orderBy(desc(schema.profiles.createdAt)),
     db.select().from(schema.aircraft).orderBy(desc(schema.aircraft.createdAt)),
     db.select().from(schema.aogRequests).orderBy(desc(schema.aogRequests.createdAt)),
+    db.select().from(schema.subscriptions),
+    db.select().from(schema.supplierCompanies),
   ]);
 
-  const attMap = await attachmentsByRequest(
-    db,
-    schema,
-    inArray,
-    requestRows.map((r) => r.id),
-  );
+  const requestIds = requestRows.map((r) => r.id);
+  const attMap = await attachmentsByRequest(db, schema, inArray, requestIds);
+
+  const eventRows = requestIds.length
+    ? await db
+        .select()
+        .from(schema.aogStatusEvents)
+        .where(inArray(schema.aogStatusEvents.requestId, requestIds))
+        .orderBy(asc(schema.aogStatusEvents.createdAt))
+    : [];
+
+  // First-response (created → first Acknowledged) per request, in minutes.
+  const ackByRequest = new Map<string, number>();
+  for (const r of requestRows) {
+    const ack = eventRows.find((e) => e.requestId === r.id && e.status === "Acknowledged");
+    if (ack) ackByRequest.set(r.id, (ack.createdAt.getTime() - r.createdAt.getTime()) / 60000);
+  }
+  const responseTimes = [...ackByRequest.values()];
+  const avgFirstResponseMins = responseTimes.length
+    ? Math.round(responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length)
+    : null;
+
+  const startOfDay = new Date();
+  startOfDay.setHours(0, 0, 0, 0);
+  const clearedToday = requestRows.filter(
+    (r) => r.status === "Resolved" && r.updatedAt.getTime() >= startOfDay.getTime(),
+  ).length;
+
+  // Monthly recurring revenue from active subscriptions (USD).
+  const activeSubs = subRows.filter((s) => s.status === "Active");
+  const mrrUsd = activeSubs.reduce((acc, s) => acc + (s.plan === "annual" ? 1000 / 12 : 100), 0);
+
+  const suppliersLive = supplierRows.filter((s) => s.status === "approved").length;
+
+  // Pending enrolments: operators with at least one unverified aircraft.
+  const profileByUser = new Map(profileRows.map((p) => [p.userId, p]));
+  const pendingByUser = new Map<string, number>();
+  for (const a of aircraftRows) {
+    if (a.verificationStatus === "Pending")
+      pendingByUser.set(a.userId, (pendingByUser.get(a.userId) ?? 0) + 1);
+  }
+  const pendingEnrolments = [...pendingByUser.entries()].map(([userId, tails]) => ({
+    userId,
+    company: profileByUser.get(userId)?.company || profileByUser.get(userId)?.name || "Operator",
+    name: profileByUser.get(userId)?.name ?? "",
+    tails,
+  }));
 
   return {
     users: profileRows
@@ -890,6 +933,13 @@ export const getAdminOverview = createServerFn({ method: "GET" }).handler(async 
       })),
     aircraft: aircraftRows.map(toAircraftRecord),
     requests: requestRows.map((r) => toAogRecord(r, attMap.get(r.id) ?? [])),
+    metrics: {
+      avgFirstResponseMins,
+      clearedToday,
+      mrrUsd: Math.round(mrrUsd),
+      suppliersLive,
+    },
+    pendingEnrolments,
   };
 });
 
