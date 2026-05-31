@@ -49,14 +49,14 @@ function Home() {
               Retained AOG desk · private &amp; business aviation
             </div>
             <h1 className="mt-7 max-w-4xl text-5xl font-semibold leading-[1.02] tracking-tight md:text-6xl lg:text-7xl">
-              AOG support for{" "}
-              <span className="font-serif italic font-normal text-accent">older</span> private &amp;
-              business aircraft.
+              Your retained AOG desk, ready{" "}
+              <span className="font-serif italic font-normal text-accent">before</span> downtime
+              starts.
             </h1>
             <p className="mt-7 max-w-xl text-base leading-8 text-white/65 md:text-lg">
-              Hard-to-source parts handled before downtime becomes chaos. Your aircraft profile,
-              urgency context and contacts are on file in advance — so when you go AOG, the desk
-              already knows the aircraft.
+              AOG support for older private and business aircraft — your aircraft profile, urgency
+              context and contacts on file in advance, so when you go technical the desk already
+              knows the aircraft.
             </p>
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
               <Link
