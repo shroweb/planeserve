@@ -1,20 +1,55 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { ViewAsSwitcher } from "./ViewAsSwitcher";
-import { Menu, Plane, Package, History, UserCircle, LogOut } from "lucide-react";
+import { Menu, Plane, Package, History, UserCircle, LogOut, Settings } from "lucide-react";
 import { signOutAndRedirect } from "@/lib/sign-out";
 import type { LucideIcon } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { getSupplierRfqs } from "@/lib/app.functions";
 
-const NAV: { to: string; label: string; icon: LucideIcon }[] = [
-  { to: "/supplier", label: "RFQ Inbox", icon: Package },
-  { to: "/supplier/quote-history", label: "Quote History", icon: History },
-  { to: "/supplier/profile", label: "Profile", icon: UserCircle },
+type NavItem = { to: string; label: string; icon: LucideIcon };
+
+const NAV_SECTIONS: { title: string; items: NavItem[] }[] = [
+  {
+    title: "Sourcing",
+    items: [
+      { to: "/supplier", label: "RFQ Inbox", icon: Package },
+      { to: "/supplier/quote-history", label: "Quote History", icon: History },
+    ],
+  },
+  {
+    title: "Account",
+    items: [{ to: "/supplier/profile", label: "Company profile", icon: UserCircle }],
+  },
 ];
+
+const NAV: NavItem[] = NAV_SECTIONS.flatMap((s) => s.items);
 
 export function SupplierAppShell({ children }: { children: React.ReactNode }) {
   const loc = useLocation();
+  const { data } = useQuery({
+    queryKey: ["supplier-rfqs-shell"],
+    queryFn: () => getSupplierRfqs(),
+    staleTime: 30_000,
+  });
+  const pendingRfqs = data?.rfqs.filter((r) => r.status === "sent").length ?? 0;
+  const companyMeta = data?.company as { id?: string; status?: string; name?: string } | undefined;
+  const approved = companyMeta?.status === "approved" || companyMeta?.id === "admin-preview";
+  const companyName = companyMeta?.name || "Supplier";
+  const initials =
+    companyName
+      .split(/\s+/)
+      .map((w) => w[0])
+      .filter(Boolean)
+      .slice(0, 2)
+      .join("")
+      .toUpperCase() || "SP";
 
   async function signOut() {
     await signOutAndRedirect("/supplier/login");
+  }
+
+  function badgeFor(to: string) {
+    return to === "/supplier" ? pendingRfqs : 0;
   }
 
   return (
@@ -24,33 +59,80 @@ export function SupplierAppShell({ children }: { children: React.ReactNode }) {
           <Plane className="h-5 w-5 text-accent" strokeWidth={1.5} />
           <div>
             <div className="text-sm font-semibold tracking-tight">PlaneServe</div>
-            <div className="text-[10px] uppercase tracking-widest text-white/50">
-              Supplier Portal
+            <div className="text-[10px] uppercase tracking-widest text-white/50">Supplier Portal</div>
+          </div>
+        </div>
+        <div className="border-b border-white/10 px-4 py-4">
+          <div className="rounded-md bg-white/5 p-3">
+            <div className="text-[10px] font-semibold uppercase tracking-widest text-white/45">
+              Supplier status
+            </div>
+            <div className="mt-2 flex items-center gap-2">
+              <span className={`h-2 w-2 rounded-full ${approved ? "bg-success" : "bg-accent"}`} />
+              <span className="text-xs font-semibold text-white/80">
+                {approved ? "Approved" : "Pending review"}
+              </span>
+            </div>
+            <div className="mt-2 text-xs text-white/55">
+              {pendingRfqs} RFQ{pendingRfqs === 1 ? "" : "s"} awaiting response
             </div>
           </div>
         </div>
         <nav className="flex-1 px-3 py-4 overflow-y-auto">
-          {NAV.map((l) => {
-            const active = loc.pathname === l.to;
-            const Icon = l.icon;
-            return (
-              <Link
-                key={l.label}
-                to={l.to}
-                className={`flex items-center gap-3 rounded-sm px-3 py-2 text-sm transition-colors ${
-                  active
-                    ? "bg-white/10 text-accent"
-                    : "text-white/65 hover:bg-white/5 hover:text-white"
-                }`}
-              >
-                <Icon className="h-4 w-4 shrink-0 opacity-80" strokeWidth={1.5} />
-                <span className="flex-1">{l.label}</span>
-              </Link>
-            );
-          })}
+          {NAV_SECTIONS.map((section) => (
+            <div key={section.title} className="mb-4 last:mb-0">
+              <div className="px-3 pb-1.5 text-[10px] font-semibold uppercase tracking-widest text-white/35">
+                {section.title}
+              </div>
+              {section.items.map((l) => {
+                const active = loc.pathname === l.to;
+                const Icon = l.icon;
+                const badge = badgeFor(l.to);
+                return (
+                  <Link
+                    key={l.label}
+                    to={l.to}
+                    className={`flex items-center gap-3 rounded-sm px-3 py-2 text-sm transition-colors ${
+                      active
+                        ? "bg-white/10 text-accent"
+                        : "text-white/65 hover:bg-white/5 hover:text-white"
+                    }`}
+                  >
+                    <Icon className="h-4 w-4 shrink-0 opacity-80" strokeWidth={1.5} />
+                    <span className="flex-1">{l.label}</span>
+                    {badge > 0 && (
+                      <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-bold text-background">
+                        {badge}
+                      </span>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          ))}
         </nav>
         <div className="border-t border-white/10 p-4">
-          <div className="text-[11px] text-white/40">Supplier · Portal</div>
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent text-sm font-bold text-[oklch(0.16_0.02_250)]">
+              {initials}
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="truncate text-xs font-medium text-white/85">{companyName}</div>
+              <div className="mt-0.5 flex items-center gap-1.5">
+                <span className={`h-1.5 w-1.5 rounded-full ${approved ? "bg-success" : "bg-accent"}`} />
+                <span className="text-[11px] font-medium text-white/55">
+                  {approved ? "Verified supplier" : "Pending review"}
+                </span>
+              </div>
+            </div>
+            <Link
+              to="/supplier/profile"
+              title="Company profile"
+              className="shrink-0 text-white/40 hover:text-white/75"
+            >
+              <Settings className="h-4 w-4" strokeWidth={1.8} />
+            </Link>
+          </div>
           <button onClick={signOut} className="mt-3 text-xs text-white/40 hover:text-white/70">
             Sign out
           </button>

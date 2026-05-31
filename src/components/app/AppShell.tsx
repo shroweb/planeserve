@@ -43,22 +43,40 @@ type UnreadCounts = {
   messages?: number;
 };
 
-const memberLinks: { to: string; label: string; icon: LucideIcon; badge?: string }[] = [
-  { to: "/submit-aog", label: "Submit AOG", icon: AlertTriangle },
-  { to: "/dashboard", label: "Dashboard", icon: Gauge },
-  { to: "/aog-cases", label: "AOG Cases", icon: Briefcase },
-  { to: "/aircraft", label: "My Aircraft", icon: PlaneTakeoff },
-  { to: "/enrol", label: "Enrol Aircraft", icon: Plane },
-  { to: "/notifications", label: "Notifications", icon: Bell },
-  { to: "/billing", label: "Billing", icon: CreditCard },
-  { to: "/parts-intelligence", label: "Parts Intelligence", icon: BarChart2 },
-  { to: "/fleet-network", label: "Fleet Network", icon: Network },
-  { to: "/messages", label: "Messages", icon: MessageSquare },
-  { to: "/aog-risk-index", label: "AOG Risk Index", icon: TrendingUp },
-  { to: "/value-summary", label: "Value Summary", icon: DollarSign },
-  { to: "/team", label: "Team", icon: UsersRound },
-  { to: "/account", label: "Account", icon: UserCircle },
-];
+const memberSections: { title: string; items: { to: string; label: string; icon: LucideIcon }[] }[] =
+  [
+    {
+      title: "Operations",
+      items: [
+        { to: "/submit-aog", label: "Submit AOG", icon: AlertTriangle },
+        { to: "/dashboard", label: "Dashboard", icon: Gauge },
+        { to: "/aog-cases", label: "AOG Cases", icon: Briefcase },
+        { to: "/aircraft", label: "My Aircraft", icon: PlaneTakeoff },
+        { to: "/enrol", label: "Enrol Aircraft", icon: Plane },
+        { to: "/notifications", label: "Notifications", icon: Bell },
+        { to: "/messages", label: "Messages", icon: MessageSquare },
+      ],
+    },
+    {
+      title: "Intelligence",
+      items: [
+        { to: "/parts-intelligence", label: "Parts Intelligence", icon: BarChart2 },
+        { to: "/fleet-network", label: "Fleet Network", icon: Network },
+        { to: "/aog-risk-index", label: "AOG Risk Index", icon: TrendingUp },
+        { to: "/value-summary", label: "Value Summary", icon: DollarSign },
+      ],
+    },
+    {
+      title: "Account",
+      items: [
+        { to: "/billing", label: "Billing", icon: CreditCard },
+        { to: "/team", label: "Team", icon: UsersRound },
+        { to: "/account", label: "Account", icon: UserCircle },
+      ],
+    },
+  ];
+
+const memberLinks = memberSections.flatMap((s) => s.items);
 
 type NavItem = { to: string; label: string; icon: LucideIcon };
 
@@ -253,41 +271,48 @@ export function AppShell({ children, variant = "member" }: Props) {
                   ))}
                 </div>
               ))
-            : memberLinks.map((l) => {
-                const active = loc.pathname === l.to;
-                const isAog = l.label === "Submit AOG";
-                const Icon = l.icon;
-                return (
-                  <Link
-                    key={l.label}
-                    to={isAog && !hasAircraft ? "/enrol" : l.to}
-                    className={`flex items-center gap-3 rounded-sm px-3 py-2 text-sm transition-colors ${
-                      isAog && !hasAircraft
-                        ? "bg-white/5 text-white/45 hover:bg-white/10 hover:text-white/65"
-                        : isAog && active
-                          ? "bg-red-600 text-white"
-                          : isAog
-                            ? "bg-red-600/90 text-white hover:bg-red-600"
-                            : active
-                              ? "bg-white/10 text-accent"
-                              : "text-white/65 hover:bg-white/5 hover:text-white"
-                    }`}
-                  >
-                    <Icon className="h-4 w-4 shrink-0 opacity-80" strokeWidth={1.5} />
-                    <span className="flex-1">{l.label}</span>
-                    {getBadge(l.to) > 0 && (
-                      <span className="h-4 min-w-4 rounded-full bg-accent text-background text-[10px] font-bold flex items-center justify-center px-1">
-                        {getBadge(l.to)}
-                      </span>
-                    )}
-                    {isAog && !hasAircraft && (
-                      <span className="text-[10px] font-semibold uppercase tracking-widest text-white/35">
-                        Enrol first
-                      </span>
-                    )}
-                  </Link>
-                );
-              })}
+            : memberSections.map((section) => (
+                <div key={section.title} className="mb-4 last:mb-0">
+                  <div className="px-3 pb-1.5 text-[10px] font-semibold uppercase tracking-widest text-white/35">
+                    {section.title}
+                  </div>
+                  {section.items.map((l) => {
+                    const active = loc.pathname === l.to;
+                    const isAog = l.label === "Submit AOG";
+                    const Icon = l.icon;
+                    return (
+                      <Link
+                        key={l.label}
+                        to={isAog && !hasAircraft ? "/enrol" : l.to}
+                        className={`flex items-center gap-3 rounded-sm px-3 py-2 text-sm transition-colors ${
+                          isAog && !hasAircraft
+                            ? "bg-white/5 text-white/45 hover:bg-white/10 hover:text-white/65"
+                            : isAog && active
+                              ? "bg-red-600 text-white"
+                              : isAog
+                                ? "bg-red-600/90 text-white hover:bg-red-600"
+                                : active
+                                  ? "bg-white/10 text-accent"
+                                  : "text-white/65 hover:bg-white/5 hover:text-white"
+                        }`}
+                      >
+                        <Icon className="h-4 w-4 shrink-0 opacity-80" strokeWidth={1.5} />
+                        <span className="flex-1">{l.label}</span>
+                        {getBadge(l.to) > 0 && (
+                          <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-bold text-background">
+                            {getBadge(l.to)}
+                          </span>
+                        )}
+                        {isAog && !hasAircraft && (
+                          <span className="text-[10px] font-semibold uppercase tracking-widest text-white/35">
+                            Enrol first
+                          </span>
+                        )}
+                      </Link>
+                    );
+                  })}
+                </div>
+              ))}
         </nav>
         <div className="border-t border-white/10 p-4">
           <div className="flex items-center gap-3">
