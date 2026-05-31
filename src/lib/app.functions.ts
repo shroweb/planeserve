@@ -454,7 +454,7 @@ export const upsertProfile = createServerFn({ method: "POST" })
 
 export const getDashboardData = createServerFn({ method: "GET" }).handler(async () => {
   const user = await currentUser();
-  const { eq, inArray, desc, db, schema } = await loadServerAuth();
+  const { eq, inArray, asc, desc, db, schema } = await loadServerAuth();
 
   const aircraftRows = await db
     .select()
@@ -468,17 +468,45 @@ export const getDashboardData = createServerFn({ method: "GET" }).handler(async 
     .where(eq(schema.aogRequests.userId, user.id))
     .orderBy(desc(schema.aogRequests.createdAt));
 
-  const attMap = await attachmentsByRequest(
-    db,
-    schema,
-    inArray,
-    requestRows.map((r) => r.id),
-  );
+  const requestIds = requestRows.map((r) => r.id);
+
+  const attMap = await attachmentsByRequest(db, schema, inArray, requestIds);
+
+  // Status-event timelines for this user's cases (one query, grouped client-side).
+  const eventRows = requestIds.length
+    ? await db
+        .select()
+        .from(schema.aogStatusEvents)
+        .where(inArray(schema.aogStatusEvents.requestId, requestIds))
+        .orderBy(asc(schema.aogStatusEvents.createdAt))
+    : [];
+
+  const eventsByRequest: Record<string, { status: string; note: string; at: string }[]> = {};
+  for (const e of eventRows) {
+    (eventsByRequest[e.requestId] ??= []).push({
+      status: e.status,
+      note: e.note,
+      at: e.createdAt.toISOString(),
+    });
+  }
+
+  // Median first response = created → first "Acknowledged" event, in minutes.
+  const firstResponses: number[] = [];
+  for (const r of requestRows) {
+    const ack = eventRows.find((e) => e.requestId === r.id && e.status === "Acknowledged");
+    if (ack) firstResponses.push((ack.createdAt.getTime() - r.createdAt.getTime()) / 60000);
+  }
+  firstResponses.sort((a, b) => a - b);
+  const medianFirstResponseMins = firstResponses.length
+    ? Math.round(firstResponses[Math.floor(firstResponses.length / 2)])
+    : null;
 
   return {
     user,
     aircraft: aircraftRows.map(toAircraftRecord),
     requests: requestRows.map((r) => toAogRecord(r, attMap.get(r.id) ?? [])),
+    eventsByRequest,
+    medianFirstResponseMins,
   };
 });
 
