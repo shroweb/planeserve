@@ -6,7 +6,7 @@ import { componentsFor } from "@/lib/aircraft-components";
 import { Urgency } from "@/lib/db/schema";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { CheckCircle2, Zap, Phone, MessageCircle } from "lucide-react";
+import { ArrowRight, CheckCircle2, Clock3, MessageCircle, Phone, Zap } from "lucide-react";
 
 export const Route = createFileRoute("/submit-aog")({
   beforeLoad: async () => {
@@ -158,21 +158,59 @@ function SubmitAog() {
   if (submitted) {
     return (
       <AppShell>
-        <div className="mx-auto max-w-xl rounded-xl border border-border bg-card p-10 text-center mt-12">
-          <CheckCircle2 className="mx-auto h-10 w-10 text-emerald-500" strokeWidth={1.5} />
-          <h1 className="mt-4 text-2xl font-semibold tracking-tight">AOG case opened</h1>
-          <p className="mt-3 text-sm text-muted-foreground">
-            Your desk handler will call you within 5 minutes. Parts sourcing has begun.
-          </p>
-          <div className="mt-5 inline-block rounded-lg bg-muted px-5 py-3">
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1">Case reference</p>
-            <p className="font-mono text-xl font-bold text-foreground">{submitted.caseReference}</p>
+        <div className="mx-auto mt-12 max-w-2xl rounded-xl border border-border bg-card p-8 shadow-sm">
+          <div className="text-center">
+            <CheckCircle2 className="mx-auto h-11 w-11 text-success" strokeWidth={1.5} />
+            <h1 className="mt-4 text-2xl font-semibold tracking-tight">AOG case opened</h1>
+            <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-muted-foreground">
+              The PlaneServe desk has been alerted. Your handler will acknowledge the case and begin
+              sourcing against the aircraft profile on file.
+            </p>
           </div>
+
+          <div className="mt-6 grid gap-3 sm:grid-cols-3">
+            <div className="rounded-lg border border-border bg-muted/20 p-4 text-center">
+              <p className="mb-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+                Case reference
+              </p>
+              <p className="font-mono text-lg font-bold text-foreground">
+                {submitted.caseReference}
+              </p>
+            </div>
+            <div className="rounded-lg border border-border bg-muted/20 p-4 text-center">
+              <Clock3 className="mx-auto mb-2 h-4 w-4 text-muted-foreground" />
+              <p className="text-sm font-semibold">Acknowledgement</p>
+              <p className="mt-1 text-xs text-muted-foreground">Within 10 minutes</p>
+            </div>
+            <div className="rounded-lg border border-border bg-muted/20 p-4 text-center">
+              <Phone className="mx-auto mb-2 h-4 w-4 text-muted-foreground" />
+              <p className="text-sm font-semibold">AOG hotline</p>
+              <p className="mt-1 text-xs text-muted-foreground">+44 7700 900000</p>
+            </div>
+          </div>
+
+          <div className="mt-6 rounded-lg border border-border p-4">
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              What happens next
+            </p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-3">
+              {["Submitted", "Acknowledged", "Sourcing"].map((label, index) => (
+                <div key={label} className="flex items-center gap-3 text-sm">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                    {index + 1}
+                  </span>
+                  <span className="font-medium">{label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
           <button
             onClick={() => nav({ to: "/aog-cases" })}
-            className="mt-8 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
+            className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
           >
             View case status
+            <ArrowRight className="h-4 w-4" />
           </button>
         </div>
       </AppShell>

@@ -1,6 +1,7 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { AppShell } from "@/components/app/AppShell";
+import { StatusPill, statusTone } from "@/components/app/ui";
 import { ensureSession, getUsmSignalsPublic, getAircraftList } from "@/lib/app.functions";
 import { TrendingUp, TrendingDown, Minus, AlertTriangle, ShieldCheck } from "lucide-react";
 import { useState } from "react";
@@ -187,9 +188,9 @@ function PartsIntelligencePage() {
                         : "—"}
                     </td>
                     <td className="px-4 py-3">
-                      <span className={`text-xs font-semibold ${riskColour(s.riskScore)}`}>
+                      <StatusPill tone={statusTone(riskLabel(s.riskScore))}>
                         {riskLabel(s.riskScore)}
-                      </span>
+                      </StatusPill>
                     </td>
                   </tr>
                 ))}

@@ -375,7 +375,7 @@ function SupplierInboxPage() {
                       <div className="text-right shrink-0">
                         <div className="flex items-center justify-end gap-1.5">
                           {now - new Date(rfq.sentAt).getTime() < 60 * 60 * 1000 && (
-                            <StatusPill tone="gold" dot>
+                            <StatusPill tone="gold">
                               New
                             </StatusPill>
                           )}

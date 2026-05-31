@@ -1,6 +1,7 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AppShell } from "@/components/app/AppShell";
+import { StatusPill, statusTone } from "@/components/app/ui";
 import {
   ensureAdminSession,
   getAdminAircraft,
@@ -76,15 +77,9 @@ function AdminAircraft() {
                   </Td>
                   <Td>{a.baseAirport || "—"}</Td>
                   <Td>
-                    <span
-                      className={`rounded-sm px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest ${
-                        a.verificationStatus === "Verified"
-                          ? "bg-[oklch(0.94_0.06_150)] text-[oklch(0.3_0.1_150)]"
-                          : "bg-[oklch(0.94_0.06_80)] text-[oklch(0.3_0.1_60)]"
-                      }`}
-                    >
+                    <StatusPill tone={statusTone(a.verificationStatus)}>
                       {a.verificationStatus}
-                    </span>
+                    </StatusPill>
                   </Td>
                   <Td>
                     <div className="text-xs">{a.subscriptionStatus}</div>

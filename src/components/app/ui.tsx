@@ -19,22 +19,34 @@ const TONES: Record<Tone, string> = {
 export function StatusPill({
   children,
   tone = "neutral",
-  dot = false,
   className = "",
 }: {
   children: React.ReactNode;
   tone?: Tone;
-  dot?: boolean;
   className?: string;
 }) {
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-[3px] px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.06em] ${TONES[tone]} ${className}`}
+      className={`inline-flex items-center rounded-[3px] px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.06em] ${TONES[tone]} ${className}`}
     >
-      {dot && <span className="h-1.5 w-1.5 rounded-[1px] bg-current" />}
       {children}
     </span>
   );
+}
+
+// Single source of truth: maps any domain status/risk/urgency word to a tone,
+// so the same label is the same colour on every screen.
+export function statusTone(value: string): Tone {
+  const v = value.toLowerCase();
+  if (/(breach|cancel|high|unavailable|failed|past due|declined|grounded|overdue)/.test(v))
+    return "red";
+  if (/(verified|resolved|arrived|approved|operational|low risk|\blow\b|paid|won)/.test(v))
+    return "green";
+  if (/(sourcing|options|confirmed|transit|order placed|placed|quoted|responded)/.test(v))
+    return "blue";
+  if (/(pending|acknowledged|submitted|medium|awaiting|review|dispatch|sent|new)/.test(v))
+    return "gold";
+  return "neutral";
 }
 
 // Horizontal progress/score bar with optional value label.

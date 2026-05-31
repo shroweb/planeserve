@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { createSubscriberEnrolment, createStripeSubscription } from "@/lib/app.functions";
+import { AppShell } from "@/components/app/AppShell";
 import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
 import { CheckCircle2, ChevronRight, ChevronLeft, Plane, Lock } from "lucide-react";
@@ -156,6 +157,7 @@ function validateStep(step: number, form: FormData): string | null {
 
 function EnrolPage() {
   const session = authClient.useSession();
+  const isSignedIn = Boolean(session.data?.user);
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<FormData>(defaultForm);
   const [stepError, setStepError] = useState<string | null>(null);
@@ -167,45 +169,55 @@ function EnrolPage() {
   };
 
   if (confirmation) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-6">
-        <div className="max-w-md w-full text-center space-y-6">
-          <div className="flex justify-center">
-            <CheckCircle2 className="h-16 w-16 text-success" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-semibold mb-2">You're enrolled!</h1>
-            <p className="text-muted-foreground text-sm">
-              Welcome to PlaneServe AOG Support. Your reference is{" "}
-              <span className="font-mono font-semibold text-foreground">{confirmation.ref}</span>.
-            </p>
-          </div>
-          <div className="bg-card border border-border rounded-xl p-5 text-left space-y-3 text-sm">
-            <p className="font-medium">What happens next</p>
-            <div className="space-y-2">
-              {[
-                {
-                  n: 1,
-                  text: "A PlaneServe handler will call you within 2 hours to run through your aircraft profile.",
-                },
-                {
-                  n: 2,
-                  text: "Your handler confirms engine details, AMO contacts, PIC mobile, and delivers your Parts Intelligence briefing.",
-                },
-                {
-                  n: 3,
-                  text: "Handler marks your aircraft as verified — your dashboard updates to AOG Cover active immediately.",
-                },
-              ].map(({ n, text }) => (
-                <div key={n} className="flex gap-3">
-                  <div className="h-5 w-5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
-                    {n}
-                  </div>
-                  <p className="text-muted-foreground text-xs leading-5">{text}</p>
+    const confirmationContent = (
+      <div className="mx-auto max-w-md text-center space-y-6">
+        <div className="flex justify-center">
+          <CheckCircle2 className="h-16 w-16 text-success" />
+        </div>
+        <div>
+          <h1 className="text-2xl font-semibold mb-2">Subscription active</h1>
+          <p className="text-muted-foreground text-sm">
+            Your PlaneServe account has been created. Formal AOG cover is pending aircraft
+            verification. Your reference is{" "}
+            <span className="font-mono font-semibold text-foreground">{confirmation.ref}</span>.
+          </p>
+        </div>
+        <div className="rounded-xl border border-accent/30 bg-accent/10 p-4 text-left">
+          <p className="text-xs font-semibold uppercase tracking-widest text-[oklch(0.34_0.08_70)]">
+            Cover activation pending
+          </p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            You can sign in immediately. The AOG desk marks cover active once the aircraft profile
+            has been checked.
+          </p>
+        </div>
+        <div className="bg-card border border-border rounded-xl p-5 text-left space-y-3 text-sm">
+          <p className="font-medium">What happens next</p>
+          <div className="space-y-2">
+            {[
+              {
+                n: 1,
+                text: "A PlaneServe handler will call you within 2 hours to run through your aircraft profile.",
+              },
+              {
+                n: 2,
+                text: "Your handler confirms engine details, AMO contacts, PIC mobile, and delivers your Parts Intelligence briefing.",
+              },
+              {
+                n: 3,
+                text: "Handler marks your aircraft as verified — your dashboard updates to AOG Cover active immediately.",
+              },
+            ].map(({ n, text }) => (
+              <div key={n} className="flex gap-3">
+                <div className="h-5 w-5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                  {n}
                 </div>
-              ))}
-            </div>
+                <p className="text-muted-foreground text-xs leading-5">{text}</p>
+              </div>
+            ))}
           </div>
+        </div>
+        {!isSignedIn && (
           <div className="bg-card border border-border rounded-xl p-5 text-left space-y-2 text-sm">
             <p className="font-medium text-foreground">Set your password to sign in</p>
             <p className="text-muted-foreground text-xs leading-5">
@@ -215,20 +227,146 @@ function EnrolPage() {
               dashboard.
             </p>
           </div>
-          <Link
-            to="/login"
-            className="block w-full rounded-md bg-primary text-primary-foreground text-sm font-medium py-2.5 text-center"
-          >
-            Go to Login
-          </Link>
-        </div>
+        )}
+        <Link
+          to={isSignedIn ? "/dashboard" : "/login"}
+          className="block w-full rounded-md bg-primary text-primary-foreground text-sm font-medium py-2.5 text-center"
+        >
+          {isSignedIn ? "Back to Dashboard" : "Go to Login"}
+        </Link>
+      </div>
+    );
+
+    return isSignedIn ? (
+      <AppShell>{confirmationContent}</AppShell>
+    ) : (
+      <div className="min-h-screen bg-background flex items-center justify-center p-6">
+        {confirmationContent}
       </div>
     );
   }
 
   const steps = ["Usage type", "Your details", "Aircraft", "Contacts", "Review & pay"];
+  const enrolContent = (
+    <div className={isSignedIn ? "max-w-3xl" : "max-w-2xl mx-auto px-6 py-10"}>
+      {isSignedIn && (
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              Subscriber enrolment
+            </p>
+            <h1 className="mt-1 text-2xl font-semibold tracking-tight">Enrol aircraft</h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Add an aircraft to your account, start the subscription, then complete cover
+              verification.
+            </p>
+          </div>
+          <Link
+            to="/dashboard"
+            className="rounded-sm border border-border bg-card px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+          >
+            Back to dashboard
+          </Link>
+        </div>
+      )}
+      {/* Signed-in banner */}
+      {session.data?.user && (
+        <div className="mb-6 flex items-center justify-between rounded-lg border border-primary/20 bg-primary/5 px-5 py-3">
+          <p className="text-sm">
+            Signed in as <span className="font-medium">{session.data.user.email}</span>. Enrolling a
+            new aircraft to your existing account.
+          </p>
+        </div>
+      )}
 
-  return (
+      {/* Step indicator */}
+      <div className="flex items-center gap-1 mb-10">
+        {steps.map((label, i) => (
+          <div key={i} className="flex items-center gap-1 flex-1">
+            <div
+              className={`h-7 w-7 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 ${
+                i + 1 < step
+                  ? "bg-success text-success-foreground"
+                  : i + 1 === step
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground"
+              }`}
+            >
+              {i + 1 < step ? <CheckCircle2 className="h-4 w-4" /> : i + 1}
+            </div>
+            <span
+              className={`text-xs hidden sm:block ${i + 1 === step ? "font-medium text-foreground" : "text-muted-foreground"}`}
+            >
+              {label}
+            </span>
+            {i < steps.length - 1 && <div className="flex-1 h-px bg-border mx-1" />}
+          </div>
+        ))}
+      </div>
+
+      <div className="bg-card border border-border rounded-xl p-8 space-y-6">
+        {step === 1 && <Step1 value={form.usageType} onChange={(v) => set("usageType", v)} />}
+        {step === 2 && (
+          <Step2 form={form} set={set} showCompany={form.usageType !== "Private Owner"} />
+        )}
+        {step === 3 && <Step3 form={form} set={set} />}
+        {step === 4 && <Step4 form={form} set={set} />}
+        {step === 5 && (
+          <Elements stripe={stripePromise}>
+            <Step5
+              form={form}
+              set={set}
+              onComplete={(ref, email) => setConfirmation({ ref, email })}
+            />
+          </Elements>
+        )}
+      </div>
+
+      {stepError && (
+        <p className="mt-3 text-sm text-destructive bg-destructive/8 border border-destructive/20 rounded-lg px-4 py-2.5">
+          {stepError}
+        </p>
+      )}
+
+      <div className="flex justify-between mt-4">
+        {step > 1 ? (
+          <button
+            onClick={() => {
+              setStepError(null);
+              setStep((s) => s - 1);
+            }}
+            className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Back
+          </button>
+        ) : (
+          <div />
+        )}
+        {step < 5 && (
+          <button
+            onClick={() => {
+              const err = validateStep(step, form);
+              if (err) {
+                setStepError(err);
+                return;
+              }
+              setStepError(null);
+              setStep((s) => s + 1);
+            }}
+            className="flex items-center gap-1 px-5 py-2.5 rounded-md bg-primary text-primary-foreground text-sm font-medium"
+          >
+            Continue
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        )}
+      </div>
+    </div>
+  );
+
+  return isSignedIn ? (
+    <AppShell>{enrolContent}</AppShell>
+  ) : (
     <div className="min-h-screen bg-background">
       <div className="border-b border-border bg-card px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -242,107 +380,7 @@ function EnrolPage() {
           </Link>
         </div>
       </div>
-
-      <div className="max-w-2xl mx-auto px-6 py-10">
-        {/* Signed-in banner */}
-        {session.data?.user && (
-          <div className="mb-6 flex items-center justify-between rounded-xl border border-primary/20 bg-primary/5 px-5 py-3">
-            <p className="text-sm">
-              Signed in as <span className="font-medium">{session.data.user.email}</span>. Enrolling
-              a new aircraft to your existing account.
-            </p>
-            <Link
-              to="/dashboard"
-              className="text-xs text-primary font-medium hover:underline shrink-0 ml-4"
-            >
-              Back to dashboard
-            </Link>
-          </div>
-        )}
-
-        {/* Step indicator */}
-        <div className="flex items-center gap-1 mb-10">
-          {steps.map((label, i) => (
-            <div key={i} className="flex items-center gap-1 flex-1">
-              <div
-                className={`h-7 w-7 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 ${
-                  i + 1 < step
-                    ? "bg-success text-success-foreground"
-                    : i + 1 === step
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground"
-                }`}
-              >
-                {i + 1 < step ? <CheckCircle2 className="h-4 w-4" /> : i + 1}
-              </div>
-              <span
-                className={`text-xs hidden sm:block ${i + 1 === step ? "font-medium text-foreground" : "text-muted-foreground"}`}
-              >
-                {label}
-              </span>
-              {i < steps.length - 1 && <div className="flex-1 h-px bg-border mx-1" />}
-            </div>
-          ))}
-        </div>
-
-        <div className="bg-card border border-border rounded-xl p-8 space-y-6">
-          {step === 1 && <Step1 value={form.usageType} onChange={(v) => set("usageType", v)} />}
-          {step === 2 && (
-            <Step2 form={form} set={set} showCompany={form.usageType !== "Private Owner"} />
-          )}
-          {step === 3 && <Step3 form={form} set={set} />}
-          {step === 4 && <Step4 form={form} set={set} />}
-          {step === 5 && (
-            <Elements stripe={stripePromise}>
-              <Step5
-                form={form}
-                set={set}
-                onComplete={(ref, email) => setConfirmation({ ref, email })}
-              />
-            </Elements>
-          )}
-        </div>
-
-        {stepError && (
-          <p className="mt-3 text-sm text-destructive bg-destructive/8 border border-destructive/20 rounded-lg px-4 py-2.5">
-            {stepError}
-          </p>
-        )}
-
-        <div className="flex justify-between mt-4">
-          {step > 1 ? (
-            <button
-              onClick={() => {
-                setStepError(null);
-                setStep((s) => s - 1);
-              }}
-              className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
-            >
-              <ChevronLeft className="h-4 w-4" />
-              Back
-            </button>
-          ) : (
-            <div />
-          )}
-          {step < 5 && (
-            <button
-              onClick={() => {
-                const err = validateStep(step, form);
-                if (err) {
-                  setStepError(err);
-                  return;
-                }
-                setStepError(null);
-                setStep((s) => s + 1);
-              }}
-              className="flex items-center gap-1 px-5 py-2.5 rounded-md bg-primary text-primary-foreground text-sm font-medium"
-            >
-              Continue
-              <ChevronRight className="h-4 w-4" />
-            </button>
-          )}
-        </div>
-      </div>
+      {enrolContent}
     </div>
   );
 }
@@ -469,6 +507,25 @@ function Step3({
       <p className="text-sm text-muted-foreground mb-6">
         Your aircraft profile helps us respond faster when you have an AOG.
       </p>
+      <div className="mb-5 grid gap-3 sm:grid-cols-2">
+        <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-primary">
+            Required to subscribe
+          </p>
+          <p className="mt-1 text-xs leading-5 text-muted-foreground">
+            Registration, category, make/model, year, serial number, base ICAO, and owner/operator.
+          </p>
+        </div>
+        <div className="rounded-lg border border-accent/25 bg-accent/10 p-4">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-[oklch(0.34_0.08_70)]">
+            Required for full cover
+          </p>
+          <p className="mt-1 text-xs leading-5 text-muted-foreground">
+            Engine, maintenance, AMO, PIC, insurance, and airframe hours can be completed after
+            signup.
+          </p>
+        </div>
+      </div>
       <div className="grid grid-cols-2 gap-4">
         <Field label="Make & model" required>
           <input

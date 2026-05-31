@@ -1,6 +1,7 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AppShell } from "@/components/app/AppShell";
+import { StatusPill, statusTone } from "@/components/app/ui";
 import {
   ensureAdminSession,
   getAdminAogWithQuotes,
@@ -984,16 +985,8 @@ function Td({ children }: { children: React.ReactNode }) {
 }
 
 function PriorityBadge({ score }: { score: number }) {
-  const tone =
-    score >= 80
-      ? "border-destructive/30 bg-destructive/10 text-destructive"
-      : score >= 55
-        ? "border-[oklch(0.8_0.12_80)] bg-[oklch(0.96_0.06_85)] text-[oklch(0.38_0.09_70)]"
-        : "border-border bg-muted text-muted-foreground";
   return (
-    <div className={`inline-flex rounded-sm border px-2 py-1 text-xs font-semibold ${tone}`}>
-      {score}/100
-    </div>
+    <StatusPill tone={score >= 80 ? "red" : score >= 55 ? "gold" : "neutral"}>{score}/100</StatusPill>
   );
 }
 
@@ -1016,9 +1009,5 @@ function UrgencyBadge({ urgency }: { urgency: string }) {
 }
 
 function StatusBadge({ status }: { status: string }) {
-  return (
-    <span className="rounded-sm border border-border bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-      {status}
-    </span>
-  );
+  return <StatusPill tone={statusTone(status)}>{status}</StatusPill>;
 }

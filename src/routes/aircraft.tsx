@@ -16,6 +16,7 @@ import { uploadBrowserFile } from "@/lib/file-upload";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
+import { ArrowRight, CheckCircle2, Clock3, FileUp, Plane } from "lucide-react";
 
 export const Route = createFileRoute("/aircraft")({
   validateSearch: z.object({ id: z.string().optional() }),
@@ -71,10 +72,19 @@ function AircraftPage() {
       </div>
 
       {!aircraft.length ? (
-        <div className="mt-8 rounded-md border border-dashed border-border bg-card p-8 text-sm text-muted-foreground">
-          No aircraft enrolled yet.{" "}
-          <Link to="/enrol" className="underline">
-            Enrol your first aircraft.
+        <div className="mt-8 rounded-md border border-dashed border-border bg-card p-10 text-center shadow-sm">
+          <Plane className="mx-auto h-10 w-10 text-muted-foreground" strokeWidth={1.5} />
+          <h2 className="mt-4 text-lg font-semibold tracking-tight">No aircraft enrolled yet</h2>
+          <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
+            Add the first aircraft, activate the Stripe subscription, then complete the cover
+            profile so the AOG desk has the right details before downtime starts.
+          </p>
+          <Link
+            to="/enrol"
+            className="mt-5 inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground"
+          >
+            Enrol aircraft
+            <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       ) : (
@@ -449,10 +459,7 @@ function DocumentsTab({ aircraft }: { aircraft: AircraftRecord }) {
       {docTypes.map((doc) => {
         const uploaded = documents.filter((d) => d.documentType === doc.name);
         return (
-          <div
-            key={doc.name}
-            className="rounded-sm border border-border bg-background px-4 py-3"
-          >
+          <div key={doc.name} className="rounded-sm border border-border bg-background px-4 py-3">
             <div className="flex items-center justify-between gap-4">
               <div>
                 <div className="text-sm font-medium">{doc.name}</div>
@@ -529,25 +536,33 @@ function VerificationTab({ aircraft }: { aircraft: AircraftRecord }) {
 
   const complete = tier2Fields.filter((f) => f.value).length;
   const total = tier2Fields.length;
+  const percent = Math.round((complete / total) * 100);
+  const isVerified = aircraft.verificationStatus === "Verified";
 
   return (
     <div className="space-y-6">
       <div
         className={`rounded-md border p-4 ${
-          aircraft.verificationStatus === "Verified"
-            ? "border-green-200 bg-green-50"
-            : "border-amber-200 bg-amber-50"
+          isVerified ? "border-green-200 bg-green-50" : "border-amber-200 bg-amber-50"
         }`}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-start gap-3">
           <div
-            className={`text-sm font-semibold ${
-              aircraft.verificationStatus === "Verified" ? "text-green-800" : "text-amber-800"
+            className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white ${
+              isVerified ? "text-green-700" : "text-amber-700"
             }`}
           >
-            {aircraft.verificationStatus === "Verified"
-              ? "AOG Cover Active — Aircraft verified by PlaneServe"
-              : "Cover Activation Pending — PlaneServe will verify once details are complete"}
+            {isVerified ? <CheckCircle2 className="h-4 w-4" /> : <Clock3 className="h-4 w-4" />}
+          </div>
+          <div
+            className={`text-sm font-semibold ${isVerified ? "text-green-800" : "text-amber-800"}`}
+          >
+            {isVerified ? "AOG Cover Active" : "Cover Activation Pending"}
+            <p className="mt-1 text-xs font-normal leading-5 text-muted-foreground">
+              {isVerified
+                ? "PlaneServe has verified this aircraft and the AOG desk can support it formally."
+                : "Your subscription is active. Formal AOG cover starts once PlaneServe verifies the aircraft details below."}
+            </p>
           </div>
         </div>
       </div>
@@ -558,13 +573,13 @@ function VerificationTab({ aircraft }: { aircraft: AircraftRecord }) {
             Cover profile completeness
           </div>
           <div className="text-xs font-semibold">
-            {complete}/{total} fields complete
+            {complete}/{total} fields complete · {percent}%
           </div>
         </div>
         <div className="h-2 w-full rounded-full bg-muted">
           <div
             className="h-2 rounded-full bg-accent transition-all"
-            style={{ width: `${Math.round((complete / total) * 100)}%` }}
+            style={{ width: `${percent}%` }}
           />
         </div>
       </div>
@@ -582,6 +597,22 @@ function VerificationTab({ aircraft }: { aircraft: AircraftRecord }) {
           </div>
         ))}
       </div>
+
+      {!isVerified && (
+        <div className="rounded-md border border-border bg-muted/20 p-4">
+          <div className="flex items-start gap-3">
+            <FileUp className="mt-0.5 h-4 w-4 text-muted-foreground" />
+            <div>
+              <div className="text-sm font-semibold">Documents can be added after signup</div>
+              <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                Certificate of Registration and insurance are helpful for verification.
+                Airworthiness, release-to-service, and AMO authorisation documents can be uploaded
+                whenever they are available.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -888,13 +919,14 @@ function CoverBadge({ status }: { status: string }) {
   const isVerified = status === "Verified";
   return (
     <span
-      className={`rounded-sm px-2 py-1 text-[10px] font-semibold uppercase tracking-widest ${
+      className={`inline-flex items-center gap-1.5 rounded-sm px-2 py-1 text-[10px] font-semibold uppercase tracking-widest ${
         isVerified
           ? "bg-[oklch(0.94_0.06_150)] text-[oklch(0.3_0.1_150)]"
           : "bg-[oklch(0.94_0.06_80)] text-[oklch(0.3_0.1_60)]"
       }`}
     >
-      {isVerified ? "Cover active" : "Pending"}
+      {isVerified ? <CheckCircle2 className="h-3 w-3" /> : <Clock3 className="h-3 w-3" />}
+      {isVerified ? "Cover active" : "Cover pending"}
     </span>
   );
 }

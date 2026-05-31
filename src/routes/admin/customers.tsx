@@ -1,6 +1,7 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { AppShell } from "@/components/app/AppShell";
+import { StatusPill } from "@/components/app/ui";
 import { ensureAdminSession, getAdminCustomers, verifyAircraft } from "@/lib/app.functions";
 import { CheckCircle2, Circle, ChevronDown, ChevronUp, Phone } from "lucide-react";
 import { useState } from "react";
@@ -53,10 +54,7 @@ function AdminCustomers() {
             </p>
           </div>
           {pendingAircraft.length > 0 && (
-            <div className="flex items-center gap-2 rounded-full bg-amber-50 border border-amber-200 text-amber-700 px-3 py-1.5 text-xs font-semibold">
-              <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
-              {pendingAircraft.length} pending verification
-            </div>
+            <StatusPill tone="gold">{pendingAircraft.length} pending verification</StatusPill>
           )}
         </div>
 

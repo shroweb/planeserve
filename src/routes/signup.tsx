@@ -11,7 +11,7 @@ export const Route = createFileRoute("/signup")({
   component: Signup,
 });
 
-const roles: Role[] = ["Owner", "Operator", "Management Company", "Maintenance Provider", "Other"];
+const roles: Role[] = ["Owner", "Operator", "Management Company"];
 
 function Signup() {
   const [form, setForm] = useState({
@@ -97,17 +97,26 @@ function Signup() {
             <Field label="Phone">
               <Input value={form.phone} onChange={(phone) => setForm((f) => ({ ...f, phone }))} />
             </Field>
-            <Field label="Role">
-              <select
-                value={form.role}
-                onChange={(e) => setForm((f) => ({ ...f, role: e.target.value as Role }))}
-                className="w-full rounded-sm border border-input bg-background px-3 py-2 text-sm"
-              >
-                {roles.map((role) => (
-                  <option key={role}>{role}</option>
-                ))}
-              </select>
-            </Field>
+            <div>
+              <Field label="Account type">
+                <select
+                  value={form.role}
+                  onChange={(e) => setForm((f) => ({ ...f, role: e.target.value as Role }))}
+                  className="w-full rounded-sm border border-input bg-background px-3 py-2 text-sm"
+                >
+                  {roles.map((role) => (
+                    <option key={role}>{role}</option>
+                  ))}
+                </select>
+              </Field>
+              <p className="mt-1.5 text-[11px] text-muted-foreground">
+                Suppliers and maintenance providers should{" "}
+                <Link to="/suppliers/apply" className="text-foreground underline">
+                  apply to join the network
+                </Link>
+                .
+              </p>
+            </div>
             <Field label="Password">
               <Input
                 type="password"

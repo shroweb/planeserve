@@ -129,7 +129,7 @@ function Dashboard() {
             <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
               Active AOG · Live
             </span>
-            {featured && <StatusPill tone="gold" dot>Updating</StatusPill>}
+            {featured && <StatusPill tone="gold">Updating</StatusPill>}
           </div>
           <div className="p-5">
             {featured ? (
@@ -192,7 +192,7 @@ function Dashboard() {
                       {a.makeModel} · {a.baseAirport || "—"}
                     </div>
                   </div>
-                  <StatusPill tone={op.tone} dot>
+                  <StatusPill tone={op.tone}>
                     {op.label}
                   </StatusPill>
                 </div>
@@ -237,7 +237,7 @@ function CaseTimeline({
           <span className="font-mono text-base font-semibold">
             {request.id.slice(-8).toUpperCase()}
           </span>
-          <StatusPill tone={request.urgency === "Aircraft grounded" ? "red" : "gold"} dot>
+          <StatusPill tone={request.urgency === "Aircraft grounded" ? "red" : "gold"}>
             {request.status}
           </StatusPill>
         </div>

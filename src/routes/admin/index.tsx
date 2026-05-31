@@ -1,7 +1,7 @@
 import { createFileRoute, redirect, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { AppShell } from "@/components/app/AppShell";
-import { StatCard, StatusPill, RoleChip, BarMeter } from "@/components/app/ui";
+import { StatCard, StatusPill, RoleChip, BarMeter, statusTone } from "@/components/app/ui";
 import { ensureAdminSession, getAdminOverview, getStripeAdminData } from "@/lib/app.functions";
 import {
   AlertTriangle,
@@ -25,20 +25,6 @@ export const Route = createFileRoute("/admin/")({
   },
   component: AdminOverview,
 });
-
-const STATUS_TONE: Record<string, "red" | "gold" | "blue" | "green" | "neutral"> = {
-  Submitted: "gold",
-  Acknowledged: "gold",
-  Sourcing: "blue",
-  "Options ready": "blue",
-  "Awaiting approval": "blue",
-  Confirmed: "blue",
-  "Order placed": "blue",
-  "In transit": "blue",
-  Arrived: "green",
-  Resolved: "green",
-  Cancelled: "neutral",
-};
 
 function AdminOverview() {
   const { data } = useQuery({ queryKey: ["admin-overview"], queryFn: () => getAdminOverview() });
@@ -244,7 +230,7 @@ function AdminOverview() {
                         </div>
                       </td>
                       <td className="px-2 py-3">
-                        <StatusPill tone={breached ? "red" : (STATUS_TONE[r.status] ?? "neutral")} dot>
+                        <StatusPill tone={breached ? "red" : statusTone(r.status)}>
                           {breached ? "Breach" : r.status}
                         </StatusPill>
                       </td>

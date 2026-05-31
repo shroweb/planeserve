@@ -49,6 +49,8 @@ function AdminRevenuePage() {
   });
 
   const noStripeData = !data?.totalStripeLinked;
+  const billableInvoices = (data?.invoices ?? []).filter((inv) => inv.status !== "void");
+  const hiddenVoidInvoices = (data?.invoices ?? []).length - billableInvoices.length;
 
   return (
     <AppShell variant="admin">
@@ -58,7 +60,7 @@ function AdminRevenuePage() {
             <h1 className="text-xl font-semibold">Revenue</h1>
             <p className="text-sm text-muted-foreground mt-0.5 flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-              Live from Stripe
+              Active subscription revenue from Stripe
             </p>
           </div>
           {isLoading && <RefreshCw className="h-4 w-4 text-muted-foreground animate-spin" />}
@@ -76,8 +78,8 @@ function AdminRevenuePage() {
 
         {noStripeData && !isLoading && !error && (
           <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
-            No Stripe-linked subscriptions yet. Subscribers enrolled via the payment flow will
-            appear here automatically.
+            No active Stripe subscription revenue yet. Successful subscriber payments will appear
+            here automatically; voided or incomplete test invoices are excluded from revenue.
           </div>
         )}
 
@@ -260,7 +262,14 @@ function AdminRevenuePage() {
 
         {/* Invoices */}
         <div>
-          <p className="text-sm font-semibold mb-3">Recent invoices</p>
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <p className="text-sm font-semibold">Recent billable invoices</p>
+            {hiddenVoidInvoices > 0 && (
+              <p className="text-xs text-muted-foreground">
+                {hiddenVoidInvoices} void/test invoice{hiddenVoidInvoices === 1 ? "" : "s"} hidden
+              </p>
+            )}
+          </div>
           <div className="border border-border rounded-xl overflow-hidden bg-card">
             <table className="w-full text-sm">
               <thead>
@@ -276,7 +285,7 @@ function AdminRevenuePage() {
                 </tr>
               </thead>
               <tbody>
-                {(data?.invoices ?? []).map((inv) => (
+                {billableInvoices.map((inv) => (
                   <tr key={inv.stripeId} className="border-b border-border last:border-0">
                     <td className="px-4 py-2 font-mono text-xs text-muted-foreground">
                       {inv.number ?? inv.stripeId.slice(-8)}
@@ -321,13 +330,13 @@ function AdminRevenuePage() {
                     </td>
                   </tr>
                 ))}
-                {(data?.invoices?.length ?? 0) === 0 && (
+                {billableInvoices.length === 0 && (
                   <tr>
                     <td
                       colSpan={6}
                       className="px-4 py-12 text-center text-sm text-muted-foreground"
                     >
-                      No invoices yet.
+                      No billable Stripe invoices yet.
                     </td>
                   </tr>
                 )}

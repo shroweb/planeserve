@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation } from "@tanstack/react-query";
 import { createSupplierApplication } from "@/lib/app.functions";
+import { PublicLayout } from "@/components/site/PublicLayout";
+import { Eyebrow, H2, Section } from "@/components/site/Section";
 import { useState } from "react";
-import { CheckCircle2, ChevronRight, ChevronLeft, Building2 } from "lucide-react";
+import { CheckCircle2, ChevronRight, ChevronLeft } from "lucide-react";
 
 export const Route = createFileRoute("/suppliers/apply")({
   component: SupplierApplyPage,
@@ -145,125 +147,146 @@ function SupplierApplyPage() {
 
   if (done) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-6">
-        <div className="max-w-md w-full text-center space-y-6">
-          <div className="flex justify-center">
-            <CheckCircle2 className="h-16 w-16 text-success" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-semibold mb-2">Application submitted!</h1>
-            <p className="text-muted-foreground text-sm">
-              Thank you for applying to the PlaneServe supplier network. Our desk reviews all
-              applications within 24 hours. You'll receive an email once a decision has been made.
-            </p>
-          </div>
-          <div className="bg-card border border-border rounded-xl p-5 text-left space-y-3 text-sm">
-            <p className="font-medium">What happens next</p>
-            <div className="space-y-2">
-              {[
-                {
-                  n: 1,
-                  text: "Our team reviews your company details, aircraft speciality, and compliance documents.",
-                },
-                {
-                  n: 2,
-                  text: "If approved, you'll receive an automated email with a link to set your password and access the platform immediately.",
-                },
-                {
-                  n: 3,
-                  text: "If we need anything, we'll contact you directly to request missing items.",
-                },
-              ].map(({ n, text }) => (
-                <div key={n} className="flex gap-3">
-                  <div className="h-5 w-5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
-                    {n}
+      <PublicLayout>
+        <Section className="flex min-h-[70vh] items-center justify-center">
+          <div className="max-w-md text-center space-y-6">
+            <div className="flex justify-center">
+              <CheckCircle2 className="h-16 w-16 text-success" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-semibold mb-2">Application submitted</h1>
+              <p className="text-muted-foreground text-sm">
+                Thank you for applying to the PlaneServe supplier network. Our desk reviews all
+                applications within 24 hours. You'll receive an email once a decision has been made.
+              </p>
+            </div>
+            <div className="bg-card border border-border rounded-xl p-5 text-left space-y-3 text-sm">
+              <p className="font-medium">What happens next</p>
+              <div className="space-y-2">
+                {[
+                  {
+                    n: 1,
+                    text: "Our team reviews your company details, aircraft speciality, and compliance documents.",
+                  },
+                  {
+                    n: 2,
+                    text: "If approved, you'll receive an automated email with a link to set your password and access the platform immediately.",
+                  },
+                  {
+                    n: 3,
+                    text: "If we need anything, we'll contact you directly to request missing items.",
+                  },
+                ].map(({ n, text }) => (
+                  <div key={n} className="flex gap-3">
+                    <div className="h-5 w-5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                      {n}
+                    </div>
+                    <p className="text-muted-foreground text-xs leading-5">{text}</p>
                   </div>
-                  <p className="text-muted-foreground text-xs leading-5">{text}</p>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        </Section>
+      </PublicLayout>
     );
   }
 
   const steps = ["Company", "Speciality", "Compliance", "Contacts", "Account"];
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="border-b border-border bg-card px-6 py-4 flex items-center gap-3">
-        <Building2 className="h-5 w-5 text-primary" />
-        <span className="text-sm font-semibold">PlaneServe Supplier Application</span>
-      </div>
-
-      <div className="max-w-2xl mx-auto px-6 py-10">
-        {/* Step indicator */}
-        <div className="flex items-center gap-1 mb-10">
-          {steps.map((label, i) => (
-            <div key={i} className="flex items-center gap-1 flex-1">
-              <div
-                className={`h-7 w-7 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 ${
-                  i + 1 < step
-                    ? "bg-success text-success-foreground"
-                    : i + 1 === step
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground"
-                }`}
-              >
-                {i + 1 < step ? <CheckCircle2 className="h-4 w-4" /> : i + 1}
-              </div>
-              <span
-                className={`text-xs hidden sm:block ${i + 1 === step ? "font-medium text-foreground" : "text-muted-foreground"}`}
-              >
-                {label}
-              </span>
-              {i < steps.length - 1 && <div className="flex-1 h-px bg-border mx-1" />}
+    <PublicLayout>
+      <Section>
+        <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+          <div>
+            <Eyebrow>Supplier Network</Eyebrow>
+            <H2>Apply to source urgent aircraft parts.</H2>
+            <p className="mt-5 text-sm leading-7 text-muted-foreground">
+              Approved suppliers receive RFQs that match their aircraft coverage, ATA systems,
+              inventory profile, geography, and response capability.
+            </p>
+            <div className="mt-8 space-y-3 rounded-md border border-border bg-card p-5 text-sm">
+              {[
+                "1. Submit company, speciality and compliance details",
+                "2. PlaneServe reviews the application within 24 hours",
+                "3. Approved suppliers receive matched RFQs in the supplier portal",
+              ].map((stepText) => (
+                <div key={stepText} className="border-b border-border pb-3 last:border-0 last:pb-0">
+                  {stepText}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
 
-        <div className="bg-card border border-border rounded-xl p-8 space-y-6">
-          {step === 1 && <Step1 form={form} set={set} />}
-          {step === 2 && <Step2 form={form} set={set} />}
-          {step === 3 && <Step3 form={form} set={set} />}
-          {step === 4 && <Step4 form={form} set={set} />}
-          {step === 5 && (
-            <Step5
-              form={form}
-              set={set}
-              loading={mutation.isPending}
-              error={mutation.error?.message}
-              onSubmit={() => mutation.mutate()}
-            />
-          )}
-        </div>
+          <div className="min-w-0">
+            {/* Step indicator */}
+            <div className="mb-8 flex items-center gap-1">
+              {steps.map((label, i) => (
+                <div key={i} className="flex items-center gap-1 flex-1">
+                  <div
+                    className={`h-7 w-7 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 ${
+                      i + 1 < step
+                        ? "bg-success text-success-foreground"
+                        : i + 1 === step
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted text-muted-foreground"
+                    }`}
+                  >
+                    {i + 1 < step ? <CheckCircle2 className="h-4 w-4" /> : i + 1}
+                  </div>
+                  <span
+                    className={`text-xs hidden sm:block ${i + 1 === step ? "font-medium text-foreground" : "text-muted-foreground"}`}
+                  >
+                    {label}
+                  </span>
+                  {i < steps.length - 1 && <div className="flex-1 h-px bg-border mx-1" />}
+                </div>
+              ))}
+            </div>
 
-        <div className="flex justify-between mt-6">
-          {step > 1 ? (
-            <button
-              onClick={() => setStep((s) => s - 1)}
-              className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
-            >
-              <ChevronLeft className="h-4 w-4" />
-              Back
-            </button>
-          ) : (
-            <div />
-          )}
-          {step < 5 && (
-            <button
-              onClick={() => setStep((s) => s + 1)}
-              disabled={step === 1 && !form.name}
-              className="flex items-center gap-1 px-5 py-2.5 rounded-md bg-primary text-primary-foreground text-sm font-medium disabled:opacity-50"
-            >
-              Continue
-              <ChevronRight className="h-4 w-4" />
-            </button>
-          )}
+            <div className="bg-card border border-border rounded-xl p-8 space-y-6">
+              {step === 1 && <Step1 form={form} set={set} />}
+              {step === 2 && <Step2 form={form} set={set} />}
+              {step === 3 && <Step3 form={form} set={set} />}
+              {step === 4 && <Step4 form={form} set={set} />}
+              {step === 5 && (
+                <Step5
+                  form={form}
+                  set={set}
+                  loading={mutation.isPending}
+                  error={mutation.error?.message}
+                  onSubmit={() => mutation.mutate()}
+                />
+              )}
+            </div>
+
+            <div className="flex justify-between mt-6">
+              {step > 1 ? (
+                <button
+                  onClick={() => setStep((s) => s - 1)}
+                  className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                  Back
+                </button>
+              ) : (
+                <div />
+              )}
+              {step < 5 && (
+                <button
+                  onClick={() => setStep((s) => s + 1)}
+                  disabled={step === 1 && !form.name}
+                  className="flex items-center gap-1 px-5 py-2.5 rounded-md bg-primary text-primary-foreground text-sm font-medium disabled:opacity-50"
+                >
+                  Continue
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </Section>
+    </PublicLayout>
   );
 }
 

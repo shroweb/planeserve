@@ -42,6 +42,7 @@ function ValueSummaryPage() {
 
   const totalCases = stats.resolvedCases + stats.activeCases;
   const hasActivity = totalCases > 0;
+  const hasAircraft = stats.enrolledAircraft > 0;
 
   const fmtUsd = (cents: number) =>
     (cents / 100).toLocaleString("en-US", {
@@ -68,17 +69,35 @@ function ValueSummaryPage() {
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-muted">
               <TrendingDown className="h-6 w-6 text-muted-foreground" strokeWidth={1.5} />
             </div>
-            <p className="mt-4 text-base font-semibold">No value to report yet</p>
-            <p className="mx-auto mt-1.5 max-w-md text-sm text-muted-foreground">
-              As PlaneServe resolves AOG cases for your fleet, the estimated cost avoided and your
-              subscription ROI will appear here — with a per-case breakdown.
-            </p>
-            <Link
-              to="/submit-aog"
-              className="mt-5 inline-flex items-center gap-1.5 rounded-sm bg-accent px-4 py-2 text-sm font-semibold text-[oklch(0.16_0.02_250)] hover:opacity-90"
-            >
-              Submit an AOG request <ArrowRight className="h-4 w-4" />
-            </Link>
+            {hasAircraft ? (
+              <>
+                <p className="mt-4 text-base font-semibold">No value to report yet</p>
+                <p className="mx-auto mt-1.5 max-w-md text-sm text-muted-foreground">
+                  As PlaneServe resolves AOG cases for your fleet, the estimated cost avoided and
+                  your subscription ROI will appear here — with a per-case breakdown.
+                </p>
+                <Link
+                  to="/submit-aog"
+                  className="mt-5 inline-flex items-center gap-1.5 rounded-sm bg-accent px-4 py-2 text-sm font-semibold text-[oklch(0.16_0.02_250)] hover:opacity-90"
+                >
+                  Submit an AOG request <ArrowRight className="h-4 w-4" />
+                </Link>
+              </>
+            ) : (
+              <>
+                <p className="mt-4 text-base font-semibold">Enrol an aircraft first</p>
+                <p className="mx-auto mt-1.5 max-w-md text-sm text-muted-foreground">
+                  Value reporting starts once an aircraft is enrolled and PlaneServe can track AOG
+                  support activity against your fleet.
+                </p>
+                <Link
+                  to="/enrol"
+                  className="mt-5 inline-flex items-center gap-1.5 rounded-sm bg-accent px-4 py-2 text-sm font-semibold text-[oklch(0.16_0.02_250)] hover:opacity-90"
+                >
+                  Enrol aircraft <ArrowRight className="h-4 w-4" />
+                </Link>
+              </>
+            )}
           </div>
         ) : (
           <>
