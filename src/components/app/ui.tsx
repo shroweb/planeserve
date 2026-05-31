@@ -5,13 +5,15 @@ import type { LucideIcon } from "lucide-react";
 
 type Tone = "gold" | "green" | "red" | "blue" | "neutral" | "navy";
 
+// Flat, squared status tags — deliberately not the rounded-pastel-pill look.
+// Tint is kept low; the leading marker is a small square, not a dot.
 const TONES: Record<Tone, string> = {
-  gold: "bg-accent/15 text-[oklch(0.42_0.09_75)] border-accent/30",
-  green: "bg-success/12 text-success border-success/25",
-  red: "bg-destructive/10 text-destructive border-destructive/25",
-  blue: "bg-blue-500/10 text-blue-700 border-blue-500/20",
-  neutral: "bg-muted text-muted-foreground border-border",
-  navy: "bg-primary/10 text-primary border-primary/20",
+  gold: "bg-accent/12 text-[oklch(0.4_0.09_72)]",
+  green: "bg-success/10 text-[oklch(0.42_0.13_160)]",
+  red: "bg-destructive/10 text-destructive",
+  blue: "bg-blue-500/10 text-blue-700",
+  neutral: "bg-foreground/[0.06] text-muted-foreground",
+  navy: "bg-primary/10 text-primary",
 };
 
 export function StatusPill({
@@ -27,9 +29,9 @@ export function StatusPill({
 }) {
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${TONES[tone]} ${className}`}
+      className={`inline-flex items-center gap-1.5 rounded-[3px] px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.06em] ${TONES[tone]} ${className}`}
     >
-      {dot && <span className="h-1.5 w-1.5 rounded-full bg-current" />}
+      {dot && <span className="h-1.5 w-1.5 rounded-[1px] bg-current" />}
       {children}
     </span>
   );
