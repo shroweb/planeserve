@@ -18,11 +18,11 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "PlaneServe — AOG parts support for private and business aircraft" },
+      { title: "PlaneServe — Retained AOG support for older private & business aircraft" },
       {
         name: "description",
         content:
-          "PlaneServe helps aircraft owners and operators source hard-to-find parts quickly when downtime matters.",
+          "PlaneServe is a retained AOG sourcing desk for older private and business aircraft — your aircraft profile and part context on file before downtime, with verified supplier outreach when you go AOG.",
       },
     ],
   }),
@@ -46,15 +46,17 @@ function Home() {
           <div className="max-w-3xl pt-8 md:pt-20">
             <div className="inline-flex items-center gap-2 border border-white/15 bg-white/8 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70 backdrop-blur">
               <RadioTower className="h-3.5 w-3.5 text-accent" />
-              AOG desk for private aviation
+              Retained AOG desk · private &amp; business aviation
             </div>
             <h1 className="mt-7 max-w-4xl text-5xl font-semibold leading-[1.02] tracking-tight md:text-6xl lg:text-7xl">
-              Hard-to-source aircraft parts,{" "}
-              <span className="font-serif italic font-normal text-accent">handled fast.</span>
+              AOG support for{" "}
+              <span className="font-serif italic font-normal text-accent">older</span> private &amp;
+              business aircraft.
             </h1>
             <p className="mt-7 max-w-xl text-base leading-8 text-white/65 md:text-lg">
-              A retained AOG support lane with your aircraft profile, urgency context and contact
-              details already on file — before downtime starts.
+              Hard-to-source parts handled before downtime becomes chaos. Your aircraft profile,
+              urgency context and contacts are on file in advance — so when you go AOG, the desk
+              already knows the aircraft.
             </p>
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
               <Link
@@ -76,9 +78,9 @@ function Home() {
           <div className="mt-16 grid gap-px overflow-hidden border border-white/10 bg-white/8 backdrop-blur md:grid-cols-4">
             {[
               ["24 / 7", "AOG request intake"],
-              ["Global", "Supplier network"],
+              ["Vetted", "Supplier outreach"],
               ["Per aircraft", "Retained subscription"],
-              ["Verified", "Aircraft records on file"],
+              ["On file", "Aircraft context in advance"],
             ].map(([k, v]) => (
               <div key={k} className="bg-[oklch(0.11_0.025_250_/_0.7)] px-6 py-5">
                 <div className="text-base font-semibold tracking-tight text-accent">{k}</div>
@@ -86,6 +88,25 @@ function Home() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── Not a marketplace ─────────────────────────────────────────────── */}
+      <section className="border-b border-border bg-card">
+        <div className="mx-auto max-w-5xl px-6 py-16 text-center">
+          <Eyebrow>Positioning</Eyebrow>
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
+            Not another parts marketplace.{" "}
+            <span className="font-serif italic font-normal text-accent">
+              A retained AOG sourcing desk.
+            </span>
+          </h2>
+          <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-muted-foreground">
+            We don't expect a lean private operator to search endless inventories at 2am. PlaneServe
+            enrols your aircraft in advance, holds the details that matter, and runs verified
+            supplier outreach when you're grounded. The big platforms help you buy parts —
+            PlaneServe helps you handle the AOG.
+          </p>
         </div>
       </section>
 
@@ -146,50 +167,55 @@ function Home() {
 
       {/* ── How It Works ─────────────────────────────────────────────────── */}
       <Section id="how">
-        <div className="text-center max-w-2xl mx-auto">
-          <Eyebrow>How It Works</Eyebrow>
-          <H2>From grounded aircraft to part sourced — in four steps.</H2>
+        <div className="max-w-2xl">
+          <Eyebrow>The AOG lane</Eyebrow>
+          <H2>What the desk does the moment you go AOG.</H2>
+          <p className="mt-4 text-sm leading-7 text-muted-foreground">
+            Your aircraft is already enrolled, so there's no cold start. Submit the request and the
+            sourcing desk runs the lane:
+          </p>
         </div>
-        <div className="mt-16 relative">
-          {/* Connecting line */}
-          <div className="absolute top-8 left-0 right-0 hidden h-px bg-border md:block mx-[10%]" />
-          <div className="grid gap-8 md:grid-cols-4">
-            {[
-              {
-                n: "01",
-                t: "Enrol the aircraft",
-                d: "Registration, type, engine and base details are kept on file and ready.",
-              },
-              {
-                n: "02",
-                t: "Raise the AOG",
-                d: "Submit the grounded aircraft, affected system, part numbers and attachments.",
-              },
-              {
-                n: "03",
-                t: "Supplier sourcing",
-                d: "PlaneServe works the sourcing route while you stay focused on operations.",
-              },
-              {
-                n: "04",
-                t: "Operator updates",
-                d: "Status updates flow back directly to the owner, operator or maintenance lead.",
-              },
-            ].map((s) => (
-              <div
-                key={s.n}
-                className="relative flex flex-col items-start md:items-center text-center"
-              >
-                <div className="relative z-10 flex h-16 w-16 shrink-0 items-center justify-center rounded-full border-2 border-accent bg-background font-mono text-sm font-bold text-accent">
-                  {s.n}
-                </div>
-                <div className="mt-5 text-base font-semibold tracking-tight">{s.t}</div>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">{s.d}</p>
-              </div>
-            ))}
-          </div>
+        <div className="mt-12 grid gap-px overflow-hidden rounded-md border border-border bg-border md:grid-cols-2 lg:grid-cols-3">
+          {[
+            {
+              n: "01",
+              t: "Confirm the situation",
+              d: "Aircraft, location, urgency and people-on-board confirmed against the profile on file.",
+            },
+            {
+              n: "02",
+              t: "Validate the part",
+              d: "Part number checked, alternates and superseded references identified for older types.",
+            },
+            {
+              n: "03",
+              t: "Contact verified suppliers",
+              d: "RFQs go out to vetted suppliers matched to the aircraft type and system.",
+            },
+            {
+              n: "04",
+              t: "Check trace paperwork",
+              d: "8130-3 / EASA Form 1 and traceability confirmed before anything is presented.",
+            },
+            {
+              n: "05",
+              t: "Present serviceable options",
+              d: "Condition, lead time, route and price laid out for your decision — no margin shown.",
+            },
+            {
+              n: "06",
+              t: "Coordinate dispatch",
+              d: "Quote, AWB, freight tracking and status updates flow back to your team.",
+            },
+          ].map((s) => (
+            <div key={s.n} className="bg-card px-6 py-7">
+              <div className="font-mono text-xs font-bold text-accent">{s.n}</div>
+              <div className="mt-3 text-base font-semibold tracking-tight">{s.t}</div>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">{s.d}</p>
+            </div>
+          ))}
         </div>
-        <div className="mt-12 flex justify-center">
+        <div className="mt-10 flex justify-center">
           <Link
             to="/how-it-works"
             className="inline-flex items-center gap-2 text-sm font-medium text-accent hover:underline"
@@ -244,12 +270,12 @@ function Home() {
           <div className="max-w-xl">
             <Eyebrow>Who It Serves</Eyebrow>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
-              For operators who need a parts desk without building one.
+              Built for aircraft that don't have easy support.
             </h2>
             <p className="mt-5 text-sm leading-7 text-white/60">
-              Private aviation teams often run lean. PlaneServe gives them a credible, retained
-              support route when OEM availability, aircraft age, or time pressure makes sourcing
-              difficult.
+              PlaneServe is for older private and business aircraft — where OEM support has thinned,
+              supplier knowledge is fragmented, and the operator may not have a dedicated parts team.
+              It gives a lean team a credible, retained sourcing desk without building one.
             </p>
           </div>
           <div className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
