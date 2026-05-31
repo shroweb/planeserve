@@ -49,7 +49,7 @@ function Home() {
               Retained AOG desk · private &amp; business aviation
             </div>
             <h1 className="mt-7 max-w-4xl text-5xl font-semibold leading-[1.02] tracking-tight md:text-6xl lg:text-7xl">
-              Your retained AOG desk, ready{" "}
+              Your AOG desk, ready{" "}
               <span className="font-serif italic font-normal text-accent">before</span> downtime
               starts.
             </h1>
