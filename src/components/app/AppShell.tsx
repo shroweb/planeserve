@@ -23,12 +23,13 @@ import {
   Database,
   DollarSign,
   Settings2,
+  Settings,
   UsersRound,
   LogOut,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getUnreadCounts, getDashboardData } from "@/lib/app.functions";
+import { getAdminOverview, getUnreadCounts, getDashboardData } from "@/lib/app.functions";
 import { signOutAndRedirect } from "@/lib/sign-out";
 import type { LucideIcon } from "lucide-react";
 
@@ -47,6 +48,7 @@ const memberLinks: { to: string; label: string; icon: LucideIcon; badge?: string
   { to: "/dashboard", label: "Dashboard", icon: Gauge },
   { to: "/aog-cases", label: "AOG Cases", icon: Briefcase },
   { to: "/aircraft", label: "My Aircraft", icon: PlaneTakeoff },
+  { to: "/enrol", label: "Enrol Aircraft", icon: Plane },
   { to: "/notifications", label: "Notifications", icon: Bell },
   { to: "/billing", label: "Billing", icon: CreditCard },
   { to: "/parts-intelligence", label: "Parts Intelligence", icon: BarChart2 },
@@ -58,18 +60,57 @@ const memberLinks: { to: string; label: string; icon: LucideIcon; badge?: string
   { to: "/account", label: "Account", icon: UserCircle },
 ];
 
-const adminLinks: { to: string; label: string; icon: LucideIcon }[] = [
-  { to: "/admin", label: "Overview", icon: LayoutDashboard },
-  { to: "/admin/enrolments", label: "Enrolments", icon: ClipboardList },
-  { to: "/admin/aircraft", label: "Aircraft", icon: Wrench },
-  { to: "/admin/aog", label: "AOG Requests", icon: AlertTriangle },
-  { to: "/admin/customers", label: "Customers", icon: Users },
-  { to: "/admin/comms", label: "Comms", icon: MessageCircle },
-  { to: "/admin/suppliers", label: "Suppliers", icon: Building2 },
-  { to: "/admin/data", label: "Data", icon: Database },
-  { to: "/admin/revenue", label: "Revenue", icon: DollarSign },
-  { to: "/admin/amo", label: "AMO Network", icon: Settings2 },
+type NavItem = { to: string; label: string; icon: LucideIcon };
+
+const adminSections: { title: string; items: NavItem[] }[] = [
+  {
+    title: "Operations",
+    items: [
+      { to: "/admin", label: "Overview", icon: LayoutDashboard },
+      { to: "/admin/aog", label: "AOG queue", icon: AlertTriangle },
+      { to: "/admin/comms", label: "Supplier outreach", icon: MessageCircle },
+      { to: "/admin/enrolments", label: "Enrolments", icon: ClipboardList },
+      { to: "/admin/aircraft", label: "Aircraft", icon: Wrench },
+    ],
+  },
+  {
+    title: "Accounts",
+    items: [
+      { to: "/admin/customers", label: "Customers", icon: Users },
+      { to: "/admin/suppliers", label: "Suppliers", icon: Building2 },
+      { to: "/admin/revenue", label: "Revenue", icon: DollarSign },
+    ],
+  },
+  {
+    title: "Tools",
+    items: [
+      { to: "/admin/data", label: "Data", icon: Database },
+      { to: "/admin/amo", label: "AMO Network", icon: Settings2 },
+    ],
+  },
 ];
+
+const adminLinks: NavItem[] = adminSections.flatMap((s) => s.items);
+
+function NavLinkRow({ item, active, badge }: { item: NavItem; active: boolean; badge: number }) {
+  const Icon = item.icon;
+  return (
+    <Link
+      to={item.to}
+      className={`flex items-center gap-3 rounded-sm px-3 py-2 text-sm transition-colors ${
+        active ? "bg-white/10 text-accent" : "text-white/65 hover:bg-white/5 hover:text-white"
+      }`}
+    >
+      <Icon className="h-4 w-4 shrink-0 opacity-80" strokeWidth={1.5} />
+      <span className="flex-1">{item.label}</span>
+      {badge > 0 && (
+        <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-bold text-background">
+          {badge}
+        </span>
+      )}
+    </Link>
+  );
+}
 
 export function AppShell({ children, variant = "member" }: Props) {
   const session = authClient.useSession();
@@ -77,6 +118,16 @@ export function AppShell({ children, variant = "member" }: Props) {
   const loc = useLocation();
   const queryClient = useQueryClient();
   const links = variant === "admin" ? adminLinks : memberLinks;
+
+  const initials =
+    (user?.name ?? "PS")
+      .split(/\s+/)
+      .map((w) => w[0])
+      .filter(Boolean)
+      .slice(0, 2)
+      .join("")
+      .toUpperCase() || "PS";
+  const shortRole = variant === "admin" ? "admin" : "member";
 
   const { data: unreadCounts } = useQuery<UnreadCounts>({
     queryKey: ["unread-counts"],
@@ -97,8 +148,31 @@ export function AppShell({ children, variant = "member" }: Props) {
     !!dashboard &&
     dashboard.aircraft.some((a) => a.verificationStatus === "Verified") &&
     !dashboard.aircraft.some((a) => a.verificationStatus === "Pending");
+  const coverPending =
+    variant === "member" &&
+    !!dashboard &&
+    dashboard.aircraft.some((a) => a.verificationStatus === "Pending");
+  const hasAircraft = variant === "member" && !!dashboard && dashboard.aircraft.length > 0;
+
+  const { data: adminOverview } = useQuery({
+    queryKey: ["admin-overview-shell"],
+    queryFn: () => getAdminOverview(),
+    enabled: variant === "admin" && !!session.data,
+    staleTime: 30_000,
+  });
+  const adminOpenCases =
+    adminOverview?.requests.filter((r) => r.status !== "Resolved" && r.status !== "Cancelled") ??
+    [];
+  const adminBreaches = adminOpenCases.filter(
+    (r) => Date.now() - new Date(r.createdAt).getTime() > 86_400_000,
+  ).length;
 
   function getBadge(to: string): number {
+    if (variant === "admin") {
+      if (to === "/admin/aog") return adminOpenCases.length;
+      if (to === "/admin/enrolments") return adminOverview?.pendingEnrolments?.length ?? 0;
+      return 0;
+    }
     if (!unreadCounts) return 0;
     if (to === "/notifications") return unreadCounts.notifications ?? 0;
     if (to === "/messages") return unreadCounts.messages ?? 0;
@@ -122,48 +196,127 @@ export function AppShell({ children, variant = "member" }: Props) {
             </div>
           </div>
         </div>
-        <nav className="flex-1 px-3 py-4 overflow-y-auto">
-          {links.map((l) => {
-            const active = loc.pathname === l.to;
-            const isAog = l.label === "Submit AOG";
-            const Icon = l.icon;
-            return (
-              <Link
-                key={l.label}
-                to={l.to}
-                className={`flex items-center gap-3 rounded-sm px-3 py-2 text-sm transition-colors ${
-                  isAog && active
-                    ? "bg-red-600 text-white"
-                    : isAog
-                      ? "bg-red-600/90 text-white hover:bg-red-600"
-                      : active
-                        ? "bg-white/10 text-accent"
-                        : "text-white/65 hover:bg-white/5 hover:text-white"
-                }`}
-              >
-                <Icon className="h-4 w-4 shrink-0 opacity-80" strokeWidth={1.5} />
-                <span className="flex-1">{l.label}</span>
-                {getBadge(l.to) > 0 && (
-                  <span className="h-4 min-w-4 rounded-full bg-accent text-background text-[10px] font-bold flex items-center justify-center px-1">
-                    {getBadge(l.to)}
-                  </span>
-                )}
-              </Link>
-            );
-          })}
-        </nav>
-        <div className="border-t border-white/10 p-4">
-          <div className="text-xs font-medium text-white/80">{user?.name ?? "PlaneServe user"}</div>
-          {coverActive ? (
-            <div className="mt-1 flex items-center gap-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-success" />
-              <span className="text-[11px] font-medium text-success">AOG cover active</span>
+        <div className="border-b border-white/10 px-4 py-4">
+          {variant === "admin" ? (
+            <div className="rounded-md bg-white/5 p-3">
+              <div className="flex items-center justify-between gap-3">
+                <span className="text-[10px] font-semibold uppercase tracking-widest text-white/45">
+                  Desk status
+                </span>
+                <span className="flex items-center gap-1.5 text-[11px] font-semibold text-success">
+                  <span className="h-1.5 w-1.5 rounded-full bg-success" />
+                  Active
+                </span>
+              </div>
+              <div className="mt-2 flex items-center justify-between text-xs text-white/65">
+                <span>
+                  {adminOpenCases.length} open case{adminOpenCases.length === 1 ? "" : "s"}
+                </span>
+                <span className={adminBreaches > 0 ? "font-semibold text-red-300" : ""}>
+                  {adminBreaches} breach{adminBreaches === 1 ? "" : "es"}
+                </span>
+              </div>
             </div>
           ) : (
-            <div className="text-[11px] text-white/40 mt-0.5">
-              AOG Cover · {variant === "member" ? "member" : "admin"}
+            <div className="rounded-md bg-white/5 p-3">
+              <div className="text-[10px] font-semibold uppercase tracking-widest text-white/45">
+                Cover status
+              </div>
+              <div className="mt-2 flex items-center gap-2">
+                <span
+                  className={`h-2 w-2 rounded-full ${
+                    coverActive ? "bg-success" : coverPending ? "bg-accent" : "bg-white/25"
+                  }`}
+                />
+                <span className="text-xs font-semibold text-white/80">
+                  {coverActive
+                    ? "Cover active"
+                    : coverPending
+                      ? "Cover pending"
+                      : hasAircraft
+                        ? "Profile needed"
+                        : "No aircraft"}
+                </span>
+              </div>
             </div>
           )}
+        </div>
+        <nav className="flex-1 px-3 py-4 overflow-y-auto">
+          {variant === "admin"
+            ? adminSections.map((section) => (
+                <div key={section.title} className="mb-4 last:mb-0">
+                  <div className="px-3 pb-1.5 text-[10px] font-semibold uppercase tracking-widest text-white/35">
+                    {section.title}
+                  </div>
+                  {section.items.map((l) => (
+                    <NavLinkRow key={l.label} item={l} active={loc.pathname === l.to} badge={getBadge(l.to)} />
+                  ))}
+                </div>
+              ))
+            : memberLinks.map((l) => {
+                const active = loc.pathname === l.to;
+                const isAog = l.label === "Submit AOG";
+                const Icon = l.icon;
+                return (
+                  <Link
+                    key={l.label}
+                    to={isAog && !hasAircraft ? "/enrol" : l.to}
+                    className={`flex items-center gap-3 rounded-sm px-3 py-2 text-sm transition-colors ${
+                      isAog && !hasAircraft
+                        ? "bg-white/5 text-white/45 hover:bg-white/10 hover:text-white/65"
+                        : isAog && active
+                          ? "bg-red-600 text-white"
+                          : isAog
+                            ? "bg-red-600/90 text-white hover:bg-red-600"
+                            : active
+                              ? "bg-white/10 text-accent"
+                              : "text-white/65 hover:bg-white/5 hover:text-white"
+                    }`}
+                  >
+                    <Icon className="h-4 w-4 shrink-0 opacity-80" strokeWidth={1.5} />
+                    <span className="flex-1">{l.label}</span>
+                    {getBadge(l.to) > 0 && (
+                      <span className="h-4 min-w-4 rounded-full bg-accent text-background text-[10px] font-bold flex items-center justify-center px-1">
+                        {getBadge(l.to)}
+                      </span>
+                    )}
+                    {isAog && !hasAircraft && (
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-white/35">
+                        Enrol first
+                      </span>
+                    )}
+                  </Link>
+                );
+              })}
+        </nav>
+        <div className="border-t border-white/10 p-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent text-sm font-bold text-[oklch(0.16_0.02_250)]">
+              {initials}
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="truncate text-xs font-medium text-white/85">
+                {user?.name ?? "PlaneServe user"}
+              </div>
+              {coverActive ? (
+                <div className="mt-0.5 flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-success" />
+                  <span className="text-[11px] font-medium text-success">Cover active</span>
+                </div>
+              ) : (
+                <div className="text-[11px] text-white/40">
+                  {variant === "member" ? "Member" : "Operations"} · {shortRole}
+                </div>
+              )}
+            </div>
+            <Link
+              to="/account"
+              title="Account settings"
+              className="shrink-0 text-white/40 hover:text-white/75"
+            >
+              <Settings className="h-4 w-4" strokeWidth={1.8} />
+            </Link>
+          </div>
           <button onClick={signOut} className="mt-3 text-xs text-white/40 hover:text-white/70">
             Sign out
           </button>
