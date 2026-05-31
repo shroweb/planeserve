@@ -43,38 +43,40 @@ type UnreadCounts = {
   messages?: number;
 };
 
-const memberSections: { title: string; items: { to: string; label: string; icon: LucideIcon }[] }[] =
-  [
-    {
-      title: "Operations",
-      items: [
-        { to: "/submit-aog", label: "Submit AOG", icon: AlertTriangle },
-        { to: "/dashboard", label: "Dashboard", icon: Gauge },
-        { to: "/aog-cases", label: "AOG Cases", icon: Briefcase },
-        { to: "/aircraft", label: "My Aircraft", icon: PlaneTakeoff },
-        { to: "/enrol", label: "Enrol Aircraft", icon: Plane },
-        { to: "/notifications", label: "Notifications", icon: Bell },
-        { to: "/messages", label: "Messages", icon: MessageSquare },
-      ],
-    },
-    {
-      title: "Intelligence",
-      items: [
-        { to: "/parts-intelligence", label: "Parts Intelligence", icon: BarChart2 },
-        { to: "/fleet-network", label: "Fleet Network", icon: Network },
-        { to: "/aog-risk-index", label: "AOG Risk Index", icon: TrendingUp },
-        { to: "/value-summary", label: "Value Summary", icon: DollarSign },
-      ],
-    },
-    {
-      title: "Account",
-      items: [
-        { to: "/billing", label: "Billing", icon: CreditCard },
-        { to: "/team", label: "Team", icon: UsersRound },
-        { to: "/account", label: "Account", icon: UserCircle },
-      ],
-    },
-  ];
+const memberSections: {
+  title: string;
+  items: { to: string; label: string; icon: LucideIcon }[];
+}[] = [
+  {
+    title: "Operations",
+    items: [
+      { to: "/submit-aog", label: "Submit AOG", icon: AlertTriangle },
+      { to: "/dashboard", label: "Dashboard", icon: Gauge },
+      { to: "/aog-cases", label: "AOG Cases", icon: Briefcase },
+      { to: "/aircraft", label: "My Aircraft", icon: PlaneTakeoff },
+      { to: "/enrol", label: "Enrol Aircraft", icon: Plane },
+      { to: "/notifications", label: "Notifications", icon: Bell },
+      { to: "/messages", label: "Messages", icon: MessageSquare },
+    ],
+  },
+  {
+    title: "Intelligence",
+    items: [
+      { to: "/parts-intelligence", label: "Parts Intelligence", icon: BarChart2 },
+      { to: "/fleet-network", label: "Fleet Network", icon: Network },
+      { to: "/aog-risk-index", label: "AOG Risk Index", icon: TrendingUp },
+      { to: "/value-summary", label: "Value Summary", icon: DollarSign },
+    ],
+  },
+  {
+    title: "Account",
+    items: [
+      { to: "/billing", label: "Billing", icon: CreditCard },
+      { to: "/team", label: "Team", icon: UsersRound },
+      { to: "/account", label: "Account", icon: UserCircle },
+    ],
+  },
+];
 
 const memberLinks = memberSections.flatMap((s) => s.items);
 
@@ -267,7 +269,12 @@ export function AppShell({ children, variant = "member" }: Props) {
                     {section.title}
                   </div>
                   {section.items.map((l) => (
-                    <NavLinkRow key={l.label} item={l} active={loc.pathname === l.to} badge={getBadge(l.to)} />
+                    <NavLinkRow
+                      key={l.label}
+                      item={l}
+                      active={loc.pathname === l.to}
+                      badge={getBadge(l.to)}
+                    />
                   ))}
                 </div>
               ))
@@ -434,7 +441,7 @@ export function AppShell({ children, variant = "member" }: Props) {
         </div>
         <div className="px-4 py-6 md:px-8 md:py-8">{children}</div>
       </div>
-      <ViewAsSwitcher current={variant === "admin" ? "Admin" : "Subscriber"} />
+      {variant !== "admin" && <ViewAsSwitcher current="Subscriber" />}
     </div>
   );
 }

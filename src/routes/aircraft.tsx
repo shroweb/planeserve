@@ -916,6 +916,14 @@ function PartsPassportTab({ aircraft }: { aircraft: AircraftRecord }) {
 }
 
 function CoverBadge({ status }: { status: string }) {
+  if (status === "Declined") {
+    return (
+      <span className="inline-flex items-center gap-1.5 rounded-sm bg-destructive/10 px-2 py-1 text-[10px] font-semibold uppercase tracking-widest text-destructive">
+        <Clock3 className="h-3 w-3" />
+        Cover declined
+      </span>
+    );
+  }
   const isVerified = status === "Verified";
   return (
     <span

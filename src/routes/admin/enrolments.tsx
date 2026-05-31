@@ -2,7 +2,13 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { AppShell } from "@/components/app/AppShell";
 import { StatusPill } from "@/components/app/ui";
-import { ensureAdminSession, getAdminAircraft, verifyAircraft } from "@/lib/app.functions";
+import {
+  ensureAdminSession,
+  getAdminAircraft,
+  verifyAircraft,
+  declineAircraft,
+} from "@/lib/app.functions";
+import { toast } from "sonner";
 import { CheckCircle2, ChevronDown, ChevronUp, Phone, Calendar, Plane } from "lucide-react";
 import { useState } from "react";
 
@@ -219,6 +225,24 @@ function VerificationCard({ aircraft: a, owner }: { aircraft: any; owner: any })
     },
   });
 
+  const declineMutation = useMutation({
+    mutationFn: (reason: string) => declineAircraft({ data: { id: a.id, reason } }),
+    onSuccess: () => {
+      toast.success(`${a.registration} declined — subscription cancelled and payment refunded.`);
+      queryClient.invalidateQueries({ queryKey: ["admin-enrolments"] });
+      queryClient.invalidateQueries({ queryKey: ["admin-customers"] });
+    },
+    onError: () => toast.error("Could not decline this aircraft."),
+  });
+
+  function handleDecline() {
+    const reason = window.prompt(
+      `Decline cover for ${a.registration}?\n\nThis cancels the subscription and refunds the enrolment payment. Enter a reason for the customer (optional):`,
+    );
+    if (reason === null) return; // cancelled
+    declineMutation.mutate(reason.trim());
+  }
+
   const toggle = (item: string) =>
     setChecked((c) => (c.includes(item) ? c.filter((x) => x !== item) : [...c, item]));
 
@@ -337,6 +361,13 @@ function VerificationCard({ aircraft: a, owner }: { aircraft: any; owner: any })
               {verifyMutation.isPending
                 ? "Verifying…"
                 : "Mark aircraft verified — activate AOG cover"}
+            </button>
+            <button
+              onClick={handleDecline}
+              disabled={declineMutation.isPending}
+              className="flex items-center gap-2 rounded-lg border border-destructive px-4 py-2.5 text-sm font-semibold text-destructive hover:bg-destructive/5 disabled:opacity-40"
+            >
+              {declineMutation.isPending ? "Declining…" : "Decline & refund"}
             </button>
             {!allChecked && (
               <p className="text-xs text-muted-foreground">

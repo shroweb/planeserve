@@ -1,7 +1,7 @@
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { AppShell } from "@/components/app/AppShell";
-import { StatCard, StatusPill, RoleChip, BarMeter } from "@/components/app/ui";
+import { StatCard, StatusPill, RoleChip, BarMeter, statusTone } from "@/components/app/ui";
 import { ensureSession, getDashboardData, type AogRecord } from "@/lib/app.functions";
 import { AlertTriangle, ArrowRight, Plane } from "lucide-react";
 
@@ -184,8 +184,8 @@ function Dashboard() {
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <span className="font-mono text-sm font-semibold">{a.registration}</span>
-                      <StatusPill tone={a.verificationStatus === "Verified" ? "green" : "gold"}>
-                        {a.verificationStatus === "Verified" ? "Verified" : "Pending"}
+                      <StatusPill tone={statusTone(a.verificationStatus)}>
+                        {a.verificationStatus}
                       </StatusPill>
                     </div>
                     <div className="mt-0.5 truncate text-xs text-muted-foreground">

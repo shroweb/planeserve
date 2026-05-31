@@ -23,7 +23,11 @@ export const subscriptionStatusEnum = pgEnum("subscription_status", [
   "Pending",
   "Cancelled",
 ]);
-export const verificationStatusEnum = pgEnum("verification_status", ["Pending", "Verified"]);
+export const verificationStatusEnum = pgEnum("verification_status", [
+  "Pending",
+  "Verified",
+  "Declined",
+]);
 export const aircraftCategoryEnum = pgEnum("aircraft_category", [
   "Business Jet",
   "Turboprop",
@@ -90,7 +94,7 @@ export const ataChapterEnum = pgEnum("ata_chapter", [
   "Oil",
   "Starting",
 ]);
-export const invoiceStatusEnum = pgEnum("invoice_status", ["Draft", "Paid", "Void"]);
+export const invoiceStatusEnum = pgEnum("invoice_status", ["Draft", "Paid", "Void", "Refunded"]);
 export const supplierConditionEnum = pgEnum("supplier_condition", [
   "Serviceable",
   "Exchange",
@@ -125,6 +129,7 @@ export const aircraft = pgTable(
     ownerOperatorName: text("owner_operator_name").notNull().default(""),
     baseAirport: text("base_airport").notNull().default(""),
     verificationStatus: verificationStatusEnum("verification_status").notNull().default("Pending"),
+    declineReason: text("decline_reason").notNull().default(""),
 
     // Tier 2 fields (required for full cover)
     engineManufacturer: text("engine_manufacturer").notNull().default(""),

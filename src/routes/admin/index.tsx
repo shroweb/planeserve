@@ -42,8 +42,7 @@ function AdminOverview() {
 
   const openRequests = requests.filter((r) => r.status !== "Resolved" && r.status !== "Cancelled");
   const now = Date.now();
-  // SLA breach: open AOG older than 24h.
-  const slaBreached = openRequests.filter((r) => now - new Date(r.createdAt).getTime() > 86400000);
+  const slaBreached = openRequests.filter((r) => isSlaBreached(r, now));
   const topBreached = slaBreached[0];
 
   const queue = [...openRequests].sort((a, b) => b.priorityScore - a.priorityScore);
@@ -51,7 +50,11 @@ function AdminOverview() {
   const nowDate = new Date();
   const tz = (zone: string) =>
     nowDate.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: zone });
-  const lonHour = Number(nowDate.toLocaleString("en-GB", { hour: "2-digit", hour12: false, timeZone: "Europe/London" }).slice(0, 2));
+  const lonHour = Number(
+    nowDate
+      .toLocaleString("en-GB", { hour: "2-digit", hour12: false, timeZone: "Europe/London" })
+      .slice(0, 2),
+  );
   const shift = lonHour >= 6 && lonHour < 18 ? "Day" : "Night";
 
   function generateReport() {
@@ -114,7 +117,7 @@ function AdminOverview() {
           <AlertTriangle className="h-5 w-5 shrink-0 text-destructive" strokeWidth={1.8} />
           <div className="min-w-0 flex-1">
             <span className="text-sm font-semibold text-destructive">
-              SLA breach — action required.
+              SLA watch — action required.
             </span>{" "}
             <span className="text-sm text-muted-foreground">
               {topBreached.id.slice(-8).toUpperCase()} first-response window exceeded ·{" "}
@@ -126,7 +129,7 @@ function AdminOverview() {
             to="/admin/aog"
             className="inline-flex shrink-0 items-center gap-1.5 rounded-md bg-destructive px-4 py-2 text-sm font-semibold text-white hover:bg-destructive/90"
           >
-            Assign controller
+            Assign handler
           </Link>
         </div>
       )}
@@ -152,7 +155,12 @@ function AdminOverview() {
 
       {/* Stat row */}
       <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-6">
-        <StatCard label="Open AOG" value={String(openRequests.length)} icon={Activity} tone="gold" />
+        <StatCard
+          label="Open AOG"
+          value={String(openRequests.length)}
+          icon={Activity}
+          tone="gold"
+        />
         <StatCard
           label="Avg first response"
           value={metrics?.avgFirstResponseMins != null ? `${metrics.avgFirstResponseMins}m` : "—"}
@@ -204,22 +212,28 @@ function AdminOverview() {
                   <th className="px-2 py-2 text-left font-semibold">Base</th>
                   <th className="px-2 py-2 text-left font-semibold">Priority</th>
                   <th className="px-2 py-2 text-left font-semibold">Status</th>
-                  <th className="px-5 py-2 text-left font-semibold">Controller</th>
+                  <th className="px-5 py-2 text-left font-semibold">Handler</th>
                 </tr>
               </thead>
               <tbody>
                 {queue.slice(0, 8).map((r) => {
-                  const breached = now - new Date(r.createdAt).getTime() > 86400000;
+                  const breached = isSlaBreached(r, now);
                   return (
                     <tr
                       key={r.id}
                       className={`border-b border-border last:border-0 ${breached ? "bg-destructive/5" : ""}`}
                     >
-                      <td className="px-5 py-3 font-mono text-xs">{r.id.slice(-8).toUpperCase()}</td>
-                      <td className="px-2 py-3 font-mono text-xs">{r.registration}</td>
-                      <td className="px-2 py-3">{r.affectedSystem}</td>
-                      <td className="px-2 py-3 font-mono text-xs">{r.location || "—"}</td>
-                      <td className="px-2 py-3">
+                      <td className="px-5 py-2.5 font-mono text-xs">
+                        {r.id.slice(-8).toUpperCase()}
+                      </td>
+                      <td className="px-2 py-2.5 font-mono text-xs">{r.registration}</td>
+                      <td className="max-w-[180px] px-2 py-2.5">
+                        <span className="line-clamp-2">{r.affectedSystem}</span>
+                      </td>
+                      <td className="max-w-[150px] px-2 py-2.5 font-mono text-xs">
+                        <span className="line-clamp-2">{r.location || "—"}</span>
+                      </td>
+                      <td className="px-2 py-2.5">
                         <div className="flex items-center gap-2">
                           <BarMeter
                             value={r.priorityScore}
@@ -229,17 +243,13 @@ function AdminOverview() {
                           <span className="font-semibold">{r.priorityScore}</span>
                         </div>
                       </td>
-                      <td className="px-2 py-3">
+                      <td className="px-2 py-2.5">
                         <StatusPill tone={breached ? "red" : statusTone(r.status)}>
                           {breached ? "Breach" : r.status}
                         </StatusPill>
                       </td>
-                      <td className="px-5 py-3 text-xs">
-                        {r.handlerId ? (
-                          r.handlerId
-                        ) : (
-                          <span className="text-destructive">Unassigned</span>
-                        )}
+                      <td className="px-5 py-2.5 text-xs">
+                        {r.handlerId ? handlerLabel(r.handlerId) : <span>Unassigned</span>}
                       </td>
                     </tr>
                   );
@@ -325,4 +335,17 @@ function AdminOverview() {
       </div>
     </AppShell>
   );
+}
+
+function isSlaBreached(request: { status: string; createdAt: string }, now: number) {
+  return (
+    ["Submitted", "Acknowledged", "Sourcing"].includes(request.status) &&
+    now - new Date(request.createdAt).getTime() > 86_400_000
+  );
+}
+
+function handlerLabel(handlerId: string) {
+  if (!handlerId) return "Unassigned";
+  if (handlerId === "system") return "Desk";
+  return "Admin Desk";
 }

@@ -11,7 +11,7 @@ const roleSchema = z.enum([
   "Other",
 ]);
 const planSchema = z.enum(["monthly", "annual"]);
-const verificationStatusSchema = z.enum(["Pending", "Verified"]);
+const verificationStatusSchema = z.enum(["Pending", "Verified", "Declined"]);
 const aircraftCategorySchema = z.enum([
   "Business Jet",
   "Turboprop",
@@ -103,7 +103,8 @@ export type AircraftRecord = {
   typeOfOperations: string;
   ownerOperatorName: string;
   baseAirport: string;
-  verificationStatus: "Pending" | "Verified";
+  verificationStatus: "Pending" | "Verified" | "Declined";
+  declineReason: string;
   engineManufacturer: string;
   engineType: string;
   engineSeries: string;
@@ -191,7 +192,8 @@ function toAircraftRecord(row: {
   typeOfOperations: string;
   ownerOperatorName: string;
   baseAirport: string;
-  verificationStatus: "Pending" | "Verified";
+  verificationStatus: "Pending" | "Verified" | "Declined";
+  declineReason: string;
   engineManufacturer: string;
   engineType: string;
   engineSeries: string;
@@ -1130,6 +1132,106 @@ export const verifyAircraft = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+// Admin declines cover at verification: mark the aircraft Declined, cancel and
+// refund its subscription (Stripe), and notify/email the owner. Per the agreed
+// model — payment is taken at enrolment and refunded if the aircraft is rejected.
+export const declineAircraft = createServerFn({ method: "POST" })
+  .inputValidator(z.object({ id: z.string().min(1), reason: z.string().default("") }))
+  .handler(async ({ data }) => {
+    await currentAdmin();
+    const { eq, db, schema } = await loadServerAuth();
+
+    const [ac] = await db
+      .select({
+        userId: schema.aircraft.userId,
+        registration: schema.aircraft.registration,
+      })
+      .from(schema.aircraft)
+      .where(eq(schema.aircraft.id, data.id));
+    if (!ac) throw new Error("Aircraft not found.");
+
+    await db
+      .update(schema.aircraft)
+      .set({
+        verificationStatus: "Declined",
+        declineReason: data.reason,
+        subscriptionStatus: "Cancelled",
+        updatedAt: new Date(),
+      })
+      .where(eq(schema.aircraft.id, data.id));
+
+    // Cancel + refund every subscription tied to this aircraft.
+    const subs = await db
+      .select()
+      .from(schema.subscriptions)
+      .where(eq(schema.subscriptions.aircraftId, data.id));
+
+    let refunded = false;
+    for (const sub of subs) {
+      await db
+        .update(schema.subscriptions)
+        .set({ status: "Cancelled", updatedAt: new Date() })
+        .where(eq(schema.subscriptions.id, sub.id));
+      await db
+        .update(schema.invoices)
+        .set({ status: "Refunded" })
+        .where(eq(schema.invoices.subscriptionId, sub.id));
+
+      if (sub.stripeSubscriptionId && process.env.STRIPE_SECRET_KEY) {
+        try {
+          const Stripe = (await import("stripe")).default;
+          const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+          const s = await stripe.subscriptions.retrieve(sub.stripeSubscriptionId, {
+            expand: ["latest_invoice.payment_intent"],
+          });
+          const pi = (
+            s.latest_invoice as unknown as { payment_intent?: { id?: string } } | null
+          )?.payment_intent?.id;
+          if (pi) {
+            await stripe.refunds.create({ payment_intent: pi });
+            refunded = true;
+          }
+          await stripe.subscriptions.cancel(sub.stripeSubscriptionId);
+        } catch (err) {
+          console.error("[declineAircraft] Stripe refund/cancel failed:", err);
+        }
+      }
+    }
+
+    await createNotificationInternal(
+      db,
+      schema,
+      ac.userId,
+      "Billing",
+      "AOG cover not approved",
+      `We were unable to approve cover for ${ac.registration}.${
+        data.reason ? ` Reason: ${data.reason}.` : ""
+      } Your enrolment payment has been refunded.`,
+    );
+
+    const [owner] = await db
+      .select({ email: schema.profiles.email, name: schema.profiles.name })
+      .from(schema.profiles)
+      .where(eq(schema.profiles.userId, ac.userId));
+    if (owner?.email) {
+      const { sendEmail, emailLayout } = await import("@/lib/email.server");
+      await sendEmail(
+        owner.email,
+        `PlaneServe cover for ${ac.registration} could not be approved`,
+        emailLayout(
+          "Cover not approved",
+          `<p>Hi ${owner.name || "there"}, after review we were unable to approve PlaneServe AOG
+           cover for <strong>${ac.registration}</strong>.</p>
+           ${data.reason ? `<p><strong>Reason:</strong> ${data.reason}</p>` : ""}
+           <p>Your enrolment payment has been refunded in full — it can take a few business days to
+           appear. If you think this was in error, reply to this email and we'll take another look.</p>`,
+        ),
+      ).catch(() => {});
+    }
+
+    return { ok: true, refunded };
+  });
+
 export const getAogStatusEvents = createServerFn({ method: "GET" })
   .inputValidator(z.object({ requestId: z.string().min(1) }))
   .handler(async ({ data }) => {
@@ -1460,6 +1562,7 @@ export async function createApiAircraft(data: {
     insurerName: data.insurerName ?? "",
     insurerPolicyRef: data.insurerPolicyRef ?? "",
     totalAirframeHours: data.totalAirframeHours ?? "",
+    declineReason: "",
     avionicsSuite: "",
     commonParts: [],
     alternatePartNumbers: [],
