@@ -1,24 +1,6 @@
 import "dotenv/config";
-import { betterAuth } from "better-auth";
-import { tanstackStartCookies } from "better-auth/tanstack-start";
-import { Pool } from "pg";
 
 const connectionString = process.env.DATABASE_URL;
-
-async function sendEmail(to: string, subject: string, html: string) {
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    // No Resend key — log link so dev/staging still works
-    console.warn(`[PlaneServe] Email to ${to} — ${subject}`);
-    console.warn(`[PlaneServe] Body: ${html}`);
-    return;
-  }
-  const { Resend } = await import("resend");
-  const resend = new Resend(apiKey);
-  const from = process.env.RESEND_FROM ?? "PlaneServe <ops@planeserve.aero>";
-  await resend.emails.send({ from, to, subject, html });
-}
-
 const baseURL = process.env.BETTER_AUTH_URL ?? "http://localhost:8080";
 
 // better-auth rejects state-changing requests (e.g. sign-out) whose Origin
@@ -30,13 +12,44 @@ const trustedOrigins =
     ? [baseURL]
     : [baseURL, "http://localhost:8080", "http://localhost:8083", "http://localhost:3000"];
 
-function createPlaneServeAuth() {
+type AuthLike = {
+  handler: (request: Request) => Promise<Response> | Response;
+  api: Record<string, (...args: any[]) => Promise<any>>;
+};
+
+let authPromise: Promise<AuthLike> | undefined;
+
+async function sendEmail(to: string, subject: string, html: string) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    // No Resend key — log link so dev/staging still works.
+    console.warn(`[PlaneServe] Email to ${to} — ${subject}`);
+    console.warn(`[PlaneServe] Body: ${html}`);
+    return;
+  }
+  const { Resend } = await import("resend");
+  const resend = new Resend(apiKey);
+  const from = process.env.RESEND_FROM ?? "PlaneServe <ops@planeserve.aero>";
+  await resend.emails.send({ from, to, subject, html });
+}
+
+async function createConfiguredAuth(): Promise<AuthLike> {
+  if (!connectionString) {
+    throw new Error("Database not configured");
+  }
+
+  const [{ betterAuth }, { tanstackStartCookies }, { Pool }] = await Promise.all([
+    import("better-auth"),
+    import("better-auth/tanstack-start"),
+    import("pg"),
+  ]);
+
   return betterAuth({
     appName: "PlaneServe",
     baseURL,
     trustedOrigins,
     secret: process.env.BETTER_AUTH_SECRET,
-    database: new Pool({ connectionString: connectionString! }),
+    database: new Pool({ connectionString }),
     emailAndPassword: {
       enabled: true,
       sendResetPassword: async ({
@@ -83,33 +96,46 @@ function createPlaneServeAuth() {
       },
     },
     plugins: [tanstackStartCookies()],
-  });
+  }) as AuthLike;
 }
 
-type PlaneServeAuth = ReturnType<typeof createPlaneServeAuth>;
+function getAuth() {
+  authPromise ??= createConfiguredAuth();
+  return authPromise;
+}
 
-const fallbackAuth = {
-  handler: async () =>
-    new Response(
-      JSON.stringify({
-        error: "database_not_configured",
-        message: "PlaneServe auth requires DATABASE_URL to be configured.",
-      }),
-      {
-        status: 503,
-        headers: { "content-type": "application/json; charset=utf-8" },
-      },
-    ),
+function databaseNotConfiguredResponse() {
+  return new Response(
+    JSON.stringify({
+      error: "database_not_configured",
+      message: "PlaneServe auth requires DATABASE_URL to be configured.",
+    }),
+    {
+      status: 503,
+      headers: { "content-type": "application/json; charset=utf-8" },
+    },
+  );
+}
+
+export const auth = {
+  handler: async (request: Request) => {
+    if (!connectionString) return databaseNotConfiguredResponse();
+    const configuredAuth = await getAuth();
+    return configuredAuth.handler(request);
+  },
   api: new Proxy(
     {},
     {
-      get() {
-        return async () => {
-          throw new Error("Database not configured");
+      get(_target, prop: string) {
+        return async (...args: any[]) => {
+          const configuredAuth = await getAuth();
+          const method = configuredAuth.api[prop];
+          if (typeof method !== "function") {
+            throw new Error(`Unknown auth API method: ${prop}`);
+          }
+          return method(...args);
         };
       },
     },
-  ),
-} as unknown as PlaneServeAuth;
-
-export const auth: PlaneServeAuth = connectionString ? createPlaneServeAuth() : fallbackAuth;
+  ) as AuthLike["api"],
+};
