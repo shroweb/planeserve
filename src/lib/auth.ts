@@ -5,10 +5,6 @@ import { Pool } from "pg";
 
 const connectionString = process.env.DATABASE_URL;
 
-if (!connectionString) {
-  throw new Error("DATABASE_URL is required");
-}
-
 async function sendEmail(to: string, subject: string, html: string) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
@@ -34,26 +30,27 @@ const trustedOrigins =
     ? [baseURL]
     : [baseURL, "http://localhost:8080", "http://localhost:8083", "http://localhost:3000"];
 
-export const auth = betterAuth({
-  appName: "PlaneServe",
-  baseURL,
-  trustedOrigins,
-  secret: process.env.BETTER_AUTH_SECRET,
-  database: new Pool({ connectionString }),
-  emailAndPassword: {
-    enabled: true,
-    sendResetPassword: async ({
-      user,
-      url,
-    }: {
-      user: { name?: string; email: string };
-      url: string;
-    }) => {
-      const name = user.name ?? "there";
-      await sendEmail(
-        user.email,
-        "Reset your PlaneServe password",
-        `
+function createPlaneServeAuth() {
+  return betterAuth({
+    appName: "PlaneServe",
+    baseURL,
+    trustedOrigins,
+    secret: process.env.BETTER_AUTH_SECRET,
+    database: new Pool({ connectionString: connectionString! }),
+    emailAndPassword: {
+      enabled: true,
+      sendResetPassword: async ({
+        user,
+        url,
+      }: {
+        user: { name?: string; email: string };
+        url: string;
+      }) => {
+        const name = user.name ?? "there";
+        await sendEmail(
+          user.email,
+          "Reset your PlaneServe password",
+          `
           <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:32px 24px">
             <img src="https://planeserve.aero/logo.png" alt="PlaneServe" style="height:32px;margin-bottom:24px" />
             <h2 style="font-size:20px;font-weight:600;margin:0 0 12px">Reset your password</h2>
@@ -72,18 +69,47 @@ export const auth = betterAuth({
             <p style="color:#bbb;font-size:11px">PlaneServe AOG Support · ops@planeserve.aero</p>
           </div>
         `,
-      );
-    },
-  },
-  user: {
-    additionalFields: {
-      isAdmin: {
-        type: "boolean",
-        required: false,
-        defaultValue: false,
-        input: false,
+        );
       },
     },
-  },
-  plugins: [tanstackStartCookies()],
-});
+    user: {
+      additionalFields: {
+        isAdmin: {
+          type: "boolean",
+          required: false,
+          defaultValue: false,
+          input: false,
+        },
+      },
+    },
+    plugins: [tanstackStartCookies()],
+  });
+}
+
+type PlaneServeAuth = ReturnType<typeof createPlaneServeAuth>;
+
+const fallbackAuth = {
+  handler: async () =>
+    new Response(
+      JSON.stringify({
+        error: "database_not_configured",
+        message: "PlaneServe auth requires DATABASE_URL to be configured.",
+      }),
+      {
+        status: 503,
+        headers: { "content-type": "application/json; charset=utf-8" },
+      },
+    ),
+  api: new Proxy(
+    {},
+    {
+      get() {
+        return async () => {
+          throw new Error("Database not configured");
+        };
+      },
+    },
+  ),
+} as unknown as PlaneServeAuth;
+
+export const auth: PlaneServeAuth = connectionString ? createPlaneServeAuth() : fallbackAuth;

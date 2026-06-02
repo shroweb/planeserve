@@ -1,28 +1,31 @@
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Menu, Plane } from "lucide-react";
-import { authClient } from "@/lib/auth-client";
-import { signOutAndRedirect } from "@/lib/sign-out";
+import { Menu, X } from "lucide-react";
+import { AircraftIcon } from "@/components/app/PlaneServeIcons";
 
 const publicLinks = [
   { to: "/", label: "Home" },
+  { to: "/about", label: "About" },
   { to: "/how-it-works", label: "How It Works" },
   { to: "/services", label: "Services" },
   { to: "/pricing", label: "Pricing" },
+  { to: "/contact", label: "Contact" },
 ];
 
 export function SiteNav() {
-  const session = authClient.useSession();
-  const signedIn = !!session.data?.user;
-  async function signOut() {
-    await signOutAndRedirect("/");
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  function close() {
+    setMobileOpen(false);
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/70 bg-background/90 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 bg-background/90 backdrop-blur-xl relative">
+      <div className="absolute bottom-0 inset-x-0 h-[3px] bg-gradient-to-r from-transparent via-accent to-transparent" />
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3.5">
-        <Link to="/" className="flex items-center gap-2">
+        <Link to="/" onClick={close} className="flex items-center gap-2">
           <span className="flex h-9 w-9 items-center justify-center rounded-sm bg-primary text-primary-foreground">
-            <Plane className="h-4 w-4 text-accent" strokeWidth={1.5} />
+            <AircraftIcon className="h-4 w-4 text-accent" strokeWidth={1.5} />
           </span>
           <span className="text-base font-semibold tracking-tight text-foreground">PlaneServe</span>
         </Link>
@@ -41,49 +44,40 @@ export function SiteNav() {
         </nav>
 
         <div className="hidden items-center gap-3 lg:flex">
-          {signedIn ? (
-            <>
-              <Link
-                to="/dashboard"
-                className="rounded-sm bg-accent px-4 py-2.5 text-[13px] font-semibold text-[oklch(0.16_0.02_250)]"
-              >
-                Dashboard
-              </Link>
-              <button
-                onClick={signOut}
-                className="text-[13px] font-medium text-muted-foreground hover:text-foreground"
-              >
-                Sign out
-              </button>
-            </>
-          ) : (
-            <>
-              <Link
-                to="/login"
-                className="text-[13px] font-medium text-muted-foreground hover:text-foreground"
-              >
-                Sign in
-              </Link>
-              <Link
-                to="/enrol"
-                className="rounded-sm bg-primary px-4 py-2.5 text-[13px] font-semibold text-primary-foreground"
-              >
-                Enrol Aircraft
-              </Link>
-            </>
-          )}
+          <Link
+            to="/login"
+            className="text-[13px] font-medium text-muted-foreground hover:text-foreground"
+          >
+            Sign in
+          </Link>
+          <Link
+            to="/enrol"
+            className="rounded-sm bg-accent px-4 py-2.5 text-[13px] font-semibold text-[oklch(0.16_0.02_250)]"
+          >
+            Enrol Aircraft
+          </Link>
         </div>
 
-        {/* Mobile menu */}
-        <details className="relative lg:hidden">
-          <summary className="flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-sm border border-border text-foreground marker:hidden [&::-webkit-details-marker]:hidden">
-            <Menu className="h-4 w-4" />
-          </summary>
-          <div className="absolute right-0 top-12 z-50 w-64 rounded-md border border-border bg-card p-2 shadow-xl">
+        {/* Mobile menu button */}
+        <button
+          type="button"
+          onClick={() => setMobileOpen((o) => !o)}
+          className="flex h-10 w-10 items-center justify-center rounded-sm border border-border text-foreground lg:hidden"
+          aria-label="Toggle menu"
+        >
+          {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+        </button>
+      </div>
+
+      {/* Mobile drawer */}
+      {mobileOpen && (
+        <div className="absolute inset-x-0 top-full z-50 border-t border-border bg-card shadow-xl lg:hidden">
+          <div className="p-3">
             {publicLinks.map((l) => (
               <Link
                 key={l.to}
                 to={l.to}
+                onClick={close}
                 className="block rounded-sm px-3 py-2.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
                 activeProps={{ className: "text-foreground bg-muted" }}
               >
@@ -91,41 +85,24 @@ export function SiteNav() {
               </Link>
             ))}
             <div className="mt-2 border-t border-border pt-2">
-              {signedIn ? (
-                <>
-                  <Link
-                    to="/dashboard"
-                    className="block rounded-sm px-3 py-2.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
-                  >
-                    Dashboard
-                  </Link>
-                  <button
-                    onClick={signOut}
-                    className="block w-full rounded-sm px-3 py-2.5 text-left text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
-                  >
-                    Sign out
-                  </button>
-                </>
-              ) : (
-                <>
-                  <Link
-                    to="/login"
-                    className="block rounded-sm px-3 py-2.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
-                  >
-                    Sign in
-                  </Link>
-                  <Link
-                    to="/enrol"
-                    className="block rounded-sm px-3 py-2.5 text-sm font-medium text-accent hover:bg-muted"
-                  >
-                    Enrol Aircraft
-                  </Link>
-                </>
-              )}
+              <Link
+                to="/login"
+                onClick={close}
+                className="block rounded-sm px-3 py-2.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
+              >
+                Sign in
+              </Link>
+              <Link
+                to="/enrol"
+                onClick={close}
+                className="block rounded-sm px-3 py-2.5 text-sm font-medium text-accent hover:bg-muted"
+              >
+                Enrol Aircraft
+              </Link>
             </div>
           </div>
-        </details>
-      </div>
+        </div>
+      )}
     </header>
   );
 }

@@ -1,37 +1,16 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { ViewAsSwitcher } from "./ViewAsSwitcher";
+import { Menu } from "lucide-react";
 import {
-  Menu,
-  Plane,
-  LayoutDashboard,
-  PlaneTakeoff,
-  AlertTriangle,
-  Users,
-  ClipboardList,
-  Gauge,
-  Wrench,
-  CreditCard,
-  UserCircle,
-  Bell,
-  MessageSquare,
-  Briefcase,
-  BarChart2,
-  Network,
-  TrendingUp,
-  MessageCircle,
-  Building2,
-  Database,
-  DollarSign,
-  Settings2,
-  Settings,
-  UsersRound,
-  LogOut,
-} from "lucide-react";
+  AogIcon, DashboardIcon, TakeoffIcon, AircraftIcon, BellIcon, MessageIcon,
+  PartIcon, NetworkIcon, RevenueIcon, BillingIcon, TeamIcon, MemberIcon,
+  SupplierIcon, InventoryIcon, SettingsIcon, TechLogIcon, GaugeIcon,
+  LogoutIcon, RouteIcon, TraceIcon,
+} from "@/components/app/PlaneServeIcons";
 import { authClient } from "@/lib/auth-client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAdminOverview, getUnreadCounts, getDashboardData } from "@/lib/app.functions";
 import { signOutAndRedirect } from "@/lib/sign-out";
-import type { LucideIcon } from "lucide-react";
 
 interface Props {
   children: React.ReactNode;
@@ -43,69 +22,67 @@ type UnreadCounts = {
   messages?: number;
 };
 
-const memberSections: {
-  title: string;
-  items: { to: string; label: string; icon: LucideIcon }[];
-}[] = [
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type NavItem = { to: string; label: string; icon: React.ComponentType<any> };
+
+const memberSections: { title: string; items: NavItem[] }[] = [
   {
     title: "Operations",
     items: [
-      { to: "/submit-aog", label: "Submit AOG", icon: AlertTriangle },
-      { to: "/dashboard", label: "Dashboard", icon: Gauge },
-      { to: "/aog-cases", label: "AOG Cases", icon: Briefcase },
-      { to: "/aircraft", label: "My Aircraft", icon: PlaneTakeoff },
-      { to: "/enrol", label: "Enrol Aircraft", icon: Plane },
-      { to: "/notifications", label: "Notifications", icon: Bell },
-      { to: "/messages", label: "Messages", icon: MessageSquare },
+      { to: "/submit-aog", label: "Submit AOG", icon: AogIcon },
+      { to: "/dashboard", label: "Dashboard", icon: DashboardIcon },
+      { to: "/aog-cases", label: "AOG Cases", icon: TraceIcon },
+      { to: "/aircraft", label: "My Aircraft", icon: TakeoffIcon },
+      { to: "/enrol", label: "Enrol Aircraft", icon: AircraftIcon },
+      { to: "/notifications", label: "Notifications", icon: BellIcon },
+      { to: "/messages", label: "Messages", icon: MessageIcon },
     ],
   },
   {
     title: "Intelligence",
     items: [
-      { to: "/parts-intelligence", label: "Parts Intelligence", icon: BarChart2 },
-      { to: "/fleet-network", label: "Fleet Network", icon: Network },
-      { to: "/aog-risk-index", label: "AOG Risk Index", icon: TrendingUp },
-      { to: "/value-summary", label: "Value Summary", icon: DollarSign },
+      { to: "/parts-intelligence", label: "Parts Intelligence", icon: PartIcon },
+      { to: "/fleet-network", label: "Fleet Network", icon: NetworkIcon },
+      { to: "/aog-risk-index", label: "AOG Risk Index", icon: GaugeIcon },
+      { to: "/value-summary", label: "Value Summary", icon: RevenueIcon },
     ],
   },
   {
     title: "Account",
     items: [
-      { to: "/billing", label: "Billing", icon: CreditCard },
-      { to: "/team", label: "Team", icon: UsersRound },
-      { to: "/account", label: "Account", icon: UserCircle },
+      { to: "/billing", label: "Billing", icon: BillingIcon },
+      { to: "/team", label: "Team", icon: TeamIcon },
+      { to: "/account", label: "Account", icon: MemberIcon },
     ],
   },
 ];
 
 const memberLinks = memberSections.flatMap((s) => s.items);
 
-type NavItem = { to: string; label: string; icon: LucideIcon };
-
 const adminSections: { title: string; items: NavItem[] }[] = [
   {
     title: "Operations",
     items: [
-      { to: "/admin", label: "Overview", icon: LayoutDashboard },
-      { to: "/admin/aog", label: "AOG queue", icon: AlertTriangle },
-      { to: "/admin/comms", label: "Supplier outreach", icon: MessageCircle },
-      { to: "/admin/enrolments", label: "Enrolments", icon: ClipboardList },
-      { to: "/admin/aircraft", label: "Aircraft", icon: Wrench },
+      { to: "/admin", label: "Overview", icon: DashboardIcon },
+      { to: "/admin/aog", label: "AOG queue", icon: AogIcon },
+      { to: "/admin/comms", label: "Supplier outreach", icon: MessageIcon },
+      { to: "/admin/enrolments", label: "Enrolments", icon: TechLogIcon },
+      { to: "/admin/aircraft", label: "Aircraft", icon: AircraftIcon },
     ],
   },
   {
     title: "Accounts",
     items: [
-      { to: "/admin/customers", label: "Customers", icon: Users },
-      { to: "/admin/suppliers", label: "Suppliers", icon: Building2 },
-      { to: "/admin/revenue", label: "Revenue", icon: DollarSign },
+      { to: "/admin/customers", label: "Customers", icon: TeamIcon },
+      { to: "/admin/suppliers", label: "Suppliers", icon: SupplierIcon },
+      { to: "/admin/revenue", label: "Revenue", icon: RevenueIcon },
     ],
   },
   {
     title: "Tools",
     items: [
-      { to: "/admin/data", label: "Data", icon: Database },
-      { to: "/admin/amo", label: "AMO Network", icon: Settings2 },
+      { to: "/admin/data", label: "Data", icon: InventoryIcon },
+      { to: "/admin/amo", label: "AMO Network", icon: NetworkIcon },
     ],
   },
 ];
@@ -208,7 +185,7 @@ export function AppShell({ children, variant = "member" }: Props) {
     <div className="flex min-h-screen bg-[oklch(0.97_0.005_240)] text-foreground">
       <aside className="hidden w-64 shrink-0 flex-col bg-[oklch(0.14_0.02_250)] text-white md:flex">
         <div className="flex items-center gap-2 px-6 py-5 border-b border-white/10">
-          <Plane className="h-5 w-5 text-accent" strokeWidth={1.5} />
+          <AircraftIcon className="h-5 w-5 text-accent" />
           <div>
             <div className="text-sm font-semibold tracking-tight">PlaneServe</div>
             <div className="text-[10px] uppercase tracking-widest text-white/50">
@@ -232,9 +209,14 @@ export function AppShell({ children, variant = "member" }: Props) {
                 <span>
                   {adminOpenCases.length} open case{adminOpenCases.length === 1 ? "" : "s"}
                 </span>
-                <span className={adminBreaches > 0 ? "font-semibold text-red-300" : ""}>
-                  {adminBreaches} breach{adminBreaches === 1 ? "" : "es"}
-                </span>
+                {adminBreaches > 0 ? (
+                  <span className="flex items-center gap-1 font-bold text-red-400">
+                    <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
+                    {adminBreaches} breach{adminBreaches === 1 ? "" : "es"}
+                  </span>
+                ) : (
+                  <span className="text-white/35">no breaches</span>
+                )}
               </div>
             </div>
           ) : (
@@ -346,7 +328,7 @@ export function AppShell({ children, variant = "member" }: Props) {
               title="Account settings"
               className="shrink-0 text-white/40 hover:text-white/75"
             >
-              <Settings className="h-4 w-4" strokeWidth={1.8} />
+              <SettingsIcon className="h-4 w-4" />
             </Link>
           </div>
           <button onClick={signOut} className="mt-3 text-xs text-white/40 hover:text-white/70">
@@ -395,7 +377,7 @@ export function AppShell({ children, variant = "member" }: Props) {
                 onClick={signOut}
                 className="flex items-center gap-1.5 rounded-sm border border-border px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-muted/70 hover:text-foreground"
               >
-                <LogOut className="h-3.5 w-3.5" strokeWidth={1.8} />
+                <LogoutIcon className="h-3.5 w-3.5" />
                 Sign out
               </button>
               <details className="relative md:hidden">

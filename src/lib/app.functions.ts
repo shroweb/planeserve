@@ -908,16 +908,23 @@ export const getAdminOverview = createServerFn({ method: "GET" }).handler(async 
 
   // Pending enrolments: operators with at least one unverified aircraft.
   const profileByUser = new Map(profileRows.map((p) => [p.userId, p]));
-  const pendingByUser = new Map<string, number>();
+  const pendingByUser = new Map<string, { count: number; oldestAt: Date }>();
   for (const a of aircraftRows) {
-    if (a.verificationStatus === "Pending")
-      pendingByUser.set(a.userId, (pendingByUser.get(a.userId) ?? 0) + 1);
+    if (a.verificationStatus === "Pending") {
+      const prev = pendingByUser.get(a.userId);
+      const at = new Date(a.createdAt);
+      pendingByUser.set(a.userId, {
+        count: (prev?.count ?? 0) + 1,
+        oldestAt: prev && prev.oldestAt < at ? prev.oldestAt : at,
+      });
+    }
   }
-  const pendingEnrolments = [...pendingByUser.entries()].map(([userId, tails]) => ({
+  const pendingEnrolments = [...pendingByUser.entries()].map(([userId, { count, oldestAt }]) => ({
     userId,
     company: profileByUser.get(userId)?.company || profileByUser.get(userId)?.name || "Operator",
     name: profileByUser.get(userId)?.name ?? "",
-    tails,
+    tails: count,
+    oldestPendingAt: oldestAt.toISOString(),
   }));
 
   return {
@@ -949,9 +956,15 @@ export const getAdminCustomers = createServerFn({ method: "GET" }).handler(async
   await currentAdmin();
   const { desc, db, schema } = await loadServerAuth();
 
-  const [profileRows, aircraftRows] = await Promise.all([
+  const [profileRows, aircraftRows, requestRows] = await Promise.all([
     db.select().from(schema.profiles).orderBy(desc(schema.profiles.createdAt)),
     db.select().from(schema.aircraft).orderBy(desc(schema.aircraft.createdAt)),
+    db.select({
+      id: schema.aogRequests.id,
+      registration: schema.aogRequests.registration,
+      status: schema.aogRequests.status,
+      createdAt: schema.aogRequests.createdAt,
+    }).from(schema.aogRequests).orderBy(desc(schema.aogRequests.createdAt)),
   ]);
 
   return {
@@ -968,6 +981,12 @@ export const getAdminCustomers = createServerFn({ method: "GET" }).handler(async
         createdAt: p.createdAt.toISOString(),
       })),
     aircraft: aircraftRows.map(toAircraftRecord),
+    requests: requestRows.map((r) => ({
+      id: r.id,
+      registration: r.registration,
+      status: r.status,
+      createdAt: r.createdAt.toISOString(),
+    })),
   };
 });
 

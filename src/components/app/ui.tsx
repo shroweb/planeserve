@@ -1,4 +1,5 @@
-import type { LucideIcon } from "lucide-react";
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnyIcon = React.ComponentType<any>;
 
 // Shared dashboard UI primitives matching the operations-console design.
 // (No custom fonts — uses the app's existing type scale + semantic tokens.)
@@ -87,7 +88,7 @@ export function StatCard({
 }: {
   label: string;
   value: string;
-  icon?: LucideIcon;
+  icon?: AnyIcon;
   tone?: "default" | "gold" | "green" | "red" | "blue";
   hint?: string;
 }) {

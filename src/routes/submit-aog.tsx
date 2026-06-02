@@ -49,9 +49,9 @@ const AMO_OPTIONS = [
 
 const POB_OPTIONS = [
   "No passengers — ferry or positioning",
-  "Passengers on board",
-  "Charter passengers stranded",
-  "Medical / urgent mission",
+  "Passengers waiting to depart",
+  "Passengers stranded — accommodation needed",
+  "Crew only",
 ];
 
 const FLYING_OPTIONS = [

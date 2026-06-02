@@ -26,12 +26,14 @@ import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as FleetNetworkRouteImport } from './routes/fleet-network'
 import { Route as EnrolRouteImport } from './routes/enrol'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BrandGuidelinesRouteImport } from './routes/brand-guidelines'
 import { Route as BillingRouteImport } from './routes/billing'
 import { Route as AogRiskIndexRouteImport } from './routes/aog-risk-index'
 import { Route as AogCasesRouteImport } from './routes/aog-cases'
 import { Route as AircraftRouteImport } from './routes/aircraft'
 import { Route as AccountRouteImport } from './routes/account'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SupplierIndexRouteImport } from './routes/supplier/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
@@ -140,6 +142,11 @@ const DashboardRoute = DashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BrandGuidelinesRoute = BrandGuidelinesRouteImport.update({
   id: '/brand-guidelines',
   path: '/brand-guidelines',
@@ -168,6 +175,11 @@ const AircraftRoute = AircraftRouteImport.update({
 const AccountRoute = AccountRouteImport.update({
   id: '/account',
   path: '/account',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -283,12 +295,14 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/account': typeof AccountRoute
   '/aircraft': typeof AircraftRoute
   '/aog-cases': typeof AogCasesRoute
   '/aog-risk-index': typeof AogRiskIndexRoute
   '/billing': typeof BillingRoute
   '/brand-guidelines': typeof BrandGuidelinesRoute
+  '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/enrol': typeof EnrolRoute
   '/fleet-network': typeof FleetNetworkRoute
@@ -330,12 +344,14 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/account': typeof AccountRoute
   '/aircraft': typeof AircraftRoute
   '/aog-cases': typeof AogCasesRoute
   '/aog-risk-index': typeof AogRiskIndexRoute
   '/billing': typeof BillingRoute
   '/brand-guidelines': typeof BrandGuidelinesRoute
+  '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/enrol': typeof EnrolRoute
   '/fleet-network': typeof FleetNetworkRoute
@@ -378,12 +394,14 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/account': typeof AccountRoute
   '/aircraft': typeof AircraftRoute
   '/aog-cases': typeof AogCasesRoute
   '/aog-risk-index': typeof AogRiskIndexRoute
   '/billing': typeof BillingRoute
   '/brand-guidelines': typeof BrandGuidelinesRoute
+  '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/enrol': typeof EnrolRoute
   '/fleet-network': typeof FleetNetworkRoute
@@ -427,12 +445,14 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/account'
     | '/aircraft'
     | '/aog-cases'
     | '/aog-risk-index'
     | '/billing'
     | '/brand-guidelines'
+    | '/contact'
     | '/dashboard'
     | '/enrol'
     | '/fleet-network'
@@ -474,12 +494,14 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/account'
     | '/aircraft'
     | '/aog-cases'
     | '/aog-risk-index'
     | '/billing'
     | '/brand-guidelines'
+    | '/contact'
     | '/dashboard'
     | '/enrol'
     | '/fleet-network'
@@ -521,12 +543,14 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/account'
     | '/aircraft'
     | '/aog-cases'
     | '/aog-risk-index'
     | '/billing'
     | '/brand-guidelines'
+    | '/contact'
     | '/dashboard'
     | '/enrol'
     | '/fleet-network'
@@ -569,12 +593,14 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   AccountRoute: typeof AccountRoute
   AircraftRoute: typeof AircraftRoute
   AogCasesRoute: typeof AogCasesRoute
   AogRiskIndexRoute: typeof AogRiskIndexRoute
   BillingRoute: typeof BillingRoute
   BrandGuidelinesRoute: typeof BrandGuidelinesRoute
+  ContactRoute: typeof ContactRoute
   DashboardRoute: typeof DashboardRoute
   EnrolRoute: typeof EnrolRoute
   FleetNetworkRoute: typeof FleetNetworkRoute
@@ -736,6 +762,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/brand-guidelines': {
       id: '/brand-guidelines'
       path: '/brand-guidelines'
@@ -776,6 +809,13 @@ declare module '@tanstack/react-router' {
       path: '/account'
       fullPath: '/account'
       preLoaderRoute: typeof AccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -937,12 +977,14 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   AccountRoute: AccountRoute,
   AircraftRoute: AircraftRoute,
   AogCasesRoute: AogCasesRoute,
   AogRiskIndexRoute: AogRiskIndexRoute,
   BillingRoute: BillingRoute,
   BrandGuidelinesRoute: BrandGuidelinesRoute,
+  ContactRoute: ContactRoute,
   DashboardRoute: DashboardRoute,
   EnrolRoute: EnrolRoute,
   FleetNetworkRoute: FleetNetworkRoute,

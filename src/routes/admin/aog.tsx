@@ -354,8 +354,9 @@ function CaseDetailPanel({
     netPrice: "",
     currency: "USD",
     marginPct: 8,
-    leadTime: "",
-    paperwork: "",
+    leadTime: "In stock — immediate",
+    paperwork: "EASA Form 1",
+    coreCharge: "No core charge",
     freightRoute: "",
     notes: "",
   });
@@ -388,8 +389,9 @@ function CaseDetailPanel({
       netPrice: "",
       currency: "USD",
       marginPct: 8,
-      leadTime: "",
-      paperwork: "",
+      leadTime: "In stock — immediate",
+      paperwork: "EASA Form 1",
+      coreCharge: "No core charge",
       freightRoute: "",
       notes: "",
     });
@@ -817,20 +819,37 @@ function CaseDetailPanel({
                 </div>
               </QField>
               <QField label="Lead time">
-                <input
+                <select
                   value={quoteForm.leadTime}
                   onChange={(e) => updateQuote("leadTime", e.target.value)}
-                  placeholder="e.g. 48h, 3–5 days"
                   className="w-full rounded-sm border border-input bg-card px-3 py-2 text-sm"
-                />
+                >
+                  {["In stock — immediate", "In stock — 24h to prepare", "Can source — 48–72h", "Can source — 1 week"].map((o) => (
+                    <option key={o}>{o}</option>
+                  ))}
+                </select>
               </QField>
               <QField label="Paperwork / certs">
-                <input
+                <select
                   value={quoteForm.paperwork}
                   onChange={(e) => updateQuote("paperwork", e.target.value)}
-                  placeholder="e.g. 8130-3, EASA Form 1"
                   className="w-full rounded-sm border border-input bg-card px-3 py-2 text-sm"
-                />
+                >
+                  {["EASA Form 1", "FAA Form 8130-3", "Both EASA & FAA", "TCCA Form 1", "No documentation"].map((o) => (
+                    <option key={o}>{o}</option>
+                  ))}
+                </select>
+              </QField>
+              <QField label="Core charge">
+                <select
+                  value={quoteForm.coreCharge}
+                  onChange={(e) => updateQuote("coreCharge", e.target.value)}
+                  className="w-full rounded-sm border border-input bg-card px-3 py-2 text-sm"
+                >
+                  {["No core charge", "Yes — confirm amount separately"].map((o) => (
+                    <option key={o}>{o}</option>
+                  ))}
+                </select>
               </QField>
               <QField label="Freight route">
                 <input
