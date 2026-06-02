@@ -29,7 +29,7 @@ function Pricing() {
             <span className="text-accent">No surprises.</span>
           </h1>
           <p className="mx-auto mt-8 max-w-xl text-base leading-8 text-white/70 md:text-lg">
-            One subscription per aircraft covers the full AOG support lane. 
+            One subscription per aircraft covers the full AOG parts desk.
             We don't charge per request, and we never mark up parts.
           </p>
         </div>
@@ -181,7 +181,7 @@ function Pricing() {
             Enrol before the AOG, not during it.
           </h2>
           <p className="mt-6 mx-auto max-w-xl text-base text-white/60">
-            It takes less than five minutes to activate your support lane and secure your aircraft's technical readiness.
+            It takes less than five minutes to put your aircraft on file and activate AOG cover.
           </p>
           <div className="mt-10">
             <Link

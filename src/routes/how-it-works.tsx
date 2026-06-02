@@ -34,11 +34,11 @@ function HowItWorks() {
           <Eyebrow>The Process</Eyebrow>
           <h1 className="mt-6 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl lg:text-6xl">
             A direct route to AOG support,{" "}
-            <span className="text-accent">built on readiness.</span>
+            <span className="text-accent">active before the call.</span>
           </h1>
           <p className="mt-8 max-w-2xl text-base leading-8 text-white/70 md:text-lg">
-            PlaneServe is not a marketplace you log into during a crisis. It's a retained support
-            lane where your aircraft profile, urgency context and contacts are already in place 
+            PlaneServe is not a marketplace you log into during a crisis. It's a retained AOG desk
+            where your aircraft record, AMO contacts, and trace requirements are already on file
             long before the first call comes in.
           </p>
         </div>
@@ -65,7 +65,7 @@ function HowItWorks() {
               <ul className="mt-10 space-y-4">
                 {[
                   { t: "Aircraft Enrolment", d: "Tail, serial, and type details held on file." },
-                  { t: "Context Capture", d: "Engine specs, base airport, and typical routes documented." },
+                  { t: "Aircraft Record", d: "Engine serials, base ICAO, and part number history on file." },
                   { t: "Contact Registry", d: "Direct lines to your AMO, operator, and insurer verified." },
                 ].map((item) => (
                   <li key={item.t} className="flex gap-4">
@@ -196,7 +196,7 @@ function HowItWorks() {
                   </div>
                   <div>
                     <div className="font-semibold text-sm uppercase tracking-wider text-accent mb-1">Approval</div>
-                    <p className="text-sm text-muted-foreground">One-click approval from your dashboard or mobile device.</p>
+                    <p className="text-sm text-muted-foreground">Approve the preferred option from the dashboard or directly with the desk.</p>
                   </div>
                 </div>
                 <div className="flex gap-4">
@@ -205,7 +205,7 @@ function HowItWorks() {
                   </div>
                   <div>
                     <div className="font-semibold text-sm uppercase tracking-wider text-accent mb-1">Tracking</div>
-                    <p className="text-sm text-muted-foreground">Full visibility of freight routes, AWBs, and estimated arrival times.</p>
+                    <p className="text-sm text-muted-foreground">AWB tracked — freight route, carrier, and estimated arrival updated as it moves.</p>
                   </div>
                 </div>
               </div>
@@ -244,7 +244,7 @@ function HowItWorks() {
       <section className="bg-[oklch(0.13_0.025_250)] text-white">
         <div className="mx-auto max-w-7xl px-6 py-24 text-center">
           <h2 className="text-3xl font-semibold tracking-tight md:text-4xl lg:text-5xl">
-            Activate your support lane.
+            Enrol your aircraft.
           </h2>
           <p className="mt-6 mx-auto max-w-xl text-base text-white/60">
             It takes less than five minutes to add an aircraft and activate your retained support desk.

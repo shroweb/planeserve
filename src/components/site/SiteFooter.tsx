@@ -16,7 +16,7 @@ export function SiteFooter() {
               A retained AOG parts support route for private and business aircraft operators.
             </p>
             <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-accent/70">
-              Keeping you flying, anywhere, anytime.
+              AOG parts support for enrolled aircraft.
             </p>
             <div className="mt-4 text-xs font-medium text-success">
               Desk active · 24/7 controller cover

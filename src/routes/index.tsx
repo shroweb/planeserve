@@ -40,7 +40,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Do you guarantee a part will be available?",
-    a: "No. We guarantee the search. For older platforms, availability is a supplier-side constraint we can't control. What we control is the speed and breadth of the outreach, and the quality of what we present back to you.",
+    a: "No. We guarantee the search, not the stock. For older platforms, availability depends on the supplier market — that's outside our control. What we control is the speed and breadth of the outreach, and the quality of what we present back to you.",
   },
   {
     q: "What paperwork do you handle?",
@@ -78,7 +78,7 @@ function Home() {
         <div className="relative mx-auto flex min-h-[90vh] max-w-7xl flex-col justify-center px-6 py-12 md:py-20">
           <div className="w-fit inline-flex items-center gap-2 border border-white/15 bg-white/8 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70 backdrop-blur">
             <BroadcastIcon className="h-3.5 w-3.5 text-accent" />
-            Keeping you flying, anywhere, anytime
+            AOG parts support, ready before you need it
           </div>
           <h1 className="mt-7 text-[clamp(2.5rem,3.5vw,5rem)] font-bold leading-[1.05] tracking-[-0.03em] [text-wrap:balance]">
             AOG parts support for aircraft that <span className="text-accent">cannot wait.</span>
@@ -156,7 +156,7 @@ function Home() {
           <p className="mx-auto mt-8 max-w-2xl text-base leading-8 text-muted-foreground md:text-lg">
             When an enrolled aircraft goes technical, your aircraft details, support contacts and
             key part context are already on file. Our desk can move straight into sourcing, supplier
-            outreach and option verification instead of starting from zero.
+            outreach and option verification instead of rebuilding the aircraft profile from scratch.
           </p>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-muted-foreground md:text-lg">
             The service grew from years of owners and operators asking James Moon for help finding
@@ -211,17 +211,17 @@ function Home() {
               <div className="absolute -top-4 left-8 rounded-sm bg-accent px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-[oklch(0.16_0.02_250)]">
                 The PlaneServe Way
               </div>
-              <h3 className="text-2xl font-semibold">Context-aware support.</h3>
+              <h3 className="text-2xl font-semibold">The desk already knows the aircraft.</h3>
               <p className="mt-4 text-base leading-7 text-muted-foreground">
-                Your aircraft profile, contacts and support context are already held on file. When
-                the call comes in, we don't ask questions — we start sourcing.
+                Registration, engine serials, base ICAO, AMO contacts — all held on file before
+                anything goes wrong. We don't waste the first hour rebuilding the aircraft profile.
               </p>
 
               <ul className="mt-8 space-y-4">
                 {[
-                  "Aircraft configuration known in advance",
-                  "Verified supplier lanes already identified",
-                  "Trace documentation requirements pre-set",
+                  "Aircraft configuration on file before the AOG",
+                  "Vetted suppliers matched to this aircraft type",
+                  "Trace and paperwork requirements pre-noted",
                   "Direct line to the sourcing desk",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3 text-sm">
@@ -250,12 +250,12 @@ function Home() {
               <Eyebrow>What Actually Happens</Eyebrow>
               <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl leading-tight">
                 From grounded to moving,{" "}
-                <span className="text-accent">without starting from zero.</span>
+                <span className="text-accent">without the cold-start delay.</span>
               </h2>
               <p className="mt-6 text-base leading-8 text-muted-foreground">
                 Because your aircraft details are already on file, the desk skips the discovery
                 phase entirely. No intake forms at 2am. No back-and-forth on serial numbers.
-                Immediate supplier outreach using context that was captured at enrolment.
+                Immediate supplier outreach using the aircraft record captured at enrolment.
               </p>
 
               <div className="mt-10 space-y-5 border-l-2 border-accent/30 pl-6">

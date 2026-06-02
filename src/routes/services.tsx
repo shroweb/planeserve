@@ -18,7 +18,7 @@ export const Route = createFileRoute("/services")({
       { title: "Services — Full-spectrum AOG support for business aircraft" },
       {
         name: "description",
-        content: "Explore the PlaneServe support ecosystem — from aircraft enrolment and context storage to global sourcing and dispatch coordination.",
+        content: "PlaneServe AOG parts support — aircraft enrolment, supplier sourcing, trace verification, and dispatch coordination for enrolled business aircraft.",
       },
     ],
   }),
@@ -31,7 +31,7 @@ function ServicesPage() {
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <section className="bg-[oklch(0.13_0.025_250)] text-white">
         <div className="mx-auto max-w-7xl px-6 py-24">
-          <Eyebrow>The Ecosystem</Eyebrow>
+          <Eyebrow>What's Included</Eyebrow>
           <h1 className="mt-6 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl lg:text-6xl">
             Everything included in your{" "}
             <span className="text-accent">
@@ -39,8 +39,7 @@ function ServicesPage() {
             </span>
           </h1>
           <p className="mt-8 max-w-2xl text-base leading-8 text-white/70 md:text-lg">
-            One per-aircraft subscription covers the full AOG support lane. We don't just find parts; 
-            we manage the entire context of your aircraft's technical readiness.
+            One per-aircraft subscription covers the full AOG parts desk. We source parts, verify paperwork, and coordinate freight — all for enrolled aircraft, with no per-case fees.
           </p>
         </div>
       </section>
@@ -53,11 +52,10 @@ function ServicesPage() {
               <Eyebrow>Pillar 01</Eyebrow>
               <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl leading-tight">
                 Pre-AOG Readiness & <br />
-                <span className="text-accent ">Context Management.</span>
+                <span className="text-accent ">Aircraft Records.</span>
               </h2>
               <p className="mt-6 text-base leading-8 text-muted-foreground">
-                Before your aircraft ever goes technical, PlaneServe builds a digital twin of its technical 
-                requirements. This isn't just a database; it's the foundation of rapid support.
+                Before your aircraft goes technical, PlaneServe captures the aircraft record — registration, engine serials, base ICAO, AMO contacts, and insurer details — so the desk can move immediately when the call comes in.
               </p>
               
               <div className="mt-10 grid gap-8 sm:grid-cols-2">
@@ -90,12 +88,12 @@ function ServicesPage() {
                     <div className="h-full w-[85%] bg-accent" />
                   </div>
                   <div className="flex justify-between text-xs text-white/60">
-                    <span>Aircraft Context Captured</span>
+                    <span>Aircraft Record Complete</span>
                     <span className="text-accent font-bold">85% Complete</span>
                   </div>
                 </div>
                 <div className="mt-8 space-y-4">
-                  {["Engines Verified", "Base Context Stored", "AMO Linked", "Insurance Verified"].map((item) => (
+                  {["Engines Verified", "Base ICAO Recorded", "AMO Linked", "Insurance Verified"].map((item) => (
                     <div key={item} className="flex items-center gap-3 text-xs text-white/80">
                       <ClearedIcon className="h-3.5 w-3.5 text-accent" />
                       {item}
@@ -115,7 +113,7 @@ function ServicesPage() {
             <Eyebrow>Pillar 02</Eyebrow>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl leading-tight">
               The AOG Support Desk & <br />
-              <span className="text-accent ">Global Sourcing Lane.</span>
+              <span className="text-accent ">Global Supplier Network.</span>
             </h2>
             <p className="mt-6 text-base leading-8 text-muted-foreground">
               When the aircraft goes down, the desk activates. We move straight into sourcing across 
@@ -128,7 +126,7 @@ function ServicesPage() {
               {
                 t: "24/7 Intake",
                 Icon: SlaIcon,
-                d: "Submit requests any time. Our desk acknowledges and starts the lane immediately.",
+                d: "Submit requests any time. Our desk acknowledges and starts sourcing immediately.",
               },
               {
                 t: "Global Sourcing",
@@ -217,7 +215,7 @@ function ServicesPage() {
           <div className="text-center max-w-2xl mx-auto mb-16">
             <Eyebrow>How It Works</Eyebrow>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl">
-              From grounded to moving — the full lane.
+              From grounded to moving — how it works.
             </h2>
           </div>
           <div className="relative">
@@ -338,7 +336,7 @@ function ServicesPage() {
               </ul>
               <div className="mt-8 rounded-sm border border-border bg-muted/30 p-4 text-xs leading-6 text-muted-foreground">
                 <strong className="text-foreground">On availability:</strong> For older platforms, parts
-                availability is a supplier-side constraint we can't control. What we control is the
+                availability depends on the supplier market — that's outside our control. What we control is the
                 speed and breadth of the outreach, and the quality of what we present back to you.
               </div>
             </div>
@@ -350,7 +348,7 @@ function ServicesPage() {
       <section className="bg-[oklch(0.13_0.025_250)] text-white">
         <div className="mx-auto max-w-7xl px-6 py-24 text-center">
           <h2 className="text-3xl font-semibold tracking-tight md:text-4xl lg:text-5xl">
-            Activate your AOG support lane.
+            Enrol your aircraft.
           </h2>
           <p className="mt-6 mx-auto max-w-xl text-base text-white/60">
             Enrol your aircraft and complete the profile — PlaneServe is then ready before you need it.

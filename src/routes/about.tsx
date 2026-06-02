@@ -226,7 +226,7 @@ function AboutPage() {
                   "Sourcing experience across turboprops, light jets, mid-size, and large-cabin platforms",
                   "Vetted supplier network: Part 145 MROs, specialist distributors, and OEM-adjacent stockists",
                   "8130-3 and EASA Form 1 verification on every option",
-                  "AMO and freight coordination included — one desk, full lane",
+                  "AMO and freight coordination included — everything through the same desk",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3 text-sm text-white/80">
                     <ClearedIcon className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
