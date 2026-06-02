@@ -78,7 +78,7 @@ function Home() {
         <div className="relative mx-auto flex min-h-[90vh] max-w-7xl flex-col justify-center px-6 py-12 md:py-20">
           <div className="w-fit inline-flex items-center gap-2 border border-white/15 bg-white/8 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70 backdrop-blur">
             <BroadcastIcon className="h-3.5 w-3.5 text-accent" />
-            AOG parts support, ready before you need it
+            Keeping you flying, anywhere, anytime
           </div>
           <h1 className="mt-7 text-[clamp(2.5rem,3.5vw,5rem)] font-bold leading-[1.05] tracking-[-0.03em] [text-wrap:balance]">
             AOG parts support for aircraft that <span className="text-accent">cannot wait.</span>
@@ -488,7 +488,7 @@ function Home() {
             <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-accent">
               Get on the route
             </div>
-            <h2 className="mt-5 text-4xl font-bold tracking-tight leading-[1.1] md:text-5xl">
+            <h2 className="mt-5 text-4xl font-bold tracking-tight leading-[1.1] md:text-5xl lg:text-[1.65rem] xl:text-[2rem] lg:whitespace-nowrap">
               Enrol before the AOG, <span className="text-accent">not during it.</span>
             </h2>
             <p className="mt-6 text-base leading-7 text-white/60">
