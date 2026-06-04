@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import jetEngineDetail from "@/assets/jet-engine-detail-sunset.jpeg";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
 import {
@@ -105,6 +106,16 @@ function ServicesPage() {
           </div>
         </div>
       </section>
+
+      {/* ── Image strip ──────────────────────────────────────────────────── */}
+      <div className="relative h-[280px] overflow-hidden">
+        <img
+          src={jetEngineDetail}
+          alt="Business jet engine detail at sunset"
+          className="absolute inset-0 h-full w-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-[#041c2c]/40" />
+      </div>
 
       {/* ── Service Pillar: The Desk ──────────────────────────────────────── */}
       <section className="bg-card border-b border-border">

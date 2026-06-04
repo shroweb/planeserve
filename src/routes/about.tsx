@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
+import jamesPortrait from "@/assets/james-moon-portrait.jpeg";
+import twinTurboprop from "@/assets/twin-turboprop-tarmac.jpeg";
 import {
   ArrowRightIcon,
   ClearedIcon,
@@ -29,7 +31,7 @@ function AboutPage() {
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <section className="relative min-h-[55vh] overflow-hidden bg-[#041c2c] text-white flex items-end">
         <img
-          src="/src/assets/WhatsApp Image 2026-06-03 at 17.09.57.jpeg"
+          src={jamesPortrait}
           alt="James Moon, Founder of PlaneServe"
           className="absolute inset-0 h-full w-full object-cover object-center"
         />
@@ -78,54 +80,17 @@ function AboutPage() {
               </p>
             </div>
 
-            <div className="rounded-sm border border-border bg-card p-8 shadow-sm">
-              <div className="text-[10px] font-bold uppercase tracking-widest text-accent mb-6">
-                The problem we solve
-              </div>
-              <div className="space-y-5">
-                {[
-                  {
-                    label: "The legacy problem",
-                    items: [
-                      "Parts fall out of primary distribution",
-                      "Supplier knowledge sits in private networks",
-                      "Owners lose time working out who to call",
-                      "AOG cases start with uncertainty",
-                    ],
-                    tone: "text-destructive",
-                    bg: "bg-destructive/5 border-destructive/20",
-                  },
-                  {
-                    label: "The PlaneServe answer",
-                    items: [
-                      "Aircraft context held before downtime starts",
-                      "Specialist sourcing route already in place",
-                      "AOG desk ready to move when the request lands",
-                      "Owners backed by aviation relationships, not guesswork",
-                    ],
-                    tone: "text-accent",
-                    bg: "bg-accent/5 border-accent/20",
-                  },
-                ].map((col) => (
-                  <div key={col.label} className={`rounded-sm border p-5 ${col.bg}`}>
-                    <div
-                      className={`text-xs font-semibold uppercase tracking-wider mb-3 ${col.tone}`}
-                    >
-                      {col.label}
-                    </div>
-                    <ul className="space-y-2">
-                      {col.items.map((item) => (
-                        <li
-                          key={item}
-                          className="flex items-start gap-2 text-xs text-muted-foreground"
-                        >
-                          <span className={`mt-0.5 text-sm leading-none ${col.tone}`}>·</span>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
+            <div className="rounded-sm overflow-hidden border border-border shadow-sm relative min-h-[400px]">
+              <img
+                src={twinTurboprop}
+                alt="Twin turboprop aircraft on the tarmac"
+                className="absolute inset-0 h-full w-full object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#041c2c]/80 via-transparent to-transparent" />
+              <div className="absolute bottom-0 left-0 p-6">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-accent">
+                  Older aircraft. Thinner catalogues. Deep supplier knowledge.
+                </p>
               </div>
             </div>
           </div>

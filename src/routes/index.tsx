@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
 import heroImage from "@/assets/planeserve-hangar-hero.jpg";
+import citationDusk from "@/assets/citation-dusk-ramp.jpeg";
 import {
   ArrowRightIcon,
   BroadcastIcon,
@@ -475,9 +476,8 @@ function Home() {
           {/* Left: image */}
           <div className="relative min-h-[320px] lg:min-h-[500px]">
             <img
-              src="https://images.unsplash.com/photo-1724525231934-e89df6b36148?w=1600&auto=format&fit=crop&q=80"
-              alt=""
-              aria-hidden
+              src={citationDusk}
+              alt="Business jet on the ramp at dusk"
               className="absolute inset-0 h-full w-full object-cover object-center"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-[#041c2c]/20 via-transparent to-[#041c2c]" />

@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import challengerHangar from "@/assets/challenger-mro-hangar.jpeg";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
 import {
@@ -154,22 +155,12 @@ function HowItWorks() {
         <div className="mx-auto max-w-7xl px-6 py-24">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1 relative">
-              <div className="aspect-square bg-[#041c2c] rounded-sm overflow-hidden flex items-center justify-center p-12">
-                <div className="w-full space-y-4">
-                  <div className="bg-white/5 border border-white/10 p-4 rounded-sm">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-[10px] font-bold text-accent uppercase">Option A</span>
-                      <span className="text-[10px] text-white/40">Sourcing Desk</span>
-                    </div>
-                    <div className="text-sm font-semibold text-white">Serviceable · 8130-3 · Lead: 24h</div>
-                  </div>
-                  <div className="bg-white/5 border border-white/10 p-4 rounded-sm opacity-50">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-[10px] font-bold text-white/40 uppercase">Option B</span>
-                    </div>
-                    <div className="text-sm font-semibold text-white/40">New · Form 1 · Lead: 5 Days</div>
-                  </div>
-                </div>
+              <div className="aspect-square rounded-sm overflow-hidden">
+                <img
+                  src={challengerHangar}
+                  alt="Challenger aircraft in MRO hangar"
+                  className="h-full w-full object-cover object-center"
+                />
               </div>
               <div className="absolute -bottom-6 -right-6 bg-accent p-6 rounded-sm shadow-xl hidden md:block">
                 <SlaIcon className="h-8 w-8 text-white" />
