@@ -27,8 +27,15 @@ function AboutPage() {
   return (
     <PublicLayout>
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="bg-[oklch(0.13_0.025_250)] text-white">
-        <div className="mx-auto max-w-7xl px-6 py-24">
+      <section className="relative min-h-[55vh] overflow-hidden bg-[#041c2c] text-white flex items-end">
+        <img
+          src="/src/assets/WhatsApp Image 2026-06-03 at 17.09.57.jpeg"
+          alt="James Moon, Founder of PlaneServe"
+          className="absolute inset-0 h-full w-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#041c2c] via-[#041c2c]/80 to-[#041c2c]/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#041c2c] via-transparent to-transparent" />
+        <div className="relative mx-auto w-full max-w-7xl px-6 py-20">
           <Eyebrow>About PlaneServe</Eyebrow>
           <h1 className="mt-6 max-w-3xl text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl lg:text-6xl">
             Founded by an aviation entrepreneur.{" "}
@@ -126,41 +133,24 @@ function AboutPage() {
       </section>
 
       {/* ── Founder message ───────────────────────────────────────────────── */}
-      <section className="bg-card border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 py-24">
-          <div className="grid gap-16 lg:grid-cols-[1fr_2fr] lg:items-start">
-            <div>
-              <Eyebrow>From the Founder</Eyebrow>
-              <div className="mt-6 flex items-center gap-4">
-                <img
-                  src="https://aviationweek.com/sites/default/files/2023-01/moon_jet_group_james_moon_source_moon_jet_group.jpeg"
-                  alt="James Moon"
-                  className="h-28 w-28 rounded-sm object-cover object-top"
-                />
-                <div>
-                  <div className="font-semibold">James Moon</div>
-                  <div className="text-sm text-muted-foreground">Founder, PlaneServe</div>
-                </div>
-              </div>
-            </div>
-
-            <blockquote className="relative">
-              <div className="absolute -top-4 -left-2 text-6xl text-accent/20 font-serif leading-none select-none">
-                "
-              </div>
-              <p className="relative text-xl leading-9 font-medium text-foreground/90 md:text-2xl md:leading-10">
-                The same conversation kept finding me. An owner would call, sometimes a
-                long-standing contact, sometimes a referral, and the need was always the same: I
-                can't find this part, and I don't know where else to look. I kept helping because I
-                could. Eventually it became obvious that this wasn't a favour. It was a service the
-                market genuinely needed, and nobody was providing it properly. PlaneServe is the
-                answer to every one of those calls.
-              </p>
-              <footer className="mt-8 text-sm text-muted-foreground">
-                — James Moon · Founder, PlaneServe
-              </footer>
-            </blockquote>
-          </div>
+      <section className="bg-[#041c2c] text-white border-b border-white/10">
+        <div className="mx-auto max-w-5xl px-6 py-24 text-center">
+          <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-accent/70 mb-10">
+            From the Founder
+          </p>
+          <blockquote>
+            <p className="text-3xl font-semibold leading-[1.45] tracking-tight text-white md:text-4xl md:leading-[1.4]">
+              "The same conversation kept finding me. An owner would call and the need was always the same:
+              I can't find this part, and I don't know where else to look. I kept helping because I could.
+              Eventually it became obvious that this wasn't a favour."
+            </p>
+            <footer className="mt-10 flex items-center justify-center gap-4">
+              <div className="h-px w-8 bg-accent/40" />
+              <span className="text-sm font-semibold text-white">James Moon</span>
+              <span className="text-white/40 text-sm">·</span>
+              <span className="text-sm text-white/50">Founder, PlaneServe</span>
+            </footer>
+          </blockquote>
         </div>
       </section>
 
@@ -207,7 +197,7 @@ function AboutPage() {
       </section>
 
       {/* ── Team expertise & global reach ─────────────────────────────────── */}
-      <section className="bg-[oklch(0.13_0.025_250)] text-white border-b border-border">
+      <section className="bg-[#041c2c] text-white border-b border-border">
         <div className="mx-auto max-w-7xl px-6 py-24">
           <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
             <div>
@@ -326,7 +316,7 @@ function AboutPage() {
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link
               to="/enrol"
-              className="inline-flex items-center gap-2 rounded-sm bg-accent px-8 py-4 text-sm font-semibold text-[oklch(0.16_0.02_250)] hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-2 rounded-sm bg-accent px-8 py-4 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
             >
               Enrol Aircraft <ArrowRightIcon className="h-4 w-4" />
             </Link>

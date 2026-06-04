@@ -242,7 +242,7 @@ function ContactPage() {
 
                   <button
                     type="submit"
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-sm bg-accent py-3.5 text-sm font-semibold text-[oklch(0.16_0.02_250)] hover:opacity-90 transition-opacity"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-sm bg-accent py-3.5 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
                   >
                     Send message <ArrowRightIcon className="h-4 w-4" />
                   </button>

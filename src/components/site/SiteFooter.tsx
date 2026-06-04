@@ -3,7 +3,7 @@ import { TakeoffIcon } from "@/components/app/PlaneServeIcons";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-white/10 bg-[oklch(0.16_0.02_250)] text-[oklch(0.85_0.005_90)]">
+    <footer className="border-t border-white/10 bg-[#041c2c] text-[oklch(0.85_0.005_90)]">
       <div className="mx-auto max-w-7xl px-6 py-14">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr_1fr]">
           {/* Brand */}
@@ -16,7 +16,7 @@ export function SiteFooter() {
               A retained AOG parts support route for private and business aircraft operators.
             </p>
             <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-accent/70">
-              AOG parts support for enrolled aircraft.
+              AOG Cover & Intelligence — The Aircraft Enrolment Programme
             </p>
             <div className="mt-4 text-xs font-medium text-success">
               Desk active · 24/7 controller cover
@@ -32,15 +32,30 @@ export function SiteFooter() {
               { to: "/enrol", label: "Enrol aircraft" },
             ]}
           />
-          <FooterCol
-            title="Operators"
-            items={[
-              { to: "/login", label: "Member sign in" },
-              { to: "/submit-aog", label: "Submit AOG" },
-              { to: "/aircraft", label: "Aircraft profiles" },
-              { to: "/dashboard", label: "Documents" },
-            ]}
-          />
+          <div>
+            <div className="text-[10px] font-semibold uppercase tracking-wider text-white/40 mb-3">Operators</div>
+            <ul className="space-y-2.5">
+              <li>
+                <Link
+                  to="/submit-aog"
+                  className="inline-flex items-center gap-2 rounded-sm bg-accent px-3 py-1.5 text-xs font-bold text-white uppercase tracking-wider hover:opacity-90 transition-opacity"
+                >
+                  ⚡ Submit AOG
+                </Link>
+              </li>
+              {[
+                { to: "/login", label: "Member sign in" },
+                { to: "/aircraft", label: "Aircraft profiles" },
+                { to: "/dashboard", label: "Documents" },
+              ].map((i) => (
+                <li key={i.label}>
+                  <Link to={i.to} className="text-sm text-white/55 hover:text-white transition-colors">
+                    {i.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
           <FooterCol
             title="Network"
             items={[

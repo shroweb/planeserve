@@ -78,7 +78,7 @@ function ValueSummaryPage() {
                 </p>
                 <Link
                   to="/submit-aog"
-                  className="mt-5 inline-flex items-center gap-1.5 rounded-sm bg-accent px-4 py-2 text-sm font-semibold text-[oklch(0.16_0.02_250)] hover:opacity-90"
+                  className="mt-5 inline-flex items-center gap-1.5 rounded-sm bg-accent px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
                 >
                   Submit an AOG request <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -92,7 +92,7 @@ function ValueSummaryPage() {
                 </p>
                 <Link
                   to="/enrol"
-                  className="mt-5 inline-flex items-center gap-1.5 rounded-sm bg-accent px-4 py-2 text-sm font-semibold text-[oklch(0.16_0.02_250)] hover:opacity-90"
+                  className="mt-5 inline-flex items-center gap-1.5 rounded-sm bg-accent px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
                 >
                   Enrol aircraft <ArrowRight className="h-4 w-4" />
                 </Link>

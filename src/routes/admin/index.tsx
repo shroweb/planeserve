@@ -347,7 +347,7 @@ function AdminOverview() {
                   </div>
                   <Link
                     to="/admin/enrolments"
-                    className="shrink-0 rounded-md bg-accent px-3 py-1.5 text-xs font-semibold text-[oklch(0.16_0.02_250)] hover:bg-accent/90"
+                    className="shrink-0 rounded-md bg-accent px-3 py-1.5 text-xs font-semibold text-white hover:bg-accent/90"
                   >
                     Review
                   </Link>

@@ -29,7 +29,7 @@ function ServicesPage() {
   return (
     <PublicLayout>
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="bg-[oklch(0.13_0.025_250)] text-white">
+      <section className="bg-[#041c2c] text-white">
         <div className="mx-auto max-w-7xl px-6 py-24">
           <Eyebrow>What's Included</Eyebrow>
           <h1 className="mt-6 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl lg:text-6xl">
@@ -81,7 +81,7 @@ function ServicesPage() {
             </div>
             
             <div className="bg-card border border-border p-1 rounded-sm shadow-sm overflow-hidden">
-              <div className="bg-[oklch(0.13_0.025_250)] p-8 text-white">
+              <div className="bg-[#041c2c] p-8 text-white">
                 <div className="text-[10px] font-bold text-accent uppercase tracking-widest mb-4">Readiness Audit</div>
                 <div className="space-y-3">
                   <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
@@ -116,7 +116,7 @@ function ServicesPage() {
               <span className="text-accent ">Global Supplier Network.</span>
             </h2>
             <p className="mt-6 text-base leading-8 text-muted-foreground">
-              When the aircraft goes down, the desk activates. We move straight into sourcing across 
+              When an aircraft goes AOG, the desk activates. We move straight into sourcing across 
               a global, vetted network of suppliers, specialized in older business platforms.
             </p>
           </div>
@@ -188,7 +188,7 @@ function ServicesPage() {
                 <span className="text-accent ">transactional billing.</span>
               </h2>
               <p className="mt-6 text-base leading-8 text-muted-foreground">
-                PlaneServe works as a membership. You enrol your aircraft once, and the desk is yours. 
+                PlaneServe is a programme for aircraft owners and operators. You enrol your aircraft once, and the desk is yours. 
                 No per-case fees, no surprise markups on parts, and no additional costs for 24/7 support.
               </p>
               <ul className="mt-8 space-y-4">
@@ -261,7 +261,7 @@ function ServicesPage() {
                 <div key={step} className={`relative grid lg:grid-cols-2 gap-8 lg:gap-16 items-center ${side === "right" ? "lg:direction-rtl" : ""}`}>
                   <div className={`${side === "right" ? "lg:order-2" : ""}`}>
                     <div className="flex items-center gap-3 mb-3">
-                      <span className="flex h-8 w-8 items-center justify-center rounded-sm bg-accent text-[oklch(0.16_0.02_250)] text-xs font-bold">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-sm bg-accent text-white text-xs font-bold">
                         {step}
                       </span>
                       <span className="text-xs font-semibold uppercase tracking-widest text-accent">{phase}</span>
@@ -345,7 +345,7 @@ function ServicesPage() {
       </section>
 
       {/* ── CTA ───────────────────────────────────────────────────────────── */}
-      <section className="bg-[oklch(0.13_0.025_250)] text-white">
+      <section className="bg-[#041c2c] text-white">
         <div className="mx-auto max-w-7xl px-6 py-24 text-center">
           <h2 className="text-3xl font-semibold tracking-tight md:text-4xl lg:text-5xl">
             Enrol your aircraft.
@@ -356,7 +356,7 @@ function ServicesPage() {
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Link
               to="/enrol"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-sm bg-accent px-8 py-4 text-sm font-semibold text-[oklch(0.16_0.02_250)] hover:opacity-90 transition-opacity"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-sm bg-accent px-8 py-4 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
             >
               Enrol Aircraft <ArrowRightIcon className="h-4 w-4" />
             </Link>

@@ -113,7 +113,7 @@ export function SupplierAppShell({ children }: { children: React.ReactNode }) {
         </nav>
         <div className="border-t border-white/10 p-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent text-sm font-bold text-[oklch(0.16_0.02_250)]">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent text-sm font-bold text-white">
               {initials}
             </div>
             <div className="min-w-0 flex-1">

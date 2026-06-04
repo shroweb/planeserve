@@ -315,7 +315,7 @@ function OptionCard({
           <button
             onClick={onApprove}
             disabled={pending}
-            className="shrink-0 rounded-sm bg-accent px-4 py-2 text-sm font-medium text-[oklch(0.16_0.02_250)] disabled:opacity-60"
+            className="shrink-0 rounded-sm bg-accent px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
           >
             {pending ? "Approving…" : "Approve"}
           </button>

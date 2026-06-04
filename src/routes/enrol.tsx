@@ -920,7 +920,7 @@ function Step5({
             onClick={() => set("plan", "annual")}
             className={`rounded-xl border-2 p-4 text-left transition-all relative ${plan === "annual" ? "border-primary bg-primary/5" : "border-border"}`}
           >
-            <span className="absolute top-3 right-3 text-[10px] font-bold uppercase tracking-widest bg-accent text-[oklch(0.16_0.02_250)] px-2 py-0.5 rounded">
+            <span className="absolute top-3 right-3 text-[10px] font-bold uppercase tracking-widest bg-accent text-white px-2 py-0.5 rounded">
               Best value
             </span>
             <p className="font-semibold">Annual</p>

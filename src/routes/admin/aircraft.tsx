@@ -92,7 +92,7 @@ function AdminAircraft() {
                       {a.verificationStatus === "Pending" && (
                         <button
                           onClick={() => verifyMutation.mutate(a.id)}
-                          className="rounded-sm bg-accent px-2 py-1 text-xs font-semibold text-[oklch(0.16_0.02_250)]"
+                          className="rounded-sm bg-accent px-2 py-1 text-xs font-semibold text-white"
                         >
                           Verify Cover
                         </button>
@@ -217,7 +217,7 @@ function AircraftDetailPanel({
             <button
               onClick={onVerify}
               disabled={verifying}
-              className="rounded-sm bg-accent px-4 py-2 text-sm font-semibold text-[oklch(0.16_0.02_250)] disabled:opacity-60"
+              className="rounded-sm bg-accent px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
             >
               {verifying ? "Verifying..." : "Verify Cover"}
             </button>

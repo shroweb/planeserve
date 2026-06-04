@@ -66,14 +66,14 @@ function Home() {
   return (
     <PublicLayout>
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="relative min-h-[90vh] overflow-hidden bg-[oklch(0.13_0.025_250)] text-white">
+      <section className="relative min-h-[90vh] overflow-hidden bg-[#041c2c] text-white">
         <img
           src={heroImage}
           alt="Private jet in a premium hangar prepared for maintenance support"
           className="absolute inset-0 h-full w-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-[linear-gradient(110deg,oklch(0.10_0.025_250)_0%,oklch(0.11_0.025_250_/_0.95)_35%,oklch(0.11_0.025_250_/_0.5)_65%,oklch(0.11_0.025_250_/_0.15)_100%)]" />
-        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[oklch(0.13_0.025_250)] to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#041c2c] to-transparent" />
 
         <div className="relative mx-auto flex min-h-[90vh] max-w-7xl flex-col justify-center px-6 py-12 md:py-20">
           <div className="w-fit inline-flex items-center gap-2 border border-white/15 bg-white/8 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70 backdrop-blur">
@@ -85,13 +85,13 @@ function Home() {
           </h1>
           <div className="max-w-3xl">
             <p className="mt-7 max-w-xl text-base leading-8 text-white/75 md:text-lg">
-              PlaneServe keeps your aircraft details and support contacts ready before downtime
-              starts, then helps source hard-to-find parts when your aircraft goes technical.
+              PlaneServe is an enrolment programme for aircraft owners and operators. Enrol your aircraft,
+              put your details on file, and the desk is ready to source parts the moment you go AOG.
             </p>
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
               <Link
                 to="/enrol"
-                className="inline-flex items-center justify-center gap-2 rounded-sm bg-accent px-8 py-4 text-sm font-semibold text-[oklch(0.16_0.02_250)] transition-opacity hover:opacity-90"
+                className="inline-flex items-center justify-center gap-2 rounded-sm bg-accent px-8 py-4 text-sm font-semibold text-white transition-opacity hover:opacity-90"
               >
                 Enrol Aircraft <ArrowRightIcon className="h-4 w-4" />
               </Link>
@@ -167,7 +167,7 @@ function Home() {
       </section>
 
       {/* ── The Problem vs Solution ───────────────────────────────────────── */}
-      <section className="bg-[oklch(0.13_0.025_250)] border-b border-white/10 overflow-hidden">
+      <section className="bg-[#041c2c] border-b border-white/10 overflow-hidden">
         <div className="mx-auto max-w-7xl px-6 py-24">
           <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
             <div>
@@ -208,7 +208,7 @@ function Home() {
             </div>
 
             <div className="relative rounded-lg border border-border bg-background p-8 shadow-sm lg:p-12">
-              <div className="absolute -top-4 left-8 rounded-sm bg-accent px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-[oklch(0.16_0.02_250)]">
+              <div className="absolute -top-4 left-8 rounded-sm bg-accent px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white">
                 The PlaneServe Way
               </div>
               <h3 className="text-2xl font-semibold">The desk already knows the aircraft.</h3>
@@ -233,7 +233,7 @@ function Home() {
 
               <Link
                 to="/enrol"
-                className="mt-10 inline-flex w-full items-center justify-center gap-2 rounded-sm bg-accent px-6 py-3 text-sm font-semibold text-[oklch(0.16_0.02_250)] hover:opacity-90 transition-opacity"
+                className="mt-10 inline-flex w-full items-center justify-center gap-2 rounded-sm bg-accent px-6 py-3 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
               >
                 Get your aircraft on file <ArrowRightIcon className="h-4 w-4" />
               </Link>
@@ -354,7 +354,7 @@ function Home() {
       </section>
 
       {/* ── Founder Section ───────────────────────────────────────────────*/}
-      <section className="overflow-hidden bg-[oklch(0.13_0.025_250)] text-white">
+      <section className="overflow-hidden bg-[#041c2c] text-white">
         <div className="grid lg:grid-cols-[5fr_7fr]">
           {/* Photo */}
           <div className="relative min-h-[380px] lg:min-h-[560px]">
@@ -363,7 +363,7 @@ function Home() {
               alt="James Moon, Founder of PlaneServe"
               className="absolute inset-0 h-full w-full object-cover object-top"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.13_0.025_250)] via-[oklch(0.13_0.025_250)]/10 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-[oklch(0.13_0.025_250)]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#041c2c] via-[#041c2c]/10 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-[#041c2c]" />
           </div>
 
           {/* Quote */}
@@ -439,7 +439,7 @@ function Home() {
             </div>
 
             <div className="rounded-sm border-2 border-accent bg-background p-8 shadow-xl relative">
-              <div className="absolute -top-4 left-8 bg-accent px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.16_0.02_250)]">
+              <div className="absolute -top-4 left-8 bg-accent px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white">
                 Retained Enrolment
               </div>
               <div className="flex items-end gap-2">
@@ -454,7 +454,7 @@ function Home() {
               </p>
               <Link
                 to="/enrol"
-                className="mt-8 flex w-full items-center justify-center gap-2 rounded-sm bg-accent py-4 text-sm font-semibold text-[oklch(0.16_0.02_250)] hover:opacity-90 transition-opacity"
+                className="mt-8 flex w-full items-center justify-center gap-2 rounded-sm bg-accent py-4 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
               >
                 Enrol your aircraft now <ArrowRightIcon className="h-4 w-4" />
               </Link>
@@ -480,11 +480,11 @@ function Home() {
               aria-hidden
               className="absolute inset-0 h-full w-full object-cover object-center"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.13_0.025_250)]/20 via-transparent to-[oklch(0.13_0.025_250)]" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#041c2c]/20 via-transparent to-[#041c2c]" />
           </div>
 
           {/* Right: dark content panel */}
-          <div className="bg-[oklch(0.13_0.025_250)] text-white px-10 py-20 flex flex-col justify-center lg:px-16">
+          <div className="bg-[#041c2c] text-white px-10 py-20 flex flex-col justify-center lg:px-16">
             <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-accent">
               Get on the route
             </div>
@@ -498,7 +498,7 @@ function Home() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 to="/enrol"
-                className="inline-flex items-center justify-center gap-2 rounded-sm bg-accent px-8 py-4 text-sm font-semibold text-[oklch(0.16_0.02_250)] hover:opacity-90 transition-opacity"
+                className="inline-flex items-center justify-center gap-2 rounded-sm bg-accent px-8 py-4 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
               >
                 Enrol your aircraft <ArrowRightIcon className="h-4 w-4" />
               </Link>
@@ -520,11 +520,11 @@ function Home() {
 
       {/* Sticky mobile enrol CTA — appears after scrolling past hero */}
       <div
-        className={`fixed bottom-0 inset-x-0 z-50 flex md:hidden border-t border-white/10 bg-[oklch(0.13_0.025_250)]/95 backdrop-blur-md px-4 py-3 transition-transform duration-300 ${scrolledPastHero ? "translate-y-0" : "translate-y-full"}`}
+        className={`fixed bottom-0 inset-x-0 z-50 flex md:hidden border-t border-white/10 bg-[#041c2c]/95 backdrop-blur-md px-4 py-3 transition-transform duration-300 ${scrolledPastHero ? "translate-y-0" : "translate-y-full"}`}
       >
         <Link
           to="/enrol"
-          className="flex w-full items-center justify-center gap-2 rounded-sm bg-accent py-3.5 text-sm font-semibold text-[oklch(0.16_0.02_250)]"
+          className="flex w-full items-center justify-center gap-2 rounded-sm bg-accent py-3.5 text-sm font-semibold text-white"
         >
           Enrol Aircraft <ArrowRightIcon className="h-4 w-4" />
         </Link>

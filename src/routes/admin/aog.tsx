@@ -461,7 +461,7 @@ function CaseDetailPanel({
           {r.quotes.length > 0 && r.status === "Sourcing" && (
             <button
               onClick={() => statusMutation.mutate({ id: r.id, status: "Options ready" })}
-              className="rounded-sm bg-accent px-3 py-2 text-xs font-medium text-[oklch(0.16_0.02_250)]"
+              className="rounded-sm bg-accent px-3 py-2 text-xs font-medium text-white"
             >
               Mark Options Ready
             </button>

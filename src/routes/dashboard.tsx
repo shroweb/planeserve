@@ -74,7 +74,7 @@ function Dashboard() {
         </div>
         <Link
           to={aircraft.length > 0 ? "/submit-aog" : "/enrol"}
-          className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-semibold text-[oklch(0.16_0.02_250)] hover:bg-accent/90"
+          className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-semibold text-white hover:bg-accent/90"
         >
           {aircraft.length > 0 ? "Submit AOG" : "Enrol aircraft"}
         </Link>

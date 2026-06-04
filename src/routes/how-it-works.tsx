@@ -29,7 +29,7 @@ function HowItWorks() {
   return (
     <PublicLayout>
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="bg-[oklch(0.13_0.025_250)] text-white">
+      <section className="bg-[#041c2c] text-white">
         <div className="mx-auto max-w-7xl px-6 py-24">
           <Eyebrow>The Process</Eyebrow>
           <h1 className="mt-6 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl lg:text-6xl">
@@ -154,7 +154,7 @@ function HowItWorks() {
         <div className="mx-auto max-w-7xl px-6 py-24">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1 relative">
-              <div className="aspect-square bg-[oklch(0.13_0.025_250)] rounded-sm overflow-hidden flex items-center justify-center p-12">
+              <div className="aspect-square bg-[#041c2c] rounded-sm overflow-hidden flex items-center justify-center p-12">
                 <div className="w-full space-y-4">
                   <div className="bg-white/5 border border-white/10 p-4 rounded-sm">
                     <div className="flex justify-between items-center mb-2">
@@ -172,7 +172,7 @@ function HowItWorks() {
                 </div>
               </div>
               <div className="absolute -bottom-6 -right-6 bg-accent p-6 rounded-sm shadow-xl hidden md:block">
-                <SlaIcon className="h-8 w-8 text-[oklch(0.16_0.02_250)]" />
+                <SlaIcon className="h-8 w-8 text-white" />
               </div>
             </div>
             
@@ -241,7 +241,7 @@ function HowItWorks() {
       </section>
 
       {/* ── CTA ───────────────────────────────────────────────────────────── */}
-      <section className="bg-[oklch(0.13_0.025_250)] text-white">
+      <section className="bg-[#041c2c] text-white">
         <div className="mx-auto max-w-7xl px-6 py-24 text-center">
           <h2 className="text-3xl font-semibold tracking-tight md:text-4xl lg:text-5xl">
             Enrol your aircraft.
@@ -252,7 +252,7 @@ function HowItWorks() {
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Link
               to="/enrol"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-sm bg-accent px-8 py-4 text-sm font-semibold text-[oklch(0.16_0.02_250)] hover:opacity-90 transition-opacity"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-sm bg-accent px-8 py-4 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
             >
               Enrol Aircraft <ArrowRightIcon className="h-4 w-4" />
             </Link>

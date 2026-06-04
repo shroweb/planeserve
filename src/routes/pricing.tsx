@@ -21,7 +21,7 @@ function Pricing() {
   return (
     <PublicLayout>
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="bg-[oklch(0.13_0.025_250)] text-white">
+      <section className="bg-[#041c2c] text-white">
         <div className="mx-auto max-w-7xl px-6 py-24 text-center">
           <Eyebrow>Simple Membership</Eyebrow>
           <h1 className="mt-6 text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl lg:text-6xl">
@@ -104,7 +104,7 @@ function Pricing() {
 
               {/* Annual */}
               <div className="p-10 border-2 border-accent bg-background rounded-sm shadow-xl flex flex-col relative">
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-accent px-4 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[oklch(0.16_0.02_250)]">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-accent px-4 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white">
                   Best Value
                 </div>
                 <div className="text-xs font-bold text-accent uppercase tracking-widest mb-2">Annual Membership</div>
@@ -125,7 +125,7 @@ function Pricing() {
                 </ul>
                 <Link
                   to="/enrol"
-                  className="flex w-full items-center justify-center gap-2 rounded-sm bg-accent py-4 text-sm font-semibold text-[oklch(0.16_0.02_250)] hover:opacity-90 transition-opacity"
+                  className="flex w-full items-center justify-center gap-2 rounded-sm bg-accent py-4 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
                 >
                   Enrol aircraft <ArrowRightIcon className="h-4 w-4" />
                 </Link>
@@ -175,7 +175,7 @@ function Pricing() {
       </section>
 
       {/* ── CTA ───────────────────────────────────────────────────────────── */}
-      <section className="bg-[oklch(0.13_0.025_250)] text-white">
+      <section className="bg-[#041c2c] text-white">
         <div className="mx-auto max-w-7xl px-6 py-24 text-center">
           <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
             Enrol before the AOG, not during it.
@@ -186,7 +186,7 @@ function Pricing() {
           <div className="mt-10">
             <Link
               to="/enrol"
-              className="inline-flex items-center justify-center gap-2 rounded-sm bg-accent px-8 py-4 text-sm font-semibold text-[oklch(0.16_0.02_250)] hover:opacity-90 transition-opacity"
+              className="inline-flex items-center justify-center gap-2 rounded-sm bg-accent px-8 py-4 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
             >
               Get started now <ArrowRightIcon className="h-4 w-4" />
             </Link>
