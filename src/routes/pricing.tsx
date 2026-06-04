@@ -23,13 +23,13 @@ function Pricing() {
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <section className="bg-[#041c2c] text-white">
         <div className="mx-auto max-w-7xl px-6 py-24 text-center">
-          <Eyebrow>Simple Membership</Eyebrow>
+          <Eyebrow>Aircraft Enrolment Programme</Eyebrow>
           <h1 className="mt-6 text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl lg:text-6xl">
             Retained support.{" "}
             <span className="text-accent">No surprises.</span>
           </h1>
           <p className="mx-auto mt-8 max-w-xl text-base leading-8 text-white/70 md:text-lg">
-            One subscription per aircraft covers the full AOG parts desk.
+            One programme fee per aircraft covers the full AOG parts desk.
             We don't charge per request, and we never mark up parts.
           </p>
         </div>
@@ -41,7 +41,7 @@ function Pricing() {
           <div className="grid lg:grid-cols-3 gap-12">
             {[
               {
-                t: "Per-Aircraft Membership",
+                t: "Per-Aircraft Programme",
                 d: "We believe support should be ready before you need it. A simple monthly or annual fee keeps your aircraft details on file and your desk activated.",
                 Icon: CoverIcon,
               },
@@ -107,7 +107,7 @@ function Pricing() {
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-accent px-4 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white">
                   Best Value
                 </div>
-                <div className="text-xs font-bold text-accent uppercase tracking-widest mb-2">Annual Membership</div>
+                <div className="text-xs font-bold text-accent uppercase tracking-widest mb-2">Annual Programme</div>
                 <div className="flex items-baseline gap-2 mb-6">
                   <span className="text-5xl font-semibold tracking-tight">$1,000</span>
                   <span className="text-sm text-muted-foreground">/ aircraft / year</span>
@@ -143,18 +143,18 @@ function Pricing() {
         <div className="mx-auto max-w-3xl px-6">
           <div className="flex items-center gap-3 mb-12">
             <HelpCircle className="h-6 w-6 text-accent" strokeWidth={1.5} />
-            <h2 className="text-2xl font-semibold tracking-tight">Support Membership FAQ</h2>
+            <h2 className="text-2xl font-semibold tracking-tight">Aircraft Programme FAQ</h2>
           </div>
           
           <div className="space-y-8">
             {[
               {
                 q: "Is there a per-request or per-case fee?",
-                a: "No. Your subscription covers unlimited AOG requests for each enrolled aircraft. We don't believe in charging you more when you need support the most.",
+                a: "No. Your programme fee covers unlimited AOG requests for each enrolled aircraft. We don't believe in charging you more when you need support the most.",
               },
               {
                 q: "Do you mark up the cost of the parts?",
-                a: "No. We present you with the direct supplier quotes. You pay exactly what the supplier charges. Our service is paid for by your membership fee, not by parts margins.",
+                a: "No. We present you with the direct supplier quotes. You pay exactly what the supplier charges. PlaneServe is paid for by the aircraft programme fee, not by parts margins.",
               },
               {
                 q: "When does AOG cover become active?",
@@ -181,7 +181,8 @@ function Pricing() {
             Enrol before the AOG, not during it.
           </h2>
           <p className="mt-6 mx-auto max-w-xl text-base text-white/60">
-            It takes less than five minutes to put your aircraft on file and activate AOG cover.
+            It takes less than five minutes to put your aircraft on file. Your account activates immediately,
+            with formal AOG cover confirmed once the aircraft details are verified.
           </p>
           <div className="mt-10">
             <Link

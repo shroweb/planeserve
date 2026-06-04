@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
-import jamesPortrait from "@/assets/james-moon-portrait.jpeg";
 import twinTurboprop from "@/assets/twin-turboprop-tarmac.jpeg";
+import aboutHero from "@/assets/WhatsApp Image 2026-06-03 at 17.32.28 (1).jpeg";
 import {
   ArrowRightIcon,
   ClearedIcon,
@@ -31,8 +31,8 @@ function AboutPage() {
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <section className="relative min-h-[55vh] overflow-hidden bg-[#041c2c] text-white flex items-end">
         <img
-          src={jamesPortrait}
-          alt="James Moon, Founder of PlaneServe"
+          src={aboutHero}
+          alt="Legacy aircraft on the ramp, ready for AOG support"
           className="absolute inset-0 h-full w-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#041c2c] via-[#041c2c]/80 to-[#041c2c]/20" />
@@ -53,44 +53,68 @@ function AboutPage() {
 
       {/* ── Origin story ──────────────────────────────────────────────────── */}
       <section className="bg-background border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 py-24">
-          <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
-            <div>
+        <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+          <div className="grid gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-stretch">
+            <div className="flex flex-col justify-center border-y border-border py-10 lg:py-14">
               <Eyebrow>Where It Started</Eyebrow>
-              <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl leading-tight">
-                Owners kept asking the same question:{" "}
+              <h2 className="mt-4 max-w-2xl text-3xl font-semibold leading-tight tracking-tight md:text-4xl">
+                The same request kept returning:{" "}
                 <span className="text-accent">can you help us find this part?</span>
               </h2>
-              <p className="mt-6 text-base leading-8 text-muted-foreground">
-                James Moon has built his career across multiple aviation businesses, each focused on
-                solving genuine challenges for people who own and operate aircraft for a living.
-                Through that work, the transactions, the relationships, and the day-to-day reality
-                of keeping older aircraft flying, a pattern emerged.
-              </p>
-              <p className="mt-5 text-base leading-8 text-muted-foreground">
-                Owners and operators of legacy types were facing parts that had drifted out of
-                primary distribution, components with no clear source, and AOG situations with no
-                obvious path to resolution. They kept coming to James because he had the network and
-                the knowledge to help.
-              </p>
-              <p className="mt-5 text-base leading-8 text-muted-foreground">
-                In time, it became clear that what he was doing informally was a service the market
-                needed. PlaneServe is the structured answer to that demand: specialist parts
-                sourcing and AOG support for every enrolled owner.
-              </p>
+              <div className="mt-7 space-y-5 text-base leading-8 text-muted-foreground">
+                <p>
+                  PlaneServe came from years of aircraft trading, owner relationships, and the
+                  practical work of keeping older aircraft flying. When the obvious channels went
+                  quiet, operators came to James because he knew where else to look.
+                </p>
+                <p>
+                  Those calls were rarely theoretical. A component had slipped out of primary
+                  distribution. An aircraft was AOG. Someone needed a credible route to a part,
+                  paperwork, supplier confirmation, and movement.
+                </p>
+                <p>
+                  PlaneServe turns that informal support into a formal programme: aircraft details
+                  on file before the problem, and a sourcing desk ready when the request lands.
+                </p>
+              </div>
+
+              <div className="mt-8 grid gap-3 sm:grid-cols-3 lg:mt-9">
+                {[
+                  ["Before AOG", "Aircraft details captured"],
+                  ["During AOG", "Desk starts with context"],
+                  ["After supply", "Case history retained"],
+                ].map(([label, value]) => (
+                  <div key={label} className="border-l border-accent/50 pl-4">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
+                      {label}
+                    </p>
+                    <p className="mt-2 text-sm font-semibold leading-snug text-foreground">
+                      {value}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <div className="rounded-sm overflow-hidden border border-border shadow-sm relative min-h-[400px]">
+            <div className="relative min-h-[360px] overflow-hidden bg-[#041c2c] shadow-sm sm:min-h-[430px] lg:min-h-[560px]">
               <img
                 src={twinTurboprop}
                 alt="Twin turboprop aircraft on the tarmac"
                 className="absolute inset-0 h-full w-full object-cover object-center"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#041c2c]/80 via-transparent to-transparent" />
-              <div className="absolute bottom-0 left-0 p-6">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-accent">
-                  Older aircraft. Thinner catalogues. Deep supplier knowledge.
+              <div className="absolute inset-0 bg-gradient-to-t from-[#041c2c]/90 via-[#041c2c]/10 to-transparent" />
+              <div className="absolute left-6 top-6 border border-white/25 bg-[#041c2c]/70 px-4 py-3 backdrop-blur">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/70">
+                  Legacy aircraft support
                 </p>
+              </div>
+              <div className="absolute inset-x-0 bottom-0 p-6 md:p-8">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
+                  Older aircraft. Thinner catalogues.
+                </p>
+                <h3 className="mt-3 max-w-xl text-2xl font-semibold leading-tight text-white md:text-3xl">
+                  A programme built for the parts search that cannot start from zero.
+                </h3>
               </div>
             </div>
           </div>
@@ -276,7 +300,8 @@ function AboutPage() {
             Ready to enrol your aircraft?
           </h2>
           <p className="mt-4 mx-auto max-w-lg text-sm leading-7 text-muted-foreground">
-            Takes five minutes. No contract. The desk is active the moment enrolment is confirmed.
+            Takes five minutes. No contract. Your account is live immediately, with formal AOG cover
+            confirmed once the aircraft details are verified.
           </p>
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link

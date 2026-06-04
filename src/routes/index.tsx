@@ -3,6 +3,7 @@ import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
 import heroImage from "@/assets/planeserve-hangar-hero.jpg";
 import citationDusk from "@/assets/citation-dusk-ramp.jpeg";
+import founderAircraft from "@/assets/WhatsApp Image 2026-06-03 at 17.32.26.jpeg";
 import {
   ArrowRightIcon,
   BroadcastIcon,
@@ -161,8 +162,8 @@ function Home() {
           </p>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-muted-foreground md:text-lg">
             The service grew from years of owners and operators asking James Moon for help finding
-            parts that had slipped out of obvious distribution. PlaneServe turns that informal
-            support route into a retained, structured AOG desk.
+            parts that had slipped out of obvious distribution. PlaneServe turns those calls into
+            a formal aircraft enrolment programme with a retained AOG desk behind it.
           </p>
         </div>
       </section>
@@ -357,11 +358,11 @@ function Home() {
       {/* ── Founder Section ───────────────────────────────────────────────*/}
       <section className="overflow-hidden bg-[#041c2c] text-white">
         <div className="grid lg:grid-cols-[5fr_7fr]">
-          {/* Photo */}
+          {/* Aircraft image */}
           <div className="relative min-h-[380px] lg:min-h-[560px]">
             <img
-              src="https://aviationweek.com/sites/default/files/2023-01/moon_jet_group_james_moon_source_moon_jet_group.jpeg"
-              alt="James Moon, Founder of PlaneServe"
+              src={founderAircraft}
+              alt="Business aircraft in a maintenance hangar"
               className="absolute inset-0 h-full w-full object-cover object-top"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#041c2c] via-[#041c2c]/10 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-[#041c2c]" />
@@ -486,7 +487,7 @@ function Home() {
           {/* Right: dark content panel */}
           <div className="bg-[#041c2c] text-white px-10 py-20 flex flex-col justify-center lg:px-16">
             <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-accent">
-              Get on the route
+              Aircraft enrolment programme
             </div>
             <h2 className="mt-5 text-4xl font-bold tracking-tight leading-[1.1] md:text-5xl lg:text-[1.65rem] xl:text-[2rem] lg:whitespace-nowrap">
               Enrol before the AOG, <span className="text-accent">not during it.</span>

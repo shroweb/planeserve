@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import jetEngineDetail from "@/assets/jet-engine-detail-sunset.jpeg";
+import supplierNetworkImage from "@/assets/WhatsApp Image 2026-06-03 at 17.09.58 (3).jpeg";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
 import {
@@ -16,10 +17,10 @@ import {
 export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
-      { title: "Services — Full-spectrum AOG support for business aircraft" },
+      { title: "Services — AOG cover for enrolled business aircraft" },
       {
         name: "description",
-        content: "PlaneServe AOG parts support — aircraft enrolment, supplier sourcing, trace verification, and dispatch coordination for enrolled business aircraft.",
+        content: "PlaneServe is an aircraft enrolment programme covering AOG parts sourcing, supplier outreach, trace verification, and dispatch coordination for enrolled business aircraft.",
       },
     ],
   }),
@@ -34,13 +35,13 @@ function ServicesPage() {
         <div className="mx-auto max-w-7xl px-6 py-24">
           <Eyebrow>What's Included</Eyebrow>
           <h1 className="mt-6 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl lg:text-6xl">
-            Everything included in your{" "}
+            Everything included in the{" "}
             <span className="text-accent">
-              PlaneServe subscription.
+              PlaneServe programme.
             </span>
           </h1>
           <p className="mt-8 max-w-2xl text-base leading-8 text-white/70 md:text-lg">
-            One per-aircraft subscription covers the full AOG parts desk. We source parts, verify paperwork, and coordinate freight — all for enrolled aircraft, with no per-case fees.
+            One per-aircraft enrolment covers the full AOG parts desk. We source parts, verify paperwork, and coordinate freight — all for enrolled aircraft, with no per-case fees.
           </p>
         </div>
       </section>
@@ -168,7 +169,34 @@ function ServicesPage() {
         </div>
       </section>
 
-      {/* ── Cover Model: Membership ───────────────────────────────────────── */}
+      {/* ── Supplier network image band ──────────────────────────────────── */}
+      <section className="bg-[#041c2c] text-white">
+        <div className="mx-auto grid max-w-7xl gap-0 px-6 py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch">
+          <div className="relative min-h-[320px] overflow-hidden rounded-sm border border-white/10">
+            <img
+              src={supplierNetworkImage}
+              alt="Business jet on the ramp during support preparation"
+              className="absolute inset-0 h-full w-full object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#041c2c]/75 via-transparent to-transparent" />
+          </div>
+          <div className="flex flex-col justify-center border border-white/10 border-t-0 bg-white/5 p-8 lg:border-l-0 lg:border-t lg:p-12">
+            <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-accent/80">
+              Supplier outreach
+            </p>
+            <h3 className="mt-4 text-2xl font-semibold tracking-tight md:text-3xl">
+              Matched to the aircraft, the part, and the location.
+            </h3>
+            <p className="mt-5 text-sm leading-7 text-white/60">
+              PlaneServe does not send blind RFQs. The desk uses the enrolled aircraft record,
+              ATA system, urgency, base airport, and paperwork requirement to approach suppliers
+              most likely to respond with a usable option.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Cover Model: Programme ───────────────────────────────────────── */}
       <section className="bg-background border-b border-border">
         <div className="mx-auto max-w-7xl px-6 py-24">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -193,19 +221,19 @@ function ServicesPage() {
             </div>
             
             <div className="order-1 lg:order-2">
-              <Eyebrow>The Subscription Model</Eyebrow>
+              <Eyebrow>The Programme Model</Eyebrow>
               <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl leading-tight">
                 Retained support, not <br />
                 <span className="text-accent ">transactional billing.</span>
               </h2>
               <p className="mt-6 text-base leading-8 text-muted-foreground">
-                PlaneServe is a programme for aircraft owners and operators. You enrol your aircraft once, and the desk is yours. 
+                PlaneServe is a programme for aircraft owners and operators. You enrol your aircraft once, and the desk is yours.
                 No per-case fees, no surprise markups on parts, and no additional costs for 24/7 support.
               </p>
               <ul className="mt-8 space-y-4">
                 {[
                   "Unlimited AOG requests per aircraft",
-                  "Aircraft profile retained for the life of the plan",
+                  "Aircraft profile retained while cover remains active",
                   "Cancel at the end of any billing period",
                   "Add or remove aircraft as your fleet changes",
                 ].map((p) => (

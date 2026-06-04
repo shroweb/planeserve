@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
 import { ArrowRightIcon, AircraftIcon, SlaIcon } from "@/components/app/PlaneServeIcons";
+import contactAircraft from "@/assets/WhatsApp Image 2026-06-03 at 17.32.26 (1).jpeg";
 import { Mail } from "lucide-react";
 import { useState } from "react";
 
@@ -34,20 +35,29 @@ function ContactPage() {
   return (
     <PublicLayout>
       {/* Hero */}
-      <section className="bg-[oklch(0.13_0.025_250)] text-white">
-        <div className="mx-auto max-w-7xl px-6 py-24">
-          <Eyebrow>Get in touch</Eyebrow>
-          <h1 className="mt-6 max-w-2xl text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl">
-            Talk to the desk.
-          </h1>
-          <p className="mt-6 max-w-xl text-base leading-8 text-white/60">
-            The operations team responds directly — no sales funnel, no ticketing queue.
-            If your aircraft is currently grounded,{" "}
-            <Link to="/submit-aog" className="text-accent underline underline-offset-2 hover:opacity-80">
-              submit an AOG request
-            </Link>{" "}
-            instead.
-          </p>
+      <section className="relative overflow-hidden bg-[oklch(0.13_0.025_250)] text-white">
+        <img
+          src={contactAircraft}
+          alt="Aircraft in hangar maintenance setting"
+          className="absolute inset-0 h-full w-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,#041c2c_0%,#041c2c_38%,rgba(4,28,44,0.78)_58%,rgba(4,28,44,0.25)_100%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#041c2c] to-transparent" />
+        <div className="relative mx-auto max-w-7xl px-6 py-24">
+          <div>
+            <Eyebrow>Get in touch</Eyebrow>
+            <h1 className="mt-6 max-w-2xl text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl">
+              Talk to the desk.
+            </h1>
+            <p className="mt-6 max-w-xl text-base leading-8 text-white/60">
+              The operations team responds directly — no sales funnel, no ticketing queue.
+              If your aircraft is currently grounded,{" "}
+              <Link to="/submit-aog" className="text-accent underline underline-offset-2 hover:opacity-80">
+                submit an AOG request
+              </Link>{" "}
+              instead.
+            </p>
+          </div>
         </div>
       </section>
 

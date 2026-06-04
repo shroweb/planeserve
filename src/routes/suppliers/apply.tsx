@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { createSupplierApplication } from "@/lib/app.functions";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow, H2, Section } from "@/components/site/Section";
+import supplierApplyImage from "@/assets/WhatsApp Image 2026-06-03 at 17.32.26 (2).jpeg";
 import { useState } from "react";
 import { CheckCircle2, ChevronRight, ChevronLeft } from "lucide-react";
 
@@ -205,6 +206,19 @@ function SupplierApplyPage() {
               Approved suppliers receive RFQs that match their aircraft coverage, ATA systems,
               inventory profile, geography, and response capability.
             </p>
+            <div className="mt-8 relative min-h-[260px] overflow-hidden rounded-md border border-border">
+              <img
+                src={supplierApplyImage}
+                alt="Business aircraft in maintenance hangar for supplier support"
+                className="absolute inset-0 h-full w-full object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#041c2c]/70 via-transparent to-transparent" />
+              <div className="absolute bottom-0 left-0 p-5">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-white/80">
+                  Matched RFQs for capable suppliers
+                </p>
+              </div>
+            </div>
             <div className="mt-8 space-y-3 rounded-md border border-border bg-card p-5 text-sm">
               {[
                 "1. Submit company, speciality and compliance details",

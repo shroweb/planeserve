@@ -13,7 +13,8 @@ export function SiteFooter() {
               <span className="text-sm font-semibold tracking-tight text-white">PlaneServe</span>
             </div>
             <p className="mt-3 text-xs leading-relaxed text-white/50">
-              A retained AOG parts support route for private and business aircraft operators.
+              A programme for aircraft owners and operators that puts the aircraft record, contacts,
+              and AOG parts desk in place before the request arrives.
             </p>
             <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-accent/70">
               AOG Cover & Intelligence — The Aircraft Enrolment Programme
@@ -40,11 +41,11 @@ export function SiteFooter() {
                   to="/submit-aog"
                   className="inline-flex items-center gap-2 rounded-sm bg-accent px-3 py-1.5 text-xs font-bold text-white uppercase tracking-wider hover:opacity-90 transition-opacity"
                 >
-                  ⚡ Submit AOG
+                  Submit AOG
                 </Link>
               </li>
               {[
-                { to: "/login", label: "Member sign in" },
+                { to: "/login", label: "Operator sign in" },
                 { to: "/aircraft", label: "Aircraft profiles" },
                 { to: "/dashboard", label: "Documents" },
               ].map((i) => (

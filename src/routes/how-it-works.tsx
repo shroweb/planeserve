@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import challengerHangar from "@/assets/challenger-mro-hangar.jpeg";
+import sourcingRamp from "@/assets/WhatsApp Image 2026-06-03 at 17.11.43.jpeg";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
 import {
@@ -146,6 +147,30 @@ function HowItWorks() {
                 </div>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Operational image bridge ─────────────────────────────────────── */}
+      <section className="bg-[#041c2c] text-white">
+        <div className="mx-auto grid max-w-7xl gap-10 px-6 py-20 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+          <div>
+            <Eyebrow>Operational Readiness</Eyebrow>
+            <h2 className="mt-4 text-3xl font-semibold leading-tight tracking-tight md:text-4xl">
+              The aircraft is known before the request starts.
+            </h2>
+            <p className="mt-6 text-sm leading-7 text-white/60">
+              Enrolment means the desk is not opening a blank file during an AOG. The aircraft,
+              contacts, documentation expectations, and support route are already in place.
+            </p>
+          </div>
+          <div className="relative min-h-[320px] overflow-hidden rounded-sm border border-white/10">
+            <img
+              src={sourcingRamp}
+              alt="Twin-engine aircraft on the ramp before operational support"
+              className="absolute inset-0 h-full w-full object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#041c2c]/45 to-transparent" />
           </div>
         </div>
       </section>
