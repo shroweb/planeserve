@@ -29,14 +29,14 @@ function AboutPage() {
   return (
     <PublicLayout>
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="relative min-h-[55vh] overflow-hidden bg-[#041c2c] text-white flex items-end">
+      <section className="brand-dark relative min-h-[55vh] overflow-hidden bg-[#001b2e] text-white flex items-end">
         <img
           src={aboutHero}
           alt="Legacy aircraft on the ramp, ready for AOG support"
           className="absolute inset-0 h-full w-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#041c2c] via-[#041c2c]/80 to-[#041c2c]/20" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#041c2c] via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#001b2e] via-[#001b2e]/80 to-[#001b2e]/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#001b2e] via-transparent to-transparent" />
         <div className="relative mx-auto w-full max-w-7xl px-6 py-20">
           <Eyebrow>About PlaneServe</Eyebrow>
           <h1 className="mt-6 max-w-3xl text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl lg:text-6xl">
@@ -96,14 +96,14 @@ function AboutPage() {
               </div>
             </div>
 
-            <div className="relative min-h-[360px] overflow-hidden bg-[#041c2c] shadow-sm sm:min-h-[430px] lg:min-h-[560px]">
+            <div className="brand-dark relative min-h-[360px] overflow-hidden bg-[#001b2e] shadow-sm sm:min-h-[430px] lg:min-h-[560px]">
               <img
                 src={twinTurboprop}
                 alt="Twin turboprop aircraft on the tarmac"
                 className="absolute inset-0 h-full w-full object-cover object-center"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#041c2c]/90 via-[#041c2c]/10 to-transparent" />
-              <div className="absolute left-6 top-6 border border-white/25 bg-[#041c2c]/70 px-4 py-3 backdrop-blur">
+              <div className="absolute inset-0 bg-gradient-to-t from-[#001b2e]/90 via-[#001b2e]/10 to-transparent" />
+              <div className="brand-dark absolute left-6 top-6 border border-white/25 bg-[#001b2e]/70 px-4 py-3 backdrop-blur">
                 <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/70">
                   Legacy aircraft support
                 </p>
@@ -122,7 +122,7 @@ function AboutPage() {
       </section>
 
       {/* ── Founder message ───────────────────────────────────────────────── */}
-      <section className="bg-[#041c2c] text-white border-b border-white/10">
+      <section className="brand-dark bg-[#001b2e] text-white border-b border-white/10">
         <div className="mx-auto max-w-5xl px-6 py-24 text-center">
           <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-accent/70 mb-10">
             From the Founder
@@ -186,7 +186,7 @@ function AboutPage() {
       </section>
 
       {/* ── Team expertise & global reach ─────────────────────────────────── */}
-      <section className="bg-[#041c2c] text-white border-b border-border">
+      <section className="brand-dark bg-[#001b2e] text-white border-b border-border">
         <div className="mx-auto max-w-7xl px-6 py-24">
           <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
             <div>
@@ -219,7 +219,7 @@ function AboutPage() {
               {[
                 { stat: "24/7", label: "Desk coverage" },
                 { stat: "< 4 hrs", label: "To verified options" },
-                { stat: "0%", label: "Parts markup" },
+                { stat: "Clear", label: "Option pricing" },
                 { stat: "Global", label: "Supplier network" },
               ].map(({ stat, label }) => (
                 <div key={label} className="rounded-sm border border-white/10 bg-white/5 p-6">
@@ -272,7 +272,7 @@ function AboutPage() {
                   ["24/7 desk availability", false, "Sometimes", true],
                   ["First response time", "Hours", "30–60 min", "Minutes"],
                   ["Transparent pricing", true, false, true],
-                  ["Parts markup", "Varies", "Yes", "Never"],
+                  ["Option pricing", "Unclear", "Varies", "Clear"],
                   ["Paperwork verification", "Self-managed", "Ad hoc", true],
                   ["Freight coordination", "Self-managed", "Sometimes", true],
                   ["Supplier network quality", "Unknown", "Varies", "Vetted"],

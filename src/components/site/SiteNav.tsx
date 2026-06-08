@@ -25,7 +25,7 @@ export function SiteNav() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3.5">
         <Link to="/" onClick={close} className="flex items-center gap-2">
           <span className="flex h-9 w-9 items-center justify-center rounded-sm bg-primary text-primary-foreground">
-            <AircraftIcon className="h-4 w-4 text-accent" strokeWidth={1.5} />
+            <AircraftIcon className="h-4 w-4 text-accent-on-dark" strokeWidth={1.5} />
           </span>
           <span className="text-base font-semibold tracking-tight text-foreground">PlaneServe</span>
         </Link>

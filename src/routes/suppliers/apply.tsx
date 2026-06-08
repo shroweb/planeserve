@@ -212,7 +212,7 @@ function SupplierApplyPage() {
                 alt="Business aircraft in maintenance hangar for supplier support"
                 className="absolute inset-0 h-full w-full object-cover object-center"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#041c2c]/70 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#001b2e]/70 via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 p-5">
                 <p className="text-[10px] font-bold uppercase tracking-widest text-white/80">
                   Matched RFQs for capable suppliers

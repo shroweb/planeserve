@@ -35,14 +35,14 @@ function ContactPage() {
   return (
     <PublicLayout>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-[oklch(0.13_0.025_250)] text-white">
+      <section className="brand-dark relative overflow-hidden bg-[oklch(0.13_0.025_250)] text-white">
         <img
           src={contactAircraft}
           alt="Aircraft in hangar maintenance setting"
           className="absolute inset-0 h-full w-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,#041c2c_0%,#041c2c_38%,rgba(4,28,44,0.78)_58%,rgba(4,28,44,0.25)_100%)]" />
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#041c2c] to-transparent" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,#001b2e_0%,#001b2e_38%,rgba(0,27,46,0.78)_58%,rgba(0,27,46,0.25)_100%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#001b2e] to-transparent" />
         <div className="relative mx-auto max-w-7xl px-6 py-24">
           <div>
             <Eyebrow>Get in touch</Eyebrow>

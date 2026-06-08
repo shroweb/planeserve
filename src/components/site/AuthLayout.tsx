@@ -7,7 +7,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen">
       {/* Brand panel */}
-      <div className="relative hidden w-1/2 flex-col justify-end overflow-hidden bg-[oklch(0.13_0.025_250)] lg:flex">
+      <div className="brand-dark relative hidden w-1/2 flex-col justify-end overflow-hidden bg-[oklch(0.13_0.025_250)] lg:flex">
         <img
           src={heroImage}
           alt=""

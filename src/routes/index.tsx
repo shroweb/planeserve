@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
-import heroImage from "@/assets/planeserve-hangar-hero.jpg";
+import heroImage from "@/assets/WhatsApp Image 2026-06-03 at 17.32.26 (1).jpeg";
+import heroMobileImage from "@/assets/WhatsApp Image 2026-06-03 at 17.11.43.jpeg";
 import citationDusk from "@/assets/citation-dusk-ramp.jpeg";
 import founderAircraft from "@/assets/WhatsApp Image 2026-06-03 at 17.32.26.jpeg";
 import {
@@ -68,21 +69,27 @@ function Home() {
   return (
     <PublicLayout>
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="relative min-h-[90vh] overflow-hidden bg-[#041c2c] text-white">
+      <section className="brand-dark relative min-h-[90vh] overflow-hidden bg-[#001b2e] text-white">
         <img
           src={heroImage}
-          alt="Private jet in a premium hangar prepared for maintenance support"
-          className="absolute inset-0 h-full w-full object-cover object-center"
+          alt="Business aircraft on the ramp outside a maintenance hangar"
+          className="absolute inset-y-0 right-0 hidden h-full w-[64%] object-contain object-[right_center] md:block"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(110deg,oklch(0.10_0.025_250)_0%,oklch(0.11_0.025_250_/_0.95)_35%,oklch(0.11_0.025_250_/_0.5)_65%,oklch(0.11_0.025_250_/_0.15)_100%)]" />
-        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#041c2c] to-transparent" />
+        <img
+          src={heroMobileImage}
+          alt="Twin-engine aircraft on the ramp ready for support"
+          className="absolute inset-0 h-full w-full object-cover object-[50%_70%] md:hidden"
+        />
+        <div className="absolute inset-0 hidden bg-[linear-gradient(90deg,#001b2e_0%,#001b2e_37%,rgba(0,27,46,0.86)_49%,rgba(0,27,46,0.28)_64%,rgba(0,27,46,0)_82%)] md:block" />
+        <div className="absolute inset-0 bg-[linear-gradient(110deg,oklch(0.10_0.025_250)_0%,oklch(0.11_0.025_250_/_0.95)_35%,oklch(0.11_0.025_250_/_0.42)_65%,oklch(0.11_0.025_250_/_0.06)_100%)] md:hidden" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#001b2e] to-transparent" />
 
-        <div className="relative mx-auto flex min-h-[90vh] max-w-7xl flex-col justify-center px-6 py-12 md:py-20">
+        <div className="relative mx-auto flex min-h-[90vh] max-w-7xl flex-col justify-center px-6 py-12 md:mx-0 md:w-[50%] md:max-w-none md:px-12 md:py-20 lg:px-20 xl:px-28 2xl:px-36">
           <div className="w-fit inline-flex items-center gap-2 border border-white/15 bg-white/8 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70 backdrop-blur">
             <BroadcastIcon className="h-3.5 w-3.5 text-accent" />
             Keeping you flying, anywhere, anytime
           </div>
-          <h1 className="mt-7 text-[clamp(2.5rem,3.5vw,5rem)] font-bold leading-[1.05] tracking-[-0.03em] [text-wrap:balance]">
+          <h1 className="mt-7 max-w-3xl text-[clamp(2.5rem,3.35vw,4.75rem)] font-bold leading-[1.05] tracking-[-0.03em] [text-wrap:balance]">
             AOG parts support for aircraft that <span className="text-accent">cannot wait.</span>
           </h1>
           <div className="max-w-3xl">
@@ -124,7 +131,7 @@ function Home() {
               {
                 Icon: BillingIcon,
                 title: "Predictable costs",
-                desc: "Flat monthly fee per aircraft. Zero markup on parts or freight. No per-case billing surprises.",
+                desc: "Flat monthly fee per aircraft, with sourcing options and any PlaneServe commission made clear before approval.",
               },
               {
                 Icon: SlaIcon,
@@ -169,7 +176,7 @@ function Home() {
       </section>
 
       {/* ── The Problem vs Solution ───────────────────────────────────────── */}
-      <section className="bg-[#041c2c] border-b border-white/10 overflow-hidden">
+      <section className="brand-dark bg-[#001b2e] border-b border-white/10 overflow-hidden">
         <div className="mx-auto max-w-7xl px-6 py-24">
           <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
             <div>
@@ -340,7 +347,7 @@ function Home() {
                 <div className="grid grid-cols-3 gap-4 text-center">
                   {[
                     ["2h 44m", "to first options"],
-                    ["0%", "part markup"],
+                    ["Clear", "pricing"],
                     ["3", "verified quotes"],
                   ].map(([val, label]) => (
                     <div key={label}>
@@ -356,7 +363,7 @@ function Home() {
       </section>
 
       {/* ── Founder Section ───────────────────────────────────────────────*/}
-      <section className="overflow-hidden bg-[#041c2c] text-white">
+      <section className="brand-dark overflow-hidden bg-[#001b2e] text-white">
         <div className="grid lg:grid-cols-[5fr_7fr]">
           {/* Aircraft image */}
           <div className="relative min-h-[380px] lg:min-h-[560px]">
@@ -365,7 +372,7 @@ function Home() {
               alt="Business aircraft in a maintenance hangar"
               className="absolute inset-0 h-full w-full object-cover object-top"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#041c2c] via-[#041c2c]/10 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-[#041c2c]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#001b2e] via-[#001b2e]/10 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-[#001b2e]" />
           </div>
 
           {/* Quote */}
@@ -415,7 +422,7 @@ function Home() {
               </h2>
               <p className="mt-5 text-sm leading-7 text-muted-foreground">
                 One flat fee keeps your aircraft profile on file and the desk active. No per-case
-                charges, no markups on parts or freight.
+                charges, with supplier options and PlaneServe commission shown before you approve.
               </p>
               <ul className="mt-8 space-y-3">
                 {[
@@ -424,7 +431,7 @@ function Home() {
                   "Global vetted supplier network",
                   "8130-3 / EASA Form 1 verification",
                   "Freight & AMO coordination",
-                  "No markup on parts or freight",
+                  "Clear option pricing before approval",
                 ].map((f) => (
                   <li key={f} className="flex items-center gap-3 text-sm">
                     <ClearedIcon className="h-4 w-4 text-accent shrink-0" />
@@ -481,11 +488,11 @@ function Home() {
               alt="Business jet on the ramp at dusk"
               className="absolute inset-0 h-full w-full object-cover object-center"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#041c2c]/20 via-transparent to-[#041c2c]" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#001b2e]/20 via-transparent to-[#001b2e]" />
           </div>
 
           {/* Right: dark content panel */}
-          <div className="bg-[#041c2c] text-white px-10 py-20 flex flex-col justify-center lg:px-16">
+          <div className="brand-dark bg-[#001b2e] text-white px-10 py-20 flex flex-col justify-center lg:px-16">
             <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-accent">
               Aircraft enrolment programme
             </div>
@@ -521,7 +528,7 @@ function Home() {
 
       {/* Sticky mobile enrol CTA — appears after scrolling past hero */}
       <div
-        className={`fixed bottom-0 inset-x-0 z-50 flex md:hidden border-t border-white/10 bg-[#041c2c]/95 backdrop-blur-md px-4 py-3 transition-transform duration-300 ${scrolledPastHero ? "translate-y-0" : "translate-y-full"}`}
+        className={`brand-dark fixed bottom-0 inset-x-0 z-50 flex md:hidden border-t border-white/10 bg-[#001b2e]/95 backdrop-blur-md px-4 py-3 transition-transform duration-300 ${scrolledPastHero ? "translate-y-0" : "translate-y-full"}`}
       >
         <Link
           to="/enrol"

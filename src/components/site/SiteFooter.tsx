@@ -3,7 +3,7 @@ import { TakeoffIcon } from "@/components/app/PlaneServeIcons";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-white/10 bg-[#041c2c] text-[oklch(0.85_0.005_90)]">
+    <footer className="brand-dark border-t border-white/10 bg-[#001b2e] text-[oklch(0.85_0.005_90)]">
       <div className="mx-auto max-w-7xl px-6 py-14">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr_1fr]">
           {/* Brand */}
@@ -34,7 +34,9 @@ export function SiteFooter() {
             ]}
           />
           <div>
-            <div className="text-[10px] font-semibold uppercase tracking-wider text-white/40 mb-3">Operators</div>
+            <div className="text-[10px] font-semibold uppercase tracking-wider text-white/40 mb-3">
+              Owner and operator
+            </div>
             <ul className="space-y-2.5">
               <li>
                 <Link
@@ -45,7 +47,7 @@ export function SiteFooter() {
                 </Link>
               </li>
               {[
-                { to: "/login", label: "Operator sign in" },
+                { to: "/login", label: "Owner/operator sign in" },
                 { to: "/aircraft", label: "Aircraft profiles" },
                 { to: "/dashboard", label: "Documents" },
               ].map((i) => (

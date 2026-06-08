@@ -10,7 +10,8 @@ export const Route = createFileRoute("/pricing")({
       { title: "Pricing — Simple retained support per aircraft" },
       {
         name: "description",
-        content: "No per-case fees. No markups. Just simple, transparent retained AOG support for your business aircraft fleet.",
+        content:
+          "Simple retained AOG support for enrolled aircraft, with clear sourcing options and approval before any part is ordered.",
       },
     ],
   }),
@@ -21,7 +22,7 @@ function Pricing() {
   return (
     <PublicLayout>
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="bg-[#041c2c] text-white">
+      <section className="brand-dark bg-[#001b2e] text-white">
         <div className="mx-auto max-w-7xl px-6 py-24 text-center">
           <Eyebrow>Aircraft Enrolment Programme</Eyebrow>
           <h1 className="mt-6 text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl lg:text-6xl">
@@ -30,7 +31,7 @@ function Pricing() {
           </h1>
           <p className="mx-auto mt-8 max-w-xl text-base leading-8 text-white/70 md:text-lg">
             One programme fee per aircraft covers the full AOG parts desk.
-            We don't charge per request, and we never mark up parts.
+            Supplier options, lead time, documentation, and PlaneServe commission are shown before approval.
           </p>
         </div>
       </section>
@@ -46,8 +47,8 @@ function Pricing() {
                 Icon: CoverIcon,
               },
               {
-                t: "Zero Part Markups",
-                d: "Our value is in the sourcing and verification, not in the parts margin. You pay exactly what the supplier charges. No hidden percentages.",
+                t: "Clear Option Pricing",
+                d: "Our value is in sourcing, verification, and coordination. Any PlaneServe commission is included in the option before you approve it.",
                 Icon: AogIcon,
               },
               {
@@ -153,8 +154,8 @@ function Pricing() {
                 a: "No. Your programme fee covers unlimited AOG requests for each enrolled aircraft. We don't believe in charging you more when you need support the most.",
               },
               {
-                q: "Do you mark up the cost of the parts?",
-                a: "No. We present you with the direct supplier quotes. You pay exactly what the supplier charges. PlaneServe is paid for by the aircraft programme fee, not by parts margins.",
+                q: "How are part options priced?",
+                a: "Each option is presented before approval with the supplier route, documentation, lead time, and PlaneServe commission clearly included.",
               },
               {
                 q: "When does AOG cover become active?",
@@ -175,7 +176,7 @@ function Pricing() {
       </section>
 
       {/* ── CTA ───────────────────────────────────────────────────────────── */}
-      <section className="bg-[#041c2c] text-white">
+      <section className="brand-dark bg-[#001b2e] text-white">
         <div className="mx-auto max-w-7xl px-6 py-24 text-center">
           <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
             Enrol before the AOG, not during it.

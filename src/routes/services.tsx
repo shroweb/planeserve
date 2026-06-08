@@ -31,7 +31,7 @@ function ServicesPage() {
   return (
     <PublicLayout>
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="bg-[#041c2c] text-white">
+      <section className="brand-dark bg-[#001b2e] text-white">
         <div className="mx-auto max-w-7xl px-6 py-24">
           <Eyebrow>What's Included</Eyebrow>
           <h1 className="mt-6 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl lg:text-6xl">
@@ -83,7 +83,7 @@ function ServicesPage() {
             </div>
             
             <div className="bg-card border border-border p-1 rounded-sm shadow-sm overflow-hidden">
-              <div className="bg-[#041c2c] p-8 text-white">
+              <div className="brand-dark bg-[#001b2e] p-8 text-white">
                 <div className="text-[10px] font-bold text-accent uppercase tracking-widest mb-4">Readiness Audit</div>
                 <div className="space-y-3">
                   <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
@@ -115,7 +115,7 @@ function ServicesPage() {
           alt="Business jet engine detail at sunset"
           className="absolute inset-0 h-full w-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-[#041c2c]/40" />
+        <div className="absolute inset-0 bg-[#001b2e]/40" />
       </div>
 
       {/* ── Service Pillar: The Desk ──────────────────────────────────────── */}
@@ -170,7 +170,7 @@ function ServicesPage() {
       </section>
 
       {/* ── Supplier network image band ──────────────────────────────────── */}
-      <section className="bg-[#041c2c] text-white">
+      <section className="brand-dark bg-[#001b2e] text-white">
         <div className="mx-auto grid max-w-7xl gap-0 px-6 py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch">
           <div className="relative min-h-[320px] overflow-hidden rounded-sm border border-white/10">
             <img
@@ -178,7 +178,7 @@ function ServicesPage() {
               alt="Business jet on the ramp during support preparation"
               className="absolute inset-0 h-full w-full object-cover object-center"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#041c2c]/75 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#001b2e]/75 via-transparent to-transparent" />
           </div>
           <div className="flex flex-col justify-center border border-white/10 border-t-0 bg-white/5 p-8 lg:border-l-0 lg:border-t lg:p-12">
             <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-accent/80">
@@ -209,8 +209,8 @@ function ServicesPage() {
                   ["Freight tracking", "Included"],
                   ["Operator updates", "Live"],
                   ["Profile storage", "Permanent"],
-                  ["Sourcing fees", "$0"],
-                  ["Margin on parts", "$0"],
+                  ["AOG requests", "Included"],
+                  ["Option pricing", "Clear"],
                 ].map(([label, value]) => (
                   <div key={label} className="p-4 border border-border bg-card rounded-sm">
                     <div className="text-[10px] text-muted-foreground uppercase font-bold mb-1">{label}</div>
@@ -228,7 +228,8 @@ function ServicesPage() {
               </h2>
               <p className="mt-6 text-base leading-8 text-muted-foreground">
                 PlaneServe is a programme for aircraft owners and operators. You enrol your aircraft once, and the desk is yours.
-                No per-case fees, no surprise markups on parts, and no additional costs for 24/7 support.
+                No per-case fees and no additional costs for 24/7 support. Part options are priced
+                clearly before approval, including any PlaneServe commission.
               </p>
               <ul className="mt-8 space-y-4">
                 {[
@@ -343,7 +344,7 @@ function ServicesPage() {
                   "Aircraft profile and context stored permanently",
                   "AMO and freight coordination",
                   "Operator updates throughout each case",
-                  "Zero markup on sourced parts or freight",
+                  "Clear part option pricing before approval",
                   "Trace documentation review and gap flagging",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3 text-sm">
@@ -361,8 +362,8 @@ function ServicesPage() {
               <ul className="space-y-4">
                 {[
                   "Guarantee of part availability — we guarantee the search, not the stock",
-                  "Parts cost itself — you pay the supplier directly at cost",
-                  "Freight cost — passed through at carrier rate, no markup",
+                  "Parts cost itself — presented for approval before order placement",
+                  "Freight cost — quoted as part of the sourcing option where required",
                   "Aircraft maintenance labour or AMO fees",
                   "OEM-only warranty repairs (handled by OEM network)",
                   "Non-airworthy parts or unapproved configurations",
@@ -384,7 +385,7 @@ function ServicesPage() {
       </section>
 
       {/* ── CTA ───────────────────────────────────────────────────────────── */}
-      <section className="bg-[#041c2c] text-white">
+      <section className="brand-dark bg-[#001b2e] text-white">
         <div className="mx-auto max-w-7xl px-6 py-24 text-center">
           <h2 className="text-3xl font-semibold tracking-tight md:text-4xl lg:text-5xl">
             Enrol your aircraft.

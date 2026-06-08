@@ -31,7 +31,7 @@ function HowItWorks() {
   return (
     <PublicLayout>
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="bg-[#041c2c] text-white">
+      <section className="brand-dark bg-[#001b2e] text-white">
         <div className="mx-auto max-w-7xl px-6 py-24">
           <Eyebrow>The Process</Eyebrow>
           <h1 className="mt-6 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl lg:text-6xl">
@@ -152,7 +152,7 @@ function HowItWorks() {
       </section>
 
       {/* ── Operational image bridge ─────────────────────────────────────── */}
-      <section className="bg-[#041c2c] text-white">
+      <section className="brand-dark bg-[#001b2e] text-white">
         <div className="mx-auto grid max-w-7xl gap-10 px-6 py-20 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div>
             <Eyebrow>Operational Readiness</Eyebrow>
@@ -170,7 +170,7 @@ function HowItWorks() {
               alt="Twin-engine aircraft on the ramp before operational support"
               className="absolute inset-0 h-full w-full object-cover object-center"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#041c2c]/45 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#001b2e]/45 to-transparent" />
           </div>
         </div>
       </section>
@@ -244,7 +244,10 @@ function HowItWorks() {
             {[
               { t: "No Cold Starts", d: "We don't ask for your engine serials at 2am. We already have them." },
               { t: "Vetted Lanes", d: "Our supplier outreach isn't random; it's matched to your aircraft type." },
-              { t: "Zero Markup", d: "You pay what we pay. Our value is in the support, not the parts margin." },
+              {
+                t: "Clear Commercials",
+                d: "Supplier options, documentation, lead time, and PlaneServe commission are clear before approval.",
+              },
               { t: "Permanent Record", d: "Every case, quote, and trace document is stored against the aircraft." },
             ].map((item) => (
               <div key={item.t} className="p-6 border border-border bg-background rounded-sm">
@@ -257,7 +260,7 @@ function HowItWorks() {
       </section>
 
       {/* ── CTA ───────────────────────────────────────────────────────────── */}
-      <section className="bg-[#041c2c] text-white">
+      <section className="brand-dark bg-[#001b2e] text-white">
         <div className="mx-auto max-w-7xl px-6 py-24 text-center">
           <h2 className="text-3xl font-semibold tracking-tight md:text-4xl lg:text-5xl">
             Enrol your aircraft.
