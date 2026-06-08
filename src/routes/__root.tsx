@@ -7,6 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 import appCss from "../styles.css?url";
 import { Toaster } from "@/components/ui/sonner";
@@ -73,6 +74,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "theme-color", content: "#001b2e" },
+      { name: "application-name", content: "PlaneServe" },
+      { name: "mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-title", content: "PlaneServe" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+      { name: "msapplication-TileColor", content: "#001b2e" },
       { title: "PlaneServe — AOG parts support for private and business aircraft" },
       {
         name: "description",
@@ -103,6 +111,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "manifest", href: "/manifest.webmanifest" },
+      { rel: "apple-touch-icon", sizes: "192x192", href: "/icons/icon-192.png" },
+      { rel: "apple-touch-icon", sizes: "512x512", href: "/icons/icon-512.png" },
     ],
   }),
   shellComponent: RootShell,
@@ -127,6 +138,24 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  useEffect(() => {
+    if (!("serviceWorker" in navigator)) return;
+
+    const registerServiceWorker = () => {
+      navigator.serviceWorker.register("/sw.js").catch((error) => {
+        console.warn("PlaneServe service worker registration failed", error);
+      });
+    };
+
+    if (document.readyState === "complete") {
+      registerServiceWorker();
+      return;
+    }
+
+    window.addEventListener("load", registerServiceWorker);
+    return () => window.removeEventListener("load", registerServiceWorker);
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
