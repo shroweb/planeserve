@@ -40,7 +40,7 @@ const CATEGORIES = [
 ] as const;
 
 const inputCls =
-  "w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring/40 placeholder:text-muted-foreground/60";
+  "w-full rounded-sm border border-input bg-background px-3.5 py-2.5 text-sm placeholder:text-muted-foreground/55 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20";
 
 function Field({
   label,
@@ -52,8 +52,8 @@ function Field({
   required?: boolean;
 }) {
   return (
-    <label className="block">
-      <div className="block text-xs font-medium text-foreground/70 mb-1">
+    <label className="grid gap-1.5">
+      <div className="flex min-h-5 items-end text-xs font-medium leading-5 text-foreground/70 sm:min-h-10">
         {label}
         {required && <span className="text-destructive ml-0.5">*</span>}
       </div>
@@ -230,7 +230,7 @@ function EnrolPage() {
         )}
         <Link
           to={isSignedIn ? "/dashboard" : "/login"}
-          className="block w-full rounded-md bg-primary text-primary-foreground text-sm font-medium py-2.5 text-center"
+          className="block w-full rounded-sm bg-accent text-accent-foreground text-sm font-semibold py-2.5 text-center hover:bg-accent/90"
         >
           {isSignedIn ? "Back to Dashboard" : "Go to Login"}
         </Link>
@@ -354,7 +354,7 @@ function EnrolPage() {
               setStepError(null);
               setStep((s) => s + 1);
             }}
-            className="flex items-center gap-1 px-5 py-2.5 rounded-md bg-primary text-primary-foreground text-sm font-medium"
+            className="flex items-center gap-1 px-5 py-2.5 rounded-sm bg-accent text-accent-foreground text-sm font-semibold hover:bg-accent/90"
           >
             Continue
             <ChevronRight className="h-4 w-4" />
@@ -427,7 +427,7 @@ function Step2({
       <p className="text-sm text-muted-foreground mb-6">
         Tell us about yourself. We'll use this to create your account.
       </p>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="First name" required>
           <input
             className={inputCls}
@@ -526,7 +526,7 @@ function Step3({
           </p>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="Make & model" required>
           <input
             className={inputCls}
@@ -616,7 +616,7 @@ function Step3({
             ))}
           </select>
         </Field>
-        <div className="col-span-2">
+        <div className="sm:col-span-2">
           <Field label="Engine serial numbers">
             <textarea
               rows={2}
@@ -685,7 +685,7 @@ function Step4({
       <p className="text-sm text-muted-foreground mb-6">
         These contacts may be called directly in an AOG situation.
       </p>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="Primary contact name" required>
           <input
             className={inputCls}
@@ -984,7 +984,7 @@ function Step5({
       <button
         onClick={handleSubmit}
         disabled={!stripe || !form.agreed || loading}
-        className="w-full flex items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground text-sm font-semibold py-3 disabled:opacity-50 transition-opacity"
+        className="w-full flex items-center justify-center gap-2 rounded-sm bg-accent text-accent-foreground text-sm font-semibold py-3 transition-opacity hover:bg-accent/90 disabled:opacity-50"
       >
         <Lock className="h-4 w-4" />
         {loading

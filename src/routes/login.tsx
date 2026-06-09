@@ -43,7 +43,7 @@ function Login() {
             autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-md border border-input bg-background px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring/40"
+            className="w-full rounded-sm border border-input bg-background px-3.5 py-2.5 text-sm placeholder:text-muted-foreground/55 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
           />
         </label>
         <label className="block">
@@ -62,14 +62,14 @@ function Login() {
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-md border border-input bg-background px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring/40"
+            className="w-full rounded-sm border border-input bg-background px-3.5 py-2.5 text-sm placeholder:text-muted-foreground/55 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
           />
         </label>
 
         <button
           type="submit"
           disabled={loading}
-          className="flex w-full items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
+          className="flex w-full items-center justify-center gap-2 rounded-sm bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground hover:bg-accent/90 disabled:opacity-60"
         >
           {loading ? "Signing in…" : "Sign in"}
           {!loading && <ArrowRight className="h-4 w-4" />}
@@ -77,7 +77,7 @@ function Login() {
 
         <Link
           to="/admin/login"
-          className="flex w-full items-center justify-center gap-2 rounded-md border border-border px-5 py-3 text-sm font-medium text-foreground hover:bg-muted/60"
+          className="flex w-full items-center justify-center gap-2 rounded-sm border border-input bg-background px-5 py-3 text-sm font-medium text-foreground hover:border-accent/40 hover:bg-accent/5"
         >
           <ShieldCheck className="h-4 w-4 text-muted-foreground" strokeWidth={1.8} />
           Enter as Ops Desk (admin)

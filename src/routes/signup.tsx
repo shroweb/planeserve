@@ -102,7 +102,7 @@ function Signup() {
                 <select
                   value={form.role}
                   onChange={(e) => setForm((f) => ({ ...f, role: e.target.value as Role }))}
-                  className="w-full rounded-sm border border-input bg-background px-3 py-2 text-sm"
+                  className="w-full rounded-sm border border-input bg-background px-3.5 py-2.5 text-sm placeholder:text-muted-foreground/55 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
                 >
                   {roles.map((role) => (
                     <option key={role}>{role}</option>
@@ -125,7 +125,7 @@ function Signup() {
               />
             </Field>
             <div className="md:col-span-2">
-              <button className="rounded-sm bg-primary px-5 py-3 text-sm font-medium text-primary-foreground">
+              <button className="rounded-sm bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground hover:bg-accent/90">
                 Create free account
               </button>
               <p className="mt-4 text-xs text-muted-foreground">
@@ -167,7 +167,7 @@ function Input({
       required
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full rounded-sm border border-input bg-background px-3 py-2 text-sm"
+      className="w-full rounded-sm border border-input bg-background px-3.5 py-2.5 text-sm placeholder:text-muted-foreground/55 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
     />
   );
 }

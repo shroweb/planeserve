@@ -30,7 +30,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
       <div className="flex w-full items-center justify-center bg-background px-6 py-12 lg:w-1/2">
         <div className="w-full max-w-sm">
           <div className="mb-8 flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-accent">
+            <div className="flex h-9 w-9 items-center justify-center rounded-sm bg-primary text-accent-on-dark">
               <Plane className="h-5 w-5" strokeWidth={1.5} />
             </div>
             <span className="text-lg font-semibold tracking-tight">PlaneServe</span>

@@ -84,7 +84,7 @@ function SetPassword() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-sm border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring/40"
+              className="w-full rounded-sm border border-input bg-background px-3.5 py-2.5 text-sm placeholder:text-muted-foreground/55 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
               placeholder="At least 8 characters"
             />
           </label>
@@ -95,7 +95,7 @@ function SetPassword() {
               required
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
-              className="w-full rounded-sm border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring/40"
+              className="w-full rounded-sm border border-input bg-background px-3.5 py-2.5 text-sm placeholder:text-muted-foreground/55 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
               placeholder="Repeat password"
             />
           </label>
@@ -107,7 +107,7 @@ function SetPassword() {
           <button
             type="submit"
             disabled={loading}
-            className="mt-6 w-full rounded-sm bg-primary px-5 py-3 text-sm font-medium text-primary-foreground disabled:opacity-60"
+            className="mt-6 w-full rounded-sm bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground hover:bg-accent/90 disabled:opacity-60"
           >
             {loading ? "Setting password…" : "Set password"}
           </button>

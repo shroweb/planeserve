@@ -48,7 +48,7 @@ function AdminLogin() {
             className="rounded-md border border-border bg-card p-8 shadow-[0_18px_50px_oklch(0.2_0.02_250_/_0.06)]"
           >
             <div className="flex items-center gap-3 border-b border-border pb-5">
-              <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-primary text-accent">
+              <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-primary text-accent-on-dark">
                 <ShieldCheck className="h-5 w-5" strokeWidth={1.5} />
               </div>
               <div>
@@ -64,7 +64,7 @@ function AdminLogin() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-sm border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring/40"
+                className="w-full rounded-sm border border-input bg-background px-3.5 py-2.5 text-sm placeholder:text-muted-foreground/55 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
               />
             </label>
             <label className="mt-4 block">
@@ -74,14 +74,14 @@ function AdminLogin() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-sm border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring/40"
+                className="w-full rounded-sm border border-input bg-background px-3.5 py-2.5 text-sm placeholder:text-muted-foreground/55 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
               />
             </label>
 
             <button
               type="submit"
               disabled={loading}
-              className="mt-6 w-full rounded-sm bg-primary px-5 py-3 text-sm font-medium text-primary-foreground disabled:opacity-60"
+              className="mt-6 w-full rounded-sm bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground hover:bg-accent/90 disabled:opacity-60"
             >
               {loading ? "Signing in…" : "Sign in to Admin"}
             </button>
