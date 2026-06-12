@@ -4,8 +4,8 @@
     {
       "name": "planeserve",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
-      "port": 8080,
+      "runtimeArgs": ["run", "dev", "--", "--port", "3030"],
+      "port": 3030,
       "autoPort": false
     }
   ]

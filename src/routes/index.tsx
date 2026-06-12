@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
-import heroImage from "@/assets/WhatsApp Image 2026-06-03 at 17.32.26 (1).jpeg";
+import heroImage from "@/assets/gulfstream-dusk-ramp.jpeg";
 import heroMobileImage from "@/assets/WhatsApp Image 2026-06-03 at 17.11.43.jpeg";
 import citationDusk from "@/assets/citation-dusk-ramp.jpeg";
 import founderAircraft from "@/assets/WhatsApp Image 2026-06-03 at 17.32.26.jpeg";
@@ -73,14 +73,14 @@ function Home() {
         <img
           src={heroImage}
           alt="Business aircraft on the ramp outside a maintenance hangar"
-          className="absolute inset-0 hidden h-full w-full object-cover object-[68%_center] md:block"
+          className="absolute inset-0 hidden h-full w-full object-cover object-[55%_center] md:block"
         />
         <img
           src={heroMobileImage}
           alt="Twin-engine aircraft on the ramp ready for support"
           className="absolute inset-0 h-full w-full object-cover object-[50%_70%] md:hidden"
         />
-        <div className="absolute inset-0 hidden bg-[#001b2e]/35 md:block" />
+        <div className="absolute inset-0 hidden bg-[#001b2e]/15 md:block" />
         <div className="absolute inset-0 hidden bg-[linear-gradient(90deg,#001b2e_0%,#001b2e_42%,rgba(0,27,46,0.92)_58%,rgba(0,27,46,0.52)_82%,rgba(0,27,46,0.28)_100%)] md:block" />
         <div className="absolute inset-0 bg-[linear-gradient(110deg,oklch(0.10_0.025_250)_0%,oklch(0.11_0.025_250_/_0.95)_35%,oklch(0.11_0.025_250_/_0.42)_65%,oklch(0.11_0.025_250_/_0.06)_100%)] md:hidden" />
         <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#001b2e] to-transparent" />
