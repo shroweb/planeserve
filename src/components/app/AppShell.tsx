@@ -423,7 +423,7 @@ export function AppShell({ children, variant = "member" }: Props) {
         </div>
         <div className="px-4 py-6 md:px-8 md:py-8">{children}</div>
       </div>
-      {variant !== "admin" && <ViewAsSwitcher current="Subscriber" />}
+      <ViewAsSwitcher current={variant === "admin" ? "Admin" : "Subscriber"} />
     </div>
   );
 }
