@@ -3,10 +3,6 @@ import "dotenv/config";
 const connectionString = process.env.DATABASE_URL;
 const baseURL = process.env.BETTER_AUTH_URL ?? "http://localhost:8080";
 
-// better-auth rejects state-changing requests (e.g. sign-out) whose Origin
-// isn't trusted. The configured baseURL is always trusted; in non-production
-// we also trust common localhost dev ports so a mismatched BETTER_AUTH_URL or
-// dev port can't silently break auth.
 const trustedOrigins =
   process.env.NODE_ENV === "production"
     ? [baseURL]
@@ -22,7 +18,6 @@ let authPromise: Promise<AuthLike> | undefined;
 async function sendEmail(to: string, subject: string, html: string) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
-    // No Resend key — log link so dev/staging still works.
     console.warn(`[PlaneServe] Email to ${to} — ${subject}`);
     console.warn(`[PlaneServe] Body: ${html}`);
     return;
@@ -63,25 +58,7 @@ async function createConfiguredAuth(): Promise<AuthLike> {
         await sendEmail(
           user.email,
           "Reset your PlaneServe password",
-          `
-          <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:32px 24px">
-            <img src="https://planeserve.aero/logo.png" alt="PlaneServe" style="height:32px;margin-bottom:24px" />
-            <h2 style="font-size:20px;font-weight:600;margin:0 0 12px">Reset your password</h2>
-            <p style="color:#555;font-size:14px;line-height:1.6;margin:0 0 24px">
-              Hi ${name}, we received a request to reset your PlaneServe password.
-              Click the button below to choose a new one. This link expires in 1 hour.
-            </p>
-            <a href="${url}" style="display:inline-block;background:#0f172a;color:#fff;text-decoration:none;padding:12px 24px;border-radius:6px;font-size:14px;font-weight:600">
-              Reset password
-            </a>
-            <p style="color:#999;font-size:12px;margin-top:24px;line-height:1.6">
-              If you didn't request this, you can safely ignore this email.
-              Your password won't change until you click the link above.
-            </p>
-            <hr style="border:none;border-top:1px solid #eee;margin:24px 0" />
-            <p style="color:#bbb;font-size:11px">PlaneServe AOG Support · ops@planeserve.aero</p>
-          </div>
-        `,
+          `<p>Hi ${name}, <a href="${url}">reset your password</a>.</p>`,
         );
       },
     },
@@ -120,8 +97,18 @@ function databaseNotConfiguredResponse() {
 export const auth = {
   handler: async (request: Request) => {
     if (!connectionString) return databaseNotConfiguredResponse();
-    const configuredAuth = await getAuth();
-    return configuredAuth.handler(request);
+    try {
+      const configuredAuth = await getAuth();
+      return await configuredAuth.handler(request);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      const stack = error instanceof Error ? error.stack : undefined;
+      console.error("[auth] handler error:", error);
+      return new Response(JSON.stringify({ error: "auth_init_failed", message, stack }), {
+        status: 500,
+        headers: { "content-type": "application/json; charset=utf-8" },
+      });
+    }
   },
   api: new Proxy(
     {},
