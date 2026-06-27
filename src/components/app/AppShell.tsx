@@ -65,7 +65,7 @@ const adminSections: { title: string; items: NavItem[] }[] = [
     items: [
       { to: "/admin", label: "Overview", icon: DashboardIcon },
       { to: "/admin/aog", label: "AOG queue", icon: AogIcon },
-      { to: "/admin/comms", label: "Supplier outreach", icon: MessageIcon },
+      { to: "/admin/comms", label: "Messages", icon: MessageIcon },
       { to: "/admin/enrolments", label: "Enrolments", icon: TechLogIcon },
       { to: "/admin/aircraft", label: "Aircraft", icon: AircraftIcon },
     ],
@@ -421,7 +421,9 @@ export function AppShell({ children, variant = "member" }: Props) {
             </div>
           </div>
         </div>
-        <div className="px-4 py-6 md:px-8 md:py-8">{children}</div>
+        <main className="w-full max-w-full overflow-x-hidden px-4 py-6 md:px-8 md:py-8">
+          {children}
+        </main>
       </div>
       <ViewAsSwitcher current={variant === "admin" ? "Admin" : "Subscriber"} />
     </div>

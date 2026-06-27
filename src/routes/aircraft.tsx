@@ -88,7 +88,7 @@ function AircraftPage() {
           </Link>
         </div>
       ) : (
-        <div className="mt-8 grid gap-6 lg:grid-cols-[260px_1fr]">
+        <div className="mt-8 grid min-w-0 gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
           {/* Aircraft selector */}
           <div className="space-y-2">
             {aircraft.map((a) => (
@@ -135,7 +135,7 @@ function AircraftDetail({ aircraft }: { aircraft: AircraftRecord }) {
   ];
 
   return (
-    <div className="rounded-md border border-border bg-card">
+    <div className="min-w-0 overflow-hidden rounded-md border border-border bg-card">
       <div className="border-b border-border px-6 pt-5">
         <div className="flex items-start justify-between gap-4">
           <div>
@@ -165,7 +165,7 @@ function AircraftDetail({ aircraft }: { aircraft: AircraftRecord }) {
         </div>
       </div>
 
-      <div className="p-6">
+      <div className="min-w-0 p-4 sm:p-6">
         {tab === "overview" && <OverviewTab aircraft={aircraft} />}
         {tab === "engine" && <EngineTab aircraft={aircraft} />}
         {tab === "contacts" && <ContactsTab aircraft={aircraft} />}

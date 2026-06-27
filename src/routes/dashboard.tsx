@@ -66,7 +66,7 @@ function Dashboard() {
             <span>
               {dateLine} · {timeLine}
             </span>
-            <RoleChip>Operator</RoleChip>
+            <RoleChip>Owner / operator</RoleChip>
           </div>
           <h1 className="mt-1.5 text-2xl font-semibold tracking-tight">
             {greeting}, {user?.name?.split(" ")[0] ?? "there"}.
@@ -81,19 +81,21 @@ function Dashboard() {
       </div>
 
       {/* Grounded / action alert */}
-      {grounded[0] && (
-        <div className="mt-6 flex flex-wrap items-center gap-4 rounded-md border border-destructive/25 bg-destructive/5 px-5 py-4">
+      {grounded.length > 0 && (
+        <div className="mt-6 rounded-md border border-destructive/25 bg-destructive/5 px-4 py-4 sm:px-5">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-destructive text-white">
             <AogIcon className="h-5 w-5" strokeWidth={1.8} />
           </div>
           <div className="min-w-0 flex-1">
             <div className="text-sm font-semibold text-destructive">
-              {grounded[0].registration} is grounded at {grounded[0].location || "—"} —{" "}
-              {grounded[0].affectedSystem}
+              {grounded.length === 1
+                ? `${grounded[0].registration} is grounded at ${grounded[0].location || "—"} — ${grounded[0].affectedSystem}`
+                : `${grounded.length} aircraft AOG — highest priority: ${grounded[0].registration} at ${grounded[0].location || "—"}`}
             </div>
             <div className="mt-0.5 text-xs text-muted-foreground">
               Case {grounded[0].id.slice(-8).toUpperCase()} · priority {grounded[0].priorityScore} ·
-              the desk is handling sourcing.
+              the desk is handling sourcing{grounded.length > 1 ? ` · ${grounded.length - 1} more active` : ""}.
             </div>
           </div>
           <Link
@@ -103,6 +105,24 @@ function Dashboard() {
           >
             Open case <ArrowRightIcon className="h-4 w-4" />
           </Link>
+          </div>
+          {grounded.length > 1 && (
+            <div className="mt-4 grid gap-2 border-t border-destructive/15 pt-3 sm:grid-cols-2">
+              {grounded.slice(0, 4).map((r) => (
+                <Link
+                  key={r.id}
+                  to="/aog/$id"
+                  params={{ id: r.id }}
+                  className="flex items-center justify-between gap-3 rounded-sm border border-destructive/15 bg-white/70 px-3 py-2 text-xs hover:bg-white"
+                >
+                  <span className="min-w-0 truncate font-semibold text-destructive">
+                    {r.registration} · {r.location || "Location TBC"}
+                  </span>
+                  <span className="shrink-0 text-muted-foreground">Priority {r.priorityScore}</span>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       )}
 

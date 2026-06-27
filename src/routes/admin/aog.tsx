@@ -52,6 +52,8 @@ const conditions: SupplierCondition[] = [
   "As Removed",
 ];
 const filters = ["All", ...statuses] as const;
+const adminInputCls =
+  "h-10 w-full rounded-sm border border-input bg-card px-3 text-sm";
 
 function AdminAog() {
   const [filter, setFilter] = useState<(typeof filters)[number]>("All");
@@ -747,21 +749,21 @@ function CaseDetailPanel({
             Add supplier quote
           </div>
           <form onSubmit={submitQuote} className="grid gap-3">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid gap-3 md:grid-cols-2">
               <QField label="Supplier name *">
                 <input
                   required
                   value={quoteForm.supplierName}
                   onChange={(e) => updateQuote("supplierName", e.target.value)}
                   placeholder="e.g. Aviall, API Technologies"
-                  className="w-full rounded-sm border border-input bg-card px-3 py-2 text-sm"
+                  className={adminInputCls}
                 />
               </QField>
               <QField label="Condition">
                 <select
                   value={quoteForm.condition}
                   onChange={(e) => updateQuote("condition", e.target.value as SupplierCondition)}
-                  className="w-full rounded-sm border border-input bg-card px-3 py-2 text-sm"
+                  className={adminInputCls}
                 >
                   {conditions.map((c) => (
                     <option key={c}>{c}</option>
@@ -778,12 +780,12 @@ function CaseDetailPanel({
                     value={quoteForm.netPrice}
                     onChange={(e) => updateQuote("netPrice", e.target.value)}
                     placeholder="0.00"
-                    className="w-full rounded-sm border border-input bg-card px-3 py-2 text-sm"
+                    className={adminInputCls}
                   />
                   <select
                     value={quoteForm.currency}
                     onChange={(e) => updateQuote("currency", e.target.value)}
-                    className="rounded-sm border border-input bg-card px-3 py-2 text-sm"
+                    className="h-10 rounded-sm border border-input bg-card px-3 text-sm"
                   >
                     <option>USD</option>
                     <option>GBP</option>
@@ -800,7 +802,7 @@ function CaseDetailPanel({
                     max="50"
                     value={quoteForm.marginPct}
                     onChange={(e) => updateQuote("marginPct", Number(e.target.value))}
-                    className="w-20 rounded-sm border border-input bg-card px-3 py-2 text-sm"
+                    className="h-10 w-20 rounded-sm border border-input bg-card px-3 text-sm"
                   />
                   {subscriberPrice > 0 && (
                     <span className="text-xs text-muted-foreground">
@@ -822,7 +824,7 @@ function CaseDetailPanel({
                 <select
                   value={quoteForm.leadTime}
                   onChange={(e) => updateQuote("leadTime", e.target.value)}
-                  className="w-full rounded-sm border border-input bg-card px-3 py-2 text-sm"
+                  className={adminInputCls}
                 >
                   {["In stock — immediate", "In stock — 24h to prepare", "Can source — 48–72h", "Can source — 1 week"].map((o) => (
                     <option key={o}>{o}</option>
@@ -833,7 +835,7 @@ function CaseDetailPanel({
                 <select
                   value={quoteForm.paperwork}
                   onChange={(e) => updateQuote("paperwork", e.target.value)}
-                  className="w-full rounded-sm border border-input bg-card px-3 py-2 text-sm"
+                  className={adminInputCls}
                 >
                   {["EASA Form 1", "FAA Form 8130-3", "Both EASA & FAA", "TCCA Form 1", "No documentation"].map((o) => (
                     <option key={o}>{o}</option>
@@ -844,7 +846,7 @@ function CaseDetailPanel({
                 <select
                   value={quoteForm.coreCharge}
                   onChange={(e) => updateQuote("coreCharge", e.target.value)}
-                  className="w-full rounded-sm border border-input bg-card px-3 py-2 text-sm"
+                  className={adminInputCls}
                 >
                   {["No core charge", "Yes — confirm amount separately"].map((o) => (
                     <option key={o}>{o}</option>
@@ -856,7 +858,7 @@ function CaseDetailPanel({
                   value={quoteForm.freightRoute}
                   onChange={(e) => updateQuote("freightRoute", e.target.value)}
                   placeholder="e.g. DHL Express LAX→LHR"
-                  className="w-full rounded-sm border border-input bg-card px-3 py-2 text-sm"
+                  className={adminInputCls}
                 />
               </QField>
             </div>

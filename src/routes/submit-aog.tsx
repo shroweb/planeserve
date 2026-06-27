@@ -62,6 +62,11 @@ const FLYING_OPTIONS = [
   "Flexible",
 ];
 
+const formControlCls =
+  "mt-1.5 h-11 w-full rounded-lg border border-border bg-card px-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary";
+const textareaCls =
+  "mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary resize-none";
+
 type AogForm = {
   aircraftId: string;
   location: string;
@@ -219,9 +224,9 @@ function SubmitAog() {
 
   return (
     <AppShell>
-      <div className="max-w-3xl">
+      <div className="max-w-5xl">
         {/* Emergency header */}
-        <div className="rounded-xl bg-[#1a0a0a] text-white p-5 mb-6 flex items-start justify-between gap-4">
+        <div className="mb-6 rounded-xl bg-[#1a0a0a] p-5 text-white sm:flex sm:items-start sm:justify-between sm:gap-4">
           <div className="flex items-start gap-4">
             <div className="h-10 w-10 rounded-full bg-red-600 flex items-center justify-center shrink-0">
               <Zap className="h-5 w-5" strokeWidth={2} />
@@ -230,15 +235,15 @@ function SubmitAog() {
               <p className="text-[10px] font-semibold uppercase tracking-widest text-red-400 mb-0.5">
                 Emergency
               </p>
-              <h1 className="text-xl font-bold">Submit AOG</h1>
-              <p className="text-sm text-white/60 mt-1">
+              <h1 className="text-2xl font-bold leading-tight sm:text-xl">Submit AOG</h1>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-white/70 sm:mt-1">
                 Call the hotline first. We pick up 24/7. If you cannot call, complete the form and
                 we will call you within 5 minutes.
               </p>
             </div>
           </div>
-          <div className="text-right shrink-0">
-            <div className="flex items-center gap-1.5 justify-end">
+          <div className="mt-4 shrink-0 text-left sm:mt-0 sm:text-right">
+            <div className="flex items-center gap-1.5 sm:justify-end">
               <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
               <span className="text-xs text-white/70 font-medium">
                 Desk active · 24/7 AOG support
@@ -249,7 +254,7 @@ function SubmitAog() {
         </div>
 
         {/* Hotline cards */}
-        <div className="grid grid-cols-2 gap-3 mb-6">
+        <div className="mb-6 grid gap-3 sm:grid-cols-2">
           <div className="bg-[#111] rounded-xl p-5 text-white">
             <p className="text-[10px] font-semibold uppercase tracking-widest text-white/50 mb-2">
               AOG Hotline — 24/7
@@ -285,7 +290,7 @@ function SubmitAog() {
           <p className="text-xs font-semibold uppercase tracking-widest text-blue-600 mb-4">
             What happens after you submit
           </p>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid gap-4 sm:grid-cols-3">
             {[
               {
                 n: 1,
@@ -346,7 +351,7 @@ function SubmitAog() {
                     location: a?.baseAirport || f.location,
                   }));
                 }}
-                className="mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                className={formControlCls}
               >
                 {aircraft.map((a) => (
                   <option key={a.id} value={a.id}>
@@ -365,7 +370,7 @@ function SubmitAog() {
               value={form.location}
               onChange={(e) => setForm((f) => ({ ...f, location: e.target.value }))}
               placeholder="e.g. LFPB Paris Le Bourget, or city name"
-              className="mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+              className={formControlCls}
             />
           </div>
 
@@ -378,7 +383,7 @@ function SubmitAog() {
               value={form.issueDescription}
               onChange={(e) => setForm((f) => ({ ...f, issueDescription: e.target.value }))}
               placeholder="Describe clearly — e.g. TFE731-2-2B fuel control unit failed on shutdown. MEL item. Aircraft unairworthy. LFPB."
-              className="mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary resize-none"
+              className={textareaCls}
             />
           </div>
 
@@ -397,7 +402,7 @@ function SubmitAog() {
                 setSelectedComponent("");
                 setComponentOther("");
               }}
-              className="mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+              className={formControlCls}
             >
               <option value="">Select the system that has failed…</option>
               {ATA_OPTIONS.map((o) => (
@@ -423,7 +428,7 @@ function SubmitAog() {
                   <select
                     value={selectedComponent}
                     onChange={(e) => setSelectedComponent(e.target.value)}
-                    className="mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                    className={formControlCls}
                   >
                     <option value="">Select a component…</option>
                     {curated.map((c) => (
@@ -439,7 +444,7 @@ function SubmitAog() {
                       value={componentOther}
                       onChange={(e) => setComponentOther(e.target.value)}
                       placeholder="Describe the component or part"
-                      className="mt-2 w-full rounded-lg border border-border bg-card px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                      className={formControlCls}
                     />
                   )}
                 </div>
@@ -457,18 +462,18 @@ function SubmitAog() {
               value={form.partNumber}
               onChange={(e) => setForm((f) => ({ ...f, partNumber: e.target.value }))}
               placeholder="e.g. 3-1454-0002"
-              className="mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+              className={formControlCls}
             />
           </div>
 
           {/* Two-col dropdowns */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <label className="text-sm font-medium">People on board or affected?</label>
               <select
                 value={pob}
                 onChange={(e) => setPob(e.target.value)}
-                className="mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                className={formControlCls}
               >
                 {POB_OPTIONS.map((o) => (
                   <option key={o}>{o}</option>
@@ -480,7 +485,7 @@ function SubmitAog() {
               <select
                 value={flying}
                 onChange={(e) => setFlying(e.target.value)}
-                className="mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                className={formControlCls}
               >
                 {FLYING_OPTIONS.map((o) => (
                   <option key={o}>{o}</option>
@@ -492,7 +497,7 @@ function SubmitAog() {
               <select
                 value={amoStatus}
                 onChange={(e) => setAmoStatus(e.target.value)}
-                className="mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                className={formControlCls}
               >
                 {AMO_OPTIONS.map((o) => (
                   <option key={o}>{o}</option>
@@ -506,7 +511,7 @@ function SubmitAog() {
                 value={form.contactPhone}
                 onChange={(e) => setForm((f) => ({ ...f, contactPhone: e.target.value }))}
                 placeholder="+44 7700 900000"
-                className="mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                className={formControlCls}
               />
             </div>
           </div>
