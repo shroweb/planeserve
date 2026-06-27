@@ -90,6 +90,10 @@ function AogCasePage() {
             <span className="font-semibold text-foreground">{q?.supplierName}</span>. You will
             receive updates as the part progresses to your location.
           </p>
+          <p className="mt-2 text-xs leading-5 text-muted-foreground">
+            Payment and order instructions are handled by PlaneServe. Supplier bank details are not
+            sent directly to the subscriber.
+          </p>
           {q && (
             <div className="mt-6 rounded-sm border border-border bg-background p-4 text-left text-sm">
               <div className="grid grid-cols-2 gap-3">
@@ -228,7 +232,8 @@ function AogCasePage() {
               {canApprove && (
                 <p className="mb-4 text-sm text-muted-foreground">
                   PlaneServe has sourced the following options. Please review and approve one to
-                  proceed with ordering.
+                  proceed. PlaneServe will then confirm order/payment instructions and coordinate
+                  the supplier.
                 </p>
               )}
               <div className="space-y-4">
@@ -309,6 +314,12 @@ function OptionCard({
             <div className="mt-3 rounded-sm bg-muted/50 px-3 py-2 text-xs text-muted-foreground">
               {quote.notes}
             </div>
+          )}
+          {canApprove && !quote.approvedAt && (
+            <p className="mt-3 text-[11px] leading-5 text-muted-foreground">
+              Approval authorises PlaneServe to proceed with this option. PlaneServe controls
+              payment/order instructions and supplier dispatch coordination.
+            </p>
           )}
         </div>
         {canApprove && !quote.approvedAt && (

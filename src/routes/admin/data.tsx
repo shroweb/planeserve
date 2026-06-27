@@ -61,6 +61,8 @@ function AdminDataPage() {
 function UsmTab() {
   const queryClient = useQueryClient();
   const [showForm, setShowForm] = useState(false);
+  const [showImport, setShowImport] = useState(false);
+  const [csvInput, setCsvInput] = useState("");
   const [form, setForm] = useState({
     partNumber: "",
     aircraftType: "",
@@ -105,9 +107,72 @@ function UsmTab() {
     },
   });
 
+  const importMutation = useMutation({
+    mutationFn: async () => {
+      const rows = csvInput
+        .split(/\r?\n/)
+        .map((row) => row.trim())
+        .filter(Boolean);
+      const [, ...dataRows] =
+        rows[0]?.toLowerCase().includes("part") ? rows : ["partNumber,aircraftType,description,availabilityPct,trend,supplierCount,priceCents,currency,riskScore,notes", ...rows];
+
+      await Promise.all(
+        dataRows.map((row) => {
+          const [
+            partNumber,
+            aircraftType = "",
+            description = "",
+            availabilityPct = "50",
+            trend = "stable",
+            supplierCount = "0",
+            priceCents = "0",
+            currency = "usd",
+            riskScore = "30",
+            notes = "",
+          ] = row.split(",").map((v) => v.trim());
+          return upsertUsmSignal({
+            data: {
+              partNumber,
+              aircraftType,
+              description,
+              availabilityPct: Number(availabilityPct) || 0,
+              trend,
+              supplierCount: Number(supplierCount) || 0,
+              priceCents: Number(priceCents) || 0,
+              currency,
+              riskScore: Number(riskScore) || 0,
+              notes,
+            },
+          });
+        }),
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["usm-signals"] });
+      queryClient.invalidateQueries({ queryKey: ["usm-signals-public"] });
+      setShowImport(false);
+      setCsvInput("");
+    },
+  });
+
   return (
     <div>
-      <div className="flex justify-end mb-4">
+      <div className="mb-4 rounded-lg border border-border bg-muted/20 p-4">
+        <p className="text-sm font-semibold">Market signal workflow</p>
+        <p className="mt-1 text-xs leading-5 text-muted-foreground">
+          Add signals manually for now or paste CSV rows from supplier/market checks. These records
+          immediately feed the subscriber Parts Intelligence page. Future supplier/API feeds can
+          write into the same signal table.
+        </p>
+      </div>
+
+      <div className="flex flex-wrap justify-end gap-2 mb-4">
+        <button
+          onClick={() => setShowImport(!showImport)}
+          className="flex items-center gap-2 px-3 py-1.5 rounded border border-border bg-card text-sm font-medium hover:bg-muted/60"
+        >
+          Bulk import CSV
+        </button>
         <button
           onClick={() => setShowForm(!showForm)}
           className="flex items-center gap-2 px-3 py-1.5 rounded bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90"
@@ -116,6 +181,37 @@ function UsmTab() {
           Add signal
         </button>
       </div>
+
+      {showImport && (
+        <div className="bg-card border border-border rounded-lg p-5 mb-6">
+          <label className="text-xs font-medium text-muted-foreground">
+            CSV rows: partNumber, aircraftType, description, availabilityPct, trend, supplierCount,
+            priceCents, currency, riskScore, notes
+          </label>
+          <textarea
+            rows={5}
+            value={csvInput}
+            onChange={(e) => setCsvInput(e.target.value)}
+            placeholder="PN-123,Citation CJ4,Hydraulic pump,35,rising,2,1250000,usd,78,Supplier stock thinning"
+            className="mt-2 w-full rounded border border-border bg-background px-3 py-2 text-sm"
+          />
+          <div className="mt-3 flex gap-2">
+            <button
+              onClick={() => importMutation.mutate()}
+              disabled={!csvInput.trim() || importMutation.isPending}
+              className="px-4 py-2 rounded bg-primary text-primary-foreground text-sm font-medium disabled:opacity-50"
+            >
+              {importMutation.isPending ? "Importing…" : "Import signals"}
+            </button>
+            <button
+              onClick={() => setShowImport(false)}
+              className="px-4 py-2 rounded border border-border text-sm"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
 
       {showForm && (
         <div className="bg-card border border-border rounded-lg p-5 mb-6">

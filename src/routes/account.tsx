@@ -31,19 +31,35 @@ function Account() {
     name: string;
     company: string;
     phone: string;
+    addressLine1: string;
+    addressLine2: string;
+    city: string;
+    region: string;
+    postalCode: string;
+    country: string;
   } | null>(null);
   const [pwForm, setPwForm] = useState({ current: "", next: "", confirm: "" });
   const [pwError, setPwError] = useState("");
 
   // Initialise form once user loads
   if (user && profileForm === null) {
-    setProfileForm({ name: user.name ?? "", company: user.company ?? "", phone: user.phone ?? "" });
+    setProfileForm({
+      name: user.name ?? "",
+      company: user.company ?? "",
+      phone: user.phone ?? "",
+      addressLine1: user.addressLine1 ?? "",
+      addressLine2: user.addressLine2 ?? "",
+      city: user.city ?? "",
+      region: user.region ?? "",
+      postalCode: user.postalCode ?? "",
+      country: user.country ?? "",
+    });
   }
 
   const profileMutation = useMutation({
     mutationFn: () =>
       updateProfile({
-        data: { name: profileForm!.name, company: profileForm!.company, phone: profileForm!.phone },
+        data: profileForm!,
       }),
     onSuccess: () => {
       toast.success("Profile updated.");
@@ -92,7 +108,7 @@ function Account() {
             <h2 className="text-sm font-semibold">Profile details</h2>
           </div>
           <div className="p-6 space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Full name">
                 <input
                   value={profileForm.name}
@@ -118,6 +134,68 @@ function Account() {
                 placeholder="+1 555 000 0000"
               />
             </Field>
+            <div className="border-t border-border pt-4">
+              <h3 className="text-sm font-semibold">Billing / operator address</h3>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Used for account records, invoicing context and operator correspondence.
+              </p>
+            </div>
+            <Field label="Address line 1">
+              <input
+                value={profileForm.addressLine1}
+                onChange={(e) =>
+                  setProfileForm((f) => ({ ...f!, addressLine1: e.target.value }))
+                }
+                className={inputCls}
+                placeholder="Hangar, building, street"
+              />
+            </Field>
+            <Field label="Address line 2">
+              <input
+                value={profileForm.addressLine2}
+                onChange={(e) =>
+                  setProfileForm((f) => ({ ...f!, addressLine2: e.target.value }))
+                }
+                className={inputCls}
+                placeholder="Optional"
+              />
+            </Field>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field label="City">
+                <input
+                  value={profileForm.city}
+                  onChange={(e) => setProfileForm((f) => ({ ...f!, city: e.target.value }))}
+                  className={inputCls}
+                  placeholder="London"
+                />
+              </Field>
+              <Field label="County / state / region">
+                <input
+                  value={profileForm.region}
+                  onChange={(e) => setProfileForm((f) => ({ ...f!, region: e.target.value }))}
+                  className={inputCls}
+                  placeholder="Greater London"
+                />
+              </Field>
+              <Field label="Postcode / ZIP">
+                <input
+                  value={profileForm.postalCode}
+                  onChange={(e) =>
+                    setProfileForm((f) => ({ ...f!, postalCode: e.target.value }))
+                  }
+                  className={inputCls}
+                  placeholder="SW1A 1AA"
+                />
+              </Field>
+              <Field label="Country">
+                <input
+                  value={profileForm.country}
+                  onChange={(e) => setProfileForm((f) => ({ ...f!, country: e.target.value }))}
+                  className={inputCls}
+                  placeholder="United Kingdom"
+                />
+              </Field>
+            </div>
             <div className="pt-1 flex items-center justify-between">
               <div className="text-xs text-muted-foreground">
                 Email: <span className="font-medium text-foreground">{user.email}</span>

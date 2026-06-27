@@ -87,6 +87,12 @@ export type UserRecord = {
   email: string;
   company: string;
   phone: string;
+  addressLine1: string;
+  addressLine2: string;
+  city: string;
+  region: string;
+  postalCode: string;
+  country: string;
   role: Role;
   isAdmin: boolean;
   createdAt: string;
@@ -378,6 +384,12 @@ async function currentUser(): Promise<UserRecord> {
       email: profile.email,
       company: profile.company,
       phone: profile.phone,
+      addressLine1: profile.addressLine1,
+      addressLine2: profile.addressLine2,
+      city: profile.city,
+      region: profile.region,
+      postalCode: profile.postalCode,
+      country: profile.country,
       role: profile.role,
       isAdmin: profile.isAdmin,
       createdAt: profile.createdAt.toISOString(),
@@ -395,6 +407,12 @@ async function currentUser(): Promise<UserRecord> {
       email: session.user.email,
       company: "",
       phone: "",
+      addressLine1: "",
+      addressLine2: "",
+      city: "",
+      region: "",
+      postalCode: "",
+      country: "",
       role: "Operator",
       isAdmin: false,
     })
@@ -406,6 +424,12 @@ async function currentUser(): Promise<UserRecord> {
     email: session.user.email,
     company: "",
     phone: "",
+    addressLine1: "",
+    addressLine2: "",
+    city: "",
+    region: "",
+    postalCode: "",
+    country: "",
     role: "Operator",
     isAdmin: false,
     createdAt: new Date().toISOString(),
@@ -430,6 +454,12 @@ export const upsertProfile = createServerFn({ method: "POST" })
       name: z.string().min(1),
       company: z.string().optional().default(""),
       phone: z.string().optional().default(""),
+      addressLine1: z.string().optional().default(""),
+      addressLine2: z.string().optional().default(""),
+      city: z.string().optional().default(""),
+      region: z.string().optional().default(""),
+      postalCode: z.string().optional().default(""),
+      country: z.string().optional().default(""),
       role: roleSchema.optional().default("Operator"),
     }),
   )
@@ -444,14 +474,31 @@ export const upsertProfile = createServerFn({ method: "POST" })
         email: user.email,
         company: data.company,
         phone: data.phone,
+        addressLine1: data.addressLine1,
+        addressLine2: data.addressLine2,
+        city: data.city,
+        region: data.region,
+        postalCode: data.postalCode,
+        country: data.country,
         role: data.role,
         isAdmin: user.isAdmin,
       })
       .onConflictDoUpdate({
         target: schema.profiles.userId,
-        set: { name: data.name, company: data.company, phone: data.phone, role: data.role },
+        set: {
+          name: data.name,
+          company: data.company,
+          phone: data.phone,
+          addressLine1: data.addressLine1,
+          addressLine2: data.addressLine2,
+          city: data.city,
+          region: data.region,
+          postalCode: data.postalCode,
+          country: data.country,
+          role: data.role,
+        },
       });
-    return { ...user, name: data.name, company: data.company, phone: data.phone, role: data.role };
+    return { ...user, ...data };
   });
 
 export const getDashboardData = createServerFn({ method: "GET" }).handler(async () => {
@@ -2049,8 +2096,20 @@ export const approveSupplierQuote = createServerFn({ method: "POST" })
       id: `se_${crypto.randomUUID()}`,
       requestId: data.requestId,
       status: "Confirmed",
-      note: "Supplier quote approved by operator.",
+      note:
+        "Sourcing option approved by owner/operator. PlaneServe to issue payment/order instructions and coordinate supplier dispatch.",
       createdByUserId: user.id,
+      createdAt: now,
+    });
+
+    await db.insert(schema.notifications).values({
+      id: `not_${crypto.randomUUID()}`,
+      userId: user.id,
+      category: "AOG",
+      title: "Sourcing option approved",
+      body:
+        "PlaneServe will now confirm the order, manage payment instructions and coordinate supplier dispatch.",
+      requestId: data.requestId,
       createdAt: now,
     });
 
@@ -3611,6 +3670,12 @@ export const updateProfile = createServerFn({ method: "POST" })
       name: z.string().min(1),
       company: z.string().default(""),
       phone: z.string().default(""),
+      addressLine1: z.string().default(""),
+      addressLine2: z.string().default(""),
+      city: z.string().default(""),
+      region: z.string().default(""),
+      postalCode: z.string().default(""),
+      country: z.string().default(""),
     }),
   )
   .handler(async ({ data }) => {
@@ -3618,7 +3683,18 @@ export const updateProfile = createServerFn({ method: "POST" })
     const { eq, db, schema } = await loadServerAuth();
     await db
       .update(schema.profiles)
-      .set({ name: data.name, company: data.company, phone: data.phone, updatedAt: new Date() })
+      .set({
+        name: data.name,
+        company: data.company,
+        phone: data.phone,
+        addressLine1: data.addressLine1,
+        addressLine2: data.addressLine2,
+        city: data.city,
+        region: data.region,
+        postalCode: data.postalCode,
+        country: data.country,
+        updatedAt: new Date(),
+      })
       .where(eq(schema.profiles.userId, user.id));
     return { ok: true };
   });

@@ -53,6 +53,10 @@ function PartsIntelligencePage() {
 
   const highRisk = filtered.filter((s) => s.riskScore >= 70).length;
   const medRisk = filtered.filter((s) => s.riskScore >= 40 && s.riskScore < 70).length;
+  const avgRisk =
+    filtered.length > 0
+      ? Math.round(filtered.reduce((sum, s) => sum + s.riskScore, 0) / filtered.length)
+      : 0;
 
   return (
     <AppShell>
@@ -60,12 +64,19 @@ function PartsIntelligencePage() {
         <div className="mb-6">
           <h1 className="text-2xl font-semibold tracking-tight">Parts Intelligence</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Live USM market signals and availability risk for your fleet
+            Availability risk for your fleet, updated as PlaneServe adds market signals, supplier
+            checks and case failure logs.
           </p>
         </div>
 
         {/* Summary cards */}
-        <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="grid gap-4 mb-6 sm:grid-cols-4">
+          <div className="bg-card border border-border rounded-lg p-4">
+            <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">
+              Fleet risk
+            </p>
+            <p className={`text-2xl font-semibold ${riskColour(avgRisk)}`}>{avgRisk || "—"}</p>
+          </div>
           <div className="bg-card border border-border rounded-lg p-4">
             <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">
               Parts monitored
@@ -200,9 +211,10 @@ function PartsIntelligencePage() {
         )}
 
         {filtered.length > 0 && (
-          <p className="mt-3 text-xs text-muted-foreground">
-            Data updated by PlaneServe analysts. Availability and pricing are indicative. Contact
-            your desk for pre-positioning advice.
+          <p className="mt-3 text-xs leading-5 text-muted-foreground">
+            Data is updated by PlaneServe analysts today and is structured so supplier feeds or
+            inventory APIs can be connected later. Availability and pricing are indicative; contact
+            the desk for pre-positioning advice.
           </p>
         )}
       </div>
