@@ -26,12 +26,11 @@ function Pricing() {
         <div className="mx-auto max-w-7xl px-6 py-24 text-center">
           <Eyebrow>Aircraft Enrolment Programme</Eyebrow>
           <h1 className="mt-6 text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl lg:text-6xl">
-            Retained support.{" "}
-            <span className="text-accent">No surprises.</span>
+            Retained support. <span className="text-accent">No surprises.</span>
           </h1>
           <p className="mx-auto mt-8 max-w-xl text-base leading-8 text-white/70 md:text-lg">
-            One programme fee per aircraft covers the full AOG parts desk.
-            Supplier options, lead time, documentation, and PlaneServe commission are shown before approval.
+            One programme fee per aircraft covers the full AOG parts desk. Supplier options, lead
+            time, documentation, and PlaneServe commission are shown before approval.
           </p>
         </div>
       </section>
@@ -79,16 +78,24 @@ function Pricing() {
             <div className="grid md:grid-cols-2 gap-8 items-stretch">
               {/* Monthly */}
               <div className="p-10 border border-border bg-background rounded-sm flex flex-col">
-                <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2">Monthly Cover</div>
+                <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2">
+                  Monthly Cover
+                </div>
                 <div className="flex items-baseline gap-2 mb-6">
                   <span className="text-5xl font-semibold tracking-tight">$100</span>
                   <span className="text-sm text-muted-foreground">/ aircraft / month</span>
                 </div>
                 <p className="text-sm text-muted-foreground mb-10 flex-1">
-                  Flexible month-to-month cover for aircraft with fluctuating missions or short-term management contracts.
+                  Flexible month-to-month cover for aircraft with fluctuating missions or short-term
+                  management contracts.
                 </p>
                 <ul className="space-y-4 mb-10">
-                  {["24/7 AOG Intake", "Aircraft Profile Stored", "Global Sourcing Desk", "Operator Updates"].map((f) => (
+                  {[
+                    "24/7 AOG Intake",
+                    "Aircraft Profile Stored",
+                    "Global Sourcing Desk",
+                    "Owner/operator updates",
+                  ].map((f) => (
                     <li key={f} className="flex items-center gap-3 text-sm">
                       <ClearedIcon className="h-4 w-4 text-accent shrink-0" />
                       <span>{f}</span>
@@ -108,16 +115,24 @@ function Pricing() {
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-accent px-4 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white">
                   Best Value
                 </div>
-                <div className="text-xs font-bold text-accent uppercase tracking-widest mb-2">Annual Programme</div>
+                <div className="text-xs font-bold text-accent uppercase tracking-widest mb-2">
+                  Annual Programme
+                </div>
                 <div className="flex items-baseline gap-2 mb-6">
                   <span className="text-5xl font-semibold tracking-tight">$1,000</span>
                   <span className="text-sm text-muted-foreground">/ aircraft / year</span>
                 </div>
                 <p className="text-sm text-muted-foreground mb-10 flex-1">
-                  The standard for long-term owners. Two months free compared to monthly billing and priority handling.
+                  The standard for long-term owners. Two months free compared to monthly billing and
+                  priority handling.
                 </p>
                 <ul className="space-y-4 mb-10">
-                  {["Everything in Monthly", "Two Months Free", "Priority Sourcing", "Annual Profile Review"].map((f) => (
+                  {[
+                    "Everything in Monthly",
+                    "Two Months Free",
+                    "Priority Sourcing",
+                    "Annual Profile Review",
+                  ].map((f) => (
                     <li key={f} className="flex items-center gap-3 text-sm">
                       <ClearedIcon className="h-4 w-4 text-accent shrink-0" />
                       <span>{f}</span>
@@ -133,7 +148,8 @@ function Pricing() {
               </div>
             </div>
             <p className="mt-8 text-center text-xs text-muted-foreground">
-              Each aircraft enrolled separately. Management fleets with 5+ aircraft please contact us for volume enrolment.
+              Each aircraft enrolled separately. Management fleets with 5+ aircraft please contact
+              us for volume enrolment.
             </p>
           </div>
         </div>
@@ -146,7 +162,7 @@ function Pricing() {
             <HelpCircle className="h-6 w-6 text-accent" strokeWidth={1.5} />
             <h2 className="text-2xl font-semibold tracking-tight">Aircraft Programme FAQ</h2>
           </div>
-          
+
           <div className="space-y-8">
             {[
               {
@@ -182,8 +198,8 @@ function Pricing() {
             Enrol before the AOG, not during it.
           </h2>
           <p className="mt-6 mx-auto max-w-xl text-base text-white/60">
-            It takes less than five minutes to put your aircraft on file. Your account activates immediately,
-            with formal AOG cover confirmed once the aircraft details are verified.
+            It takes less than five minutes to put your aircraft on file. Your account activates
+            immediately, with formal AOG cover confirmed once the aircraft details are verified.
           </p>
           <div className="mt-10">
             <Link

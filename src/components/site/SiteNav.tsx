@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
-import { AircraftIcon } from "@/components/app/PlaneServeIcons";
+import { PlaneServeLogo } from "@/components/site/PlaneServeLogo";
 
 const publicLinks = [
   { to: "/", label: "Home" },
@@ -23,12 +23,11 @@ export function SiteNav() {
     <header className="sticky top-0 z-40 bg-background/90 backdrop-blur-xl relative">
       <div className="absolute bottom-0 inset-x-0 h-[3px] bg-gradient-to-r from-transparent via-accent to-transparent" />
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3.5">
-        <Link to="/" onClick={close} className="flex items-center gap-2">
-          <span className="flex h-9 w-9 items-center justify-center rounded-sm bg-primary text-primary-foreground">
-            <AircraftIcon className="h-4 w-4 text-accent-on-dark" strokeWidth={1.5} />
-          </span>
-          <span className="text-base font-semibold tracking-tight text-foreground">PlaneServe</span>
-        </Link>
+        <PlaneServeLogo
+          to="/"
+          onClick={close}
+          wordClassName="text-base font-semibold tracking-tight text-foreground"
+        />
 
         <nav className="hidden items-center gap-6 lg:flex">
           {publicLinks.map((l) => (

@@ -2,11 +2,28 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { ViewAsSwitcher } from "./ViewAsSwitcher";
 import { Menu } from "lucide-react";
 import {
-  AogIcon, DashboardIcon, TakeoffIcon, AircraftIcon, BellIcon, MessageIcon,
-  PartIcon, NetworkIcon, RevenueIcon, BillingIcon, TeamIcon, MemberIcon,
-  SupplierIcon, InventoryIcon, SettingsIcon, TechLogIcon, GaugeIcon,
-  LogoutIcon, RouteIcon, TraceIcon,
+  AogIcon,
+  DashboardIcon,
+  TakeoffIcon,
+  AircraftIcon,
+  BellIcon,
+  MessageIcon,
+  PartIcon,
+  NetworkIcon,
+  RevenueIcon,
+  BillingIcon,
+  TeamIcon,
+  MemberIcon,
+  SupplierIcon,
+  InventoryIcon,
+  SettingsIcon,
+  TechLogIcon,
+  GaugeIcon,
+  LogoutIcon,
+  RouteIcon,
+  TraceIcon,
 } from "@/components/app/PlaneServeIcons";
+import { PlaneServeMark } from "@/components/site/PlaneServeLogo";
 import { authClient } from "@/lib/auth-client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAdminOverview, getUnreadCounts, getDashboardData } from "@/lib/app.functions";
@@ -185,7 +202,7 @@ export function AppShell({ children, variant = "member" }: Props) {
     <div className="flex min-h-screen bg-[oklch(0.97_0.005_240)] text-foreground">
       <aside className="hidden w-64 shrink-0 flex-col bg-[oklch(0.14_0.02_250)] text-white md:flex">
         <div className="flex items-center gap-2 px-6 py-5 border-b border-white/10">
-          <AircraftIcon className="h-5 w-5 text-accent" />
+          <PlaneServeMark className="h-9 w-9 shrink-0" />
           <div>
             <div className="text-sm font-semibold tracking-tight">PlaneServe</div>
             <div className="text-[10px] uppercase tracking-widest text-white/50">

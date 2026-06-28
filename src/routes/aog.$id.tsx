@@ -300,6 +300,9 @@ function OptionCard({
           <div className="flex items-center gap-3">
             <Package className="h-4 w-4 text-muted-foreground" />
             <span className="font-semibold text-sm">{quote.supplierName}</span>
+            <span className="rounded-sm bg-accent/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-accent">
+              Released by PlaneServe
+            </span>
             <span className="rounded-sm border border-border bg-muted px-2 py-0.5 text-[11px] text-muted-foreground">
               {quote.condition}
             </span>
@@ -326,7 +329,7 @@ function OptionCard({
           <button
             onClick={onApprove}
             disabled={pending}
-            className="shrink-0 rounded-sm bg-accent px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
+            className="shrink-0 rounded-sm bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground hover:bg-accent/90 disabled:opacity-60"
           >
             {pending ? "Approving…" : "Approve"}
           </button>

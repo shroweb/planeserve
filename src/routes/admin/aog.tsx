@@ -5,10 +5,12 @@ import { StatusPill, statusTone } from "@/components/app/ui";
 import {
   ensureAdminSession,
   getAdminAogWithQuotes,
+  getSupplierCompanies,
   updateAogStatus,
   toggleExceptionState,
   addSupplierQuote,
   removeSupplierQuote,
+  sendSupplierRfq,
   updateFreightTracking,
   getAogStatusEventsAdmin,
   createAdminNote,
@@ -294,6 +296,21 @@ function CaseDetailPanel({
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin-aog-with-quotes"] }),
   });
 
+  const { data: supplierCompanies = [] } = useQuery({
+    queryKey: ["supplier-companies"],
+    queryFn: () => getSupplierCompanies(),
+  });
+
+  const sendRfqMutation = useMutation({
+    mutationFn: (data: Parameters<typeof sendSupplierRfq>[0]["data"]) =>
+      sendSupplierRfq({ data }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-aog-with-quotes"] });
+      toast.success("RFQ sent to supplier portal.");
+    },
+    onError: () => toast.error("Could not send RFQ."),
+  });
+
   const { data: statusEvents } = useQuery({
     queryKey: ["admin-status-events", case_.id],
     queryFn: () => getAogStatusEventsAdmin({ data: { requestId: case_.id } }),
@@ -362,6 +379,14 @@ function CaseDetailPanel({
     freightRoute: "",
     notes: "",
   });
+  const [rfqForm, setRfqForm] = useState({
+    supplierCompanyId: "",
+    partDescription: case_.affectedSystem,
+    partNumber: case_.partNumber ?? "",
+    aircraftType: case_.aircraftType ?? "",
+    location: case_.location ?? "",
+    documentationRequired: "EASA Form 1 / FAA 8130-3 if available",
+  });
 
   function updateQuote<K extends keyof typeof quoteForm>(k: K, v: (typeof quoteForm)[K]) {
     setQuoteForm((f) => ({ ...f, [k]: v }));
@@ -396,6 +421,15 @@ function CaseDetailPanel({
       coreCharge: "No core charge",
       freightRoute: "",
       notes: "",
+    });
+  }
+
+  async function submitRfq(e: React.FormEvent) {
+    e.preventDefault();
+    if (!rfqForm.supplierCompanyId) return;
+    await sendRfqMutation.mutateAsync({
+      requestId: case_.id,
+      ...rfqForm,
     });
   }
 
@@ -466,6 +500,14 @@ function CaseDetailPanel({
               className="rounded-sm bg-accent px-3 py-2 text-xs font-medium text-white"
             >
               Mark Options Ready
+            </button>
+          )}
+          {r.quotes.length > 0 && r.status === "Options ready" && (
+            <button
+              onClick={() => statusMutation.mutate({ id: r.id, status: "Awaiting approval" })}
+              className="rounded-sm bg-accent px-3 py-2 text-xs font-semibold text-accent-foreground hover:bg-accent/90"
+            >
+              Send options to subscriber
             </button>
           )}
         </div>
@@ -736,6 +778,122 @@ function CaseDetailPanel({
 
       {/* Sourcing options */}
       <Section title="Sourcing options">
+        <div className="mb-4 rounded-sm border border-border bg-background p-4">
+          <div className="mb-3 flex items-start justify-between gap-3">
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                Supplier RFQs
+              </div>
+              <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                Send sourcing requests to approved suppliers. Submitted supplier quotes appear below
+                as options for admin review and subscriber approval.
+              </p>
+            </div>
+            <span className="rounded-sm bg-muted px-2 py-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+              {case_.rfqs?.length ?? 0} sent
+            </span>
+          </div>
+
+          {(case_.rfqs?.length ?? 0) > 0 && (
+            <div className="mb-4 divide-y divide-border rounded-sm border border-border">
+              {case_.rfqs!.map((rfq) => {
+                const supplier = supplierCompanies.find((s: any) => s.id === rfq.supplierCompanyId);
+                return (
+                  <div key={rfq.id} className="flex items-center justify-between gap-3 px-3 py-2">
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-medium">
+                        {supplier?.name ?? rfq.supplierCompanyId}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {rfq.partNumber || rfq.partDescription || "Part request"} · sent{" "}
+                        {new Date(rfq.sentAt).toLocaleDateString("en-GB", {
+                          day: "numeric",
+                          month: "short",
+                        })}
+                      </p>
+                    </div>
+                    <StatusPill tone={rfq.quoteSubmitted ? "green" : "gold"}>
+                      {rfq.quoteSubmitted ? "Quote received" : "Awaiting quote"}
+                    </StatusPill>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          <form onSubmit={submitRfq} className="grid gap-3">
+            <div className="grid gap-3 md:grid-cols-2">
+              <QField label="Supplier">
+                <select
+                  required
+                  value={rfqForm.supplierCompanyId}
+                  onChange={(e) =>
+                    setRfqForm((f) => ({ ...f, supplierCompanyId: e.target.value }))
+                  }
+                  className={adminInputCls}
+                >
+                  <option value="">Select supplier…</option>
+                  {supplierCompanies.map((supplier: any) => (
+                    <option key={supplier.id} value={supplier.id}>
+                      {supplier.name}
+                    </option>
+                  ))}
+                </select>
+              </QField>
+              <QField label="Part number">
+                <input
+                  value={rfqForm.partNumber}
+                  onChange={(e) => setRfqForm((f) => ({ ...f, partNumber: e.target.value }))}
+                  placeholder="Known PN, if available"
+                  className={adminInputCls}
+                />
+              </QField>
+              <QField label="Part / issue description">
+                <input
+                  value={rfqForm.partDescription}
+                  onChange={(e) =>
+                    setRfqForm((f) => ({ ...f, partDescription: e.target.value }))
+                  }
+                  placeholder="Hydraulic pump assembly"
+                  className={adminInputCls}
+                />
+              </QField>
+              <QField label="Aircraft type">
+                <input
+                  value={rfqForm.aircraftType}
+                  onChange={(e) => setRfqForm((f) => ({ ...f, aircraftType: e.target.value }))}
+                  placeholder="Learjet 35A"
+                  className={adminInputCls}
+                />
+              </QField>
+              <QField label="Location">
+                <input
+                  value={rfqForm.location}
+                  onChange={(e) => setRfqForm((f) => ({ ...f, location: e.target.value }))}
+                  placeholder="EGKB Biggin Hill"
+                  className={adminInputCls}
+                />
+              </QField>
+              <QField label="Documentation required">
+                <input
+                  value={rfqForm.documentationRequired}
+                  onChange={(e) =>
+                    setRfqForm((f) => ({ ...f, documentationRequired: e.target.value }))
+                  }
+                  className={adminInputCls}
+                />
+              </QField>
+            </div>
+            <button
+              type="submit"
+              disabled={!rfqForm.supplierCompanyId || sendRfqMutation.isPending}
+              className="self-start rounded-sm bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground hover:bg-accent/90 disabled:opacity-60"
+            >
+              {sendRfqMutation.isPending ? "Sending…" : "Send RFQ to supplier"}
+            </button>
+          </form>
+        </div>
+
         {r.quotes.length > 0 && (
           <div className="mb-4 space-y-3">
             {r.quotes.map((q) => (

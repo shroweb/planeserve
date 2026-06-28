@@ -1,8 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
-import heroImage from "@/assets/gulfstream-dusk-ramp.jpeg";
-import heroMobileImage from "@/assets/WhatsApp Image 2026-06-03 at 17.11.43.jpeg";
+import heroImage from "@/assets/WhatsApp Image 2026-06-28 at 10.29.12.jpeg";
 import citationDusk from "@/assets/citation-dusk-ramp.jpeg";
 import founderAircraft from "@/assets/WhatsApp Image 2026-06-03 at 17.32.26.jpeg";
 import {
@@ -73,16 +72,11 @@ function Home() {
         <img
           src={heroImage}
           alt="Business aircraft on the ramp outside a maintenance hangar"
-          className="absolute inset-0 hidden h-full w-full object-cover object-[55%_center] md:block"
+          className="absolute inset-0 h-full w-full object-cover object-[58%_center]"
         />
-        <img
-          src={heroMobileImage}
-          alt="Twin-engine aircraft on the ramp ready for support"
-          className="absolute inset-0 h-full w-full object-cover object-[50%_70%] md:hidden"
-        />
-        <div className="absolute inset-0 hidden bg-[#001b2e]/15 md:block" />
-        <div className="absolute inset-0 hidden bg-[linear-gradient(90deg,#001b2e_0%,#001b2e_42%,rgba(0,27,46,0.92)_58%,rgba(0,27,46,0.52)_82%,rgba(0,27,46,0.28)_100%)] md:block" />
-        <div className="absolute inset-0 bg-[linear-gradient(110deg,oklch(0.10_0.025_250)_0%,oklch(0.11_0.025_250_/_0.95)_35%,oklch(0.11_0.025_250_/_0.42)_65%,oklch(0.11_0.025_250_/_0.06)_100%)] md:hidden" />
+        <div className="absolute inset-0 bg-[#001b2e]/20" />
+        <div className="absolute inset-0 hidden bg-[linear-gradient(90deg,#001b2e_0%,rgba(0,27,46,0.98)_34%,rgba(0,27,46,0.82)_52%,rgba(0,27,46,0.34)_78%,rgba(0,27,46,0.12)_100%)] md:block" />
+        <div className="absolute inset-0 bg-[linear-gradient(110deg,#001b2e_0%,rgba(0,27,46,0.96)_42%,rgba(0,27,46,0.55)_78%,rgba(0,27,46,0.2)_100%)] md:hidden" />
         <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#001b2e] to-transparent" />
 
         <div className="relative mx-auto flex min-h-[90vh] max-w-7xl flex-col justify-center px-6 py-12 md:mx-0 md:w-[50%] md:max-w-none md:px-12 md:py-20 lg:px-20 xl:px-28 2xl:px-36">
@@ -95,8 +89,9 @@ function Home() {
           </h1>
           <div className="max-w-3xl">
             <p className="mt-7 max-w-xl text-base leading-8 text-white/75 md:text-lg">
-              PlaneServe is an enrolment programme for aircraft owners and operators. Enrol your aircraft,
-              put your details on file, and the desk is ready to source parts the moment you go AOG.
+              PlaneServe is an enrolment programme for aircraft owners and operators. Enrol your
+              aircraft, put your details on file, and the desk is ready to source parts the moment
+              you go AOG.
             </p>
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
               <Link
@@ -166,12 +161,13 @@ function Home() {
           <p className="mx-auto mt-8 max-w-2xl text-base leading-8 text-muted-foreground md:text-lg">
             When an enrolled aircraft goes technical, your aircraft details, support contacts and
             key part context are already on file. Our desk can move straight into sourcing, supplier
-            outreach and option verification instead of rebuilding the aircraft profile from scratch.
+            outreach and option verification instead of rebuilding the aircraft profile from
+            scratch.
           </p>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-muted-foreground md:text-lg">
             The service grew from years of owners and operators asking James Moon for help finding
-            parts that had slipped out of obvious distribution. PlaneServe turns those calls into
-            a formal aircraft enrolment programme with a retained AOG desk behind it.
+            parts that had slipped out of obvious distribution. PlaneServe turns those calls into a
+            formal aircraft enrolment programme with a retained AOG desk behind it.
           </p>
         </div>
       </section>

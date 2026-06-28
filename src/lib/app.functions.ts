@@ -1890,6 +1890,21 @@ export type SupplierQuoteRecord = {
   createdAt: string;
 };
 
+export type SupplierRfqRecord = {
+  id: string;
+  requestId: string;
+  supplierCompanyId: string;
+  partDescription: string;
+  partNumber: string;
+  aircraftType: string;
+  location: string;
+  documentationRequired: string;
+  status: "sent" | "responded" | "declined" | "expired";
+  sentAt: string;
+  respondedAt: string | null;
+  quoteSubmitted: boolean;
+};
+
 const supplierConditionSchema = z.enum([
   "Serviceable",
   "Exchange",
@@ -1924,6 +1939,27 @@ function toQuoteRecord(row: {
     validUntil: row.validUntil?.toISOString() ?? null,
     approvedAt: row.approvedAt?.toISOString() ?? null,
     createdAt: row.createdAt.toISOString(),
+  };
+}
+
+function toRfqRecord(row: {
+  id: string;
+  requestId: string;
+  supplierCompanyId: string;
+  partDescription: string;
+  partNumber: string;
+  aircraftType: string;
+  location: string;
+  documentationRequired: string;
+  status: "sent" | "responded" | "declined" | "expired";
+  sentAt: Date;
+  respondedAt: Date | null;
+  quoteSubmitted: boolean;
+}): SupplierRfqRecord {
+  return {
+    ...row,
+    sentAt: row.sentAt.toISOString(),
+    respondedAt: row.respondedAt?.toISOString() ?? null,
   };
 }
 
@@ -1988,7 +2024,10 @@ export const updateAircraftProfile = createServerFn({ method: "POST" })
 
 // ── AOG case detail with quotes ───────────────────────────────────────────────
 
-export type AogCaseDetail = AogRecord & { quotes: SupplierQuoteRecord[] };
+export type AogCaseDetail = AogRecord & {
+  quotes: SupplierQuoteRecord[];
+  rfqs?: SupplierRfqRecord[];
+};
 
 export const getAogCaseDetail = createServerFn({ method: "GET" })
   .inputValidator(z.object({ id: z.string().min(1) }))
@@ -2142,6 +2181,14 @@ export const getAdminAogWithQuotes = createServerFn({ method: "GET" }).handler(a
     quotesByRequest.set(q.requestId, list);
   }
 
+  const rfqRows = await db.select().from(schema.supplierRfqs);
+  const rfqsByRequest = new Map<string, SupplierRfqRecord[]>();
+  for (const rfq of rfqRows) {
+    const list = rfqsByRequest.get(rfq.requestId) ?? [];
+    list.push(toRfqRecord(rfq));
+    rfqsByRequest.set(rfq.requestId, list);
+  }
+
   const adminProfiles = await db
     .select({ userId: schema.profiles.userId, name: schema.profiles.name })
     .from(schema.profiles);
@@ -2150,6 +2197,7 @@ export const getAdminAogWithQuotes = createServerFn({ method: "GET" }).handler(a
     requests: requestRows.map((r) => ({
       ...toAogRecord(r, attMap.get(r.id) ?? []),
       quotes: quotesByRequest.get(r.id) ?? [],
+      rfqs: rfqsByRequest.get(r.id) ?? [],
     })),
     adminUsers: adminProfiles,
   };

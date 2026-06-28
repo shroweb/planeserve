@@ -6,12 +6,17 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { upsertProfile } from "@/lib/app.functions";
+import { ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/signup")({
   component: Signup,
 });
 
 const roles: Role[] = ["Owner", "Operator", "Management Company"];
+const controlClass =
+  "h-12 w-full rounded-sm border border-input bg-background px-3.5 text-sm placeholder:text-muted-foreground/55 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20";
+const primaryButtonClass =
+  "inline-flex h-12 items-center justify-center gap-2 rounded-sm bg-accent px-5 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90 disabled:opacity-60";
 
 function Signup() {
   const [form, setForm] = useState({
@@ -61,7 +66,7 @@ function Signup() {
               Create a free owner/operator account first. Payment is only taken when you enrol an
               aircraft and choose its monthly or annual support plan.
             </p>
-            <div className="mt-8 space-y-3 rounded-md border border-border bg-card p-5 text-sm">
+            <div className="mt-8 space-y-3 rounded-sm border border-border bg-card p-5 text-sm shadow-sm">
               {[
                 "1. Create a free account and company profile",
                 "2. Enrol an aircraft and choose its support plan",
@@ -76,7 +81,7 @@ function Signup() {
 
           <form
             onSubmit={submit}
-            className="grid gap-4 rounded-md border border-border bg-card p-8 shadow-[0_18px_50px_oklch(0.2_0.02_250_/_0.06)] md:grid-cols-2"
+            className="grid gap-4 rounded-sm border border-border bg-card p-8 shadow-[0_18px_50px_oklch(0.2_0.02_250_/_0.06)] md:grid-cols-2"
           >
             <Field label="Full name">
               <Input value={form.name} onChange={(name) => setForm((f) => ({ ...f, name }))} />
@@ -102,7 +107,7 @@ function Signup() {
                 <select
                   value={form.role}
                   onChange={(e) => setForm((f) => ({ ...f, role: e.target.value as Role }))}
-                  className="w-full rounded-sm border border-input bg-background px-3.5 py-2.5 text-sm placeholder:text-muted-foreground/55 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
+                  className={controlClass}
                 >
                   {roles.map((role) => (
                     <option key={role}>{role}</option>
@@ -125,8 +130,9 @@ function Signup() {
               />
             </Field>
             <div className="md:col-span-2">
-              <button className="rounded-sm bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground hover:bg-accent/90">
+              <button className={primaryButtonClass}>
                 Create free account
+                <ArrowRight className="h-4 w-4" />
               </button>
               <p className="mt-4 text-xs text-muted-foreground">
                 Already have an account?{" "}
@@ -167,7 +173,7 @@ function Input({
       required
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full rounded-sm border border-input bg-background px-3.5 py-2.5 text-sm placeholder:text-muted-foreground/55 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
+      className={controlClass}
     />
   );
 }

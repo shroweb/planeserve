@@ -169,6 +169,9 @@ function SupplierInboxPage() {
   });
 
   const activeRfq = rfqs.find((r) => r.id === activeRfqId);
+  const quotesByRequest = new Map(
+    (history?.quotes ?? []).map((quote: any) => [quote.requestId, quote]),
+  );
 
   function QuoteForm({ onSubmit, loading }: { onSubmit: () => void; loading: boolean }) {
     return (
@@ -446,8 +449,21 @@ function SupplierInboxPage() {
                     </span>
                     <button
                       onClick={() => {
+                        const quote = quotesByRequest.get(rfq.requestId) as any;
                         setReviseRfqId(reviseRfqId === rfq.id ? null : rfq.id);
-                        setForm(emptyForm);
+                        setForm(
+                          quote
+                            ? {
+                                condition: quote.condition,
+                                price: String((quote.priceCents ?? 0) / 100),
+                                currency: quote.currency ?? "usd",
+                                leadTime: quote.leadTime ?? "",
+                                paperwork: quote.paperwork ?? "",
+                                freightRoute: quote.freightRoute ?? "",
+                                notes: quote.notes ?? "",
+                              }
+                            : emptyForm,
+                        );
                       }}
                       className="flex items-center gap-1 text-xs text-primary font-medium shrink-0"
                     >
@@ -458,9 +474,9 @@ function SupplierInboxPage() {
                   {reviseRfqId === rfq.id && (
                     <QuoteForm
                       onSubmit={() => {
-                        // Find the quote id from supplier-quote-history — here we use rfq.id as quoteId placeholder
-                        // In production you'd look up the quote; for now pass requestId
-                        reviseMutation.mutate(rfq.requestId);
+                        const quote = quotesByRequest.get(rfq.requestId) as any;
+                        if (!quote?.id) return;
+                        reviseMutation.mutate(quote.id);
                       }}
                       loading={reviseMutation.isPending}
                     />

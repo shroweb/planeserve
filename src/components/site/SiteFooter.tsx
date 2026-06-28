@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { TakeoffIcon } from "@/components/app/PlaneServeIcons";
+import { PlaneServeLogo } from "@/components/site/PlaneServeLogo";
 
 export function SiteFooter() {
   return (
@@ -8,10 +8,7 @@ export function SiteFooter() {
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr_1fr]">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-2">
-              <TakeoffIcon className="h-5 w-5 text-accent" />
-              <span className="text-sm font-semibold tracking-tight text-white">PlaneServe</span>
-            </div>
+            <PlaneServeLogo wordClassName="text-sm font-semibold tracking-tight text-white" />
             <p className="mt-3 text-xs leading-relaxed text-white/50">
               A programme for aircraft owners and operators that puts the aircraft record, contacts,
               and AOG parts desk in place before the request arrives.
@@ -52,7 +49,10 @@ export function SiteFooter() {
                 { to: "/dashboard", label: "Documents" },
               ].map((i) => (
                 <li key={i.label}>
-                  <Link to={i.to} className="text-sm text-white/55 hover:text-white transition-colors">
+                  <Link
+                    to={i.to}
+                    className="text-sm text-white/55 hover:text-white transition-colors"
+                  >
                     {i.label}
                   </Link>
                 </li>
@@ -95,7 +95,9 @@ export function SiteFooter() {
 function FooterCol({ title, items }: { title: string; items: { to: string; label: string }[] }) {
   return (
     <div>
-      <div className="text-[10px] font-semibold uppercase tracking-wider text-white/40 mb-3">{title}</div>
+      <div className="text-[10px] font-semibold uppercase tracking-wider text-white/40 mb-3">
+        {title}
+      </div>
       <ul className="space-y-2.5">
         {items.map((i) => (
           <li key={i.label}>

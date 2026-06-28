@@ -3,9 +3,10 @@ import { createSubscriberEnrolment, createStripeSubscription } from "@/lib/app.f
 import { AppShell } from "@/components/app/AppShell";
 import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
-import { CheckCircle2, ChevronRight, ChevronLeft, Plane, Lock } from "lucide-react";
+import { CheckCircle2, ChevronRight, ChevronLeft, Lock } from "lucide-react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { PlaneServeLogo } from "@/components/site/PlaneServeLogo";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
@@ -40,7 +41,9 @@ const CATEGORIES = [
 ] as const;
 
 const inputCls =
-  "w-full rounded-sm border border-input bg-background px-3.5 py-2.5 text-sm placeholder:text-muted-foreground/55 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20";
+  "min-h-12 w-full rounded-sm border border-input bg-background px-3.5 py-2.5 text-sm placeholder:text-muted-foreground/55 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20";
+const primaryButtonCls =
+  "inline-flex min-h-12 items-center justify-center gap-2 rounded-sm bg-accent px-5 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90 disabled:opacity-50";
 
 function Field({
   label,
@@ -263,7 +266,7 @@ function EnrolPage() {
           </div>
           <Link
             to="/dashboard"
-            className="rounded-sm border border-border bg-card px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+            className="rounded-sm border border-border bg-card px-3 py-2 text-xs font-medium text-muted-foreground hover:border-accent/40 hover:bg-accent/5 hover:text-foreground"
           >
             Back to dashboard
           </Link>
@@ -271,7 +274,7 @@ function EnrolPage() {
       )}
       {/* Signed-in banner */}
       {session.data?.user && (
-        <div className="mb-6 flex items-center justify-between rounded-lg border border-primary/20 bg-primary/5 px-5 py-3">
+        <div className="mb-6 flex items-center justify-between rounded-sm border border-accent/25 bg-accent/5 px-5 py-3">
           <p className="text-sm">
             Signed in as <span className="font-medium">{session.data.user.email}</span>. Enrolling a
             new aircraft to your existing account.
@@ -288,7 +291,7 @@ function EnrolPage() {
                 i + 1 < step
                   ? "bg-success text-success-foreground"
                   : i + 1 === step
-                    ? "bg-primary text-primary-foreground"
+                    ? "bg-accent text-accent-foreground"
                     : "bg-muted text-muted-foreground"
               }`}
             >
@@ -304,7 +307,7 @@ function EnrolPage() {
         ))}
       </div>
 
-      <div className="bg-card border border-border rounded-xl p-8 space-y-6">
+      <div className="bg-card border border-border rounded-sm p-8 space-y-6 shadow-sm">
         {step === 1 && <Step1 value={form.usageType} onChange={(v) => set("usageType", v)} />}
         {step === 2 && (
           <Step2 form={form} set={set} showCompany={form.usageType !== "Private Owner"} />
@@ -354,7 +357,7 @@ function EnrolPage() {
               setStepError(null);
               setStep((s) => s + 1);
             }}
-            className="flex items-center gap-1 px-5 py-2.5 rounded-sm bg-accent text-accent-foreground text-sm font-semibold hover:bg-accent/90"
+            className={primaryButtonCls}
           >
             Continue
             <ChevronRight className="h-4 w-4" />
@@ -370,12 +373,14 @@ function EnrolPage() {
     <div className="min-h-screen bg-background">
       <div className="border-b border-border bg-card px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Plane className="h-5 w-5 text-primary" />
-          <span className="text-sm font-semibold">PlaneServe Subscriber Enrolment</span>
+          <PlaneServeLogo wordClassName="text-sm font-semibold text-foreground" />
+          <span className="hidden text-sm text-muted-foreground sm:inline">
+            Subscriber Enrolment
+          </span>
         </div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <span>Already have an account?</span>
-          <Link to="/login" className="font-medium text-primary hover:underline">
+          <Link to="/login" className="font-medium text-accent hover:underline">
             Sign in
           </Link>
         </div>
@@ -397,10 +402,10 @@ function Step1({ value, onChange }: { value: string; onChange: (v: string) => vo
           <button
             key={u.key}
             onClick={() => onChange(u.key)}
-            className={`w-full text-left rounded-xl border-2 p-5 transition-all ${
+            className={`w-full text-left rounded-sm border p-5 transition-all ${
               value === u.key
-                ? "border-primary bg-primary/5"
-                : "border-border hover:border-primary/40"
+                ? "border-accent bg-accent/5"
+                : "border-border bg-background hover:border-accent/40 hover:bg-accent/5"
             }`}
           >
             <p className="font-semibold text-sm">{u.title}</p>
@@ -508,16 +513,16 @@ function Step3({
         Your aircraft profile helps us respond faster when you have an AOG.
       </p>
       <div className="mb-5 grid gap-3 sm:grid-cols-2">
-        <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-primary">
+        <div className="rounded-sm border border-accent/25 bg-accent/5 p-4">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-accent">
             Required to subscribe
           </p>
           <p className="mt-1 text-xs leading-5 text-muted-foreground">
             Registration, category, make/model, year, serial number, base ICAO, and owner/operator.
           </p>
         </div>
-        <div className="rounded-lg border border-accent/25 bg-accent/10 p-4">
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-[oklch(0.34_0.08_70)]">
+        <div className="rounded-sm border border-border bg-muted/30 p-4">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
             Required for full cover
           </p>
           <p className="mt-1 text-xs leading-5 text-muted-foreground">
@@ -752,7 +757,7 @@ function ReviewSection({
       <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-3">
         {title}
       </p>
-      <div className="bg-muted/30 rounded-lg divide-y divide-border">
+      <div className="bg-muted/30 rounded-sm divide-y divide-border">
         {items.map(({ label, value }) => (
           <div key={label} className="flex justify-between px-4 py-2.5 text-sm">
             <span className="text-muted-foreground">{label}</span>
@@ -909,7 +914,7 @@ function Step5({
           <button
             type="button"
             onClick={() => set("plan", "monthly")}
-            className={`rounded-xl border-2 p-4 text-left transition-all ${plan !== "annual" ? "border-primary bg-primary/5" : "border-border"}`}
+            className={`rounded-sm border p-4 text-left transition-all ${plan !== "annual" ? "border-accent bg-accent/5" : "border-border bg-background hover:border-accent/40"}`}
           >
             <p className="font-semibold">Monthly</p>
             <p className="text-2xl font-bold mt-1">$100</p>
@@ -918,9 +923,9 @@ function Step5({
           <button
             type="button"
             onClick={() => set("plan", "annual")}
-            className={`rounded-xl border-2 p-4 text-left transition-all relative ${plan === "annual" ? "border-primary bg-primary/5" : "border-border"}`}
+            className={`rounded-sm border p-4 text-left transition-all relative ${plan === "annual" ? "border-accent bg-accent/5" : "border-border bg-background hover:border-accent/40"}`}
           >
-            <span className="absolute top-3 right-3 text-[10px] font-bold uppercase tracking-widest bg-accent text-white px-2 py-0.5 rounded">
+            <span className="absolute top-3 right-3 rounded-sm bg-accent px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-accent-foreground">
               Best value
             </span>
             <p className="font-semibold">Annual</p>
@@ -938,7 +943,7 @@ function Step5({
         <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3">
           Payment
         </p>
-        <div className="rounded-lg border border-border bg-card px-4 py-3">
+        <div className="rounded-sm border border-input bg-background px-4 py-3 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/20">
           <CardElement
             options={{
               style: {
@@ -968,7 +973,7 @@ function Step5({
         />
         <span className="text-sm text-muted-foreground">
           I accept the PlaneServe{" "}
-          <a href="#" className="text-primary underline">
+          <a href="#" className="text-accent underline">
             subscriber agreement
           </a>{" "}
           and confirm all details are accurate.
@@ -984,7 +989,7 @@ function Step5({
       <button
         onClick={handleSubmit}
         disabled={!stripe || !form.agreed || loading}
-        className="w-full flex items-center justify-center gap-2 rounded-sm bg-accent text-accent-foreground text-sm font-semibold py-3 transition-opacity hover:bg-accent/90 disabled:opacity-50"
+        className={primaryButtonCls + " w-full"}
       >
         <Lock className="h-4 w-4" />
         {loading

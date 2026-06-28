@@ -1,5 +1,5 @@
-import { Plane } from "lucide-react";
 import heroImage from "@/assets/planeserve-hangar-hero.jpg";
+import { PlaneServeLogo } from "@/components/site/PlaneServeLogo";
 
 // Split-screen auth shell: brand panel (image + line) on the left, form on the
 // right. Used by the sign-in / set-password screens.
@@ -29,12 +29,10 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
       {/* Form panel */}
       <div className="flex w-full items-center justify-center bg-background px-6 py-12 lg:w-1/2">
         <div className="w-full max-w-sm">
-          <div className="mb-8 flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-sm bg-primary text-accent-on-dark">
-              <Plane className="h-5 w-5" strokeWidth={1.5} />
-            </div>
-            <span className="text-lg font-semibold tracking-tight">PlaneServe</span>
-          </div>
+          <PlaneServeLogo
+            className="mb-8"
+            wordClassName="text-lg font-semibold tracking-tight text-foreground"
+          />
           {children}
         </div>
       </div>

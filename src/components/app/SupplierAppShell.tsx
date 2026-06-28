@@ -1,10 +1,11 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { ViewAsSwitcher } from "./ViewAsSwitcher";
-import { Menu, Plane, Package, History, UserCircle, LogOut, Settings } from "lucide-react";
+import { Menu, Package, History, UserCircle, LogOut, Settings } from "lucide-react";
 import { signOutAndRedirect } from "@/lib/sign-out";
 import type { LucideIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getSupplierRfqs } from "@/lib/app.functions";
+import { PlaneServeMark } from "@/components/site/PlaneServeLogo";
 
 type NavItem = { to: string; label: string; icon: LucideIcon };
 
@@ -56,10 +57,12 @@ export function SupplierAppShell({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen bg-[oklch(0.97_0.005_240)] text-foreground">
       <aside className="hidden w-64 shrink-0 flex-col bg-[oklch(0.14_0.02_250)] text-white md:flex">
         <div className="flex items-center gap-2 px-6 py-5 border-b border-white/10">
-          <Plane className="h-5 w-5 text-accent" strokeWidth={1.5} />
+          <PlaneServeMark className="h-9 w-9 shrink-0" />
           <div>
             <div className="text-sm font-semibold tracking-tight">PlaneServe</div>
-            <div className="text-[10px] uppercase tracking-widest text-white/50">Supplier Portal</div>
+            <div className="text-[10px] uppercase tracking-widest text-white/50">
+              Supplier Portal
+            </div>
           </div>
         </div>
         <div className="border-b border-white/10 px-4 py-4">
@@ -119,7 +122,9 @@ export function SupplierAppShell({ children }: { children: React.ReactNode }) {
             <div className="min-w-0 flex-1">
               <div className="truncate text-xs font-medium text-white/85">{companyName}</div>
               <div className="mt-0.5 flex items-center gap-1.5">
-                <span className={`h-1.5 w-1.5 rounded-full ${approved ? "bg-success" : "bg-accent"}`} />
+                <span
+                  className={`h-1.5 w-1.5 rounded-full ${approved ? "bg-success" : "bg-accent"}`}
+                />
                 <span className="text-[11px] font-medium text-white/55">
                   {approved ? "Verified supplier" : "Pending review"}
                 </span>
