@@ -80,7 +80,7 @@ function AogRiskIndexPage() {
 
   return (
     <AppShell>
-      <div className="max-w-3xl">
+      <div className="max-w-4xl">
         <div className="mb-6">
           <h1 className="text-2xl font-semibold tracking-tight">AOG Risk Index</h1>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -90,13 +90,13 @@ function AogRiskIndexPage() {
 
         {/* Overall risk score */}
         <div
-          className={`rounded-xl border ${band.border} ${band.bg} p-6 mb-6 flex items-center justify-between`}
+          className={`rounded-md border ${band.border} ${band.bg} p-6 mb-6 flex items-center justify-between`}
         >
           <div>
             <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
               Overall fleet risk
             </p>
-            <p className={`text-5xl font-bold ${band.colour}`}>
+            <p className={`text-5xl font-bold tracking-tight ${band.colour}`}>
               {overallRisk > 0 ? overallRisk : "—"}
             </p>
             <p className={`text-sm font-semibold mt-1 ${band.colour}`}>
@@ -116,7 +116,7 @@ function AogRiskIndexPage() {
 
         {/* Per-aircraft */}
         {aircraft.length === 0 ? (
-          <div className="py-12 text-center border border-dashed border-border rounded-xl text-sm text-muted-foreground">
+          <div className="py-12 text-center border border-dashed border-border rounded-md text-sm text-muted-foreground">
             No aircraft enrolled. Enrol aircraft to see risk scores.
           </div>
         ) : (
@@ -127,7 +127,7 @@ function AogRiskIndexPage() {
               return (
                 <div
                   key={a.id}
-                  className={`flex items-center gap-4 bg-card border ${avgRisk > 0 ? b.border : "border-border"} rounded-xl px-5 py-4`}
+                  className={`flex items-center gap-4 bg-card border ${avgRisk > 0 ? b.border : "border-border"} rounded-md px-5 py-4`}
                 >
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
@@ -157,9 +157,9 @@ function AogRiskIndexPage() {
         )}
 
         {/* How it works */}
-        <div className="bg-card border border-border rounded-xl p-5">
+        <div className="bg-card border border-border rounded-md p-6">
           <p className="text-sm font-semibold mb-3">How the index is calculated</p>
-          <div className="space-y-2 text-xs text-muted-foreground">
+          <div className="space-y-2 text-sm leading-relaxed text-muted-foreground">
             <p>
               • <span className="text-foreground font-medium">USM availability</span> — real-time
               supplier count and stock depth for parts matching your aircraft type
@@ -173,7 +173,7 @@ function AogRiskIndexPage() {
               failure logs from resolved cases across the PlaneServe network
             </p>
           </div>
-          <p className="text-xs text-muted-foreground mt-3 pt-3 border-t border-border">
+          <p className="text-xs leading-relaxed text-muted-foreground mt-3 pt-3 border-t border-border">
             Scores above 70 indicate parts that are historically hard to source quickly. PlaneServe
             proactively monitors and alerts you to changes.
           </p>

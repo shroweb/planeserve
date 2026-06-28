@@ -9,6 +9,7 @@ import {
   updateAircraftDetails,
   getAircraftDocuments,
   addAircraftDocument,
+  archiveAircraft,
   AircraftRecord,
   AogRecord,
 } from "@/lib/app.functions";
@@ -38,7 +39,8 @@ type Tab =
   | "verification"
   | "history"
   | "edit"
-  | "passport";
+  | "passport"
+  | "remove";
 
 function AircraftPage() {
   const { id: searchId } = Route.useSearch();
@@ -132,6 +134,7 @@ function AircraftDetail({ aircraft }: { aircraft: AircraftRecord }) {
     { id: "history", label: "Parts history" },
     { id: "edit", label: "Quick edit" },
     { id: "passport", label: "Parts Passport" },
+    { id: "remove", label: "Remove from cover" },
   ];
 
   return (
@@ -174,6 +177,7 @@ function AircraftDetail({ aircraft }: { aircraft: AircraftRecord }) {
         {tab === "history" && <PartsHistoryTab aircraftId={aircraft.id} />}
         {tab === "edit" && <QuickEditTab aircraft={aircraft} />}
         {tab === "passport" && <PartsPassportTab aircraft={aircraft} />}
+        {tab === "remove" && <RemoveAircraftTab aircraft={aircraft} />}
       </div>
     </div>
   );
@@ -189,6 +193,12 @@ function OverviewTab({ aircraft }: { aircraft: AircraftRecord }) {
         <KV k="Serial Number" v={aircraft.serialNumber || "—"} />
         <KV k="Year of Manufacture" v={aircraft.yearOfManufacture || "—"} />
         <KV k="Type of Operations" v={aircraft.typeOfOperations || "—"} />
+        {aircraft.category === "Turboprop" && (
+          <KV
+            k="Propeller"
+            v={`${aircraft.propellerManufacturer} ${aircraft.propellerType}`.trim() || "—"}
+          />
+        )}
       </Section>
       <Section title="Subscription">
         <KV k="Plan" v={aircraft.plan === "monthly" ? "Monthly ($100/mo)" : "Annual ($1,000/yr)"} />
@@ -213,6 +223,8 @@ function EngineTab({ aircraft }: { aircraft: AircraftRecord }) {
     engineSeries: aircraft.engineSeries,
     engineSerialNumbers: aircraft.engineSerialNumbers,
     numberOfEngines: aircraft.numberOfEngines,
+    propellerManufacturer: aircraft.propellerManufacturer,
+    propellerType: aircraft.propellerType,
     maintenanceProgramme: aircraft.maintenanceProgramme,
     nationality: aircraft.nationality,
     registryStandard: aircraft.registryStandard,
@@ -283,6 +295,28 @@ function EngineTab({ aircraft }: { aircraft: AircraftRecord }) {
             onChange={(e) => setForm((f) => ({ ...f, numberOfEngines: Number(e.target.value) }))}
           />
         </Field>
+        {aircraft.category === "Turboprop" && (
+          <>
+            <Field label="Propeller manufacturer">
+              <input
+                className={inputCls}
+                value={form.propellerManufacturer}
+                placeholder="Hartzell, McCauley, MT-Propeller"
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, propellerManufacturer: e.target.value }))
+                }
+              />
+            </Field>
+            <Field label="Propeller type / model">
+              <input
+                className={inputCls}
+                value={form.propellerType}
+                placeholder="e.g. HC-B4TN-3"
+                onChange={(e) => setForm((f) => ({ ...f, propellerType: e.target.value }))}
+              />
+            </Field>
+          </>
+        )}
         <Field label="Total airframe hours">
           <input
             className={inputCls}
@@ -342,6 +376,8 @@ function ContactsTab({ aircraft }: { aircraft: AircraftRecord }) {
           engineSeries: aircraft.engineSeries,
           engineSerialNumbers: aircraft.engineSerialNumbers,
           numberOfEngines: aircraft.numberOfEngines,
+          propellerManufacturer: aircraft.propellerManufacturer,
+          propellerType: aircraft.propellerType,
           maintenanceProgramme: aircraft.maintenanceProgramme,
           nationality: aircraft.nationality,
           registryStandard: aircraft.registryStandard,
@@ -523,6 +559,12 @@ function VerificationTab({ aircraft }: { aircraft: AircraftRecord }) {
     { label: "Engine manufacturer", value: aircraft.engineManufacturer },
     { label: "Engine type", value: aircraft.engineType },
     { label: "Engine serial numbers", value: aircraft.engineSerialNumbers },
+    ...(aircraft.category === "Turboprop"
+      ? [
+          { label: "Propeller manufacturer", value: aircraft.propellerManufacturer },
+          { label: "Propeller type / model", value: aircraft.propellerType },
+        ]
+      : []),
     { label: "Maintenance programme", value: aircraft.maintenanceProgramme },
     { label: "Registry standard", value: aircraft.registryStandard },
     { label: "AMO name", value: aircraft.amoName },
@@ -613,6 +655,66 @@ function VerificationTab({ aircraft }: { aircraft: AircraftRecord }) {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function RemoveAircraftTab({ aircraft }: { aircraft: AircraftRecord }) {
+  const qc = useQueryClient();
+  const [reason, setReason] = useState("Sold aircraft");
+  const [notes, setNotes] = useState("");
+  const mutation = useMutation({
+    mutationFn: () => archiveAircraft({ data: { id: aircraft.id, reason, notes } }),
+    onSuccess: () => {
+      toast.success(`${aircraft.registration} removed from active cover.`);
+      qc.invalidateQueries({ queryKey: ["aircraft"] });
+      qc.invalidateQueries({ queryKey: ["aircraft-list"] });
+    },
+    onError: (err) =>
+      toast.error(err instanceof Error ? err.message : "Could not remove aircraft."),
+  });
+
+  return (
+    <div className="space-y-5">
+      <div className="rounded-md border border-destructive/20 bg-destructive/5 p-4">
+        <p className="text-sm font-semibold text-destructive">
+          Remove {aircraft.registration} from active cover
+        </p>
+        <p className="mt-1 text-xs leading-5 text-muted-foreground">
+          This archives the aircraft and cancels its active cover status in PlaneServe. Case history,
+          documents, and Parts Passport records are retained for audit purposes.
+        </p>
+      </div>
+      <div className="grid gap-4 md:grid-cols-2">
+        <Field label="Reason">
+          <select
+            className={inputCls}
+            value={reason}
+            onChange={(event) => setReason(event.target.value)}
+          >
+            <option>Sold aircraft</option>
+            <option>No longer needs support</option>
+            <option>Replaced aircraft</option>
+            <option>Changed operator</option>
+            <option>Other</option>
+          </select>
+        </Field>
+        <Field label="Notes">
+          <input
+            className={inputCls}
+            value={notes}
+            onChange={(event) => setNotes(event.target.value)}
+            placeholder="Optional context for PlaneServe"
+          />
+        </Field>
+      </div>
+      <button
+        onClick={() => mutation.mutate()}
+        disabled={mutation.isPending}
+        className="rounded-sm bg-destructive px-5 py-2.5 text-sm font-semibold text-destructive-foreground disabled:opacity-50"
+      >
+        {mutation.isPending ? "Removing..." : "Remove aircraft from cover"}
+      </button>
     </div>
   );
 }

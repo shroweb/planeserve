@@ -1,8 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { createSubscriberEnrolment, createStripeSubscription } from "@/lib/app.functions";
+import {
+  createSubscriberEnrolment,
+  createStripeSubscription,
+  getSessionUser,
+} from "@/lib/app.functions";
 import { AppShell } from "@/components/app/AppShell";
 import { authClient } from "@/lib/auth-client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { CheckCircle2, ChevronRight, ChevronLeft, Lock } from "lucide-react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
@@ -85,6 +90,8 @@ type FormData = {
   engineType: string;
   engineCount: number;
   engineSerialNumbers: string;
+  propellerManufacturer: string;
+  propellerType: string;
   maintenanceProgramme: string;
   aircraftNationality: string;
   insurer: string;
@@ -120,6 +127,8 @@ const defaultForm: FormData = {
   engineType: "",
   engineCount: 1,
   engineSerialNumbers: "",
+  propellerManufacturer: "",
+  propellerType: "",
   maintenanceProgramme: "",
   aircraftNationality: "",
   insurer: "",
@@ -161,6 +170,11 @@ function validateStep(step: number, form: FormData): string | null {
 function EnrolPage() {
   const session = authClient.useSession();
   const isSignedIn = Boolean(session.data?.user);
+  const { data: accountUser } = useQuery({
+    queryKey: ["session-user", "enrol"],
+    queryFn: () => getSessionUser(),
+    enabled: isSignedIn,
+  });
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<FormData>(defaultForm);
   const [stepError, setStepError] = useState<string | null>(null);
@@ -170,6 +184,23 @@ function EnrolPage() {
     setStepError(null);
     setForm((f) => ({ ...f, [k]: v }));
   };
+
+  useEffect(() => {
+    if (!isSignedIn || !accountUser) return;
+    const [firstName, ...rest] = accountUser.name.split(" ").filter(Boolean);
+    setForm((current) => ({
+      ...current,
+      firstName: current.firstName || firstName || "",
+      lastName: current.lastName || rest.join(" ") || "",
+      email: current.email || accountUser.email,
+      mobile: current.mobile || accountUser.phone,
+      whatsapp: current.whatsapp || accountUser.phone,
+      companyName: current.companyName || accountUser.company,
+      ownerOperatorName: current.ownerOperatorName || accountUser.company || accountUser.name,
+      primaryContactName: current.primaryContactName || accountUser.name,
+      picDirectMobile: current.picDirectMobile || accountUser.phone,
+    }));
+  }, [accountUser, isSignedIn]);
 
   if (confirmation) {
     const confirmationContent = (
@@ -319,6 +350,7 @@ function EnrolPage() {
             <Step5
               form={form}
               set={set}
+              isSignedIn={isSignedIn}
               onComplete={(ref, email) => setConfirmation({ ref, email })}
             />
           </Elements>
@@ -632,6 +664,26 @@ function Step3({
             />
           </Field>
         </div>
+        {form.category === "Turboprop" && (
+          <>
+            <Field label="Propeller manufacturer">
+              <input
+                className={inputCls}
+                value={form.propellerManufacturer}
+                onChange={(e) => set("propellerManufacturer", e.target.value)}
+                placeholder="Hartzell, McCauley, MT-Propeller"
+              />
+            </Field>
+            <Field label="Propeller type / model">
+              <input
+                className={inputCls}
+                value={form.propellerType}
+                onChange={(e) => set("propellerType", e.target.value)}
+                placeholder="e.g. HC-B4TN-3"
+              />
+            </Field>
+          </>
+        )}
         <Field label="Maintenance programme">
           <input
             className={inputCls}
@@ -772,10 +824,12 @@ function ReviewSection({
 function Step5({
   form,
   set,
+  isSignedIn,
   onComplete,
 }: {
   form: FormData;
   set: <K extends keyof FormData>(k: K, v: FormData[K]) => void;
+  isSignedIn: boolean;
   onComplete: (ref: string, email: string) => void;
 }) {
   const stripe = useStripe();
@@ -852,10 +906,11 @@ function Step5({
           stripeCustomerId: subscriptionResult.customerId,
         } as any,
       });
-      // Send password set email so the new user can log in
-      authClient
-        .requestPasswordReset({ email: form.email, redirectTo: "/set-password" })
-        .catch(() => {});
+      if (!isSignedIn) {
+        authClient
+          .requestPasswordReset({ email: form.email, redirectTo: "/set-password" })
+          .catch(() => {});
+      }
       onComplete(result.ref, form.email);
     } catch (e: any) {
       setCardError(e?.message ?? "Account creation failed. Contact support.");
@@ -892,6 +947,14 @@ function Step5({
           { label: "Year", value: form.year },
           { label: "Base airport", value: form.baseAirport },
           { label: "Engine", value: `${form.engineManufacturer} ${form.engineType}`.trim() },
+          ...(form.category === "Turboprop"
+            ? [
+                {
+                  label: "Propeller",
+                  value: `${form.propellerManufacturer} ${form.propellerType}`.trim(),
+                },
+              ]
+            : []),
           { label: "Total airframe hours", value: form.totalAirframeHours },
         ]}
       />

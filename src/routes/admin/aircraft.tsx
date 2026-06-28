@@ -26,12 +26,26 @@ export const Route = createFileRoute("/admin/aircraft")({
 function AdminAircraft() {
   const queryClient = useQueryClient();
   const [selectedAircraftId, setSelectedAircraftId] = useState<string | null>(null);
+  const [categoryFilter, setCategoryFilter] = useState("All");
+  const [locationFilter, setLocationFilter] = useState("");
   const { data } = useQuery({
     queryKey: ["admin-aircraft"],
     queryFn: () => getAdminAircraft(),
   });
   const users = data?.users ?? [];
   const aircraft = data?.aircraft ?? [];
+  const activeAircraft = aircraft.filter((item) => !item.archivedAt);
+  const categories = Array.from(new Set(activeAircraft.map((item) => item.category))).sort();
+  const filteredAircraft = activeAircraft.filter((item) => {
+    const matchesCategory = categoryFilter === "All" || item.category === categoryFilter;
+    const term = locationFilter.trim().toLowerCase();
+    const matchesLocation =
+      !term ||
+      item.baseAirport.toLowerCase().includes(term) ||
+      item.ownerOperatorName.toLowerCase().includes(term) ||
+      item.makeModel.toLowerCase().includes(term);
+    return matchesCategory && matchesLocation;
+  });
   const selectedAircraft = aircraft.find((item) => item.id === selectedAircraftId) ?? null;
   const selectedOwner = selectedAircraft
     ? users.find((item) => item.id === selectedAircraft.userId)
@@ -51,6 +65,42 @@ function AdminAircraft() {
       <p className="mt-1 text-sm text-muted-foreground">
         Verify aircraft details and manage global support profiles.
       </p>
+      <div className="mt-6 grid gap-3 sm:grid-cols-3">
+        <StatCard label="Active aircraft" value={String(activeAircraft.length)} />
+        <StatCard
+          label="Pending verification"
+          value={String(activeAircraft.filter((item) => item.verificationStatus === "Pending").length)}
+        />
+        <StatCard
+          label="Categories"
+          value={String(categories.length)}
+          detail={categories.join(" / ") || "No aircraft"}
+        />
+      </div>
+      <div className="mt-4 flex flex-col gap-3 rounded-md border border-border bg-card p-4 sm:flex-row">
+        <label className="grid gap-1 text-xs font-medium uppercase tracking-widest text-muted-foreground">
+          Category
+          <select
+            value={categoryFilter}
+            onChange={(event) => setCategoryFilter(event.target.value)}
+            className="min-h-10 rounded-sm border border-input bg-background px-3 text-sm font-normal normal-case tracking-normal text-foreground"
+          >
+            <option>All</option>
+            {categories.map((category) => (
+              <option key={category}>{category}</option>
+            ))}
+          </select>
+        </label>
+        <label className="grid flex-1 gap-1 text-xs font-medium uppercase tracking-widest text-muted-foreground">
+          Location / type / owner
+          <input
+            value={locationFilter}
+            onChange={(event) => setLocationFilter(event.target.value)}
+            className="min-h-10 rounded-sm border border-input bg-background px-3 text-sm font-normal normal-case tracking-normal text-foreground"
+            placeholder="Filter by EGKB, turboprop, operator..."
+          />
+        </label>
+      </div>
       <div className="mt-8 overflow-hidden rounded-md border border-border bg-card">
         <table className="w-full text-sm">
           <thead className="bg-muted/60 text-xs uppercase tracking-widest text-muted-foreground">
@@ -65,12 +115,15 @@ function AdminAircraft() {
             </tr>
           </thead>
           <tbody>
-            {aircraft.map((a) => {
+            {filteredAircraft.map((a) => {
               const u = users.find((x) => x.id === a.userId);
               return (
                 <tr key={a.id} className="border-t border-border">
                   <Td className="font-mono font-semibold">{a.registration}</Td>
-                  <Td>{a.makeModel}</Td>
+                  <Td>
+                    <div>{a.makeModel}</div>
+                    <div className="text-[11px] text-muted-foreground">{a.category}</div>
+                  </Td>
                   <Td>
                     <div className="font-medium">{u?.company || u?.name}</div>
                     <div className="text-[11px] text-muted-foreground">{u?.email}</div>
@@ -108,6 +161,13 @@ function AdminAircraft() {
                 </tr>
               );
             })}
+            {filteredAircraft.length === 0 && (
+              <tr>
+                <Td className="text-muted-foreground" colSpan={7}>
+                  No aircraft match this filter.
+                </Td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
@@ -192,6 +252,12 @@ function AircraftDetailPanel({
             <Detail label="Engine series" value={aircraft.engineSeries} />
             <Detail label="Engine count" value={String(aircraft.numberOfEngines)} />
             <Detail label="Engine serials" value={aircraft.engineSerialNumbers} />
+            {aircraft.category === "Turboprop" && (
+              <Detail
+                label="Propeller"
+                value={`${aircraft.propellerManufacturer} ${aircraft.propellerType}`.trim()}
+              />
+            )}
             <Detail label="Maintenance programme" value={aircraft.maintenanceProgramme} />
             <Detail label="Registry standard" value={aircraft.registryStandard} />
             <Detail label="Nationality" value={aircraft.nationality} />
@@ -239,6 +305,18 @@ function StatusTile({ label, value }: { label: string; value: string }) {
   );
 }
 
+function StatCard({ label, value, detail }: { label: string; value: string; detail?: string }) {
+  return (
+    <div className="rounded-md border border-border bg-card p-4">
+      <div className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+        {label}
+      </div>
+      <div className="mt-2 text-2xl font-semibold tracking-tight">{value}</div>
+      {detail && <div className="mt-1 truncate text-xs text-muted-foreground">{detail}</div>}
+    </div>
+  );
+}
+
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="mt-6">
@@ -264,6 +342,18 @@ function Detail({ label, value }: { label: string; value?: string }) {
 function Th({ children }: { children: React.ReactNode }) {
   return <th className="px-5 py-3 text-left font-semibold">{children}</th>;
 }
-function Td({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <td className={`px-5 py-3 ${className}`}>{children}</td>;
+function Td({
+  children,
+  className = "",
+  colSpan,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  colSpan?: number;
+}) {
+  return (
+    <td colSpan={colSpan} className={`px-5 py-3 ${className}`}>
+      {children}
+    </td>
+  );
 }

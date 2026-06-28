@@ -143,6 +143,8 @@ export const aircraft = pgTable(
     engineSeries: text("engine_series").notNull().default(""),
     engineSerialNumbers: text("engine_serial_numbers").notNull().default(""),
     numberOfEngines: integer("number_of_engines").notNull().default(2),
+    propellerManufacturer: text("propeller_manufacturer").notNull().default(""),
+    propellerType: text("propeller_type").notNull().default(""),
     maintenanceProgramme: text("maintenance_programme").notNull().default(""),
     nationality: text("nationality").notNull().default(""),
     registryStandard: text("registry_standard").notNull().default(""),
@@ -157,6 +159,9 @@ export const aircraft = pgTable(
 
     plan: planEnum("plan").notNull(),
     subscriptionStatus: subscriptionStatusEnum("subscription_status").notNull().default("Active"),
+    archivedAt: timestamp("archived_at", { withTimezone: true }),
+    archiveReason: text("archive_reason").notNull().default(""),
+    archiveNotes: text("archive_notes").notNull().default(""),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
@@ -390,6 +395,7 @@ export const supplierCompanies = pgTable("supplier_companies", {
   paymentMethod: text("payment_method").notNull().default(""),
   paymentCurrency: text("payment_currency").notNull().default("USD"),
   paymentTerms: text("payment_terms").notNull().default(""),
+  releaseCapabilities: text("release_capabilities").array().notNull().default([]),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
@@ -412,6 +418,16 @@ export const supplierUsers = pgTable("supplier_users", {
   supplierCompanyId: text("supplier_company_id").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 }, (table) => [index("supplier_users_company_id_idx").on(table.supplierCompanyId)]);
+
+export const supplierTeamMembers = pgTable("supplier_team_members", {
+  id: text("id").primaryKey(),
+  supplierCompanyId: text("supplier_company_id").notNull(),
+  name: text("name").notNull().default(""),
+  email: text("email").notNull().default(""),
+  role: text("role").notNull().default("AOG contact"),
+  phone: text("phone").notNull().default(""),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [index("supplier_team_members_company_id_idx").on(table.supplierCompanyId)]);
 
 export const supplierRfqs = pgTable("supplier_rfqs", {
   id: text("id").primaryKey(),

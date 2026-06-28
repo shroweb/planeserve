@@ -116,6 +116,8 @@ export type AircraftRecord = {
   engineSeries: string;
   engineSerialNumbers: string;
   numberOfEngines: number;
+  propellerManufacturer: string;
+  propellerType: string;
   maintenanceProgramme: string;
   nationality: string;
   registryStandard: string;
@@ -133,6 +135,9 @@ export type AircraftRecord = {
   supportNotes: string;
   plan: Plan;
   subscriptionStatus: string;
+  archivedAt: string | null;
+  archiveReason: string;
+  archiveNotes: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -174,7 +179,7 @@ export type AogRecord = {
 // ── Server-only DB/auth loader ────────────────────────────────────────────────
 
 const loadServerAuth = createServerOnlyFn(async () => {
-  const [{ getRequestHeaders }, { eq, and, ne, inArray, asc, desc }, { auth }, { db, schema }] =
+  const [{ getRequestHeaders }, { eq, and, ne, inArray, isNull, asc, desc }, { auth }, { db, schema }] =
     await Promise.all([
       import("@tanstack/start-server-core"),
       import("drizzle-orm"),
@@ -182,7 +187,7 @@ const loadServerAuth = createServerOnlyFn(async () => {
       import("./db/index.server"),
     ]);
 
-  return { getRequestHeaders, eq, and, ne, inArray, asc, desc, auth, db, schema };
+  return { getRequestHeaders, eq, and, ne, inArray, isNull, asc, desc, auth, db, schema };
 });
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -205,6 +210,8 @@ function toAircraftRecord(row: {
   engineSeries: string;
   engineSerialNumbers: string;
   numberOfEngines: number;
+  propellerManufacturer: string;
+  propellerType: string;
   maintenanceProgramme: string;
   nationality: string;
   registryStandard: string;
@@ -218,6 +225,9 @@ function toAircraftRecord(row: {
   totalAirframeHours: string;
   plan: Plan;
   subscriptionStatus: string;
+  archivedAt: Date | null;
+  archiveReason: string;
+  archiveNotes: string;
   createdAt: Date;
   updatedAt: Date;
 }): AircraftRecord {
@@ -227,6 +237,7 @@ function toAircraftRecord(row: {
     commonParts: [],
     alternatePartNumbers: [],
     supportNotes: "",
+    archivedAt: row.archivedAt?.toISOString() ?? null,
     createdAt: row.createdAt.toISOString(),
     updatedAt: row.updatedAt.toISOString(),
   };
@@ -503,12 +514,12 @@ export const upsertProfile = createServerFn({ method: "POST" })
 
 export const getDashboardData = createServerFn({ method: "GET" }).handler(async () => {
   const user = await currentUser();
-  const { eq, inArray, asc, desc, db, schema } = await loadServerAuth();
+  const { eq, and, isNull, inArray, asc, desc, db, schema } = await loadServerAuth();
 
   const aircraftRows = await db
     .select()
     .from(schema.aircraft)
-    .where(eq(schema.aircraft.userId, user.id))
+    .where(and(eq(schema.aircraft.userId, user.id), isNull(schema.aircraft.archivedAt)))
     .orderBy(desc(schema.aircraft.createdAt));
 
   const requestRows = await db
@@ -561,11 +572,11 @@ export const getDashboardData = createServerFn({ method: "GET" }).handler(async 
 
 export const getAircraftData = createServerFn({ method: "GET" }).handler(async () => {
   const user = await currentUser();
-  const { eq, desc, db, schema } = await loadServerAuth();
+  const { eq, and, isNull, desc, db, schema } = await loadServerAuth();
   const rows = await db
     .select()
     .from(schema.aircraft)
-    .where(eq(schema.aircraft.userId, user.id))
+    .where(and(eq(schema.aircraft.userId, user.id), isNull(schema.aircraft.archivedAt)))
     .orderBy(desc(schema.aircraft.createdAt));
   return rows.map(toAircraftRecord);
 });
@@ -671,12 +682,12 @@ export const addAircraftDocument = createServerFn({ method: "POST" })
 
 export const getBillingData = createServerFn({ method: "GET" }).handler(async () => {
   const user = await currentUser();
-  const { eq, inArray, desc, db, schema } = await loadServerAuth();
+  const { eq, and, isNull, inArray, desc, db, schema } = await loadServerAuth();
 
   const aircraftRows = await db
     .select()
     .from(schema.aircraft)
-    .where(eq(schema.aircraft.userId, user.id))
+    .where(and(eq(schema.aircraft.userId, user.id), isNull(schema.aircraft.archivedAt)))
     .orderBy(desc(schema.aircraft.createdAt));
 
   const aircraftIds = aircraftRows.map((a) => a.id);
@@ -722,11 +733,11 @@ export const getBillingData = createServerFn({ method: "GET" }).handler(async ()
 
 export const getAogFormData = createServerFn({ method: "GET" }).handler(async () => {
   const user = await currentUser();
-  const { eq, desc, db, schema } = await loadServerAuth();
+  const { eq, and, isNull, desc, db, schema } = await loadServerAuth();
   const rows = await db
     .select()
     .from(schema.aircraft)
-    .where(eq(schema.aircraft.userId, user.id))
+    .where(and(eq(schema.aircraft.userId, user.id), isNull(schema.aircraft.archivedAt)))
     .orderBy(desc(schema.aircraft.createdAt));
   return { user, aircraft: rows.map(toAircraftRecord) };
 });
@@ -748,6 +759,8 @@ export const createAircraft = createServerFn({ method: "POST" })
       engineSeries: z.string().optional().default(""),
       engineSerialNumbers: z.string().optional().default(""),
       numberOfEngines: z.number().optional().default(2),
+      propellerManufacturer: z.string().optional().default(""),
+      propellerType: z.string().optional().default(""),
       maintenanceProgramme: z.string().optional().default(""),
       nationality: z.string().optional().default(""),
       registryStandard: z.string().optional().default(""),
@@ -788,6 +801,8 @@ export const createAircraft = createServerFn({ method: "POST" })
       engineSeries: data.engineSeries,
       engineSerialNumbers: data.engineSerialNumbers,
       numberOfEngines: data.numberOfEngines,
+      propellerManufacturer: data.propellerManufacturer,
+      propellerType: data.propellerType,
       maintenanceProgramme: data.maintenanceProgramme,
       nationality: data.nationality,
       registryStandard: data.registryStandard,
@@ -1403,13 +1418,13 @@ export async function getApiCurrentUser() {
 
 export async function getApiAircraft(): Promise<AircraftRecord[]> {
   const user = await currentUser();
-  const { eq, desc, db, schema } = await loadServerAuth();
+  const { eq, and, isNull, desc, db, schema } = await loadServerAuth();
   const rows = user.isAdmin
     ? await db.select().from(schema.aircraft).orderBy(desc(schema.aircraft.createdAt))
     : await db
         .select()
         .from(schema.aircraft)
-        .where(eq(schema.aircraft.userId, user.id))
+        .where(and(eq(schema.aircraft.userId, user.id), isNull(schema.aircraft.archivedAt)))
         .orderBy(desc(schema.aircraft.createdAt));
   return rows.map(toAircraftRecord);
 }
@@ -1974,6 +1989,8 @@ export const updateAircraftProfile = createServerFn({ method: "POST" })
       engineSeries: z.string().optional().default(""),
       engineSerialNumbers: z.string().optional().default(""),
       numberOfEngines: z.number().optional().default(2),
+      propellerManufacturer: z.string().optional().default(""),
+      propellerType: z.string().optional().default(""),
       maintenanceProgramme: z.string().optional().default(""),
       nationality: z.string().optional().default(""),
       registryStandard: z.string().optional().default(""),
@@ -2003,6 +2020,8 @@ export const updateAircraftProfile = createServerFn({ method: "POST" })
         engineSeries: data.engineSeries,
         engineSerialNumbers: data.engineSerialNumbers,
         numberOfEngines: data.numberOfEngines,
+        propellerManufacturer: data.propellerManufacturer,
+        propellerType: data.propellerType,
         maintenanceProgramme: data.maintenanceProgramme,
         nationality: data.nationality,
         registryStandard: data.registryStandard,
@@ -2837,10 +2856,13 @@ export const getSupplierQuoteHistory = createServerFn({ method: "GET" }).handler
 
 export const getValueSummary = createServerFn({ method: "GET" }).handler(async () => {
   const user = await currentUser();
-  const { eq, inArray, desc, db, schema } = await loadServerAuth();
+  const { eq, and, isNull, inArray, desc, db, schema } = await loadServerAuth();
 
   const [aircraftRows, requestRows, invoiceRows] = await Promise.all([
-    db.select().from(schema.aircraft).where(eq(schema.aircraft.userId, user.id)),
+    db
+      .select()
+      .from(schema.aircraft)
+      .where(and(eq(schema.aircraft.userId, user.id), isNull(schema.aircraft.archivedAt))),
     db.select().from(schema.aogRequests).where(eq(schema.aogRequests.userId, user.id)),
     db.select().from(schema.invoices).where(eq(schema.invoices.userId, user.id)),
   ]);
@@ -2898,7 +2920,7 @@ export const getValueSummary = createServerFn({ method: "GET" }).handler(async (
 
 export const getAircraftList = createServerFn({ method: "GET" }).handler(async () => {
   const user = await currentUser();
-  const { eq, db, schema } = await loadServerAuth();
+  const { eq, and, isNull, db, schema } = await loadServerAuth();
   const rows = await db
     .select({
       id: schema.aircraft.id,
@@ -2910,7 +2932,7 @@ export const getAircraftList = createServerFn({ method: "GET" }).handler(async (
       subscriptionStatus: schema.aircraft.subscriptionStatus,
     })
     .from(schema.aircraft)
-    .where(eq(schema.aircraft.userId, user.id));
+    .where(and(eq(schema.aircraft.userId, user.id), isNull(schema.aircraft.archivedAt)));
   return rows;
 });
 
@@ -2980,12 +3002,16 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
       makeModel: z.string().min(1),
       category: aircraftCategorySchema,
       registration: z.string().min(1),
+      serialNumber: z.string().default(""),
       year: z.string().default(""),
       baseAirport: z.string().default(""),
+      ownerOperatorName: z.string().default(""),
       engineManufacturer: z.string().default(""),
       engineType: z.string().default(""),
       engineCount: z.number().int().min(1).max(4).default(1),
       engineSerialNumbers: z.string().default(""),
+      propellerManufacturer: z.string().default(""),
+      propellerType: z.string().default(""),
       maintenanceProgramme: z.string().default(""),
       aircraftNationality: z.string().default(""),
       insurer: z.string().default(""),
@@ -3004,18 +3030,22 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
     }),
   )
   .handler(async ({ data }) => {
-    const { auth, db, schema } = await loadServerAuth();
-    // Create auth user with random password
-    const tempPassword = crypto.randomUUID() + "Aa1!";
-    const signupRes = await auth.api.signUpEmail({
-      body: {
-        name: `${data.firstName} ${data.lastName}`,
-        email: data.email,
-        password: tempPassword,
-      },
-    });
-    const userId = (signupRes as { user?: { id: string } }).user?.id;
-    if (!userId) throw new Error("Failed to create user account.");
+    const { getRequestHeaders, auth, db, schema } = await loadServerAuth();
+    const session = await auth.api.getSession({ headers: getRequestHeaders() });
+    let userId = session?.user?.id ?? "";
+
+    if (!userId) {
+      const tempPassword = crypto.randomUUID() + "Aa1!";
+      const signupRes = await auth.api.signUpEmail({
+        body: {
+          name: `${data.firstName} ${data.lastName}`,
+          email: data.email,
+          password: tempPassword,
+        },
+      });
+      userId = (signupRes as { user?: { id: string } }).user?.id ?? "";
+      if (!userId) throw new Error("Failed to create user account.");
+    }
 
     await db
       .insert(schema.profiles)
@@ -3037,10 +3067,11 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
       registration: data.registration.toUpperCase(),
       category: data.category,
       makeModel: data.makeModel,
-      serialNumber: "",
+      serialNumber: data.serialNumber,
       yearOfManufacture: data.year,
       typeOfOperations: data.usageType,
-      ownerOperatorName: data.companyName || `${data.firstName} ${data.lastName}`,
+      ownerOperatorName:
+        data.ownerOperatorName || data.companyName || `${data.firstName} ${data.lastName}`,
       baseAirport: data.baseAirport,
       verificationStatus: "Pending",
       engineManufacturer: data.engineManufacturer,
@@ -3048,6 +3079,8 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
       engineSeries: "",
       engineSerialNumbers: data.engineSerialNumbers,
       numberOfEngines: data.engineCount,
+      propellerManufacturer: data.propellerManufacturer,
+      propellerType: data.propellerType,
       maintenanceProgramme: data.maintenanceProgramme,
       nationality: data.aircraftNationality,
       registryStandard: "",
@@ -3507,6 +3540,35 @@ export const updateAircraftDetails = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+export const archiveAircraft = createServerFn({ method: "POST" })
+  .inputValidator(
+    z.object({
+      id: z.string().min(1),
+      reason: z.string().min(1),
+      notes: z.string().optional().default(""),
+    }),
+  )
+  .handler(async ({ data }) => {
+    const user = await currentUser();
+    const { eq, and, db, schema } = await loadServerAuth();
+    const [row] = await db
+      .select({ userId: schema.aircraft.userId })
+      .from(schema.aircraft)
+      .where(and(eq(schema.aircraft.id, data.id), eq(schema.aircraft.userId, user.id)));
+    if (!row) throw new Error("Aircraft not found.");
+    await db
+      .update(schema.aircraft)
+      .set({
+        archivedAt: new Date(),
+        archiveReason: data.reason,
+        archiveNotes: data.notes,
+        subscriptionStatus: "Cancelled",
+        updatedAt: new Date(),
+      })
+      .where(eq(schema.aircraft.id, data.id));
+    return { ok: true };
+  });
+
 export const getAircraftResolvedCases = createServerFn({ method: "GET" })
   .inputValidator(z.object({ aircraftId: z.string().min(1) }))
   .handler(async ({ data }) => {
@@ -3600,6 +3662,7 @@ export const updateSupplierProfile = createServerFn({ method: "POST" })
       secondaryAogContact: z.string().default(""),
       accountsContact: z.string().default(""),
       website: z.string().default(""),
+      releaseCapabilities: z.array(z.string()).default([]),
     }),
   )
   .handler(async ({ data }) => {
@@ -3609,6 +3672,54 @@ export const updateSupplierProfile = createServerFn({ method: "POST" })
       .update(schema.supplierCompanies)
       .set(data)
       .where(eq(schema.supplierCompanies.id, company.id));
+    return { ok: true };
+  });
+
+export const getSupplierTeamMembers = createServerFn({ method: "GET" }).handler(async () => {
+  const { company } = await currentSupplier();
+  const { eq, asc, db, schema } = await loadServerAuth();
+  return db
+    .select()
+    .from(schema.supplierTeamMembers)
+    .where(eq(schema.supplierTeamMembers.supplierCompanyId, company.id))
+    .orderBy(asc(schema.supplierTeamMembers.createdAt));
+});
+
+export const addSupplierTeamMember = createServerFn({ method: "POST" })
+  .inputValidator(
+    z.object({
+      name: z.string().min(1),
+      email: z.string().email(),
+      role: z.string().default("AOG contact"),
+      phone: z.string().default(""),
+    }),
+  )
+  .handler(async ({ data }) => {
+    const { company } = await currentSupplier();
+    const { db, schema } = await loadServerAuth();
+    const id = `stm_${crypto.randomUUID()}`;
+    await db.insert(schema.supplierTeamMembers).values({
+      id,
+      supplierCompanyId: company.id,
+      ...data,
+      createdAt: new Date(),
+    });
+    return { ok: true, id };
+  });
+
+export const removeSupplierTeamMember = createServerFn({ method: "POST" })
+  .inputValidator(z.object({ id: z.string().min(1) }))
+  .handler(async ({ data }) => {
+    const { company } = await currentSupplier();
+    const { eq, and, db, schema } = await loadServerAuth();
+    await db
+      .delete(schema.supplierTeamMembers)
+      .where(
+        and(
+          eq(schema.supplierTeamMembers.id, data.id),
+          eq(schema.supplierTeamMembers.supplierCompanyId, company.id),
+        ),
+      );
     return { ok: true };
   });
 

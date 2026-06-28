@@ -7,6 +7,9 @@ import {
   updateSupplierProfile,
   getMyComplianceDocs,
   saveMyComplianceDoc,
+  getSupplierTeamMembers,
+  addSupplierTeamMember,
+  removeSupplierTeamMember,
 } from "@/lib/app.functions";
 import { uploadBrowserFile } from "@/lib/file-upload";
 import { useState, useEffect } from "react";
@@ -35,6 +38,14 @@ const COMPLIANCE_DOCS = [
   "Insurance Certificate",
 ];
 
+const RELEASE_CAPABILITIES = [
+  "EASA Form 1",
+  "FAA Form 8130-3",
+  "TCCA Form 1",
+  "CAA Form 1 (UK)",
+  "Dual release",
+];
+
 function SupplierProfilePage() {
   const queryClient = useQueryClient();
   const { data: company, isLoading } = useQuery({
@@ -51,6 +62,7 @@ function SupplierProfilePage() {
     secondaryAogContact: "",
     accountsContact: "",
     website: "",
+    releaseCapabilities: [] as string[],
   });
 
   useEffect(() => {
@@ -64,6 +76,7 @@ function SupplierProfilePage() {
         secondaryAogContact: (company as any).secondaryAogContact ?? "",
         accountsContact: (company as any).accountsContact ?? "",
         website: (company as any).website ?? "",
+        releaseCapabilities: (company as any).releaseCapabilities ?? [],
       });
     }
   }, [company]);
@@ -126,6 +139,48 @@ function SupplierProfilePage() {
             </button>
           </div>
 
+          {/* Release capabilities */}
+          <div className="bg-card border border-border rounded-xl p-6">
+            <p className="text-sm font-semibold mb-1">Release Document Capabilities</p>
+            <p className="text-xs text-muted-foreground mb-4">
+              Tick the paperwork your team can usually provide with sourced parts.
+            </p>
+            <div className="grid gap-2 sm:grid-cols-2">
+              {RELEASE_CAPABILITIES.map((capability) => {
+                const checked = form.releaseCapabilities.includes(capability);
+                return (
+                  <label
+                    key={capability}
+                    className="flex items-center gap-3 rounded-md border border-border bg-background px-3 py-2 text-sm"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={(event) =>
+                        setForm((current) => ({
+                          ...current,
+                          releaseCapabilities: event.target.checked
+                            ? [...current.releaseCapabilities, capability]
+                            : current.releaseCapabilities.filter((item) => item !== capability),
+                        }))
+                      }
+                    />
+                    {capability}
+                  </label>
+                );
+              })}
+            </div>
+            <button
+              onClick={() => mutation.mutate()}
+              disabled={mutation.isPending}
+              className="mt-5 px-5 py-2.5 rounded bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 disabled:opacity-50"
+            >
+              {mutation.isPending ? "Saving…" : "Save capabilities"}
+            </button>
+          </div>
+
+          <SupplierTeam />
+
           {/* Compliance documents */}
           <ComplianceDocs />
         </div>
@@ -142,6 +197,96 @@ function docExpiryStatus(expiry: string): { label: string; cls: string } {
   if (days < 0) return { label: `Expired ${expiry}`, cls: "text-destructive font-medium" };
   if (days <= 30) return { label: `Expires ${expiry} (${days}d)`, cls: "text-accent font-medium" };
   return { label: `Valid · ${expiry}`, cls: "text-success" };
+}
+
+function SupplierTeam() {
+  const qc = useQueryClient();
+  const { data: members = [] } = useQuery({
+    queryKey: ["supplier-team-members"],
+    queryFn: () => getSupplierTeamMembers(),
+  });
+  const [form, setForm] = useState({ name: "", email: "", role: "AOG contact", phone: "" });
+  const add = useMutation({
+    mutationFn: () => addSupplierTeamMember({ data: form }),
+    onSuccess: () => {
+      setForm({ name: "", email: "", role: "AOG contact", phone: "" });
+      qc.invalidateQueries({ queryKey: ["supplier-team-members"] });
+      toast.success("Team member added.");
+    },
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Could not add team member."),
+  });
+  const remove = useMutation({
+    mutationFn: (id: string) => removeSupplierTeamMember({ data: { id } }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["supplier-team-members"] });
+      toast.success("Team member removed.");
+    },
+  });
+
+  return (
+    <div className="bg-card border border-border rounded-xl p-6">
+      <p className="text-sm font-semibold mb-1">Team Members</p>
+      <p className="text-xs text-muted-foreground mb-4">
+        Add people who can respond to RFQs, shipping queries, or account questions.
+      </p>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <input
+          className={inputCls}
+          value={form.name}
+          onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))}
+          placeholder="Name"
+        />
+        <input
+          className={inputCls}
+          value={form.email}
+          onChange={(event) => setForm((current) => ({ ...current, email: event.target.value }))}
+          placeholder="Email"
+        />
+        <input
+          className={inputCls}
+          value={form.role}
+          onChange={(event) => setForm((current) => ({ ...current, role: event.target.value }))}
+          placeholder="Role"
+        />
+        <input
+          className={inputCls}
+          value={form.phone}
+          onChange={(event) => setForm((current) => ({ ...current, phone: event.target.value }))}
+          placeholder="Phone"
+        />
+      </div>
+      <button
+        onClick={() => add.mutate()}
+        disabled={add.isPending || !form.name || !form.email}
+        className="mt-4 rounded bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+      >
+        {add.isPending ? "Adding..." : "Add team member"}
+      </button>
+      <div className="mt-5 divide-y divide-border rounded-md border border-border">
+        {members.length === 0 ? (
+          <div className="p-4 text-sm text-muted-foreground">No team members added yet.</div>
+        ) : (
+          members.map((member) => (
+            <div key={member.id} className="flex items-center justify-between gap-3 p-4 text-sm">
+              <div className="min-w-0">
+                <div className="font-medium">{member.name}</div>
+                <div className="truncate text-xs text-muted-foreground">
+                  {member.role} · {member.email}
+                  {member.phone ? ` · ${member.phone}` : ""}
+                </div>
+              </div>
+              <button
+                onClick={() => remove.mutate(member.id)}
+                className="rounded border border-border px-3 py-1.5 text-xs hover:bg-muted"
+              >
+                Remove
+              </button>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
 }
 
 function ComplianceDocs() {
