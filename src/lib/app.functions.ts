@@ -724,8 +724,13 @@ export const getBillingData = createServerFn({ method: "GET" }).handler(async ()
       id: i.id,
       userId: i.userId,
       subscriptionId: i.subscriptionId,
+      requestId: i.requestId,
+      quoteId: i.quoteId,
+      description: i.description,
       amountCents: i.amountCents,
+      currency: i.currency,
       status: i.status,
+      emailedAt: i.emailedAt?.toISOString() ?? null,
       createdAt: i.createdAt.toISOString(),
     })),
   };
@@ -762,7 +767,6 @@ export const createAircraft = createServerFn({ method: "POST" })
       propellerManufacturer: z.string().optional().default(""),
       propellerType: z.string().optional().default(""),
       maintenanceProgramme: z.string().optional().default(""),
-      nationality: z.string().optional().default(""),
       registryStandard: z.string().optional().default(""),
       amoName: z.string().optional().default(""),
       amoPhone: z.string().optional().default(""),
@@ -804,7 +808,6 @@ export const createAircraft = createServerFn({ method: "POST" })
       propellerManufacturer: data.propellerManufacturer,
       propellerType: data.propellerType,
       maintenanceProgramme: data.maintenanceProgramme,
-      nationality: data.nationality,
       registryStandard: data.registryStandard,
       amoName: data.amoName,
       amoPhone: data.amoPhone,
@@ -1553,7 +1556,6 @@ export async function createApiAircraft(data: {
   engineSerialNumbers?: string;
   numberOfEngines?: number;
   maintenanceProgramme?: string;
-  nationality?: string;
   registryStandard?: string;
   amoName?: string;
   amoPhone?: string;
@@ -1592,7 +1594,6 @@ export async function createApiAircraft(data: {
     engineSerialNumbers: data.engineSerialNumbers ?? "",
     numberOfEngines: data.numberOfEngines ?? 2,
     maintenanceProgramme: data.maintenanceProgramme ?? "",
-    nationality: data.nationality ?? "",
     registryStandard: data.registryStandard ?? "",
     amoName: data.amoName ?? "",
     amoPhone: data.amoPhone ?? "",
@@ -1633,7 +1634,7 @@ export async function createApiAircraft(data: {
     engineSerialNumbers: data.engineSerialNumbers ?? "",
     numberOfEngines: data.numberOfEngines ?? 2,
     maintenanceProgramme: data.maintenanceProgramme ?? "",
-    nationality: data.nationality ?? "",
+    nationality: "",
     registryStandard: data.registryStandard ?? "",
     amoName: data.amoName ?? "",
     amoPhone: data.amoPhone ?? "",
@@ -1992,7 +1993,6 @@ export const updateAircraftProfile = createServerFn({ method: "POST" })
       propellerManufacturer: z.string().optional().default(""),
       propellerType: z.string().optional().default(""),
       maintenanceProgramme: z.string().optional().default(""),
-      nationality: z.string().optional().default(""),
       registryStandard: z.string().optional().default(""),
       amoName: z.string().optional().default(""),
       amoPhone: z.string().optional().default(""),
@@ -2020,11 +2020,10 @@ export const updateAircraftProfile = createServerFn({ method: "POST" })
         engineSeries: data.engineSeries,
         engineSerialNumbers: data.engineSerialNumbers,
         numberOfEngines: data.numberOfEngines,
-        propellerManufacturer: data.propellerManufacturer,
-        propellerType: data.propellerType,
-        maintenanceProgramme: data.maintenanceProgramme,
-        nationality: data.nationality,
-        registryStandard: data.registryStandard,
+      propellerManufacturer: data.propellerManufacturer,
+      propellerType: data.propellerType,
+      maintenanceProgramme: data.maintenanceProgramme,
+      registryStandard: data.registryStandard,
         amoName: data.amoName,
         amoPhone: data.amoPhone,
         amoEmergencyPhone: data.amoEmergencyPhone,
@@ -2130,14 +2129,33 @@ export const approveSupplierQuote = createServerFn({ method: "POST" })
   .inputValidator(z.object({ quoteId: z.string().min(1), requestId: z.string().min(1) }))
   .handler(async ({ data }) => {
     const user = await currentUser();
-    const { eq, db, schema } = await loadServerAuth();
+    const { eq, and, db, schema } = await loadServerAuth();
 
     const [req] = await db
-      .select({ userId: schema.aogRequests.userId })
+      .select({
+        id: schema.aogRequests.id,
+        userId: schema.aogRequests.userId,
+        aircraftId: schema.aogRequests.aircraftId,
+        registration: schema.aogRequests.registration,
+        affectedSystem: schema.aogRequests.affectedSystem,
+        partNumber: schema.aogRequests.partNumber,
+        caseReference: schema.aogRequests.caseReference,
+      })
       .from(schema.aogRequests)
       .where(eq(schema.aogRequests.id, data.requestId));
 
     if (!req || req.userId !== user.id) throw new Error("Access denied.");
+
+    const [quote] = await db
+      .select()
+      .from(schema.supplierQuotes)
+      .where(
+        and(
+          eq(schema.supplierQuotes.id, data.quoteId),
+          eq(schema.supplierQuotes.requestId, data.requestId),
+        ),
+      );
+    if (!quote) throw new Error("Quote not found.");
 
     const now = new Date();
     await db
@@ -2150,12 +2168,49 @@ export const approveSupplierQuote = createServerFn({ method: "POST" })
       .set({ status: "Confirmed", updatedAt: now })
       .where(eq(schema.aogRequests.id, data.requestId));
 
+    const [subscription] = await db
+      .select({ id: schema.subscriptions.id })
+      .from(schema.subscriptions)
+      .where(eq(schema.subscriptions.aircraftId, req.aircraftId));
+    const subscriptionId = subscription?.id ?? "";
+
+    const [existingInvoice] = await db
+      .select({ id: schema.invoices.id })
+      .from(schema.invoices)
+      .where(eq(schema.invoices.quoteId, data.quoteId));
+
+    const invoiceDescription = [
+      req.registration,
+      quote.supplierName,
+      req.partNumber || req.affectedSystem,
+      quote.condition,
+    ]
+      .filter(Boolean)
+      .join(" · ");
+
+    const invoiceId = existingInvoice?.id ?? `inv_${crypto.randomUUID()}`;
+    if (!existingInvoice) {
+      await db.insert(schema.invoices).values({
+        id: invoiceId,
+        userId: user.id,
+        subscriptionId,
+        requestId: data.requestId,
+        quoteId: data.quoteId,
+        description: invoiceDescription,
+        amountCents: quote.priceCents,
+        currency: quote.currency,
+        status: "Draft",
+        emailedAt: now,
+        createdAt: now,
+      });
+    }
+
     await db.insert(schema.aogStatusEvents).values({
       id: `se_${crypto.randomUUID()}`,
       requestId: data.requestId,
       status: "Confirmed",
       note:
-        "Sourcing option approved by owner/operator. PlaneServe to issue payment/order instructions and coordinate supplier dispatch.",
+        `Sourcing option approved by owner/operator. Invoice ${invoiceId.slice(-8)} generated and emailed from PlaneServe.`,
       createdByUserId: user.id,
       createdAt: now,
     });
@@ -2166,10 +2221,39 @@ export const approveSupplierQuote = createServerFn({ method: "POST" })
       category: "AOG",
       title: "Sourcing option approved",
       body:
-        "PlaneServe will now confirm the order, manage payment instructions and coordinate supplier dispatch.",
+        "PlaneServe has generated the part invoice/payment request and will now coordinate order placement and supplier dispatch.",
       requestId: data.requestId,
       createdAt: now,
     });
+
+    const [profile] = await db
+      .select({ email: schema.profiles.email, name: schema.profiles.name })
+      .from(schema.profiles)
+      .where(eq(schema.profiles.userId, user.id));
+
+    if (profile?.email) {
+      const { sendEmail, emailLayout } = await import("@/lib/email.server");
+      const amount = (quote.priceCents / 100).toLocaleString("en-US", {
+        style: "currency",
+        currency: quote.currency.toUpperCase(),
+      });
+      await sendEmail(
+        profile.email,
+        `PlaneServe invoice for ${req.registration}`,
+        emailLayout(
+          "Part invoice generated",
+          `<p>Hi ${profile.name || "there"},</p>
+           <p>You approved a sourcing option for <strong>${req.registration}</strong>. PlaneServe has generated invoice <strong>${invoiceId.slice(-8)}</strong> for <strong>${amount}</strong>.</p>
+           <p><strong>Part / system:</strong> ${req.partNumber || req.affectedSystem}<br/>
+           <strong>Supplier:</strong> ${quote.supplierName}<br/>
+           <strong>Condition:</strong> ${quote.condition}<br/>
+           <strong>Lead time:</strong> ${quote.leadTime || "TBC"}</p>
+           <p>The invoice is stored in your Billing area. The desk will coordinate payment confirmation, order placement, and supplier dispatch.</p>`,
+        ),
+      ).catch((error) => {
+        console.warn("Part invoice email failed", error);
+      });
+    }
 
     return { ok: true };
   });
@@ -2976,7 +3060,6 @@ export const getAmoNetwork = createServerFn({ method: "GET" }).handler(async () 
       amoPhone: schema.aircraft.amoPhone,
       amoEmergencyPhone: schema.aircraft.amoEmergencyPhone,
       maintenancePoc: schema.aircraft.maintenancePoc,
-      nationality: schema.aircraft.nationality,
       baseAirport: schema.aircraft.baseAirport,
     })
     .from(schema.aircraft)
@@ -3013,7 +3096,6 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
       propellerManufacturer: z.string().default(""),
       propellerType: z.string().default(""),
       maintenanceProgramme: z.string().default(""),
-      aircraftNationality: z.string().default(""),
       insurer: z.string().default(""),
       policyReference: z.string().default(""),
       totalAirframeHours: z.string().default(""),
@@ -3082,7 +3164,6 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
       propellerManufacturer: data.propellerManufacturer,
       propellerType: data.propellerType,
       maintenanceProgramme: data.maintenanceProgramme,
-      nationality: data.aircraftNationality,
       registryStandard: "",
       amoName: "",
       amoPhone: "",

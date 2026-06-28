@@ -260,13 +260,19 @@ export const invoices = pgTable("invoices", {
   id: text("id").primaryKey(),
   userId: text("user_id").notNull(),
   subscriptionId: text("subscription_id").notNull(),
+  requestId: text("request_id").notNull().default(""),
+  quoteId: text("quote_id").notNull().default(""),
+  description: text("description").notNull().default(""),
   amountCents: integer("amount_cents").notNull(),
   currency: text("currency").notNull().default("usd"),
   status: invoiceStatusEnum("status").notNull().default("Paid"),
+  emailedAt: timestamp("emailed_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 }, (table) => [
   index("invoices_user_id_idx").on(table.userId),
   index("invoices_subscription_id_idx").on(table.subscriptionId),
+  index("invoices_request_id_idx").on(table.requestId),
+  index("invoices_quote_id_idx").on(table.quoteId),
 ]);
 
 export const adminNotes = pgTable("admin_notes", {

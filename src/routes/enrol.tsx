@@ -93,7 +93,6 @@ type FormData = {
   propellerManufacturer: string;
   propellerType: string;
   maintenanceProgramme: string;
-  aircraftNationality: string;
   insurer: string;
   policyReference: string;
   totalAirframeHours: string;
@@ -130,7 +129,6 @@ const defaultForm: FormData = {
   propellerManufacturer: "",
   propellerType: "",
   maintenanceProgramme: "",
-  aircraftNationality: "",
   insurer: "",
   policyReference: "",
   totalAirframeHours: "",
@@ -690,14 +688,6 @@ function Step3({
             value={form.maintenanceProgramme}
             onChange={(e) => set("maintenanceProgramme", e.target.value)}
             placeholder="CAMP, Cescom, etc."
-          />
-        </Field>
-        <Field label="Aircraft nationality">
-          <input
-            className={inputCls}
-            value={form.aircraftNationality}
-            onChange={(e) => set("aircraftNationality", e.target.value)}
-            placeholder="British"
           />
         </Field>
         <Field label="Insurer name">

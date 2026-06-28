@@ -260,7 +260,6 @@ function AircraftDetailPanel({
             )}
             <Detail label="Maintenance programme" value={aircraft.maintenanceProgramme} />
             <Detail label="Registry standard" value={aircraft.registryStandard} />
-            <Detail label="Nationality" value={aircraft.nationality} />
             <Detail label="Total airframe hours" value={aircraft.totalAirframeHours} />
           </Section>
 

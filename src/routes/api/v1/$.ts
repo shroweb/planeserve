@@ -27,7 +27,6 @@ const aircraftInputSchema = z.object({
   engineSerialNumbers: z.string().optional(),
   numberOfEngines: z.number().optional(),
   maintenanceProgramme: z.string().optional(),
-  nationality: z.string().optional(),
   registryStandard: z.string().optional(),
   amoName: z.string().optional(),
   amoPhone: z.string().optional(),

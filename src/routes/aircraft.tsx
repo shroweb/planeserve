@@ -209,7 +209,6 @@ function OverviewTab({ aircraft }: { aircraft: AircraftRecord }) {
         />
         <KV k="Base Airport" v={aircraft.baseAirport || "—"} />
         <KV k="Owner / Operator" v={aircraft.ownerOperatorName || "—"} />
-        <KV k="Nationality" v={aircraft.nationality || "—"} />
       </Section>
     </div>
   );
@@ -226,7 +225,6 @@ function EngineTab({ aircraft }: { aircraft: AircraftRecord }) {
     propellerManufacturer: aircraft.propellerManufacturer,
     propellerType: aircraft.propellerType,
     maintenanceProgramme: aircraft.maintenanceProgramme,
-    nationality: aircraft.nationality,
     registryStandard: aircraft.registryStandard,
     totalAirframeHours: aircraft.totalAirframeHours,
   });
@@ -332,14 +330,6 @@ function EngineTab({ aircraft }: { aircraft: AircraftRecord }) {
             onChange={(e) => setForm((f) => ({ ...f, maintenanceProgramme: e.target.value }))}
           />
         </Field>
-        <Field label="Nationality">
-          <input
-            className={inputCls}
-            value={form.nationality}
-            placeholder="e.g. British"
-            onChange={(e) => setForm((f) => ({ ...f, nationality: e.target.value }))}
-          />
-        </Field>
         <Field label="Registry standard">
           <input
             className={inputCls}
@@ -379,7 +369,6 @@ function ContactsTab({ aircraft }: { aircraft: AircraftRecord }) {
           propellerManufacturer: aircraft.propellerManufacturer,
           propellerType: aircraft.propellerType,
           maintenanceProgramme: aircraft.maintenanceProgramme,
-          nationality: aircraft.nationality,
           registryStandard: aircraft.registryStandard,
           totalAirframeHours: aircraft.totalAirframeHours,
           ...form,

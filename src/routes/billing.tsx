@@ -62,6 +62,7 @@ function Billing() {
   // Use Stripe invoices if available, fall back to DB invoices
   const stripeInvoices = stripe?.invoices ?? [];
   const dbInvoices = data?.invoices ?? [];
+  const platformInvoices = dbInvoices.filter((invoice) => invoice.quoteId || invoice.requestId);
   const useStripeInvoices = stripe?.hasStripe && stripeInvoices.length > 0;
 
   return (
@@ -131,8 +132,8 @@ function Billing() {
             )}
           </div>
           <div className="divide-y divide-border">
-            {useStripeInvoices
-              ? stripeInvoices.map((inv) => (
+            {useStripeInvoices &&
+              stripeInvoices.map((inv) => (
                   <div
                     key={inv.stripeId}
                     className="flex items-center justify-between px-5 py-4 text-sm"
@@ -187,21 +188,35 @@ function Billing() {
                       </div>
                     </div>
                   </div>
-                ))
-              : dbInvoices.slice(0, 5).map((invoice) => (
+                ))}
+            {(!useStripeInvoices ? dbInvoices : platformInvoices).slice(0, 5).map((invoice) => (
                   <div
                     key={invoice.id}
                     className="flex items-center justify-between px-5 py-4 text-sm"
                   >
                     <div>
                       <div className="font-mono text-xs">{invoice.id.slice(-8)}</div>
+                      {invoice.description && (
+                        <div className="mt-0.5 max-w-[15rem] truncate text-xs font-medium">
+                          {invoice.description}
+                        </div>
+                      )}
                       <div className="text-xs text-muted-foreground">
-                        {new Date(invoice.createdAt).toLocaleDateString()}
+                        {new Date(invoice.createdAt).toLocaleDateString("en-GB", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })}
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="text-right">
-                        <div className="font-medium">${(invoice.amountCents / 100).toFixed(2)}</div>
+                        <div className="font-medium">
+                          {(invoice.amountCents / 100).toLocaleString("en-US", {
+                            style: "currency",
+                            currency: (invoice.currency ?? "usd").toUpperCase(),
+                          })}
+                        </div>
                         <div className="text-xs text-muted-foreground">{invoice.status}</div>
                       </div>
                       {stripe?.portalUrl ? (
@@ -220,6 +235,9 @@ function Billing() {
                   </div>
                 ))}
             {!useStripeInvoices && !dbInvoices.length && (
+              <div className="px-5 py-8 text-sm text-muted-foreground">No invoices yet.</div>
+            )}
+            {useStripeInvoices && !platformInvoices.length && !stripeInvoices.length && (
               <div className="px-5 py-8 text-sm text-muted-foreground">No invoices yet.</div>
             )}
           </div>
