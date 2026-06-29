@@ -2415,6 +2415,168 @@ export async function syncStripeSubscription(stripeSubscriptionId: string, statu
   return sub ?? null;
 }
 
+type StripeInvoiceWebhookPayload = {
+  id: string;
+  subscription?: string | { id: string } | null;
+  customer_email?: string | null;
+  amount_paid?: number | null;
+  amount_due?: number | null;
+  currency?: string | null;
+  hosted_invoice_url?: string | null;
+  invoice_pdf?: string | null;
+  number?: string | null;
+  metadata?: Record<string, string>;
+};
+
+function stripeRefId(ref: StripeInvoiceWebhookPayload["subscription"]) {
+  if (!ref) return "";
+  return typeof ref === "string" ? ref : ref.id;
+}
+
+function formatStripeAmount(cents: number | null | undefined, currency: string | null | undefined) {
+  return ((cents ?? 0) / 100).toLocaleString("en-US", {
+    style: "currency",
+    currency: (currency || "usd").toUpperCase(),
+  });
+}
+
+export async function handleStripeInvoicePaid(invoice: StripeInvoiceWebhookPayload) {
+  const { eq, db, schema } = await loadServerAuth();
+  const subscriptionRef = stripeRefId(invoice.subscription);
+  const quoteId = invoice.metadata?.quoteId ?? "";
+  const amount = formatStripeAmount(invoice.amount_paid, invoice.currency);
+  const paidAt = new Date();
+
+  const [platformInvoice] = quoteId
+    ? await db
+        .update(schema.invoices)
+        .set({ status: "Paid" })
+        .where(eq(schema.invoices.quoteId, quoteId))
+        .returning()
+    : [];
+
+  const [sub] = subscriptionRef
+    ? await db
+        .select()
+        .from(schema.subscriptions)
+        .where(eq(schema.subscriptions.stripeSubscriptionId, subscriptionRef))
+    : [];
+
+  const userId = platformInvoice?.userId ?? sub?.userId ?? "";
+  const requestId = invoice.metadata?.requestId || platformInvoice?.requestId || "";
+  const [profile] = userId
+    ? await db
+        .select({ email: schema.profiles.email, name: schema.profiles.name })
+        .from(schema.profiles)
+        .where(eq(schema.profiles.userId, userId))
+    : [];
+
+  if (userId) {
+    await db.insert(schema.notifications).values({
+      id: `not_${crypto.randomUUID()}`,
+      userId,
+      category: "Billing",
+      title: quoteId ? "Part invoice paid" : "Payment received",
+      body: quoteId
+        ? `Payment of ${amount} has been received for your approved sourcing option. PlaneServe will continue order coordination.`
+        : `Payment of ${amount} has been received for your PlaneServe cover.`,
+      requestId: requestId || null,
+      createdAt: paidAt,
+    });
+  }
+
+  if (profile?.email) {
+    const { sendEmail, emailLayout } = await import("@/lib/email.server");
+    await sendEmail(
+      profile.email,
+      quoteId ? "PlaneServe part invoice paid" : "PlaneServe payment received",
+      emailLayout(
+        quoteId ? "Part invoice paid" : "Payment received",
+        `<p>Hi ${profile.name || "there"},</p>
+         <p>We've received payment of <strong>${amount}</strong>${
+           invoice.number ? ` for invoice <strong>${invoice.number}</strong>` : ""
+         }.</p>
+         <p>${
+           quoteId
+             ? "PlaneServe will continue coordinating order placement, supplier dispatch, and freight updates."
+             : "Your PlaneServe account and cover status have been updated from Stripe."
+         }</p>
+         ${
+           invoice.hosted_invoice_url
+             ? `<p><a href="${invoice.hosted_invoice_url}">View invoice</a></p>`
+             : ""
+         }`,
+      ),
+    ).catch((error) => console.warn("Stripe paid email failed", error));
+  }
+
+  return { ok: true };
+}
+
+export async function handleStripeInvoicePaymentFailed(invoice: StripeInvoiceWebhookPayload) {
+  const { eq, db, schema } = await loadServerAuth();
+  const subscriptionRef = stripeRefId(invoice.subscription);
+  const quoteId = invoice.metadata?.quoteId ?? "";
+  const amount = formatStripeAmount(invoice.amount_due, invoice.currency);
+
+  const [platformInvoice] = quoteId
+    ? await db
+        .select({ userId: schema.invoices.userId, requestId: schema.invoices.requestId })
+        .from(schema.invoices)
+        .where(eq(schema.invoices.quoteId, quoteId))
+    : [];
+
+  const [sub] = subscriptionRef
+    ? await db
+        .select()
+        .from(schema.subscriptions)
+        .where(eq(schema.subscriptions.stripeSubscriptionId, subscriptionRef))
+    : [];
+
+  const userId = platformInvoice?.userId ?? sub?.userId ?? "";
+  const [profile] = userId
+    ? await db
+        .select({ email: schema.profiles.email, name: schema.profiles.name })
+        .from(schema.profiles)
+        .where(eq(schema.profiles.userId, userId))
+    : [];
+
+  if (userId) {
+    await db.insert(schema.notifications).values({
+      id: `not_${crypto.randomUUID()}`,
+      userId,
+      category: "Billing",
+      title: "Payment needs attention",
+      body: `Stripe could not collect ${amount}. Please update the payment method in Billing so cover stays active.`,
+      requestId: invoice.metadata?.requestId || platformInvoice?.requestId || null,
+      createdAt: new Date(),
+    });
+  }
+
+  if (profile?.email) {
+    const { sendEmail, emailLayout } = await import("@/lib/email.server");
+    await sendEmail(
+      profile.email,
+      "PlaneServe payment needs attention",
+      emailLayout(
+        "Payment needs attention",
+        `<p>Hi ${profile.name || "there"},</p>
+         <p>Stripe could not collect <strong>${amount}</strong>${
+           invoice.number ? ` for invoice <strong>${invoice.number}</strong>` : ""
+         }.</p>
+         <p>Please update the payment method in Billing. If this relates to an active AOG case, the desk will keep you updated directly.</p>
+         ${
+           invoice.hosted_invoice_url
+             ? `<p><a href="${invoice.hosted_invoice_url}">Review invoice</a></p>`
+             : ""
+         }`,
+      ),
+    ).catch((error) => console.warn("Stripe failed-payment email failed", error));
+  }
+
+  return { ok: true };
+}
+
 export const createStripeSubscription = createServerFn({ method: "POST" })
   .inputValidator(
     z.object({

@@ -1,5 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { mapStripeStatus, syncStripeSubscription } from "@/lib/app.functions";
+import {
+  handleStripeInvoicePaid,
+  handleStripeInvoicePaymentFailed,
+  mapStripeStatus,
+  syncStripeSubscription,
+} from "@/lib/app.functions";
 
 // Stripe webhook endpoint. Register this URL in the Stripe dashboard and set
 // STRIPE_WEBHOOK_SECRET. Keeps our subscription/cover status in sync with
@@ -44,11 +49,13 @@ export const Route = createFileRoute("/api/stripe/webhook")({
             case "invoice.payment_failed": {
               const inv = event.data.object as { subscription?: string | null };
               if (inv.subscription) await syncStripeSubscription(inv.subscription, "Pending");
+              await handleStripeInvoicePaymentFailed(event.data.object as any);
               break;
             }
             case "invoice.paid": {
               const inv = event.data.object as { subscription?: string | null };
               if (inv.subscription) await syncStripeSubscription(inv.subscription, "Active");
+              await handleStripeInvoicePaid(event.data.object as any);
               break;
             }
             default:
