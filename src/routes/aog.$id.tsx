@@ -86,9 +86,8 @@ function AogCasePage() {
           <CheckCircle2 className="mx-auto h-10 w-10 text-accent" strokeWidth={1.5} />
           <h1 className="mt-4 text-2xl font-semibold tracking-tight">Option approved</h1>
           <p className="mt-3 text-sm text-muted-foreground">
-            PlaneServe is placing the order with{" "}
-            <span className="font-semibold text-foreground">{q?.supplierName}</span>. You will
-            receive updates as the part progresses to your location.
+            PlaneServe is placing the order through the approved source. You will receive updates
+            as the part progresses to your location.
           </p>
           <p className="mt-2 text-xs leading-5 text-muted-foreground">
             Payment and order instructions are handled by PlaneServe. Supplier bank details are not
@@ -97,7 +96,7 @@ function AogCasePage() {
           {q && (
             <div className="mt-6 rounded-sm border border-border bg-background p-4 text-left text-sm">
               <div className="grid grid-cols-2 gap-3">
-                <KV label="Supplier">{q.supplierName}</KV>
+                <KV label="Source">PlaneServe approved source</KV>
                 <KV label="Condition">{q.condition}</KV>
                 <KV label="Price">
                   {(q.priceCents / 100).toLocaleString("en-US", {
@@ -299,7 +298,7 @@ function OptionCard({
         <div className="flex-1">
           <div className="flex items-center gap-3">
             <Package className="h-4 w-4 text-muted-foreground" />
-            <span className="font-semibold text-sm">{quote.supplierName}</span>
+            <span className="font-semibold text-sm">PlaneServe approved source</span>
             <span className="rounded-sm bg-accent/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-accent">
               Released by PlaneServe
             </span>

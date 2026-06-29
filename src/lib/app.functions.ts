@@ -1467,7 +1467,11 @@ export const getSupplierQuotes = createServerFn({ method: "GET" })
       .select()
       .from(schema.supplierQuotes)
       .where(eq(schema.supplierQuotes.requestId, data.requestId));
-    return quotes.map(toQuoteRecord);
+    return quotes.map((quote, index) => {
+      const record = toQuoteRecord(quote);
+      if (user.isAdmin) return record;
+      return { ...record, supplierName: `PlaneServe approved source ${index + 1}` };
+    });
   });
 
 export async function getApiAogRequests(): Promise<AogRecord[]> {
@@ -2070,7 +2074,11 @@ export const getAogCaseDetail = createServerFn({ method: "GET" })
 
     return {
       ...toAogRecord(row, attMap.get(data.id) ?? []),
-      quotes: quoteRows.map(toQuoteRecord),
+      quotes: quoteRows.map((quote, index) => {
+        const record = toQuoteRecord(quote);
+        if (user.isAdmin) return record;
+        return { ...record, supplierName: `PlaneServe approved source ${index + 1}` };
+      }),
     };
   });
 
@@ -2181,7 +2189,6 @@ export const approveSupplierQuote = createServerFn({ method: "POST" })
 
     const invoiceDescription = [
       req.registration,
-      quote.supplierName,
       req.partNumber || req.affectedSystem,
       quote.condition,
     ]
@@ -2245,7 +2252,7 @@ export const approveSupplierQuote = createServerFn({ method: "POST" })
           `<p>Hi ${profile.name || "there"},</p>
            <p>You approved a sourcing option for <strong>${req.registration}</strong>. PlaneServe has generated invoice <strong>${invoiceId.slice(-8)}</strong> for <strong>${amount}</strong>.</p>
            <p><strong>Part / system:</strong> ${req.partNumber || req.affectedSystem}<br/>
-           <strong>Supplier:</strong> ${quote.supplierName}<br/>
+           <strong>Source:</strong> PlaneServe approved source<br/>
            <strong>Condition:</strong> ${quote.condition}<br/>
            <strong>Lead time:</strong> ${quote.leadTime || "TBC"}</p>
            <p>The invoice is stored in your Billing area. The desk will coordinate payment confirmation, order placement, and supplier dispatch.</p>`,

@@ -62,9 +62,9 @@ function AogCasesPage() {
 
   return (
     <AppShell>
-      <div className="flex h-[calc(100vh-4rem)] -m-6 overflow-hidden">
+      <div className="-m-6 flex min-h-[calc(100vh-4rem)] flex-col overflow-hidden lg:h-[calc(100vh-4rem)] lg:flex-row">
         {/* Left pane — case list */}
-        <div className="w-80 shrink-0 border-r border-border flex flex-col">
+        <div className="flex max-h-[46vh] shrink-0 flex-col border-b border-border lg:max-h-none lg:w-80 lg:border-b-0 lg:border-r">
           <div className="p-4 border-b border-border">
             <h1 className="text-base font-semibold mb-3">AOG Cases</h1>
             <div className="flex gap-1">
@@ -120,7 +120,7 @@ function AogCasesPage() {
         </div>
 
         {/* Right pane — case detail */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="min-w-0 flex-1 overflow-y-auto p-4 sm:p-6">
           {selected ? (
             <CaseDetail key={selected.id} aog={selected} />
           ) : (
@@ -243,7 +243,7 @@ function CaseDetail({ aog }: { aog: AogRecord }) {
   const pendingQuotes = quotes.filter((q) => !q.approvedAt);
 
   return (
-    <div className="max-w-2xl space-y-6">
+    <div className="w-full max-w-2xl space-y-6">
       {/* Header */}
       <div>
         <div className="flex items-center gap-3 mb-1">
@@ -256,7 +256,7 @@ function CaseDetail({ aog }: { aog: AogRecord }) {
       </div>
 
       {/* Key details */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {[
           { label: "Urgency", value: aog.urgency },
           { label: "Location", value: aog.location || "—" },
@@ -272,11 +272,11 @@ function CaseDetail({ aog }: { aog: AogRecord }) {
             }),
           },
         ].map(({ label, value }) => (
-          <div key={label} className="bg-card border border-border rounded-md p-3">
+          <div key={label} className="min-w-0 bg-card border border-border rounded-md p-3">
             <p className="text-[11px] text-muted-foreground uppercase tracking-wide mb-0.5">
               {label}
             </p>
-            <p className="text-sm font-medium">{value}</p>
+            <p className="break-words text-sm font-medium">{value}</p>
           </div>
         ))}
       </div>
@@ -296,7 +296,7 @@ function CaseDetail({ aog }: { aog: AogRecord }) {
             <Truck className="h-4 w-4 text-primary" />
             <p className="text-sm font-medium">Freight tracking</p>
           </div>
-          <div className="grid grid-cols-2 gap-3 text-sm">
+          <div className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
             <div>
               <p className="text-[11px] text-muted-foreground uppercase tracking-wide mb-0.5">
                 Courier
@@ -326,7 +326,7 @@ function CaseDetail({ aog }: { aog: AogRecord }) {
               </div>
             )}
             {aog.freightNotes && (
-              <div className="col-span-2">
+              <div className="sm:col-span-2">
                 <p className="text-[11px] text-muted-foreground uppercase tracking-wide mb-0.5">
                   Notes
                 </p>
@@ -430,18 +430,18 @@ function QuoteCard({
           {quote.condition}
         </span>
       </div>
-      <div className="grid grid-cols-3 gap-2 text-xs">
+      <div className="grid grid-cols-1 gap-2 text-xs sm:grid-cols-3">
         <div>
           <p className="text-muted-foreground">Price</p>
-          <p className="font-medium">{price}</p>
+          <p className="break-words font-medium">{price}</p>
         </div>
         <div>
           <p className="text-muted-foreground">Lead time</p>
-          <p className="font-medium">{quote.leadTime || "—"}</p>
+          <p className="break-words font-medium">{quote.leadTime || "—"}</p>
         </div>
         <div>
           <p className="text-muted-foreground">Route</p>
-          <p className="font-medium">{quote.freightRoute || "—"}</p>
+          <p className="break-words font-medium">{quote.freightRoute || "—"}</p>
         </div>
       </div>
       {quote.paperwork && <p className="text-xs text-muted-foreground">Docs: {quote.paperwork}</p>}
