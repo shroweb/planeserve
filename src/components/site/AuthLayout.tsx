@@ -1,4 +1,4 @@
-import heroImage from "@/assets/planeserve-hangar-hero.jpg";
+import heroImage from "@/assets/WhatsApp Image 2026-06-28 at 10.29.12.jpeg";
 import { PlaneServeLogo } from "@/components/site/PlaneServeLogo";
 
 // Split-screen auth shell: brand panel (image + line) on the left, form on the
@@ -12,7 +12,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
           src={heroImage}
           alt=""
           aria-hidden
-          className="absolute inset-0 h-full w-full object-cover opacity-80"
+          className="absolute inset-0 h-full w-full object-cover object-[58%_center] opacity-80"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.10_0.02_250)] via-[oklch(0.12_0.02_250)]/30 to-transparent" />
         <div className="relative z-10 p-12">

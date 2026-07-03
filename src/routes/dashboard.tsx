@@ -19,12 +19,52 @@ export const Route = createFileRoute("/dashboard")({
 const ACTIVE = (s: string) => !["Resolved", "Cancelled"].includes(s);
 
 function Dashboard() {
-  const { data } = useQuery({
+  const { data, error, isLoading, isFetching, refetch } = useQuery({
     queryKey: ["dashboard"],
     queryFn: () => getDashboardData(),
   });
 
-  if (!data) return <AppShell>Loading…</AppShell>;
+  if (!data && isLoading) return <AppShell>Loading…</AppShell>;
+
+  if (!data) {
+    return (
+      <AppShell>
+        <div className="max-w-xl rounded-lg border border-border bg-card p-6 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            Dashboard unavailable
+          </p>
+          <h1 className="mt-2 text-2xl font-semibold tracking-tight">
+            We couldn't load your dashboard.
+          </h1>
+          <p className="mt-3 text-sm leading-6 text-muted-foreground">
+            This usually means the live database or server environment needs attention. Try again
+            now, or sign in again if your session has expired.
+          </p>
+          {error && (
+            <p className="mt-3 rounded-md border border-destructive/20 bg-destructive/5 px-3 py-2 text-xs text-destructive">
+              {error instanceof Error ? error.message : "Dashboard request failed."}
+            </p>
+          )}
+          <div className="mt-5 flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={() => refetch()}
+              className="rounded-md bg-accent px-4 py-2 text-sm font-semibold text-white hover:bg-accent/90 disabled:opacity-60"
+              disabled={isFetching}
+            >
+              {isFetching ? "Trying again..." : "Try again"}
+            </button>
+            <Link
+              to="/login"
+              className="rounded-md border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground hover:bg-muted"
+            >
+              Sign in again
+            </Link>
+          </div>
+        </div>
+      </AppShell>
+    );
+  }
 
   const { user, aircraft, requests, eventsByRequest, medianFirstResponseMins } = data;
   const activeCases = requests.filter((r) => ACTIVE(r.status));
