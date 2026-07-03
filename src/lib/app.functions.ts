@@ -3448,6 +3448,7 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
     const { getRequestHeaders, auth, db, schema } = await loadServerAuth();
     const session = await auth.api.getSession({ headers: getRequestHeaders() });
     let userId = session?.user?.id ?? "";
+    let createdAccount = false;
 
     if (!userId) {
       const tempPassword = crypto.randomUUID() + "Aa1!";
@@ -3460,6 +3461,7 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
       });
       userId = (signupRes as { user?: { id: string } }).user?.id ?? "";
       if (!userId) throw new Error("Failed to create user account.");
+      createdAccount = true;
     }
 
     await db
@@ -3534,13 +3536,14 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
       });
     }
 
-    // The account was created with a throwaway random password — send the
-    // customer a set-password link so they can actually sign in. (The enrol
-    // confirmation screen promises this email.) Don't let an email failure
-    // fail the enrolment; in dev with no Resend key the link logs to console.
-    await auth.api
-      .requestPasswordReset({ body: { email: data.email, redirectTo: "/set-password" } })
-      .catch(() => {});
+    // New public enrolments get a throwaway random password, so send one
+    // set-password link. Existing signed-in users adding aircraft keep their
+    // current login and should not receive password emails.
+    if (createdAccount) {
+      await auth.api
+        .requestPasswordReset({ body: { email: data.email, redirectTo: "/set-password" } })
+        .catch(() => {});
+    }
 
     const registration = data.registration.toUpperCase();
     await sendJourneyEmail(
@@ -3551,7 +3554,7 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
        <p>Your PlaneServe account has been created and <strong>${escapeHtml(
          registration,
        )}</strong> has been enrolled.</p>
-       <p>Your cover status will show as pending until the desk verifies the aircraft details. We've also sent a separate email so you can set your password and access the platform.</p>
+       <p>Your cover status will show as pending until the desk verifies the aircraft details.${createdAccount ? " We've also sent a separate email so you can set your password and access the platform." : ""}</p>
        <p><a href="${appUrl("/dashboard")}">Open your dashboard</a></p>`,
     );
 

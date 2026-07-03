@@ -88,7 +88,7 @@ function HowItWorks() {
                 {
                   t: "Parts Passport",
                   Icon: Shield,
-                  d: "Every part sourced through PlaneServe is recorded against your aircraft — part number, supplier, trace documentation, and date of fitment. This living record travels with the aircraft, supports pre-purchase inspections, and provides the clean documentation history that protects both airworthiness and residual value.",
+                  d: "Every part sourced through PlaneServe is recorded against your aircraft — part number, trace documentation, case reference, and date of fitment. This living record travels with the aircraft, supports pre-purchase inspections, and provides the clean documentation history that protects both airworthiness and residual value.",
                 },
                 {
                   t: "Intelligence Layer",
@@ -180,7 +180,7 @@ function HowItWorks() {
                 n: "04",
                 t: "Options Presented",
                 Icon: Eye,
-                d: "Qualified options are presented clearly — supplier, price, lead time, shipping origin, and documentation status. No ambiguity. No hidden layers. You or your team makes an informed decision with everything they need in front of them.",
+                d: "Qualified options are presented clearly — PlaneServe source reference, price, lead time, shipping origin, and documentation status. No ambiguity. No hidden layers. You or your team makes an informed decision with everything they need in front of them.",
               },
               {
                 n: "05",
@@ -192,7 +192,7 @@ function HowItWorks() {
                 n: "06",
                 t: "Record Updated",
                 Icon: BookOpen,
-                d: "Once the part is dispatched, the transaction is closed against your aircraft record. The part number, supplier, trace documentation, and case reference are added to your Parts Passport — permanently on file, available for any future inspection, audit, or pre-purchase review.",
+                d: "Once the part is dispatched, the transaction is closed against your aircraft record. The part number, trace documentation, and case reference are added to your Parts Passport — permanently on file, available for any future inspection, audit, or pre-purchase review.",
               },
             ].map((step) => {
               const Icon = step.Icon;
@@ -270,7 +270,7 @@ function HowItWorks() {
                   </div>
                   <div>
                     <div className="font-semibold text-sm uppercase tracking-wider text-accent mb-1">Record</div>
-                    <p className="text-sm text-muted-foreground">Part number, supplier, trace documentation, and case reference added permanently to the aircraft record.</p>
+                    <p className="text-sm text-muted-foreground">Part number, trace documentation, and case reference added permanently to the aircraft record.</p>
                   </div>
                 </div>
               </div>

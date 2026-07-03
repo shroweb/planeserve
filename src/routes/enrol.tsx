@@ -908,11 +908,6 @@ function Step5({
           stripeCustomerId: subscriptionResult.customerId,
         } as any,
       });
-      if (!isSignedIn) {
-        authClient
-          .requestPasswordReset({ email: form.email, redirectTo: "/set-password" })
-          .catch(() => {});
-      }
       onComplete(result.ref, form.email);
     } catch (e: any) {
       setCardError(e?.message ?? "Account creation failed. Contact support.");

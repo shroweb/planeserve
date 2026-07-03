@@ -29,7 +29,7 @@ async function sendEmail(to: string, subject: string, html: string) {
   }
   const { Resend } = await import("resend");
   const resend = new Resend(apiKey);
-  const from = process.env.RESEND_FROM ?? "PlaneServe <ops@planeserve.aero>";
+  const from = process.env.RESEND_FROM ?? "PlaneServe <onboarding@resend.dev>";
   await resend.emails.send({ from, to, subject, html });
 }
 

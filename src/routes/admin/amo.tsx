@@ -47,7 +47,7 @@ function AdminAmoPage() {
                       <p className="text-sm font-semibold">{a.amoName}</p>
                     </div>
                     <p className="text-xs text-muted-foreground mb-2">
-                      {a.registration} · {a.makeModel} · {a.nationality || "—"}
+                      {a.registration} · {a.makeModel}
                     </p>
                     {a.maintenancePoc && (
                       <p className="text-xs">
