@@ -178,6 +178,20 @@ export type AogRecord = {
 
 // ── Server-only DB/auth loader ────────────────────────────────────────────────
 
+let aircraftSchemaEnsurePromise: Promise<void> | null = null;
+
+async function ensureAircraftLifecycleColumns(db: { execute: (query: unknown) => Promise<unknown> }) {
+  const { sql } = await import("drizzle-orm");
+  await db.execute(sql`
+    ALTER TABLE "aircraft"
+      ADD COLUMN IF NOT EXISTS "propeller_manufacturer" text DEFAULT '' NOT NULL,
+      ADD COLUMN IF NOT EXISTS "propeller_type" text DEFAULT '' NOT NULL,
+      ADD COLUMN IF NOT EXISTS "archived_at" timestamp with time zone,
+      ADD COLUMN IF NOT EXISTS "archive_reason" text DEFAULT '' NOT NULL,
+      ADD COLUMN IF NOT EXISTS "archive_notes" text DEFAULT '' NOT NULL
+  `);
+}
+
 const loadServerAuth = createServerOnlyFn(async () => {
   const [{ getRequestHeaders }, { eq, and, ne, inArray, isNull, asc, desc }, { auth }, { db, schema }] =
     await Promise.all([
@@ -186,6 +200,9 @@ const loadServerAuth = createServerOnlyFn(async () => {
       import("./auth"),
       import("./db/index.server"),
     ]);
+
+  aircraftSchemaEnsurePromise ??= ensureAircraftLifecycleColumns(db);
+  await aircraftSchemaEnsurePromise;
 
   return { getRequestHeaders, eq, and, ne, inArray, isNull, asc, desc, auth, db, schema };
 });
@@ -2682,6 +2699,7 @@ export const createStripeSubscription = createServerFn({ method: "POST" })
       email: z.string().email(),
       name: z.string().min(1),
       plan: z.enum(["monthly", "annual"]),
+      idempotencyKey: z.string().min(1),
     }),
   )
   .handler(async ({ data }) => {
@@ -2723,7 +2741,7 @@ export const createStripeSubscription = createServerFn({ method: "POST" })
       name: data.name,
       payment_method: data.paymentMethodId,
       invoice_settings: { default_payment_method: data.paymentMethodId },
-    });
+    }, { idempotencyKey: `customer_${data.idempotencyKey}` });
 
     // Create subscription (incomplete until payment confirmed)
     const subscription = await stripe.subscriptions.create({
@@ -2735,7 +2753,7 @@ export const createStripeSubscription = createServerFn({ method: "POST" })
         save_default_payment_method: "on_subscription",
       },
       expand: ["latest_invoice.payment_intent"],
-    });
+    }, { idempotencyKey: `subscription_${data.idempotencyKey}` });
 
     const invoice = subscription.latest_invoice as any;
     const clientSecret = invoice?.payment_intent?.client_secret ?? null;

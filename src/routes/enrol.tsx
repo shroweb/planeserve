@@ -6,7 +6,7 @@ import {
 } from "@/lib/app.functions";
 import { AppShell } from "@/components/app/AppShell";
 import { authClient } from "@/lib/auth-client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { CheckCircle2, ChevronRight, ChevronLeft, Lock } from "lucide-react";
 import { loadStripe } from "@stripe/stripe-js";
@@ -826,22 +826,33 @@ function Step5({
   const elements = useElements();
   const [cardError, setCardError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const submittingRef = useRef(false);
+  const submissionKeyRef = useRef(
+    globalThis.crypto?.randomUUID?.() ?? `enrol_${Date.now()}_${Math.random().toString(36).slice(2)}`,
+  );
 
   const plan = form.plan;
 
+  function stopLoading() {
+    submittingRef.current = false;
+    setLoading(false);
+  }
+
   async function handleSubmit() {
+    if (loading || submittingRef.current) return;
     if (!stripe || !elements) return;
     if (!form.agreed) {
       setCardError("Please accept the subscriber agreement.");
       return;
     }
 
+    submittingRef.current = true;
     setLoading(true);
     setCardError(null);
 
     const cardElement = elements.getElement(CardElement);
     if (!cardElement) {
-      setLoading(false);
+      stopLoading();
       return;
     }
 
@@ -854,7 +865,7 @@ function Step5({
 
     if (pmError || !paymentMethod) {
       setCardError(pmError?.message ?? "Card error. Please try again.");
-      setLoading(false);
+      stopLoading();
       return;
     }
 
@@ -867,11 +878,12 @@ function Step5({
           email: form.email,
           name: `${form.firstName} ${form.lastName}`,
           plan,
+          idempotencyKey: submissionKeyRef.current,
         },
       });
     } catch (e: any) {
       setCardError(e?.message ?? "Failed to create subscription. Please try again.");
-      setLoading(false);
+      stopLoading();
       return;
     }
 
@@ -882,7 +894,7 @@ function Step5({
       );
       if (confirmError) {
         setCardError(confirmError.message ?? "Payment failed. Please try again.");
-        setLoading(false);
+        stopLoading();
         return;
       }
     }
@@ -906,7 +918,7 @@ function Step5({
       setCardError(e?.message ?? "Account creation failed. Contact support.");
     }
 
-    setLoading(false);
+    stopLoading();
   }
 
   return (
