@@ -838,6 +838,29 @@ export const createAircraft = createServerFn({ method: "POST" })
       status: "Paid",
     });
 
+    const registration = data.registration.toUpperCase();
+    await sendJourneyEmail(
+      user.email,
+      `PlaneServe aircraft enrolment received — ${registration}`,
+      "Aircraft enrolment received",
+      `<p>Hi ${escapeHtml(user.name || data.ownerOperatorName)},</p>
+       <p>We've received the enrolment for <strong>${escapeHtml(registration)}</strong>.</p>
+       <p>Your account is active, and formal AOG cover will show as active once the PlaneServe desk has verified the aircraft details.</p>
+       <p><a href="${appUrl("/aircraft")}">View your aircraft profile</a></p>`,
+    );
+
+    await sendAdminJourneyEmail(
+      `New aircraft pending verification — ${registration}`,
+      "Aircraft pending verification",
+      `<p><strong>${escapeHtml(registration)}</strong> has been enrolled by ${escapeHtml(
+        data.ownerOperatorName,
+      )}.</p>
+       <p><strong>Aircraft:</strong> ${escapeHtml(data.makeModel)}<br />
+       <strong>Base:</strong> ${escapeHtml(data.baseAirport)}<br />
+       <strong>Plan:</strong> ${escapeHtml(data.plan)}</p>
+       <p><a href="${appUrl("/admin/aircraft")}">Review aircraft records</a></p>`,
+    );
+
     return { id: aircraftId };
   });
 
@@ -919,6 +942,36 @@ export const createAogRequest = createServerFn({ method: "POST" })
         })),
       );
     }
+
+    const contactEmail = data.contactEmail || user.email;
+    await sendJourneyEmail(
+      contactEmail,
+      `PlaneServe AOG request received — ${selectedAircraft.registration}`,
+      "AOG request received",
+      `<p>We've opened <strong>${escapeHtml(caseReference)}</strong> for <strong>${escapeHtml(
+        selectedAircraft.registration,
+      )}</strong>.</p>
+       <p>The desk has been alerted and will acknowledge the case before sourcing begins.</p>
+       <p><strong>System:</strong> ${escapeHtml(data.affectedSystem)}<br />
+       <strong>Location:</strong> ${escapeHtml(data.location || selectedAircraft.baseAirport)}<br />
+       <strong>Urgency:</strong> ${escapeHtml(data.urgency)}</p>
+       <p><a href="${appUrl(`/aog/${requestId}`)}">Track this AOG case</a></p>`,
+    );
+
+    await sendAdminJourneyEmail(
+      `New AOG request — ${selectedAircraft.registration}`,
+      "New AOG request submitted",
+      `<p><strong>${escapeHtml(selectedAircraft.registration)}</strong> has submitted AOG case <strong>${escapeHtml(
+        caseReference,
+      )}</strong>.</p>
+       <p><strong>System:</strong> ${escapeHtml(data.affectedSystem)}<br />
+       <strong>Part number:</strong> ${escapeHtml(data.partNumber || "Not supplied")}<br />
+       <strong>Location:</strong> ${escapeHtml(data.location || selectedAircraft.baseAirport)}<br />
+       <strong>Contact:</strong> ${escapeHtml(data.contactName || user.name)} · ${escapeHtml(
+        data.contactPhone || user.phone,
+      )}</p>
+       <p><a href="${appUrl("/admin/aog")}">Open AOG queue</a></p>`,
+    );
 
     return { id: requestId, caseReference };
   });
@@ -2336,6 +2389,51 @@ async function createNotificationInternal(
   });
 }
 
+function escapeHtml(value: string | null | undefined) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function appUrl(path = "") {
+  const base = process.env.BETTER_AUTH_URL || process.env.VITE_APP_URL || "https://planeserve.vercel.app";
+  return `${base.replace(/\/$/, "")}${path}`;
+}
+
+async function sendJourneyEmail(
+  to: string | undefined,
+  subject: string,
+  heading: string,
+  body: string,
+) {
+  if (!to) return;
+  const { sendEmail, emailLayout } = await import("@/lib/email.server");
+  await sendEmail(to, subject, emailLayout(heading, body)).catch((error) => {
+    console.warn(`Journey email failed: ${subject}`, error);
+  });
+}
+
+async function sendAdminJourneyEmail(subject: string, heading: string, body: string) {
+  try {
+    const { eq, db, schema } = await loadServerAuth();
+    const admins = await db
+      .select({ email: schema.profiles.email })
+      .from(schema.profiles)
+      .where(eq(schema.profiles.isAdmin, true));
+
+    await Promise.all(
+      admins
+        .filter((admin) => admin.email)
+        .map((admin) => sendJourneyEmail(admin.email, subject, heading, body)),
+    );
+  } catch (error) {
+    console.warn(`Admin journey email failed: ${subject}`, error);
+  }
+}
+
 // ── Notifications ─────────────────────────────────────────────────────────────
 
 export const getNotifications = createServerFn({ method: "GET" })
@@ -2949,7 +3047,7 @@ export const sendSupplierRfq = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     await currentAdmin();
-    const { db, schema } = await loadServerAuth();
+    const { eq, db, schema } = await loadServerAuth();
     await db.insert(schema.supplierRfqs).values({
       id: `rfq_${crypto.randomUUID()}`,
       ...data,
@@ -2957,6 +3055,26 @@ export const sendSupplierRfq = createServerFn({ method: "POST" })
       sentAt: new Date(),
       quoteSubmitted: false,
     });
+
+    const [supplier] = await db
+      .select()
+      .from(schema.supplierCompanies)
+      .where(eq(schema.supplierCompanies.id, data.supplierCompanyId));
+
+    await sendJourneyEmail(
+      supplier?.contactEmail,
+      `New PlaneServe RFQ — ${data.partDescription || data.partNumber || data.aircraftType}`,
+      "New sourcing request",
+      `<p>PlaneServe has sent a sourcing request matching your supplier profile.</p>
+       <p><strong>Aircraft:</strong> ${escapeHtml(data.aircraftType || "Not specified")}<br />
+       <strong>Part:</strong> ${escapeHtml(data.partDescription || "Not specified")}<br />
+       <strong>Part number:</strong> ${escapeHtml(data.partNumber || "Not supplied")}<br />
+       <strong>Location:</strong> ${escapeHtml(data.location || "Not specified")}<br />
+       <strong>Documentation:</strong> ${escapeHtml(data.documentationRequired || "Not specified")}</p>
+       <p>Please respond through the supplier portal so the desk can review your quote.</p>
+       <p><a href="${appUrl("/supplier")}">Open supplier portal</a></p>`,
+    );
+
     return { ok: true };
   });
 
@@ -3057,6 +3175,34 @@ export const submitSupplierQuote = createServerFn({ method: "POST" })
       .update(schema.supplierRfqs)
       .set({ status: "responded", respondedAt: new Date(), quoteSubmitted: true })
       .where(eq(schema.supplierRfqs.id, data.rfqId));
+
+    const [request] = await db
+      .select({
+        registration: schema.aogRequests.registration,
+        affectedSystem: schema.aogRequests.affectedSystem,
+      })
+      .from(schema.aogRequests)
+      .where(eq(schema.aogRequests.id, data.requestId));
+
+    const amount = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: data.currency.toUpperCase(),
+    }).format(data.priceCents / 100);
+
+    await sendAdminJourneyEmail(
+      `Supplier quote received — ${request?.registration ?? data.requestId}`,
+      "Supplier quote received",
+      `<p><strong>${escapeHtml(company.name)}</strong> has submitted a quote for <strong>${escapeHtml(
+        request?.registration ?? data.requestId,
+      )}</strong>.</p>
+       <p><strong>System:</strong> ${escapeHtml(request?.affectedSystem || "Not specified")}<br />
+       <strong>Condition:</strong> ${escapeHtml(data.condition)}<br />
+       <strong>Price:</strong> ${escapeHtml(amount)}<br />
+       <strong>Lead time:</strong> ${escapeHtml(data.leadTime || "Not specified")}<br />
+       <strong>Paperwork:</strong> ${escapeHtml(data.paperwork || "Not specified")}</p>
+       <p><a href="${appUrl("/admin/aog")}">Review quotes in Admin AOG</a></p>`,
+    );
+
     return { ok: true };
   });
 
@@ -3378,6 +3524,35 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
       .requestPasswordReset({ body: { email: data.email, redirectTo: "/set-password" } })
       .catch(() => {});
 
+    const registration = data.registration.toUpperCase();
+    await sendJourneyEmail(
+      data.email,
+      `Welcome to PlaneServe — ${registration}`,
+      "Welcome to PlaneServe",
+      `<p>Hi ${escapeHtml(data.firstName)},</p>
+       <p>Your PlaneServe account has been created and <strong>${escapeHtml(
+         registration,
+       )}</strong> has been enrolled.</p>
+       <p>Your cover status will show as pending until the desk verifies the aircraft details. We've also sent a separate email so you can set your password and access the platform.</p>
+       <p><a href="${appUrl("/dashboard")}">Open your dashboard</a></p>`,
+    );
+
+    await sendAdminJourneyEmail(
+      `New subscriber enrolment — ${registration}`,
+      "New subscriber enrolment",
+      `<p><strong>${escapeHtml(data.firstName)} ${escapeHtml(data.lastName)}</strong> has enrolled <strong>${escapeHtml(
+        registration,
+      )}</strong>.</p>
+       <p><strong>Aircraft:</strong> ${escapeHtml(data.makeModel)}<br />
+       <strong>Category:</strong> ${escapeHtml(data.category)}<br />
+       <strong>Base:</strong> ${escapeHtml(data.baseAirport || "Not supplied")}<br />
+       <strong>Owner/operator:</strong> ${escapeHtml(
+         data.ownerOperatorName || data.companyName || `${data.firstName} ${data.lastName}`,
+       )}<br />
+       <strong>Email:</strong> ${escapeHtml(data.email)}</p>
+       <p><a href="${appUrl("/admin/enrolments")}">Review enrolment</a></p>`,
+    );
+
     const ref = `PS-${data.registration.toUpperCase()}-${Date.now().toString(36).toUpperCase()}`;
     return { userId, aircraftId, ref };
   });
@@ -3485,6 +3660,19 @@ export const createSupplierApplication = createServerFn({ method: "POST" })
          your password and access the supplier portal. If we need anything further, we'll be in touch.</p>`,
       ),
     ).catch(() => {});
+
+    await sendAdminJourneyEmail(
+      `New supplier application — ${data.name}`,
+      "Supplier application received",
+      `<p><strong>${escapeHtml(data.name)}</strong> has applied to join the PlaneServe supplier network.</p>
+       <p><strong>Contact:</strong> ${escapeHtml(data.firstName)} ${escapeHtml(data.lastName)} · ${escapeHtml(
+         data.email,
+       )}<br />
+       <strong>Aircraft types:</strong> ${escapeHtml(data.aircraftTypes || "Not supplied")}<br />
+       <strong>ATA systems:</strong> ${escapeHtml(data.ataSystems || "Not supplied")}<br />
+       <strong>Coverage:</strong> ${escapeHtml(data.geographicCoverage || "Not supplied")}</p>
+       <p><a href="${appUrl("/admin/suppliers")}">Review supplier application</a></p>`,
+    );
 
     return { ok: true, id };
   });
@@ -3680,6 +3868,16 @@ export const approveSupplierApplication = createServerFn({ method: "POST" })
             body: { email: company.contactEmail, redirectTo: "/set-password" },
           })
           .catch(() => {});
+
+        await sendJourneyEmail(
+          company.contactEmail,
+          "PlaneServe supplier application approved",
+          "Supplier access approved",
+          `<p>Your application for <strong>${escapeHtml(company.name)}</strong> has been approved.</p>
+           <p>We've sent a separate set-password email so you can activate your supplier portal access.</p>
+           <p>Once signed in, you can receive RFQs, submit quotes, and keep your compliance profile up to date.</p>
+           <p><a href="${appUrl("/supplier")}">Open supplier portal</a></p>`,
+        );
       }
     }
 
