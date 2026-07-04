@@ -9,7 +9,7 @@ import { AppShell } from "@/components/app/AppShell";
 import { authClient } from "@/lib/auth-client";
 import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { CheckCircle2, ChevronRight, ChevronLeft, Lock } from "lucide-react";
+import { CheckCircle2, ChevronRight, ChevronLeft, Lock, LogIn, UserPlus } from "lucide-react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { PlaneServeLogo } from "@/components/site/PlaneServeLogo";
@@ -210,6 +210,85 @@ function EnrolPage() {
     }));
   }, [accountUser, isSignedIn]);
 
+  if (!isSignedIn) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="border-b border-border bg-card px-6 py-4">
+          <div className="mx-auto flex max-w-5xl items-center justify-between gap-4">
+            <PlaneServeLogo wordClassName="text-sm font-semibold text-foreground" />
+            <Link
+              to="/login"
+              search={{ redirect: "/enrol" }}
+              className="text-sm font-medium text-foreground hover:text-accent"
+            >
+              Sign in
+            </Link>
+          </div>
+        </div>
+
+        <main className="mx-auto grid min-h-[calc(100vh-73px)] max-w-5xl content-center gap-10 px-6 py-12 lg:grid-cols-[0.9fr_1.1fr]">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+              Subscriber enrolment
+            </p>
+            <h1 className="mt-4 text-4xl font-semibold tracking-tight text-foreground md:text-5xl">
+              Create your account before enrolling an aircraft.
+            </h1>
+            <p className="mt-5 max-w-xl text-sm leading-7 text-muted-foreground">
+              PlaneServe stores aircraft records against a secure account. Sign in if you already
+              have one, or create a free account first. Payment is only taken when you add an
+              aircraft and choose its support plan.
+            </p>
+          </div>
+
+          <div className="grid gap-4">
+            <Link
+              to="/login"
+              search={{ redirect: "/enrol" }}
+              className="group rounded-sm border border-border bg-card p-6 shadow-sm transition hover:border-accent/40 hover:bg-accent/5"
+            >
+              <div className="flex items-start gap-4">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm bg-primary text-primary-foreground">
+                  <LogIn className="h-5 w-5" />
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-lg font-semibold text-foreground">
+                    I already have an account
+                  </span>
+                  <span className="mt-1 block text-sm leading-6 text-muted-foreground">
+                    Sign in, then continue straight to aircraft enrolment.
+                  </span>
+                </span>
+                <ChevronRight className="ml-auto mt-3 h-4 w-4 text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-accent" />
+              </div>
+            </Link>
+
+            <Link
+              to="/signup"
+              search={{ redirect: "/enrol" }}
+              className="group rounded-sm border border-accent/30 bg-accent/10 p-6 shadow-sm transition hover:border-accent/50 hover:bg-accent/15"
+            >
+              <div className="flex items-start gap-4">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm bg-accent text-accent-foreground">
+                  <UserPlus className="h-5 w-5" />
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-lg font-semibold text-foreground">
+                    I need to create an account
+                  </span>
+                  <span className="mt-1 block text-sm leading-6 text-muted-foreground">
+                    Create a free owner/operator account first, then enrol your aircraft.
+                  </span>
+                </span>
+                <ChevronRight className="ml-auto mt-3 h-4 w-4 text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-accent" />
+              </div>
+            </Link>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   if (confirmation) {
     const confirmationContent = (
       <div className="mx-auto max-w-md text-center space-y-6">
@@ -289,7 +368,7 @@ function EnrolPage() {
 
   const steps = ["Usage type", "Your details", "Aircraft", "Contacts", "Review & pay"];
   const enrolContent = (
-    <div className={isSignedIn ? "max-w-3xl" : "max-w-2xl mx-auto px-6 py-10"}>
+    <div className="max-w-3xl">
       {isSignedIn && (
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
@@ -411,27 +490,7 @@ function EnrolPage() {
     </div>
   );
 
-  return isSignedIn ? (
-    <AppShell>{enrolContent}</AppShell>
-  ) : (
-    <div className="min-h-screen bg-background">
-      <div className="border-b border-border bg-card px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <PlaneServeLogo wordClassName="text-sm font-semibold text-foreground" />
-          <span className="hidden text-sm text-muted-foreground sm:inline">
-            Subscriber Enrolment
-          </span>
-        </div>
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <span>Already have an account?</span>
-          <Link to="/login" className="font-medium text-accent hover:underline">
-            Sign in
-          </Link>
-        </div>
-      </div>
-      {enrolContent}
-    </div>
-  );
+  return <AppShell>{enrolContent}</AppShell>;
 }
 
 function Step1({ value, onChange }: { value: string; onChange: (v: string) => void }) {
@@ -868,7 +927,8 @@ function Step5({
   const [loading, setLoading] = useState(false);
   const submittingRef = useRef(false);
   const submissionKeyRef = useRef(
-    globalThis.crypto?.randomUUID?.() ?? `enrol_${Date.now()}_${Math.random().toString(36).slice(2)}`,
+    globalThis.crypto?.randomUUID?.() ??
+      `enrol_${Date.now()}_${Math.random().toString(36).slice(2)}`,
   );
 
   const plan = form.plan;

@@ -4,16 +4,21 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { ArrowRight, ShieldCheck } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import { z } from "zod";
 
 export const Route = createFileRoute("/login")({
+  validateSearch: z.object({ redirect: z.string().optional() }),
   component: Login,
 });
 
 function Login() {
+  const { redirect } = Route.useSearch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const nav = useNavigate();
+  const redirectTo =
+    redirect?.startsWith("/") && !redirect.startsWith("//") ? redirect : "/dashboard";
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -24,7 +29,7 @@ function Login() {
       toast.error(result.error.message || "Incorrect email or password.");
       return;
     }
-    nav({ to: "/dashboard" });
+    nav({ to: redirectTo as never });
   }
 
   return (
@@ -86,13 +91,13 @@ function Login() {
 
       <p className="mt-6 text-xs text-muted-foreground">
         New customer?{" "}
+        <Link to="/signup" search={{ redirect: "/enrol" }} className="text-foreground underline">
+          Create an account
+        </Link>{" "}
+        first, then{" "}
         <Link to="/enrol" className="text-foreground underline">
           Enrol an aircraft
         </Link>{" "}
-        or{" "}
-        <Link to="/signup" className="text-foreground underline">
-          create a free account
-        </Link>
         .
       </p>
     </AuthLayout>

@@ -7,8 +7,10 @@ import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { sendAccountWelcomeEmail, upsertProfile } from "@/lib/app.functions";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { z } from "zod";
 
 export const Route = createFileRoute("/signup")({
+  validateSearch: z.object({ redirect: z.string().optional() }),
   component: Signup,
 });
 
@@ -19,6 +21,10 @@ const primaryButtonClass =
   "inline-flex h-12 items-center justify-center gap-2 rounded-sm bg-accent px-5 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90 disabled:opacity-60";
 
 function Signup() {
+  const { redirect } = Route.useSearch();
+  const redirectTo =
+    redirect?.startsWith("/") && !redirect.startsWith("//") ? redirect : "/dashboard";
+  const isEnrolRedirect = redirectTo === "/enrol";
   const [form, setForm] = useState({
     name: "",
     company: "",
@@ -28,6 +34,7 @@ function Signup() {
     password: "",
   });
   const [completeEmail, setCompleteEmail] = useState("");
+  const [emailStatus, setEmailStatus] = useState<string | null>(null);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -55,9 +62,22 @@ function Signup() {
       },
     });
 
-    await sendAccountWelcomeEmail({
-      data: { email: form.email, name: form.name, redirectPath: "/login" },
-    }).catch(() => {});
+    const welcomeRedirectPath = isEnrolRedirect ? "/login?redirect=/enrol" : "/login";
+    const welcome = await sendAccountWelcomeEmail({
+      data: { email: form.email, name: form.name, redirectPath: welcomeRedirectPath },
+    }).catch((error) => ({
+      ok: false,
+      reason: error instanceof Error ? error.message : "Welcome email failed.",
+    }));
+    if (!welcome.ok) {
+      setEmailStatus(
+        welcome.reason ??
+          "Account created, but the welcome email did not send. Check the Resend configuration.",
+      );
+      toast.warning("Account created, but the welcome email did not send.");
+    } else {
+      setEmailStatus("Welcome email sent.");
+    }
     setCompleteEmail(form.email);
     toast.success("Account created.");
   }
@@ -75,18 +95,29 @@ function Signup() {
             <p className="mt-4 text-sm leading-6 text-muted-foreground">
               We created your PlaneServe account for{" "}
               <span className="font-mono font-medium text-foreground">{completeEmail}</span>. You
-              can now sign in and enrol your aircraft.
+              can now sign in{isEnrolRedirect ? " and continue enrolling your aircraft" : ""}.
             </p>
+            {emailStatus && (
+              <p
+                className={`mt-4 rounded-sm border px-4 py-3 text-xs ${
+                  emailStatus === "Welcome email sent."
+                    ? "border-success/25 bg-success/10 text-success"
+                    : "border-amber-300 bg-amber-50 text-amber-800"
+                }`}
+              >
+                {emailStatus}
+              </p>
+            )}
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
-              <Link to="/login" className={primaryButtonClass}>
+              <Link to="/login" search={{ redirect: redirectTo }} className={primaryButtonClass}>
                 Click here to login
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
-                to="/enrol"
+                to={isEnrolRedirect ? "/enrol" : "/"}
                 className="inline-flex h-12 items-center justify-center rounded-sm border border-input bg-background px-5 text-sm font-semibold text-foreground hover:border-accent/40 hover:bg-accent/5"
               >
-                Enrol aircraft
+                {isEnrolRedirect ? "Back to enrolment" : "Back to website"}
               </Link>
             </div>
           </div>

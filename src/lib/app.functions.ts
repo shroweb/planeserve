@@ -179,13 +179,17 @@ export type AogRecord = {
 // ── Server-only DB/auth loader ────────────────────────────────────────────────
 
 const loadServerAuth = createServerOnlyFn(async () => {
-  const [{ getRequestHeaders }, { eq, and, ne, inArray, isNull, asc, desc }, { auth }, { db, schema }] =
-    await Promise.all([
-      import("@tanstack/start-server-core"),
-      import("drizzle-orm"),
-      import("./auth"),
-      import("./db/index.server"),
-    ]);
+  const [
+    { getRequestHeaders },
+    { eq, and, ne, inArray, isNull, asc, desc },
+    { auth },
+    { db, schema },
+  ] = await Promise.all([
+    import("@tanstack/start-server-core"),
+    import("drizzle-orm"),
+    import("./auth"),
+    import("./db/index.server"),
+  ]);
 
   return { getRequestHeaders, eq, and, ne, inArray, isNull, asc, desc, auth, db, schema };
 });
@@ -531,7 +535,7 @@ export const sendAccountWelcomeEmail = createServerFn({ method: "POST" })
       // Fresh signup can call this before the session cookie is visible server-side.
     }
     if (!recipient) return { ok: false };
-    await sendJourneyEmail(
+    const sent = await sendJourneyEmail(
       recipient,
       "Welcome to PlaneServe",
       "Welcome to PlaneServe",
@@ -540,7 +544,7 @@ export const sendAccountWelcomeEmail = createServerFn({ method: "POST" })
        <p>You can now sign in and enrol your aircraft when you're ready. Payment is only taken when an aircraft is enrolled.</p>
        <p><a href="${appUrl(data.redirectPath)}">Continue in PlaneServe</a></p>`,
     );
-    return { ok: true };
+    return sent;
   });
 
 export const getDashboardData = createServerFn({ method: "GET" }).handler(async () => {
@@ -999,8 +1003,8 @@ export const createAogRequest = createServerFn({ method: "POST" })
        <strong>Part number:</strong> ${escapeHtml(data.partNumber || "Not supplied")}<br />
        <strong>Location:</strong> ${escapeHtml(data.location || selectedAircraft.baseAirport)}<br />
        <strong>Contact:</strong> ${escapeHtml(data.contactName || user.name)} · ${escapeHtml(
-        data.contactPhone || user.phone,
-      )}</p>
+         data.contactPhone || user.phone,
+       )}</p>
        <p><a href="${appUrl("/admin/aog")}">Open AOG queue</a></p>`,
     );
 
@@ -1108,12 +1112,15 @@ export const getAdminCustomers = createServerFn({ method: "GET" }).handler(async
   const [profileRows, aircraftRows, requestRows] = await Promise.all([
     db.select().from(schema.profiles).orderBy(desc(schema.profiles.createdAt)),
     db.select().from(schema.aircraft).orderBy(desc(schema.aircraft.createdAt)),
-    db.select({
-      id: schema.aogRequests.id,
-      registration: schema.aogRequests.registration,
-      status: schema.aogRequests.status,
-      createdAt: schema.aogRequests.createdAt,
-    }).from(schema.aogRequests).orderBy(desc(schema.aogRequests.createdAt)),
+    db
+      .select({
+        id: schema.aogRequests.id,
+        registration: schema.aogRequests.registration,
+        status: schema.aogRequests.status,
+        createdAt: schema.aogRequests.createdAt,
+      })
+      .from(schema.aogRequests)
+      .orderBy(desc(schema.aogRequests.createdAt)),
   ]);
 
   return {
@@ -1352,9 +1359,8 @@ export const declineAircraft = createServerFn({ method: "POST" })
           const s = await stripe.subscriptions.retrieve(sub.stripeSubscriptionId, {
             expand: ["latest_invoice.payment_intent"],
           });
-          const pi = (
-            s.latest_invoice as unknown as { payment_intent?: { id?: string } } | null
-          )?.payment_intent?.id;
+          const pi = (s.latest_invoice as unknown as { payment_intent?: { id?: string } } | null)
+            ?.payment_intent?.id;
           if (pi) {
             await stripe.refunds.create({ payment_intent: pi });
             refunded = true;
@@ -2108,10 +2114,10 @@ export const updateAircraftProfile = createServerFn({ method: "POST" })
         engineSeries: data.engineSeries,
         engineSerialNumbers: data.engineSerialNumbers,
         numberOfEngines: data.numberOfEngines,
-      propellerManufacturer: data.propellerManufacturer,
-      propellerType: data.propellerType,
-      maintenanceProgramme: data.maintenanceProgramme,
-      registryStandard: data.registryStandard,
+        propellerManufacturer: data.propellerManufacturer,
+        propellerType: data.propellerType,
+        maintenanceProgramme: data.maintenanceProgramme,
+        registryStandard: data.registryStandard,
         amoName: data.amoName,
         amoPhone: data.amoPhone,
         amoEmergencyPhone: data.amoEmergencyPhone,
@@ -2300,8 +2306,7 @@ export const approveSupplierQuote = createServerFn({ method: "POST" })
       id: `se_${crypto.randomUUID()}`,
       requestId: data.requestId,
       status: "Confirmed",
-      note:
-        `Sourcing option approved by owner/operator. Invoice ${invoiceId.slice(-8)} generated and emailed from PlaneServe.`,
+      note: `Sourcing option approved by owner/operator. Invoice ${invoiceId.slice(-8)} generated and emailed from PlaneServe.`,
       createdByUserId: user.id,
       createdAt: now,
     });
@@ -2311,8 +2316,7 @@ export const approveSupplierQuote = createServerFn({ method: "POST" })
       userId: user.id,
       category: "AOG",
       title: "Sourcing option approved",
-      body:
-        "PlaneServe has generated the part invoice/payment request and will now coordinate order placement and supplier dispatch.",
+      body: "PlaneServe has generated the part invoice/payment request and will now coordinate order placement and supplier dispatch.",
       requestId: data.requestId,
       createdAt: now,
     });
@@ -2430,7 +2434,8 @@ function escapeHtml(value: string | null | undefined) {
 }
 
 function appUrl(path = "") {
-  const base = process.env.BETTER_AUTH_URL || process.env.VITE_APP_URL || "https://planeserve.vercel.app";
+  const base =
+    process.env.BETTER_AUTH_URL || process.env.VITE_APP_URL || "https://planeserve.vercel.app";
   return `${base.replace(/\/$/, "")}${path}`;
 }
 
@@ -2440,11 +2445,17 @@ async function sendJourneyEmail(
   heading: string,
   body: string,
 ) {
-  if (!to) return;
+  if (!to) return { ok: false, reason: "No recipient email supplied." };
   const { sendEmail, emailLayout } = await import("@/lib/email.server");
-  await sendEmail(to, subject, emailLayout(heading, body)).catch((error) => {
+  try {
+    const result = await sendEmail(to, subject, emailLayout(heading, body));
+    return result.ok
+      ? { ok: true, id: result.id }
+      : { ok: false, reason: result.reason ?? "Email sending skipped." };
+  } catch (error) {
     console.warn(`Journey email failed: ${subject}`, error);
-  });
+    return { ok: false, reason: error instanceof Error ? error.message : "Email failed." };
+  }
 }
 
 async function sendAdminJourneyEmail(subject: string, heading: string, body: string) {
@@ -2750,26 +2761,32 @@ export const createStripeSubscription = createServerFn({ method: "POST" })
           };
 
     // Create customer
-    const customer = await stripe.customers.create({
-      email: data.email,
-      name: data.name,
-      payment_method: data.paymentMethodId,
-      invoice_settings: { default_payment_method: data.paymentMethodId },
-      metadata: { enrolmentAttemptKey: data.idempotencyKey },
-    }, { idempotencyKey: `customer_${data.idempotencyKey}` });
+    const customer = await stripe.customers.create(
+      {
+        email: data.email,
+        name: data.name,
+        payment_method: data.paymentMethodId,
+        invoice_settings: { default_payment_method: data.paymentMethodId },
+        metadata: { enrolmentAttemptKey: data.idempotencyKey },
+      },
+      { idempotencyKey: `customer_${data.idempotencyKey}` },
+    );
 
     // Create subscription (incomplete until payment confirmed)
-    const subscription = await stripe.subscriptions.create({
-      customer: customer.id,
-      items: [{ price_data: priceData }],
-      payment_behavior: "default_incomplete",
-      payment_settings: {
-        payment_method_types: ["card"],
-        save_default_payment_method: "on_subscription",
+    const subscription = await stripe.subscriptions.create(
+      {
+        customer: customer.id,
+        items: [{ price_data: priceData }],
+        payment_behavior: "default_incomplete",
+        payment_settings: {
+          payment_method_types: ["card"],
+          save_default_payment_method: "on_subscription",
+        },
+        metadata: { enrolmentAttemptKey: data.idempotencyKey },
+        expand: ["latest_invoice.payment_intent"],
       },
-      metadata: { enrolmentAttemptKey: data.idempotencyKey },
-      expand: ["latest_invoice.payment_intent"],
-    }, { idempotencyKey: `subscription_${data.idempotencyKey}` });
+      { idempotencyKey: `subscription_${data.idempotencyKey}` },
+    );
 
     const invoice = subscription.latest_invoice as any;
     const clientSecret = invoice?.payment_intent?.client_secret ?? null;
@@ -2796,9 +2813,7 @@ export const cancelFailedStripeEnrolment = createServerFn({ method: "POST" })
     const subscription = await stripe.subscriptions.retrieve(data.subscriptionId);
 
     const customerId =
-      typeof subscription.customer === "string"
-        ? subscription.customer
-        : subscription.customer?.id;
+      typeof subscription.customer === "string" ? subscription.customer : subscription.customer?.id;
 
     if (
       customerId !== data.customerId ||
@@ -3964,7 +3979,10 @@ export const declineSupplierApplication = createServerFn({ method: "POST" })
       .update(schema.supplierCompanies)
       .set({ status: "declined", declineReason: data.reason })
       .where(eq(schema.supplierCompanies.id, data.id))
-      .returning({ name: schema.supplierCompanies.name, email: schema.supplierCompanies.contactEmail });
+      .returning({
+        name: schema.supplierCompanies.name,
+        email: schema.supplierCompanies.contactEmail,
+      });
 
     // Notify the applicant with the reason (if we have an email on file).
     if (company?.email) {

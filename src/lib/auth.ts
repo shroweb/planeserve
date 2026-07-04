@@ -20,17 +20,8 @@ type AuthLike = {
 let authPromise: Promise<AuthLike> | undefined;
 
 async function sendEmail(to: string, subject: string, html: string) {
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    // No Resend key — log link so dev/staging still works.
-    console.warn(`[PlaneServe] Email to ${to} — ${subject}`);
-    console.warn(`[PlaneServe] Body: ${html}`);
-    return;
-  }
-  const { Resend } = await import("resend");
-  const resend = new Resend(apiKey);
-  const from = process.env.RESEND_FROM ?? "PlaneServe <onboarding@resend.dev>";
-  await resend.emails.send({ from, to, subject, html });
+  const { sendEmail: sendTransactionalEmail } = await import("@/lib/email.server");
+  return sendTransactionalEmail(to, subject, html);
 }
 
 async function createConfiguredAuth(): Promise<AuthLike> {
