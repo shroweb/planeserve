@@ -178,20 +178,6 @@ export type AogRecord = {
 
 // ── Server-only DB/auth loader ────────────────────────────────────────────────
 
-let aircraftSchemaEnsurePromise: Promise<void> | null = null;
-
-async function ensureAircraftLifecycleColumns(db: { execute: (query: unknown) => Promise<unknown> }) {
-  const { sql } = await import("drizzle-orm");
-  await db.execute(sql`
-    ALTER TABLE "aircraft"
-      ADD COLUMN IF NOT EXISTS "propeller_manufacturer" text DEFAULT '' NOT NULL,
-      ADD COLUMN IF NOT EXISTS "propeller_type" text DEFAULT '' NOT NULL,
-      ADD COLUMN IF NOT EXISTS "archived_at" timestamp with time zone,
-      ADD COLUMN IF NOT EXISTS "archive_reason" text DEFAULT '' NOT NULL,
-      ADD COLUMN IF NOT EXISTS "archive_notes" text DEFAULT '' NOT NULL
-  `);
-}
-
 const loadServerAuth = createServerOnlyFn(async () => {
   const [{ getRequestHeaders }, { eq, and, ne, inArray, isNull, asc, desc }, { auth }, { db, schema }] =
     await Promise.all([
@@ -200,9 +186,6 @@ const loadServerAuth = createServerOnlyFn(async () => {
       import("./auth"),
       import("./db/index.server"),
     ]);
-
-  aircraftSchemaEnsurePromise ??= ensureAircraftLifecycleColumns(db);
-  await aircraftSchemaEnsurePromise;
 
   return { getRequestHeaders, eq, and, ne, inArray, isNull, asc, desc, auth, db, schema };
 });
@@ -527,6 +510,37 @@ export const upsertProfile = createServerFn({ method: "POST" })
         },
       });
     return { ...user, ...data };
+  });
+
+export const sendAccountWelcomeEmail = createServerFn({ method: "POST" })
+  .inputValidator(
+    z.object({
+      email: z.string().email().optional(),
+      name: z.string().optional().default(""),
+      redirectPath: z.string().optional().default("/login"),
+    }),
+  )
+  .handler(async ({ data }) => {
+    let recipient = data.email;
+    let name = data.name;
+    try {
+      const user = await currentUser();
+      recipient = user.email || recipient;
+      name = user.name || name;
+    } catch {
+      // Fresh signup can call this before the session cookie is visible server-side.
+    }
+    if (!recipient) return { ok: false };
+    await sendJourneyEmail(
+      recipient,
+      "Welcome to PlaneServe",
+      "Welcome to PlaneServe",
+      `<p>Hi ${escapeHtml(name || "there")},</p>
+       <p>Your PlaneServe account has been created.</p>
+       <p>You can now sign in and enrol your aircraft when you're ready. Payment is only taken when an aircraft is enrolled.</p>
+       <p><a href="${appUrl(data.redirectPath)}">Continue in PlaneServe</a></p>`,
+    );
+    return { ok: true };
   });
 
 export const getDashboardData = createServerFn({ method: "GET" }).handler(async () => {
@@ -2741,6 +2755,7 @@ export const createStripeSubscription = createServerFn({ method: "POST" })
       name: data.name,
       payment_method: data.paymentMethodId,
       invoice_settings: { default_payment_method: data.paymentMethodId },
+      metadata: { enrolmentAttemptKey: data.idempotencyKey },
     }, { idempotencyKey: `customer_${data.idempotencyKey}` });
 
     // Create subscription (incomplete until payment confirmed)
@@ -2752,6 +2767,7 @@ export const createStripeSubscription = createServerFn({ method: "POST" })
         payment_method_types: ["card"],
         save_default_payment_method: "on_subscription",
       },
+      metadata: { enrolmentAttemptKey: data.idempotencyKey },
       expand: ["latest_invoice.payment_intent"],
     }, { idempotencyKey: `subscription_${data.idempotencyKey}` });
 
@@ -2762,7 +2778,40 @@ export const createStripeSubscription = createServerFn({ method: "POST" })
       subscriptionId: subscription.id,
       customerId: customer.id,
       clientSecret,
+      attemptKey: data.idempotencyKey,
     };
+  });
+
+export const cancelFailedStripeEnrolment = createServerFn({ method: "POST" })
+  .inputValidator(
+    z.object({
+      subscriptionId: z.string().min(1),
+      customerId: z.string().min(1),
+      attemptKey: z.string().min(1),
+    }),
+  )
+  .handler(async ({ data }) => {
+    const Stripe = (await import("stripe")).default;
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+    const subscription = await stripe.subscriptions.retrieve(data.subscriptionId);
+
+    const customerId =
+      typeof subscription.customer === "string"
+        ? subscription.customer
+        : subscription.customer?.id;
+
+    if (
+      customerId !== data.customerId ||
+      subscription.metadata?.enrolmentAttemptKey !== data.attemptKey
+    ) {
+      throw new Error("Stripe subscription does not match this enrolment attempt.");
+    }
+
+    if (!["canceled", "incomplete_expired"].includes(subscription.status)) {
+      await stripe.subscriptions.cancel(data.subscriptionId);
+    }
+
+    return { ok: true };
   });
 
 export const markMessagesRead = createServerFn({ method: "POST" }).handler(async () => {
@@ -3439,6 +3488,7 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
       opsContactEmail: z.string().default(""),
       managerName: z.string().default(""),
       managerEmail: z.string().default(""),
+      password: z.string().optional().default(""),
       stripeSubscriptionId: z.string().optional(),
       stripeCustomerId: z.string().optional(),
       plan: z.enum(["monthly", "annual"]).default("monthly"),
@@ -3452,16 +3502,17 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
 
     if (!userId) {
       const tempPassword = crypto.randomUUID() + "Aa1!";
+      const suppliedPassword = data.password.trim();
       const signupRes = await auth.api.signUpEmail({
         body: {
           name: `${data.firstName} ${data.lastName}`,
           email: data.email,
-          password: tempPassword,
+          password: suppliedPassword || tempPassword,
         },
       });
       userId = (signupRes as { user?: { id: string } }).user?.id ?? "";
       if (!userId) throw new Error("Failed to create user account.");
-      createdAccount = true;
+      createdAccount = !suppliedPassword;
     }
 
     await db
@@ -3536,9 +3587,8 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
       });
     }
 
-    // New public enrolments get a throwaway random password, so send one
-    // set-password link. Existing signed-in users adding aircraft keep their
-    // current login and should not receive password emails.
+    // Legacy fallback only: if a public enrolment did not include a chosen password,
+    // send a set-password link. Normal public enrolment now creates the password inline.
     if (createdAccount) {
       await auth.api
         .requestPasswordReset({ body: { email: data.email, redirectTo: "/set-password" } })

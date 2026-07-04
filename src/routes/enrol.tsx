@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
+  cancelFailedStripeEnrolment,
   createSubscriberEnrolment,
   createStripeSubscription,
   getSessionUser,
@@ -102,6 +103,8 @@ type FormData = {
   opsContactEmail: string;
   managerName: string;
   managerEmail: string;
+  password: string;
+  confirmPassword: string;
   plan: "monthly" | "annual";
   agreed: boolean;
 };
@@ -138,11 +141,13 @@ const defaultForm: FormData = {
   opsContactEmail: "",
   managerName: "",
   managerEmail: "",
+  password: "",
+  confirmPassword: "",
   plan: "monthly",
   agreed: false,
 };
 
-function validateStep(step: number, form: FormData): string | null {
+function validateStep(step: number, form: FormData, isSignedIn = false): string | null {
   if (step === 1) {
     if (!form.usageType) return "Please select a usage type.";
   }
@@ -152,6 +157,11 @@ function validateStep(step: number, form: FormData): string | null {
     if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
       return "A valid email address is required.";
     if (!form.mobile.trim()) return "Mobile number is required.";
+    if (!isSignedIn) {
+      if (!form.password.trim()) return "Password is required.";
+      if (form.password.length < 8) return "Password must be at least 8 characters.";
+      if (form.password !== form.confirmPassword) return "Passwords do not match.";
+    }
   }
   if (step === 3) {
     if (!form.makeModel.trim()) return "Aircraft make & model is required.";
@@ -251,12 +261,11 @@ function EnrolPage() {
         </div>
         {!isSignedIn && (
           <div className="bg-card border border-border rounded-xl p-5 text-left space-y-2 text-sm">
-            <p className="font-medium text-foreground">Set your password to sign in</p>
+            <p className="font-medium text-foreground">All done — sign in to continue</p>
             <p className="text-muted-foreground text-xs leading-5">
-              A password-set link has been sent to{" "}
+              Your account is ready for{" "}
               <span className="font-mono font-medium text-foreground">{confirmation.email}</span>.
-              Click the link in your email to choose a password, then sign in to access your
-              dashboard.
+              Click below to log in and access your dashboard.
             </p>
           </div>
         )}
@@ -264,7 +273,7 @@ function EnrolPage() {
           to={isSignedIn ? "/dashboard" : "/login"}
           className="block w-full rounded-sm bg-accent text-accent-foreground text-sm font-semibold py-2.5 text-center hover:bg-accent/90"
         >
-          {isSignedIn ? "Back to Dashboard" : "Go to Login"}
+          {isSignedIn ? "Back to Dashboard" : "Click here to login"}
         </Link>
       </div>
     );
@@ -339,7 +348,12 @@ function EnrolPage() {
       <div className="bg-card border border-border rounded-sm p-8 space-y-6 shadow-sm">
         {step === 1 && <Step1 value={form.usageType} onChange={(v) => set("usageType", v)} />}
         {step === 2 && (
-          <Step2 form={form} set={set} showCompany={form.usageType !== "Private Owner"} />
+          <Step2
+            form={form}
+            set={set}
+            showCompany={form.usageType !== "Private Owner"}
+            isSignedIn={isSignedIn}
+          />
         )}
         {step === 3 && <Step3 form={form} set={set} />}
         {step === 4 && <Step4 form={form} set={set} />}
@@ -379,7 +393,7 @@ function EnrolPage() {
         {step < 5 && (
           <button
             onClick={() => {
-              const err = validateStep(step, form);
+              const err = validateStep(step, form, isSignedIn);
               if (err) {
                 setStepError(err);
                 return;
@@ -451,10 +465,12 @@ function Step2({
   form,
   set,
   showCompany,
+  isSignedIn,
 }: {
   form: FormData;
   set: <K extends keyof FormData>(k: K, v: FormData[K]) => void;
   showCompany: boolean;
+  isSignedIn: boolean;
 }) {
   return (
     <div>
@@ -520,6 +536,30 @@ function Step2({
                 value={form.managementCompany}
                 onChange={(e) => set("managementCompany", e.target.value)}
                 placeholder="Jet Management Group"
+              />
+            </Field>
+          </>
+        )}
+        {!isSignedIn && (
+          <>
+            <Field label="Create password" required>
+              <input
+                type="password"
+                className={inputCls}
+                value={form.password}
+                onChange={(e) => set("password", e.target.value)}
+                placeholder="At least 8 characters"
+                autoComplete="new-password"
+              />
+            </Field>
+            <Field label="Confirm password" required>
+              <input
+                type="password"
+                className={inputCls}
+                value={form.confirmPassword}
+                onChange={(e) => set("confirmPassword", e.target.value)}
+                placeholder="Repeat password"
+                autoComplete="new-password"
               />
             </Field>
           </>
@@ -910,7 +950,25 @@ function Step5({
       });
       onComplete(result.ref, form.email);
     } catch (e: any) {
-      setCardError(e?.message ?? "Account creation failed. Contact support.");
+      if (
+        subscriptionResult?.subscriptionId &&
+        subscriptionResult?.customerId &&
+        subscriptionResult?.attemptKey
+      ) {
+        await cancelFailedStripeEnrolment({
+          data: {
+            subscriptionId: subscriptionResult.subscriptionId,
+            customerId: subscriptionResult.customerId,
+            attemptKey: subscriptionResult.attemptKey,
+          },
+        }).catch(() => {});
+      }
+      const message =
+        e?.message ??
+        "Account creation failed. We have cancelled this payment attempt. Please try again or contact support.";
+      setCardError(
+        `${message} If a payment was started, this attempt has been cancelled before you retry.`,
+      );
     }
 
     stopLoading();

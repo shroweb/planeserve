@@ -1,12 +1,12 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Section, Eyebrow, H2 } from "@/components/site/Section";
 import { Role } from "@/lib/db/schema";
 import { useState } from "react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
-import { upsertProfile } from "@/lib/app.functions";
-import { ArrowRight } from "lucide-react";
+import { sendAccountWelcomeEmail, upsertProfile } from "@/lib/app.functions";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 
 export const Route = createFileRoute("/signup")({
   component: Signup,
@@ -27,10 +27,14 @@ function Signup() {
     role: "Operator" as Role,
     password: "",
   });
-  const nav = useNavigate();
+  const [completeEmail, setCompleteEmail] = useState("");
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    if (form.password.length < 8) {
+      toast.error("Password must be at least 8 characters.");
+      return;
+    }
     const result = await authClient.signUp.email({
       name: form.name,
       email: form.email,
@@ -51,8 +55,44 @@ function Signup() {
       },
     });
 
+    await sendAccountWelcomeEmail({
+      data: { email: form.email, name: form.name, redirectPath: "/login" },
+    }).catch(() => {});
+    setCompleteEmail(form.email);
     toast.success("Account created.");
-    nav({ to: "/enrol" });
+  }
+
+  if (completeEmail) {
+    return (
+      <PublicLayout>
+        <Section>
+          <div className="mx-auto max-w-lg rounded-sm border border-border bg-card p-8 text-center shadow-sm">
+            <CheckCircle2 className="mx-auto h-12 w-12 text-success" />
+            <div className="mt-6">
+              <Eyebrow>All Done</Eyebrow>
+            </div>
+            <H2>Your account is ready.</H2>
+            <p className="mt-4 text-sm leading-6 text-muted-foreground">
+              We created your PlaneServe account for{" "}
+              <span className="font-mono font-medium text-foreground">{completeEmail}</span>. You
+              can now sign in and enrol your aircraft.
+            </p>
+            <div className="mt-8 grid gap-3 sm:grid-cols-2">
+              <Link to="/login" className={primaryButtonClass}>
+                Click here to login
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                to="/enrol"
+                className="inline-flex h-12 items-center justify-center rounded-sm border border-input bg-background px-5 text-sm font-semibold text-foreground hover:border-accent/40 hover:bg-accent/5"
+              >
+                Enrol aircraft
+              </Link>
+            </div>
+          </div>
+        </Section>
+      </PublicLayout>
+    );
   }
 
   return (
