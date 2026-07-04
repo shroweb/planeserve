@@ -1,8 +1,8 @@
-# PlaneServe Database Tables
+# Aircraft Program Database Tables
 
 The app uses Better Auth for `user`, `session`, `account`, and verification tables.
 
-PlaneServe product tables live in `src/lib/db/schema.ts`:
+Aircraft Program product tables live in `src/lib/db/schema.ts`:
 
 - `profiles`: app profile, company, phone, role, admin flag for each auth user.
 - `aircraft`: enrolled aircraft records and mock subscription status.

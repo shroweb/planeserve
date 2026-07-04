@@ -9,11 +9,11 @@ import { useState } from "react";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — PlaneServe" },
+      { title: "Contact — Aircraft Program" },
       {
         name: "description",
         content:
-          "Talk to the PlaneServe operations desk. For new enrolments, active AOG support, supplier enquiries, or general questions.",
+          "Talk to the Aircraft Program operations desk. For new enrolments, active AOG support, supplier enquiries, or general questions.",
       },
     ],
   }),

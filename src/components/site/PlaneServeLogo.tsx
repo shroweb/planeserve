@@ -6,7 +6,7 @@ export function PlaneServeMark({ className = "h-9 w-9" }: { className?: string }
       className={className}
       viewBox="0 0 28 28"
       role="img"
-      aria-label="PlaneServe mark"
+      aria-label="Aircraft Program mark"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -36,7 +36,7 @@ export function PlaneServeLogo({
   const content = (
     <>
       <PlaneServeMark className="h-9 w-9 shrink-0" />
-      <span className={wordClassName || "text-base font-semibold tracking-tight"}>PlaneServe</span>
+      <span className={wordClassName || "text-base font-semibold tracking-tight"}>Aircraft Program</span>
     </>
   );
 

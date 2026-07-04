@@ -20,11 +20,11 @@ import { useState, useEffect } from "react";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "PlaneServe — AOG parts support for aircraft that cannot wait" },
+      { title: "Aircraft Program — AOG parts support for aircraft that cannot wait" },
       {
         name: "description",
         content:
-          "PlaneServe is a retained AOG parts support service for private and business aircraft. We keep your aircraft details ready before downtime starts, then help source hard-to-find parts.",
+          "Aircraft Program is a retained AOG parts support service for private and business aircraft. We keep your aircraft details ready before downtime starts, then help source hard-to-find parts.",
       },
     ],
   }),
@@ -89,7 +89,7 @@ function Home() {
           </h1>
           <div className="max-w-3xl">
             <p className="mt-7 max-w-xl text-base leading-8 text-white/75 md:text-lg">
-              PlaneServe is an enrolment programme for aircraft owners and operators. Enrol your
+              Aircraft Program is an enrolment programme for aircraft owners and operators. Enrol your
               aircraft, put your details on file, and the desk is ready to source parts the moment
               you go AOG.
             </p>
@@ -127,7 +127,7 @@ function Home() {
               {
                 Icon: BillingIcon,
                 title: "Predictable costs",
-                desc: "Flat monthly fee per aircraft, with sourcing options and any PlaneServe commission made clear before approval.",
+                desc: "Flat monthly fee per aircraft, with sourcing options and any Aircraft Program commission made clear before approval.",
               },
               {
                 Icon: SlaIcon,
@@ -155,9 +155,9 @@ function Home() {
       {/* ── Plain English Explanation ─────────────────────────────────────── */}
       <section className="bg-background border-b border-border">
         <div className="mx-auto max-w-4xl px-6 py-20 text-center">
-          <Eyebrow>What is PlaneServe?</Eyebrow>
+          <Eyebrow>What is Aircraft Program?</Eyebrow>
           <p className="mt-8 text-2xl font-bold leading-relaxed md:text-3xl lg:text-4xl lg:leading-tight">
-            PlaneServe is a <span className="text-accent">retained AOG parts support service</span>{" "}
+            Aircraft Program is a <span className="text-accent">retained AOG parts support service</span>{" "}
             for private and business aircraft.
           </p>
           <p className="mx-auto mt-8 max-w-2xl text-base leading-8 text-muted-foreground md:text-lg">
@@ -168,7 +168,7 @@ function Home() {
           </p>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-muted-foreground md:text-lg">
             The service grew from years of owners and operators asking James Moon for help finding
-            parts that had slipped out of obvious distribution. PlaneServe turns those calls into a
+            parts that had slipped out of obvious distribution. Aircraft Program turns those calls into a
             formal aircraft enrolment programme with a retained AOG desk behind it.
           </p>
         </div>
@@ -217,7 +217,7 @@ function Home() {
 
             <div className="relative rounded-lg border border-border bg-background p-8 shadow-sm lg:p-12">
               <div className="absolute -top-4 left-8 rounded-sm bg-accent px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white">
-                The PlaneServe Way
+                The Aircraft Program Way
               </div>
               <h3 className="text-2xl font-semibold">The desk already knows the aircraft.</h3>
               <p className="mt-4 text-base leading-7 text-muted-foreground">
@@ -383,7 +383,7 @@ function Home() {
               Founded by an aviation entrepreneur. Built from necessity.
             </h2>
             <p className="mt-5 max-w-2xl text-sm leading-7 text-white/55">
-              PlaneServe came from the repeated reality of legacy aircraft ownership: an operator
+              Aircraft Program came from the repeated reality of legacy aircraft ownership: an operator
               needs a difficult part, the obvious channels have gone quiet, and someone with the
               right network has to know where to look.
             </p>
@@ -396,7 +396,7 @@ function Home() {
                 <div className="h-px w-8 bg-accent/40" />
                 <div>
                   <div className="text-sm font-semibold text-white">James Moon</div>
-                  <div className="text-xs text-white/40">Founder, PlaneServe</div>
+                  <div className="text-xs text-white/40">Founder, Aircraft Program</div>
                 </div>
               </footer>
             </blockquote>
@@ -421,7 +421,7 @@ function Home() {
               </h2>
               <p className="mt-5 text-sm leading-7 text-muted-foreground">
                 One flat fee keeps your aircraft profile on file and the desk active. No per-case
-                charges, with supplier options and PlaneServe commission shown before you approve.
+                charges, with supplier options and Aircraft Program commission shown before you approve.
               </p>
               <ul className="mt-8 space-y-3">
                 {[

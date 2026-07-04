@@ -77,7 +77,7 @@ function notFound(path: string) {
     {
       error: {
         code: "not_found",
-        message: `No PlaneServe API route matched ${path}.`,
+        message: `No Aircraft Program API route matched ${path}.`,
       },
     },
     { status: 404 },
@@ -131,7 +131,7 @@ async function handleApiRequest(request: Request) {
   try {
     if (method === "GET" && parts.length === 0) {
       return json({
-        name: "PlaneServe API",
+        name: "Aircraft Program API",
         version: "v1",
         status: "db-backed-local",
         endpoints: [
@@ -225,7 +225,7 @@ async function handleApiRequest(request: Request) {
       {
         error: {
           code: codeForStatus(status),
-          message: error instanceof Error ? error.message : "Unexpected PlaneServe API error.",
+          message: error instanceof Error ? error.message : "Unexpected Aircraft Program API error.",
         },
       },
       { status },

@@ -20,7 +20,7 @@ export const Route = createFileRoute("/services")({
       { title: "Services — AOG cover for enrolled business aircraft" },
       {
         name: "description",
-        content: "PlaneServe is an aircraft enrolment programme covering AOG parts sourcing, supplier outreach, trace verification, and dispatch coordination for enrolled business aircraft.",
+        content: "Aircraft Program is an aircraft enrolment programme covering AOG parts sourcing, supplier outreach, trace verification, and dispatch coordination for enrolled business aircraft.",
       },
     ],
   }),
@@ -37,7 +37,7 @@ function ServicesPage() {
           <h1 className="mt-6 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl lg:text-6xl">
             Everything included in the{" "}
             <span className="text-accent">
-              PlaneServe programme.
+              Aircraft Program programme.
             </span>
           </h1>
           <p className="mt-8 max-w-2xl text-base leading-8 text-white/70 md:text-lg">
@@ -57,7 +57,7 @@ function ServicesPage() {
                 <span className="text-accent ">Aircraft Records.</span>
               </h2>
               <p className="mt-6 text-base leading-8 text-muted-foreground">
-                Before your aircraft goes technical, PlaneServe captures the aircraft record — registration, engine serials, base ICAO, AMO contacts, and insurer details — so the desk can move immediately when the call comes in.
+                Before your aircraft goes technical, Aircraft Program captures the aircraft record — registration, engine serials, base ICAO, AMO contacts, and insurer details — so the desk can move immediately when the call comes in.
               </p>
               
               <div className="mt-10 grid gap-8 sm:grid-cols-2">
@@ -188,7 +188,7 @@ function ServicesPage() {
               Matched to the aircraft, the part, and the location.
             </h3>
             <p className="mt-5 text-sm leading-7 text-white/60">
-              PlaneServe does not send blind RFQs. The desk uses the enrolled aircraft record,
+              Aircraft Program does not send blind RFQs. The desk uses the enrolled aircraft record,
               ATA system, urgency, base airport, and paperwork requirement to approach suppliers
               most likely to respond with a usable option.
             </p>
@@ -227,9 +227,9 @@ function ServicesPage() {
                 <span className="text-accent ">transactional billing.</span>
               </h2>
               <p className="mt-6 text-base leading-8 text-muted-foreground">
-                PlaneServe is a programme for aircraft owners and operators. You enrol your aircraft once, and the desk is yours.
+                Aircraft Program is a programme for aircraft owners and operators. You enrol your aircraft once, and the desk is yours.
                 No per-case fees and no additional costs for 24/7 support. Part options are priced
-                clearly before approval, including any PlaneServe commission.
+                clearly before approval, including any Aircraft Program commission.
               </p>
               <ul className="mt-8 space-y-4">
                 {[
@@ -391,7 +391,7 @@ function ServicesPage() {
             Enrol your aircraft.
           </h2>
           <p className="mt-6 mx-auto max-w-xl text-base text-white/60">
-            Enrol your aircraft and complete the profile — PlaneServe is then ready before you need it.
+            Enrol your aircraft and complete the profile — Aircraft Program is then ready before you need it.
           </p>
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Link

@@ -42,7 +42,7 @@ function SupplierLoginPage() {
             <Eyebrow>Supplier Portal</Eyebrow>
             <H2>Sign in to your RFQ inbox.</H2>
             <p className="mt-5 max-w-xl text-sm leading-7 text-muted-foreground">
-              The supplier portal is for approved PlaneServe partners to receive RFQs, submit quotes
+              The supplier portal is for approved Aircraft Program partners to receive RFQs, submit quotes
               and manage their company profile.
             </p>
             <p className="mt-5 text-sm text-muted-foreground">

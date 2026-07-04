@@ -1,6 +1,6 @@
-# PlaneServe API
+# Aircraft Program API
 
-PlaneServe exposes a first-party JSON API under `/api/v1`. The current build is
+Aircraft Program exposes a first-party JSON API under `/api/v1`. The current build is
 mock-backed so the frontend and admin tools can integrate immediately; the same
 contract can later be wired to Postgres, Supabase, supplier feeds, and payment
 providers.
@@ -39,7 +39,7 @@ The response returns matches from:
 
 - `aircraft-profile`: common parts stored against an enrolled aircraft
 - `alternate-part-number`: known alternates for that aircraft or system
-- `historical-request`: parts previously requested through PlaneServe
+- `historical-request`: parts previously requested through Aircraft Program
 
 Every result includes `requestable: true`. If there are no matches, the user
 should still be allowed to submit an AOG request with a free-text part number,
@@ -75,5 +75,5 @@ The API should eventually be backed by:
 - admin-entered alternates and supplier capability notes
 - real auth and row-level access controls
 
-This keeps PlaneServe from depending on a mythical complete parts catalogue
+This keeps Aircraft Program from depending on a mythical complete parts catalogue
 while still building a useful part intelligence layer over time.

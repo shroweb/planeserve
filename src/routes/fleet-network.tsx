@@ -177,7 +177,7 @@ function FleetNetworkPage() {
             Network intelligence
           </p>
           <p className="text-sm text-muted-foreground">
-            PlaneServe monitors USM availability and freight routes across our global supplier
+            Aircraft Program monitors USM availability and freight routes across our global supplier
             network 24/7. Your desk will proactively alert you to parts shortages affecting your
             fleet type.
           </p>

@@ -168,7 +168,7 @@ function SubmitAog() {
             <CheckCircle2 className="mx-auto h-11 w-11 text-success" strokeWidth={1.5} />
             <h1 className="mt-4 text-2xl font-semibold tracking-tight">AOG case opened</h1>
             <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-muted-foreground">
-              The PlaneServe desk has been alerted. Your handler will acknowledge the case and begin
+              The Aircraft Program desk has been alerted. Your handler will acknowledge the case and begin
               sourcing against the aircraft profile on file.
             </p>
           </div>

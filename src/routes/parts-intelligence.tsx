@@ -64,7 +64,7 @@ function PartsIntelligencePage() {
         <div className="mb-6">
           <h1 className="text-2xl font-semibold tracking-tight">Parts Intelligence</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Availability risk for your fleet, updated as PlaneServe adds market signals, supplier
+            Availability risk for your fleet, updated as Aircraft Program adds market signals, supplier
             checks and case failure logs.
           </p>
         </div>
@@ -212,7 +212,7 @@ function PartsIntelligencePage() {
 
         {filtered.length > 0 && (
           <p className="mt-3 text-xs leading-5 text-muted-foreground">
-            Data is updated by PlaneServe analysts today and is structured so supplier feeds or
+            Data is updated by Aircraft Program analysts today and is structured so supplier feeds or
             inventory APIs can be connected later. Availability and pricing are indicative; contact
             the desk for pre-positioning advice.
           </p>

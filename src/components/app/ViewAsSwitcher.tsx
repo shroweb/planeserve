@@ -6,7 +6,7 @@ type View = "Subscriber" | "Admin" | "Supplier";
 
 export function ViewAsSwitcher({ current }: { current: View }) {
   const router = useRouter();
-  // The view switcher is an operations tool — only PlaneServe admins may
+  // The view switcher is an operations tool — only Aircraft Program admins may
   // jump between subscriber / admin / supplier surfaces. Hide it from
   // regular subscribers and suppliers.
   //

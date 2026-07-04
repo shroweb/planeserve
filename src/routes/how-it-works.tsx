@@ -18,10 +18,10 @@ import { BookOpen, Shield, TrendingUp, Eye, Scale } from "lucide-react";
 export const Route = createFileRoute("/how-it-works")({
   head: () => ({
     meta: [
-      { title: "How it Works — The PlaneServe AOG support journey" },
+      { title: "How it Works — The Aircraft Program AOG support journey" },
       {
         name: "description",
-        content: "Learn how PlaneServe moves your aircraft from 'grounded' to 'serviceable' using a retained support desk and pre-captured context.",
+        content: "Learn how Aircraft Program moves your aircraft from 'grounded' to 'serviceable' using a retained support desk and pre-captured context.",
       },
     ],
   }),
@@ -62,7 +62,7 @@ function HowItWorks() {
                 <span className="text-accent">The work that happens before anything goes wrong.</span>
               </h2>
               <p className="mt-6 text-base leading-8 text-muted-foreground">
-                PlaneServe is not a marketplace you log into during a crisis. It is a retained AOG
+                Aircraft Program is not a marketplace you log into during a crisis. It is a retained AOG
                 desk where your aircraft record, AMO contacts, and trace requirements are already on
                 file long before the first call comes in.
               </p>
@@ -78,7 +78,7 @@ function HowItWorks() {
                 {
                   t: "Aircraft Record",
                   Icon: BookOpen,
-                  d: "Beyond the basics, PlaneServe builds a working record of your aircraft's configuration — engine serials, base ICAO, known part number history, and maintenance status. Over time, this record becomes one of your most valuable operational assets. Every part sourced, every AOG resolved, every supplier engaged is logged against the aircraft.",
+                  d: "Beyond the basics, Aircraft Program builds a working record of your aircraft's configuration — engine serials, base ICAO, known part number history, and maintenance status. Over time, this record becomes one of your most valuable operational assets. Every part sourced, every AOG resolved, every supplier engaged is logged against the aircraft.",
                 },
                 {
                   t: "Contact Registry",
@@ -88,12 +88,12 @@ function HowItWorks() {
                 {
                   t: "Parts Passport",
                   Icon: Shield,
-                  d: "Every part sourced through PlaneServe is recorded against your aircraft — part number, trace documentation, case reference, and date of fitment. This living record travels with the aircraft, supports pre-purchase inspections, and provides the clean documentation history that protects both airworthiness and residual value.",
+                  d: "Every part sourced through Aircraft Program is recorded against your aircraft — part number, trace documentation, case reference, and date of fitment. This living record travels with the aircraft, supports pre-purchase inspections, and provides the clean documentation history that protects both airworthiness and residual value.",
                 },
                 {
                   t: "Intelligence Layer",
                   Icon: TrendingUp,
-                  d: "As PlaneServe builds its enrolled fleet, the platform develops a growing picture of parts availability, supplier response times, and pricing patterns by aircraft type. Enrolled aircraft benefit from that intelligence — not just when they are AOG, but when planning scheduled maintenance, budgeting for upcoming requirements, or assessing the likely cost of a known defect before it becomes a ground stop.",
+                  d: "As Aircraft Program builds its enrolled fleet, the platform develops a growing picture of parts availability, supplier response times, and pricing patterns by aircraft type. Enrolled aircraft benefit from that intelligence — not just when they are AOG, but when planning scheduled maintenance, budgeting for upcoming requirements, or assessing the likely cost of a known defect before it becomes a ground stop.",
                 },
               ].map((item) => {
                 const Icon = item.Icon;
@@ -168,7 +168,7 @@ function HowItWorks() {
                 n: "02",
                 t: "Supplier Outreach",
                 Icon: SearchIcon,
-                d: "We engage our global supplier network simultaneously — not sequentially. Requests go out to vetted distributors, overhaul facilities, and specialist dealers matched to your aircraft type and current location. Suppliers who work with PlaneServe know our standards. Responses come back faster as a result.",
+                d: "We engage our global supplier network simultaneously — not sequentially. Requests go out to vetted distributors, overhaul facilities, and specialist dealers matched to your aircraft type and current location. Suppliers who work with Aircraft Program know our standards. Responses come back faster as a result.",
               },
               {
                 n: "03",
@@ -180,13 +180,13 @@ function HowItWorks() {
                 n: "04",
                 t: "Options Presented",
                 Icon: Eye,
-                d: "Qualified options are presented clearly — PlaneServe source reference, price, lead time, shipping origin, and documentation status. No ambiguity. No hidden layers. You or your team makes an informed decision with everything they need in front of them.",
+                d: "Qualified options are presented clearly — Aircraft Program source reference, price, lead time, shipping origin, and documentation status. No ambiguity. No hidden layers. You or your team makes an informed decision with everything they need in front of them.",
               },
               {
                 n: "05",
                 t: "Approval and Dispatch",
                 Icon: ClearedIcon,
-                d: "Once approved and ordered, PlaneServe coordinates directly with your maintenance team on delivery logistics. Approve the preferred option from the dashboard or directly with the desk. AWB tracked — freight route, carrier, and estimated arrival updated as the shipment moves.",
+                d: "Once approved and ordered, Aircraft Program coordinates directly with your maintenance team on delivery logistics. Approve the preferred option from the dashboard or directly with the desk. AWB tracked — freight route, carrier, and estimated arrival updated as the shipment moves.",
               },
               {
                 n: "06",
@@ -319,7 +319,7 @@ function HowItWorks() {
               {
                 t: "Independent",
                 Icon: Scale,
-                d: "PlaneServe has no commercial relationship with any single supplier that influences what we present. Our only interest is the fastest, most compliant resolution for your aircraft.",
+                d: "Aircraft Program has no commercial relationship with any single supplier that influences what we present. Our only interest is the fastest, most compliant resolution for your aircraft.",
               },
             ].map((item) => {
               const Icon = item.Icon;

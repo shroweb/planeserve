@@ -111,7 +111,7 @@ function AdminOverview() {
     const resolved = requests.filter((r) => r.status === "Resolved");
     const rate = requests.length ? Math.round((resolved.length / requests.length) * 100) : 0;
     const report = [
-      `PlaneServe Monthly Operations Report`,
+      `Aircraft Program Monthly Operations Report`,
       `Generated: ${at.toLocaleString("en-GB")}`,
       ``,
       `- Subscribers: ${users.length}`,

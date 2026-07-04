@@ -180,7 +180,7 @@ function StarRating({ aog }: { aog: AogRecord }) {
     <div className="bg-card border border-border rounded-md p-4 space-y-3">
       <p className="text-sm font-medium">How did we do?</p>
       <p className="text-xs text-muted-foreground">
-        Rate your PlaneServe desk experience for this case.
+        Rate your Aircraft Program desk experience for this case.
       </p>
       <div className="flex items-center gap-1">
         {[1, 2, 3, 4, 5].map((s) => (

@@ -537,12 +537,12 @@ export const sendAccountWelcomeEmail = createServerFn({ method: "POST" })
     if (!recipient) return { ok: false };
     const sent = await sendJourneyEmail(
       recipient,
-      "Welcome to PlaneServe",
-      "Welcome to PlaneServe",
+      "Welcome to Aircraft Program",
+      "Welcome to Aircraft Program",
       `<p>Hi ${escapeHtml(name || "there")},</p>
-       <p>Your PlaneServe account has been created.</p>
+       <p>Your Aircraft Program account has been created.</p>
        <p>You can now sign in and enrol your aircraft when you're ready. Payment is only taken when an aircraft is enrolled.</p>
-       <p><a href="${appUrl(data.redirectPath)}">Continue in PlaneServe</a></p>`,
+       <p><a href="${appUrl(data.redirectPath)}">Continue in Aircraft Program</a></p>`,
     );
     return sent;
   });
@@ -876,11 +876,11 @@ export const createAircraft = createServerFn({ method: "POST" })
     const registration = data.registration.toUpperCase();
     await sendJourneyEmail(
       user.email,
-      `PlaneServe aircraft enrolment received — ${registration}`,
+      `Aircraft Program aircraft enrolment received — ${registration}`,
       "Aircraft enrolment received",
       `<p>Hi ${escapeHtml(user.name || data.ownerOperatorName)},</p>
        <p>We've received the enrolment for <strong>${escapeHtml(registration)}</strong>.</p>
-       <p>Your account is active, and formal AOG cover will show as active once the PlaneServe desk has verified the aircraft details.</p>
+       <p>Your account is active, and formal AOG cover will show as active once the Aircraft Program desk has verified the aircraft details.</p>
        <p><a href="${appUrl("/aircraft")}">View your aircraft profile</a></p>`,
     );
 
@@ -981,7 +981,7 @@ export const createAogRequest = createServerFn({ method: "POST" })
     const contactEmail = data.contactEmail || user.email;
     await sendJourneyEmail(
       contactEmail,
-      `PlaneServe AOG request received — ${selectedAircraft.registration}`,
+      `Aircraft Program AOG request received — ${selectedAircraft.registration}`,
       "AOG request received",
       `<p>We've opened <strong>${escapeHtml(caseReference)}</strong> for <strong>${escapeHtml(
         selectedAircraft.registration,
@@ -1391,10 +1391,10 @@ export const declineAircraft = createServerFn({ method: "POST" })
       const { sendEmail, emailLayout } = await import("@/lib/email.server");
       await sendEmail(
         owner.email,
-        `PlaneServe cover for ${ac.registration} could not be approved`,
+        `Aircraft Program cover for ${ac.registration} could not be approved`,
         emailLayout(
           "Cover not approved",
-          `<p>Hi ${owner.name || "there"}, after review we were unable to approve PlaneServe AOG
+          `<p>Hi ${owner.name || "there"}, after review we were unable to approve Aircraft Program AOG
            cover for <strong>${ac.registration}</strong>.</p>
            ${data.reason ? `<p><strong>Reason:</strong> ${data.reason}</p>` : ""}
            <p>Your enrolment payment has been refunded in full — it can take a few business days to
@@ -1560,7 +1560,7 @@ export const getSupplierQuotes = createServerFn({ method: "GET" })
     return quotes.map((quote, index) => {
       const record = toQuoteRecord(quote);
       if (user.isAdmin) return record;
-      return { ...record, supplierName: `PlaneServe approved source ${index + 1}` };
+      return { ...record, supplierName: `Aircraft Program approved source ${index + 1}` };
     });
   });
 
@@ -2167,7 +2167,7 @@ export const getAogCaseDetail = createServerFn({ method: "GET" })
       quotes: quoteRows.map((quote, index) => {
         const record = toQuoteRecord(quote);
         if (user.isAdmin) return record;
-        return { ...record, supplierName: `PlaneServe approved source ${index + 1}` };
+        return { ...record, supplierName: `Aircraft Program approved source ${index + 1}` };
       }),
     };
   });
@@ -2306,7 +2306,7 @@ export const approveSupplierQuote = createServerFn({ method: "POST" })
       id: `se_${crypto.randomUUID()}`,
       requestId: data.requestId,
       status: "Confirmed",
-      note: `Sourcing option approved by owner/operator. Invoice ${invoiceId.slice(-8)} generated and emailed from PlaneServe.`,
+      note: `Sourcing option approved by owner/operator. Invoice ${invoiceId.slice(-8)} generated and emailed from Aircraft Program.`,
       createdByUserId: user.id,
       createdAt: now,
     });
@@ -2316,7 +2316,7 @@ export const approveSupplierQuote = createServerFn({ method: "POST" })
       userId: user.id,
       category: "AOG",
       title: "Sourcing option approved",
-      body: "PlaneServe has generated the part invoice/payment request and will now coordinate order placement and supplier dispatch.",
+      body: "Aircraft Program has generated the part invoice/payment request and will now coordinate order placement and supplier dispatch.",
       requestId: data.requestId,
       createdAt: now,
     });
@@ -2334,13 +2334,13 @@ export const approveSupplierQuote = createServerFn({ method: "POST" })
       });
       await sendEmail(
         profile.email,
-        `PlaneServe invoice for ${req.registration}`,
+        `Aircraft Program invoice for ${req.registration}`,
         emailLayout(
           "Part invoice generated",
           `<p>Hi ${profile.name || "there"},</p>
-           <p>You approved a sourcing option for <strong>${req.registration}</strong>. PlaneServe has generated invoice <strong>${invoiceId.slice(-8)}</strong> for <strong>${amount}</strong>.</p>
+           <p>You approved a sourcing option for <strong>${req.registration}</strong>. Aircraft Program has generated invoice <strong>${invoiceId.slice(-8)}</strong> for <strong>${amount}</strong>.</p>
            <p><strong>Part / system:</strong> ${req.partNumber || req.affectedSystem}<br/>
-           <strong>Source:</strong> PlaneServe approved source<br/>
+           <strong>Source:</strong> Aircraft Program approved source<br/>
            <strong>Condition:</strong> ${quote.condition}<br/>
            <strong>Lead time:</strong> ${quote.leadTime || "TBC"}</p>
            <p>The invoice is stored in your Billing area. The desk will coordinate payment confirmation, order placement, and supplier dispatch.</p>`,
@@ -2618,8 +2618,8 @@ export async function handleStripeInvoicePaid(invoice: StripeInvoiceWebhookPaylo
       category: "Billing",
       title: quoteId ? "Part invoice paid" : "Payment received",
       body: quoteId
-        ? `Payment of ${amount} has been received for your approved sourcing option. PlaneServe will continue order coordination.`
-        : `Payment of ${amount} has been received for your PlaneServe cover.`,
+        ? `Payment of ${amount} has been received for your approved sourcing option. Aircraft Program will continue order coordination.`
+        : `Payment of ${amount} has been received for your Aircraft Program cover.`,
       requestId: requestId || null,
       createdAt: paidAt,
     });
@@ -2629,7 +2629,7 @@ export async function handleStripeInvoicePaid(invoice: StripeInvoiceWebhookPaylo
     const { sendEmail, emailLayout } = await import("@/lib/email.server");
     await sendEmail(
       profile.email,
-      quoteId ? "PlaneServe part invoice paid" : "PlaneServe payment received",
+      quoteId ? "Aircraft Program part invoice paid" : "Aircraft Program payment received",
       emailLayout(
         quoteId ? "Part invoice paid" : "Payment received",
         `<p>Hi ${profile.name || "there"},</p>
@@ -2638,8 +2638,8 @@ export async function handleStripeInvoicePaid(invoice: StripeInvoiceWebhookPaylo
          }.</p>
          <p>${
            quoteId
-             ? "PlaneServe will continue coordinating order placement, supplier dispatch, and freight updates."
-             : "Your PlaneServe account and cover status have been updated from Stripe."
+             ? "Aircraft Program will continue coordinating order placement, supplier dispatch, and freight updates."
+             : "Your Aircraft Program account and cover status have been updated from Stripe."
          }</p>
          ${
            invoice.hosted_invoice_url
@@ -2697,7 +2697,7 @@ export async function handleStripeInvoicePaymentFailed(invoice: StripeInvoiceWeb
     const { sendEmail, emailLayout } = await import("@/lib/email.server");
     await sendEmail(
       profile.email,
-      "PlaneServe payment needs attention",
+      "Aircraft Program payment needs attention",
       emailLayout(
         "Payment needs attention",
         `<p>Hi ${profile.name || "there"},</p>
@@ -2733,14 +2733,14 @@ export const createStripeSubscription = createServerFn({ method: "POST" })
 
     // Ensure product exists (idempotent via search)
     const products = await stripe.products.search({
-      query: 'name:"PlaneServe AOG Support"',
+      query: 'name:"Aircraft Program AOG Support"',
       limit: 1,
     });
     let productId: string;
     if (products.data.length > 0) {
       productId = products.data[0].id;
     } else {
-      const product = await stripe.products.create({ name: "PlaneServe AOG Support" });
+      const product = await stripe.products.create({ name: "Aircraft Program AOG Support" });
       productId = product.id;
     }
 
@@ -2977,7 +2977,7 @@ export const sendAdminMessage = createServerFn({ method: "POST" })
       schema,
       data.userId,
       "AOG",
-      "Message from PlaneServe Desk",
+      "Message from Aircraft Program Desk",
       data.body.slice(0, 120),
       data.requestId || undefined,
     );
@@ -3145,9 +3145,9 @@ export const sendSupplierRfq = createServerFn({ method: "POST" })
 
     await sendJourneyEmail(
       supplier?.contactEmail,
-      `New PlaneServe RFQ — ${data.partDescription || data.partNumber || data.aircraftType}`,
+      `New Aircraft Program RFQ — ${data.partDescription || data.partNumber || data.aircraftType}`,
       "New sourcing request",
-      `<p>PlaneServe has sent a sourcing request matching your supplier profile.</p>
+      `<p>Aircraft Program has sent a sourcing request matching your supplier profile.</p>
        <p><strong>Aircraft:</strong> ${escapeHtml(data.aircraftType || "Not specified")}<br />
        <strong>Part:</strong> ${escapeHtml(data.partDescription || "Not specified")}<br />
        <strong>Part number:</strong> ${escapeHtml(data.partNumber || "Not supplied")}<br />
@@ -3613,10 +3613,10 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
     const registration = data.registration.toUpperCase();
     await sendJourneyEmail(
       data.email,
-      `Welcome to PlaneServe — ${registration}`,
-      "Welcome to PlaneServe",
+      `Welcome to Aircraft Program — ${registration}`,
+      "Welcome to Aircraft Program",
       `<p>Hi ${escapeHtml(data.firstName)},</p>
-       <p>Your PlaneServe account has been created and <strong>${escapeHtml(
+       <p>Your Aircraft Program account has been created and <strong>${escapeHtml(
          registration,
        )}</strong> has been enrolled.</p>
        <p>Your cover status will show as pending until the desk verifies the aircraft details.${createdAccount ? " We've also sent a separate email so you can set your password and access the platform." : ""}</p>
@@ -3737,10 +3737,10 @@ export const createSupplierApplication = createServerFn({ method: "POST" })
     const { sendEmail, emailLayout } = await import("@/lib/email.server");
     await sendEmail(
       data.email,
-      "We've received your PlaneServe supplier application",
+      "We've received your Aircraft Program supplier application",
       emailLayout(
         "Application received",
-        `<p>Hi ${data.firstName}, thanks for applying to join the PlaneServe supplier network for
+        `<p>Hi ${data.firstName}, thanks for applying to join the Aircraft Program supplier network for
          <strong>${data.name}</strong>.</p>
          <p>Our desk reviews applications within 24 hours. If approved, you'll receive a link to set
          your password and access the supplier portal. If we need anything further, we'll be in touch.</p>`,
@@ -3750,7 +3750,7 @@ export const createSupplierApplication = createServerFn({ method: "POST" })
     await sendAdminJourneyEmail(
       `New supplier application — ${data.name}`,
       "Supplier application received",
-      `<p><strong>${escapeHtml(data.name)}</strong> has applied to join the PlaneServe supplier network.</p>
+      `<p><strong>${escapeHtml(data.name)}</strong> has applied to join the Aircraft Program supplier network.</p>
        <p><strong>Contact:</strong> ${escapeHtml(data.firstName)} ${escapeHtml(data.lastName)} · ${escapeHtml(
          data.email,
        )}<br />
@@ -3957,7 +3957,7 @@ export const approveSupplierApplication = createServerFn({ method: "POST" })
 
         await sendJourneyEmail(
           company.contactEmail,
-          "PlaneServe supplier application approved",
+          "Aircraft Program supplier application approved",
           "Supplier access approved",
           `<p>Your application for <strong>${escapeHtml(company.name)}</strong> has been approved.</p>
            <p>We've sent a separate set-password email so you can activate your supplier portal access.</p>
@@ -3989,10 +3989,10 @@ export const declineSupplierApplication = createServerFn({ method: "POST" })
       const { sendEmail, emailLayout } = await import("@/lib/email.server");
       await sendEmail(
         company.email,
-        "Update on your PlaneServe supplier application",
+        "Update on your Aircraft Program supplier application",
         emailLayout(
           "Application not approved",
-          `<p>Thank you for your interest in joining the PlaneServe supplier network${
+          `<p>Thank you for your interest in joining the Aircraft Program supplier network${
             company.name ? ` as <strong>${company.name}</strong>` : ""
           }.</p>
            <p>After review, we're unable to approve your application at this time.</p>

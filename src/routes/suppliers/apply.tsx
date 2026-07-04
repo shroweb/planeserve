@@ -157,7 +157,7 @@ function SupplierApplyPage() {
             <div>
               <h1 className="text-2xl font-semibold mb-2">Application submitted</h1>
               <p className="text-muted-foreground text-sm">
-                Thank you for applying to the PlaneServe supplier network. Our desk reviews all
+                Thank you for applying to the Aircraft Program supplier network. Our desk reviews all
                 applications within 24 hours. You'll receive an email once a decision has been made.
               </p>
             </div>
@@ -222,7 +222,7 @@ function SupplierApplyPage() {
             <div className="mt-8 space-y-3 rounded-md border border-border bg-card p-5 text-sm">
               {[
                 "1. Submit company, speciality and compliance details",
-                "2. PlaneServe reviews the application within 24 hours",
+                "2. Aircraft Program reviews the application within 24 hours",
                 "3. Approved suppliers receive matched RFQs in the supplier portal",
               ].map((stepText) => (
                 <div key={stepText} className="border-b border-border pb-3 last:border-0 last:pb-0">
@@ -619,7 +619,7 @@ function Step5({
       <div>
         <h2 className="text-lg font-semibold mb-1">Create your account</h2>
         <p className="text-sm text-muted-foreground">
-          This will be your login to the PlaneServe supplier portal.
+          This will be your login to the Aircraft Program supplier portal.
         </p>
       </div>
       <div className="grid grid-cols-2 gap-4">
@@ -660,7 +660,7 @@ function Step5({
           onChange={(e) => set("agreed", e.target.checked)}
         />
         <span className="text-sm text-muted-foreground">
-          I accept the PlaneServe{" "}
+          I accept the Aircraft Program{" "}
           <a href="#" className="text-primary underline">
             supplier terms & conditions
           </a>

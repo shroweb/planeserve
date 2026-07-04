@@ -36,7 +36,7 @@ async function createConfiguredAuth(): Promise<AuthLike> {
   ]);
 
   return betterAuth({
-    appName: "PlaneServe",
+    appName: "Aircraft Program",
     baseURL,
     trustedOrigins,
     secret: process.env.BETTER_AUTH_SECRET,
@@ -53,13 +53,13 @@ async function createConfiguredAuth(): Promise<AuthLike> {
         const name = user.name ?? "there";
         await sendEmail(
           user.email,
-          "Reset your PlaneServe password",
+          "Reset your Aircraft Program password",
           `
           <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:32px 24px">
-            <img src="https://planeserve.aero/logo.png" alt="PlaneServe" style="height:32px;margin-bottom:24px" />
+            <img src="https://planeserve.aero/logo.png" alt="Aircraft Program" style="height:32px;margin-bottom:24px" />
             <h2 style="font-size:20px;font-weight:600;margin:0 0 12px">Reset your password</h2>
             <p style="color:#555;font-size:14px;line-height:1.6;margin:0 0 24px">
-              Hi ${name}, we received a request to reset your PlaneServe password.
+              Hi ${name}, we received a request to reset your Aircraft Program password.
               Click the button below to choose a new one. This link expires in 1 hour.
             </p>
             <a href="${url}" style="display:inline-block;background:#0f172a;color:#fff;text-decoration:none;padding:12px 24px;border-radius:6px;font-size:14px;font-weight:600">
@@ -70,7 +70,7 @@ async function createConfiguredAuth(): Promise<AuthLike> {
               Your password won't change until you click the link above.
             </p>
             <hr style="border:none;border-top:1px solid #eee;margin:24px 0" />
-            <p style="color:#bbb;font-size:11px">PlaneServe AOG Support · ops@planeserve.aero</p>
+            <p style="color:#bbb;font-size:11px">Aircraft Program AOG Support · ops@planeserve.aero</p>
           </div>
         `,
         );
@@ -99,7 +99,7 @@ function databaseNotConfiguredResponse() {
   return new Response(
     JSON.stringify({
       error: "database_not_configured",
-      message: "PlaneServe auth requires DATABASE_URL to be configured.",
+      message: "Aircraft Program auth requires DATABASE_URL to be configured.",
     }),
     {
       status: 503,

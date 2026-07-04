@@ -75,22 +75,22 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "theme-color", content: "#001b2e" },
-      { name: "application-name", content: "PlaneServe" },
+      { name: "application-name", content: "Aircraft Program" },
       { name: "mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
-      { name: "apple-mobile-web-app-title", content: "PlaneServe" },
+      { name: "apple-mobile-web-app-title", content: "Aircraft Program" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
       { name: "msapplication-TileColor", content: "#001b2e" },
-      { title: "PlaneServe — AOG parts support for private and business aircraft" },
+      { title: "Aircraft Program — AOG parts support for private and business aircraft" },
       {
         name: "description",
         content:
-          "PlaneServe helps aircraft owners and operators source hard-to-find parts quickly when downtime matters.",
+          "Aircraft Program helps aircraft owners and operators source hard-to-find parts quickly when downtime matters.",
       },
-      { name: "author", content: "PlaneServe" },
+      { name: "author", content: "Aircraft Program" },
       {
         property: "og:title",
-        content: "PlaneServe — AOG parts support for aircraft operators",
+        content: "Aircraft Program — AOG parts support for aircraft operators",
       },
       {
         property: "og:description",
@@ -99,7 +99,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "PlaneServe" },
+      { name: "twitter:title", content: "Aircraft Program" },
       {
         name: "twitter:description",
         content: "AOG parts support for aircraft owners and operators when downtime matters.",
@@ -144,7 +144,7 @@ function RootComponent() {
 
     const registerServiceWorker = () => {
       navigator.serviceWorker.register("/sw.js").catch((error) => {
-        console.warn("PlaneServe service worker registration failed", error);
+        console.warn("Aircraft Program service worker registration failed", error);
       });
     };
 

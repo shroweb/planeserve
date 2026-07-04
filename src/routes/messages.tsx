@@ -68,7 +68,7 @@ function MessagesPage() {
       <div className="flex flex-col h-[calc(100vh-4rem)] -m-6">
         {/* Header */}
         <div className="px-6 py-4 border-b border-border shrink-0">
-          <h1 className="text-base font-semibold">PlaneServe Desk</h1>
+          <h1 className="text-base font-semibold">Aircraft Program Desk</h1>
           <p className="text-xs text-muted-foreground mt-0.5">
             Your dedicated AOG support team — typically replies within 30 minutes
           </p>
@@ -113,7 +113,7 @@ function MessagesPage() {
                 >
                   {isAdmin && (
                     <p className="text-[10px] font-semibold text-primary mb-1 uppercase tracking-wide">
-                      PlaneServe
+                      Aircraft Program
                     </p>
                   )}
                   <p className="text-sm leading-relaxed">{m.body}</p>

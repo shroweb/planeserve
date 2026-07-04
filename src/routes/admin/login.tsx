@@ -36,9 +36,9 @@ function AdminLogin() {
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <div>
             <Eyebrow>Backend Admin</Eyebrow>
-            <H2>Sign in to PlaneServe operations.</H2>
+            <H2>Sign in to Aircraft Program operations.</H2>
             <p className="mt-5 max-w-xl text-sm leading-7 text-muted-foreground">
-              Admin access is reserved for the PlaneServe operations team to manage enrolments,
+              Admin access is reserved for the Aircraft Program operations team to manage enrolments,
               aircraft records, customers and AOG requests.
             </p>
           </div>

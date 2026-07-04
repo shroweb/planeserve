@@ -72,7 +72,7 @@ function AdminRevenuePage() {
   function exportRevenue() {
     if (!data) return;
     const rows: unknown[][] = [
-      ["PlaneServe revenue export", new Date().toISOString()],
+      ["Aircraft Program revenue export", new Date().toISOString()],
       [],
       ["Subscriptions"],
       ["Customer", "Email", "Plan", "Interval", "Amount", "Currency", "Status", "Period ends"],

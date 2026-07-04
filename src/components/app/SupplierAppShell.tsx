@@ -59,7 +59,7 @@ export function SupplierAppShell({ children }: { children: React.ReactNode }) {
         <div className="flex items-center gap-2 px-6 py-5 border-b border-white/10">
           <PlaneServeMark className="h-9 w-9 shrink-0" />
           <div>
-            <div className="text-sm font-semibold tracking-tight">PlaneServe</div>
+            <div className="text-sm font-semibold tracking-tight">Aircraft Program</div>
             <div className="text-[10px] uppercase tracking-widest text-white/50">
               Supplier Portal
             </div>

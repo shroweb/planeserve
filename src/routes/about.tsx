@@ -14,11 +14,11 @@ import {
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About PlaneServe — Founded by James Moon" },
+      { title: "About Aircraft Program — Founded by James Moon" },
       {
         name: "description",
         content:
-          "The story behind PlaneServe, founded by aviation entrepreneur James Moon as a structured answer to hard-to-source aircraft parts and AOG support.",
+          "The story behind Aircraft Program, founded by aviation entrepreneur James Moon as a structured answer to hard-to-source aircraft parts and AOG support.",
       },
     ],
   }),
@@ -38,13 +38,13 @@ function AboutPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#001b2e] via-[#001b2e]/80 to-[#001b2e]/20" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#001b2e] via-transparent to-transparent" />
         <div className="relative mx-auto w-full max-w-7xl px-6 py-20">
-          <Eyebrow>About PlaneServe</Eyebrow>
+          <Eyebrow>About Aircraft Program</Eyebrow>
           <h1 className="mt-6 max-w-3xl text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl lg:text-6xl">
             Founded by an aviation entrepreneur.{" "}
             <span className="text-accent">Built from necessity.</span>
           </h1>
           <p className="mt-8 max-w-2xl text-base leading-8 text-white/65 md:text-lg">
-            PlaneServe was not designed on a whiteboard. It grew from a problem that kept presenting
+            Aircraft Program was not designed on a whiteboard. It grew from a problem that kept presenting
             itself across years of trading aircraft and working alongside owners and operators in
             the legacy market.
           </p>
@@ -63,7 +63,7 @@ function AboutPage() {
               </h2>
               <div className="mt-7 space-y-5 text-base leading-8 text-muted-foreground">
                 <p>
-                  PlaneServe came from years of aircraft trading, owner relationships, and the
+                  Aircraft Program came from years of aircraft trading, owner relationships, and the
                   practical work of keeping older aircraft flying. When the obvious channels went
                   quiet, operators came to James because he knew where else to look.
                 </p>
@@ -73,7 +73,7 @@ function AboutPage() {
                   paperwork, supplier confirmation, and movement.
                 </p>
                 <p>
-                  PlaneServe turns that informal support into a formal programme: aircraft details
+                  Aircraft Program turns that informal support into a formal programme: aircraft details
                   on file before the problem, and a sourcing desk ready when the request lands.
                 </p>
               </div>
@@ -137,7 +137,7 @@ function AboutPage() {
               <div className="h-px w-8 bg-accent/40" />
               <span className="text-sm font-semibold text-white">James Moon</span>
               <span className="text-white/40 text-sm">·</span>
-              <span className="text-sm text-white/50">Founder, PlaneServe</span>
+              <span className="text-sm text-white/50">Founder, Aircraft Program</span>
             </footer>
           </blockquote>
         </div>
@@ -157,7 +157,7 @@ function AboutPage() {
               {
                 Icon: SlaIcon,
                 title: "Speed is non-negotiable",
-                desc: "Every hour an aircraft is grounded has a cost. PlaneServe exists so the search can begin with context already in hand.",
+                desc: "Every hour an aircraft is grounded has a cost. Aircraft Program exists so the search can begin with context already in hand.",
               },
               {
                 Icon: ClearedIcon,
@@ -195,7 +195,7 @@ function AboutPage() {
                 Deep knowledge, global supplier access.
               </h2>
               <p className="mt-6 text-base leading-8 text-white/60">
-                PlaneServe's desk combines aviation supply chain experience with a vetted global
+                Aircraft Program's desk combines aviation supply chain experience with a vetted global
                 network of parts suppliers. We specialise in older business platforms — the aircraft
                 where the OEM catalogue runs thin and the right part requires knowing who to call,
                 not just where to look.
@@ -238,12 +238,12 @@ function AboutPage() {
       <section className="bg-background border-b border-border">
         <div className="mx-auto max-w-7xl px-6 py-24">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <Eyebrow>Why PlaneServe</Eyebrow>
+            <Eyebrow>Why Aircraft Program</Eyebrow>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl">
               How we compare.
             </h2>
             <p className="mt-4 text-sm text-muted-foreground">
-              Most operators manage AOG reactively. PlaneServe is built for the operators who want
+              Most operators manage AOG reactively. Aircraft Program is built for the operators who want
               to be ready before the call comes in.
             </p>
           </div>
@@ -262,7 +262,7 @@ function AboutPage() {
                     Ad-hoc broker
                   </th>
                   <th className="px-6 py-4 text-center text-xs font-semibold uppercase tracking-widest text-accent bg-accent/5">
-                    PlaneServe
+                    Aircraft Program
                   </th>
                 </tr>
               </thead>

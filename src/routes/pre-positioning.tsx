@@ -34,7 +34,7 @@ function PrePositioningPage() {
           </div>
           <p className="text-lg font-semibold mb-2">Coming soon</p>
           <p className="text-sm text-muted-foreground max-w-sm mx-auto">
-            PlaneServe will analyse your routes, historical AOG patterns, and USM availability to
+            Aircraft Program will analyse your routes, historical AOG patterns, and USM availability to
             recommend strategic pre-positioned spares at key airports in your network.
           </p>
         </div>
@@ -71,7 +71,7 @@ function PrePositioningPage() {
         </div>
 
         <p className="mt-6 text-xs text-muted-foreground text-center">
-          Interested in early access? Message your PlaneServe desk.
+          Interested in early access? Message your Aircraft Program desk.
         </p>
       </div>
     </AppShell>

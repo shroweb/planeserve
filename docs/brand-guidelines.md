@@ -1,10 +1,10 @@
-# PlaneServe Brand Guidelines
+# Aircraft Program Brand Guidelines
 
 ## Brand Essence
 
-PlaneServe is a retained AOG parts support route for private and business aircraft operators.
+Aircraft Program is a retained AOG parts support route for private and business aircraft operators.
 
-The brand should feel calm, precise, operational, and quietly premium. PlaneServe is not a public marketplace, travel product, or generic SaaS dashboard. It is a trusted support desk for people who need hard-to-source aircraft parts handled quickly, clearly, and professionally.
+The brand should feel calm, precise, operational, and quietly premium. Aircraft Program is not a public marketplace, travel product, or generic SaaS dashboard. It is a trusted support desk for people who need hard-to-source aircraft parts handled quickly, clearly, and professionally.
 
 ### Mission
 
@@ -12,7 +12,7 @@ Help aircraft owners and operators reduce downtime by giving them a dependable r
 
 ### Brand Promise
 
-When downtime matters, PlaneServe gives operators a calm, capable team and system to move the request forward.
+When downtime matters, Aircraft Program gives operators a calm, capable team and system to move the request forward.
 
 ### Tone Of Voice
 
@@ -50,7 +50,7 @@ When downtime matters, PlaneServe gives operators a calm, capable team and syste
 
 ## Visual Direction
 
-PlaneServe should feel like a private aviation operations room: composed, technical, discreet, and fast-moving. The UI should prioritise trust, legibility, and workflow clarity.
+Aircraft Program should feel like a private aviation operations room: composed, technical, discreet, and fast-moving. The UI should prioritise trust, legibility, and workflow clarity.
 
 The design should borrow from:
 
@@ -97,7 +97,7 @@ The wordmark should be clean, technical, and confident. It should work well in a
 
 ## Colour System
 
-PlaneServe should use a restrained, premium operational palette with warm technical accents.
+Aircraft Program should use a restrained, premium operational palette with warm technical accents.
 
 ### Core Palette
 
@@ -359,7 +359,7 @@ Preferred icon themes:
 
 `Hard-to-source aircraft parts, handled fast.`
 
-`PlaneServe gives aircraft owners and operators a retained route for hard-to-source parts, document handling, and urgent sourcing updates when downtime matters.`
+`Aircraft Program gives aircraft owners and operators a retained route for hard-to-source parts, document handling, and urgent sourcing updates when downtime matters.`
 
 ### AOG CTA
 
@@ -385,11 +385,11 @@ Preferred icon themes:
 
 ### Confirmation Email
 
-Subject: `PlaneServe received your AOG request`
+Subject: `Aircraft Program received your AOG request`
 
 Body:
 
-`We have received your AOG request for {registration}. The PlaneServe operations team is reviewing the aircraft profile, uploaded documents, and sourcing route. We will update you as soon as the request is triaged.`
+`We have received your AOG request for {registration}. The Aircraft Program operations team is reviewing the aircraft profile, uploaded documents, and sourcing route. We will update you as soon as the request is triaged.`
 
 ## Implementation Tokens
 

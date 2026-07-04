@@ -479,7 +479,7 @@ function DocumentsTab({ aircraft }: { aircraft: AircraftRecord }) {
     <div className="space-y-3">
       <p className="text-sm text-muted-foreground">
         Documents are scoped to <span className="font-semibold">{aircraft.registration}</span> only.
-        Only you and the PlaneServe desk can see your aircraft's documents.
+        Only you and the Aircraft Program desk can see your aircraft's documents.
       </p>
       {docTypes.map((doc) => {
         const uploaded = documents.filter((d) => d.documentType === doc.name);
@@ -591,8 +591,8 @@ function VerificationTab({ aircraft }: { aircraft: AircraftRecord }) {
             {isVerified ? "AOG Cover Active" : "Cover Activation Pending"}
             <p className="mt-1 text-xs font-normal leading-5 text-muted-foreground">
               {isVerified
-                ? "PlaneServe has verified this aircraft and the AOG desk can support it formally."
-                : "Your subscription is active. Formal AOG cover starts once PlaneServe verifies the aircraft details below."}
+                ? "Aircraft Program has verified this aircraft and the AOG desk can support it formally."
+                : "Your subscription is active. Formal AOG cover starts once Aircraft Program verifies the aircraft details below."}
             </p>
           </div>
         </div>
@@ -670,7 +670,7 @@ function RemoveAircraftTab({ aircraft }: { aircraft: AircraftRecord }) {
           Remove {aircraft.registration} from active cover
         </p>
         <p className="mt-1 text-xs leading-5 text-muted-foreground">
-          This archives the aircraft and cancels its active cover status in PlaneServe. Case history,
+          This archives the aircraft and cancels its active cover status in Aircraft Program. Case history,
           documents, and Parts Passport records are retained for audit purposes.
         </p>
       </div>
@@ -693,7 +693,7 @@ function RemoveAircraftTab({ aircraft }: { aircraft: AircraftRecord }) {
             className={inputCls}
             value={notes}
             onChange={(event) => setNotes(event.target.value)}
-            placeholder="Optional context for PlaneServe"
+            placeholder="Optional context for Aircraft Program"
           />
         </Field>
       </div>
@@ -931,10 +931,10 @@ function PartsPassportTab({ aircraft }: { aircraft: AircraftRecord }) {
       <h1>Parts Passport — ${esc(aircraft.registration)}</h1>
       <p class="sub">${esc(aircraft.makeModel)} · ${cases.length} resolved AOG case${
         cases.length === 1 ? "" : "s"
-      } sourced through PlaneServe · Generated ${esc(generated)}</p>
+      } sourced through Aircraft Program · Generated ${esc(generated)}</p>
       <table><thead><tr><th>Date</th><th>Affected system</th><th>Part number</th></tr></thead>
       <tbody>${rows}</tbody></table>
-      <p class="foot">PlaneServe AOG Support · This document lists AOG cases resolved through PlaneServe for the above aircraft.</p>
+      <p class="foot">Aircraft Program AOG Support · This document lists AOG cases resolved through Aircraft Program for the above aircraft.</p>
       <script>window.onload=function(){window.print();}</script>
       </body></html>`;
     const w = window.open("", "_blank");
@@ -952,7 +952,7 @@ function PartsPassportTab({ aircraft }: { aircraft: AircraftRecord }) {
         <div>
           <p className="text-sm font-medium">Parts Passport — {aircraft.registration}</p>
           <p className="text-xs text-muted-foreground mt-0.5">
-            All resolved AOG cases sourced through PlaneServe
+            All resolved AOG cases sourced through Aircraft Program
           </p>
         </div>
         <button

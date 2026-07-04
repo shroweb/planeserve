@@ -30,7 +30,7 @@ function Pricing() {
           </h1>
           <p className="mx-auto mt-8 max-w-xl text-base leading-8 text-white/70 md:text-lg">
             One programme fee per aircraft covers the full AOG parts desk. Supplier options, lead
-            time, documentation, and PlaneServe commission are shown before approval.
+            time, documentation, and Aircraft Program commission are shown before approval.
           </p>
         </div>
       </section>
@@ -47,7 +47,7 @@ function Pricing() {
               },
               {
                 t: "Clear Option Pricing",
-                d: "Our value is in sourcing, verification, and coordination. Any PlaneServe commission is included in the option before you approve it.",
+                d: "Our value is in sourcing, verification, and coordination. Any Aircraft Program commission is included in the option before you approve it.",
                 Icon: AogIcon,
               },
               {
@@ -171,7 +171,7 @@ function Pricing() {
               },
               {
                 q: "How are part options priced?",
-                a: "Each option is presented before approval with the supplier route, documentation, lead time, and PlaneServe commission clearly included.",
+                a: "Each option is presented before approval with the supplier route, documentation, lead time, and Aircraft Program commission clearly included.",
               },
               {
                 q: "When does AOG cover become active?",

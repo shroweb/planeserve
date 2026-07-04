@@ -1,5 +1,5 @@
 /**
- * PlaneServe custom icon set — 55 aviation-specific icons.
+ * Aircraft Program custom icon set — 55 aviation-specific icons.
  * All icons are 24×24, stroke-width 1.5, currentColor.
  * Usage: <PsIcon name="aircraft" className="h-5 w-5 text-accent" />
  * Or import named: import { AircraftIcon } from "@/components/app/PlaneServeIcons"

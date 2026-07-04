@@ -59,7 +59,7 @@ function ValueSummaryPage() {
         <div className="mb-6">
           <h1 className="text-2xl font-semibold tracking-tight">Value Summary</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Estimated cost avoidance and operational impact of your PlaneServe aircraft programme
+            Estimated cost avoidance and operational impact of your Aircraft Program aircraft programme
           </p>
         </div>
 
@@ -73,7 +73,7 @@ function ValueSummaryPage() {
               <>
                 <p className="mt-4 text-base font-semibold">No value to report yet</p>
                 <p className="mx-auto mt-1.5 max-w-md text-sm text-muted-foreground">
-                  As PlaneServe resolves AOG cases for your fleet, the estimated cost avoided and
+                  As Aircraft Program resolves AOG cases for your fleet, the estimated cost avoided and
                   your programme ROI will appear here — with a per-case breakdown.
                 </p>
                 <Link
@@ -87,7 +87,7 @@ function ValueSummaryPage() {
               <>
                 <p className="mt-4 text-base font-semibold">Enrol an aircraft first</p>
                 <p className="mx-auto mt-1.5 max-w-md text-sm text-muted-foreground">
-                  Value reporting starts once an aircraft is enrolled and PlaneServe can track AOG
+                  Value reporting starts once an aircraft is enrolled and Aircraft Program can track AOG
                   support activity against your fleet.
                 </p>
                 <Link

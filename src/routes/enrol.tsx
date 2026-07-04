@@ -235,7 +235,7 @@ function EnrolPage() {
               Create your account before enrolling an aircraft.
             </h1>
             <p className="mt-5 max-w-xl text-sm leading-7 text-muted-foreground">
-              PlaneServe stores aircraft records against a secure account. Sign in if you already
+              Aircraft Program stores aircraft records against a secure account. Sign in if you already
               have one, or create a free account first. Payment is only taken when you add an
               aircraft and choose its support plan.
             </p>
@@ -298,7 +298,7 @@ function EnrolPage() {
         <div>
           <h1 className="text-2xl font-semibold mb-2">Subscription active</h1>
           <p className="text-muted-foreground text-sm">
-            Your PlaneServe account has been created. Formal AOG cover is pending aircraft
+            Your Aircraft Program account has been created. Formal AOG cover is pending aircraft
             verification. Your reference is{" "}
             <span className="font-mono font-semibold text-foreground">{confirmation.ref}</span>.
           </p>
@@ -318,7 +318,7 @@ function EnrolPage() {
             {[
               {
                 n: 1,
-                text: "A PlaneServe handler will call you within 2 hours to run through your aircraft profile.",
+                text: "A Aircraft Program handler will call you within 2 hours to run through your aircraft profile.",
               },
               {
                 n: 2,
@@ -496,7 +496,7 @@ function EnrolPage() {
 function Step1({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   return (
     <div>
-      <h2 className="text-lg font-semibold mb-1">How will you use PlaneServe?</h2>
+      <h2 className="text-lg font-semibold mb-1">How will you use Aircraft Program?</h2>
       <p className="text-sm text-muted-foreground mb-6">
         Select the option that best describes your aircraft operation.
       </p>
@@ -1137,7 +1137,7 @@ function Step5({
         </div>
         <p className="flex items-center gap-1.5 mt-2 text-[11px] text-muted-foreground">
           <Lock className="h-3 w-3" />
-          Secured by Stripe. PlaneServe never stores your card details.
+          Secured by Stripe. Aircraft Program never stores your card details.
         </p>
       </div>
 
@@ -1150,7 +1150,7 @@ function Step5({
           onChange={(e) => set("agreed", e.target.checked)}
         />
         <span className="text-sm text-muted-foreground">
-          I accept the PlaneServe{" "}
+          I accept the Aircraft Program{" "}
           <a href="#" className="text-accent underline">
             subscriber agreement
           </a>{" "}

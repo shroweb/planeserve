@@ -1,6 +1,6 @@
 {
-  "name": "PlaneServe",
-  "short_name": "PlaneServe",
+  "name": "Aircraft Program",
+  "short_name": "Aircraft Program",
   "description": "AOG parts support for aircraft owners and operators when downtime matters.",
   "id": "/",
   "start_url": "/",

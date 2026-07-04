@@ -81,7 +81,7 @@ export function SiteFooter() {
       <div className="border-t border-white/10">
         <div className="mx-auto max-w-7xl flex flex-wrap items-center justify-between gap-3 px-6 py-5">
           <div className="text-xs text-white/35">
-            © {new Date().getFullYear()} PlaneServe Ltd. All rights reserved.
+            © {new Date().getFullYear()} Aircraft Program Ltd. All rights reserved.
           </div>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-white/25 tracking-wide">
             <span>Operations · London · Geneva · Dubai</span>

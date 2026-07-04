@@ -170,11 +170,11 @@ function AogRiskIndexPage() {
             </p>
             <p>
               • <span className="text-foreground font-medium">Historical failure rate</span> —
-              failure logs from resolved cases across the PlaneServe network
+              failure logs from resolved cases across the Aircraft Program network
             </p>
           </div>
           <p className="text-xs leading-relaxed text-muted-foreground mt-3 pt-3 border-t border-border">
-            Scores above 70 indicate parts that are historically hard to source quickly. PlaneServe
+            Scores above 70 indicate parts that are historically hard to source quickly. Aircraft Program
             proactively monitors and alerts you to changes.
           </p>
         </div>

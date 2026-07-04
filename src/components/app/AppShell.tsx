@@ -204,7 +204,7 @@ export function AppShell({ children, variant = "member" }: Props) {
         <div className="flex items-center gap-2 px-6 py-5 border-b border-white/10">
           <PlaneServeMark className="h-9 w-9 shrink-0" />
           <div>
-            <div className="text-sm font-semibold tracking-tight">PlaneServe</div>
+            <div className="text-sm font-semibold tracking-tight">Aircraft Program</div>
             <div className="text-[10px] uppercase tracking-widest text-white/50">
               {variant === "admin" ? "Operations" : "Member Area"}
             </div>
@@ -327,7 +327,7 @@ export function AppShell({ children, variant = "member" }: Props) {
             </div>
             <div className="min-w-0 flex-1">
               <div className="truncate text-xs font-medium text-white/85">
-                {user?.name ?? "PlaneServe user"}
+                {user?.name ?? "Aircraft Program user"}
               </div>
               {coverActive ? (
                 <div className="mt-0.5 flex items-center gap-1.5">

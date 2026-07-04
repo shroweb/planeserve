@@ -37,7 +37,7 @@ function Login() {
       <div className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
         Member sign in
       </div>
-      <h1 className="mt-1.5 text-2xl font-semibold tracking-tight">Sign in to PlaneServe</h1>
+      <h1 className="mt-1.5 text-2xl font-semibold tracking-tight">Sign in to Aircraft Program</h1>
 
       <form onSubmit={submit} className="mt-8 space-y-4">
         <label className="block">

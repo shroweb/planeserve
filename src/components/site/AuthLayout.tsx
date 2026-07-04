@@ -17,7 +17,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
         <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.10_0.02_250)] via-[oklch(0.12_0.02_250)]/30 to-transparent" />
         <div className="relative z-10 p-12">
           <div className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-            PlaneServe · AOG Desk
+            Aircraft Program · AOG Desk
           </div>
           <h2 className="mt-3 max-w-md text-3xl font-semibold leading-tight tracking-tight text-white md:text-4xl">
             Enrol before the AOG,{" "}

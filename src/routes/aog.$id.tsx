@@ -86,17 +86,17 @@ function AogCasePage() {
           <CheckCircle2 className="mx-auto h-10 w-10 text-accent" strokeWidth={1.5} />
           <h1 className="mt-4 text-2xl font-semibold tracking-tight">Option approved</h1>
           <p className="mt-3 text-sm text-muted-foreground">
-            PlaneServe is placing the order through the approved source. You will receive updates
+            Aircraft Program is placing the order through the approved source. You will receive updates
             as the part progresses to your location.
           </p>
           <p className="mt-2 text-xs leading-5 text-muted-foreground">
-            Payment and order instructions are handled by PlaneServe. Supplier bank details are not
+            Payment and order instructions are handled by Aircraft Program. Supplier bank details are not
             sent directly to the subscriber.
           </p>
           {q && (
             <div className="mt-6 rounded-sm border border-border bg-background p-4 text-left text-sm">
               <div className="grid grid-cols-2 gap-3">
-                <KV label="Source">PlaneServe approved source</KV>
+                <KV label="Source">Aircraft Program approved source</KV>
                 <KV label="Condition">{q.condition}</KV>
                 <KV label="Price">
                   {(q.priceCents / 100).toLocaleString("en-US", {
@@ -230,8 +230,8 @@ function AogCasePage() {
               </SectionTitle>
               {canApprove && (
                 <p className="mb-4 text-sm text-muted-foreground">
-                  PlaneServe has sourced the following options. Please review and approve one to
-                  proceed. PlaneServe will then confirm order/payment instructions and coordinate
+                  Aircraft Program has sourced the following options. Please review and approve one to
+                  proceed. Aircraft Program will then confirm order/payment instructions and coordinate
                   the supplier.
                 </p>
               )}
@@ -257,7 +257,7 @@ function AogCasePage() {
                 <div>
                   <div className="font-medium text-foreground">Sourcing in progress</div>
                   <div className="mt-1">
-                    PlaneServe is actively sourcing options for this AOG. You will receive an update
+                    Aircraft Program is actively sourcing options for this AOG. You will receive an update
                     when options are ready for your approval.
                   </div>
                 </div>
@@ -298,9 +298,9 @@ function OptionCard({
         <div className="flex-1">
           <div className="flex items-center gap-3">
             <Package className="h-4 w-4 text-muted-foreground" />
-            <span className="font-semibold text-sm">PlaneServe approved source</span>
+            <span className="font-semibold text-sm">Aircraft Program approved source</span>
             <span className="rounded-sm bg-accent/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-accent">
-              Released by PlaneServe
+              Released by Aircraft Program
             </span>
             <span className="rounded-sm border border-border bg-muted px-2 py-0.5 text-[11px] text-muted-foreground">
               {quote.condition}
@@ -319,7 +319,7 @@ function OptionCard({
           )}
           {canApprove && !quote.approvedAt && (
             <p className="mt-3 text-[11px] leading-5 text-muted-foreground">
-              Approval authorises PlaneServe to proceed with this option. PlaneServe controls
+              Approval authorises Aircraft Program to proceed with this option. Aircraft Program controls
               payment/order instructions and supplier dispatch coordination.
             </p>
           )}

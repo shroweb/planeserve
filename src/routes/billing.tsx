@@ -52,7 +52,7 @@ function Billing() {
   function handleCancel(subscriptionId: string, registration: string) {
     if (
       window.confirm(
-        `Cancel the PlaneServe subscription for ${registration}? This will stop AOG cover at the end of the current billing period.`,
+        `Cancel the Aircraft Program subscription for ${registration}? This will stop AOG cover at the end of the current billing period.`,
       )
     ) {
       cancelMutation.mutate(subscriptionId);
@@ -272,7 +272,7 @@ function Billing() {
             <CreditCard className="h-5 w-5 text-muted-foreground" />
             <span className="text-sm text-muted-foreground">
               No card is linked to this subscription yet. Add a payment method when you enrol an
-              aircraft, or contact your PlaneServe desk to link billing.
+              aircraft, or contact your Aircraft Program desk to link billing.
             </span>
           </div>
         )}

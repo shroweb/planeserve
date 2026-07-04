@@ -93,7 +93,7 @@ function Signup() {
             </div>
             <H2>Your account is ready.</H2>
             <p className="mt-4 text-sm leading-6 text-muted-foreground">
-              We created your PlaneServe account for{" "}
+              We created your Aircraft Program account for{" "}
               <span className="font-mono font-medium text-foreground">{completeEmail}</span>. You
               can now sign in{isEnrolRedirect ? " and continue enrolling your aircraft" : ""}.
             </p>
@@ -132,7 +132,7 @@ function Signup() {
         <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">
           <div>
             <Eyebrow>Customer Account</Eyebrow>
-            <H2>Create your PlaneServe account.</H2>
+            <H2>Create your Aircraft Program account.</H2>
             <p className="mt-5 text-sm leading-7 text-muted-foreground">
               Create a free owner/operator account first. Payment is only taken when you enrol an
               aircraft and choose its monthly or annual support plan.
