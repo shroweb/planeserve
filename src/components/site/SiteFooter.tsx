@@ -83,8 +83,16 @@ export function SiteFooter() {
           <div className="text-xs text-white/35">
             © {new Date().getFullYear()} PlaneServe Ltd. All rights reserved.
           </div>
-          <div className="text-xs text-white/25 tracking-wide">
-            Operations · London · Geneva · Dubai
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-white/25 tracking-wide">
+            <span>Operations · London · Geneva · Dubai</span>
+            <a
+              href="https://shroweb.com"
+              target="_blank"
+              rel="noreferrer"
+              className="text-white/35 transition-colors hover:text-white"
+            >
+              Web Development by Shro Web
+            </a>
           </div>
         </div>
       </div>

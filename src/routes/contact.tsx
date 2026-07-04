@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
 import { ArrowRightIcon, AircraftIcon, SlaIcon } from "@/components/app/PlaneServeIcons";
-import contactAircraft from "@/assets/WhatsApp Image 2026-06-03 at 17.32.26 (1).jpeg";
+import contactAircraft from "@/assets/WhatsApp Image 2026-06-28 at 10.29.12.jpeg";
 import { Mail } from "lucide-react";
 import { useState } from "react";
 
@@ -23,7 +23,12 @@ export const Route = createFileRoute("/contact")({
 function ContactPage() {
   const [sent, setSent] = useState(false);
   const [form, setForm] = useState({
-    name: "", company: "", email: "", aircraftType: "", subject: "enrolment", message: "",
+    name: "",
+    company: "",
+    email: "",
+    aircraftType: "",
+    subject: "enrolment",
+    message: "",
   });
 
   function handleSubmit(e: React.FormEvent) {
@@ -39,9 +44,9 @@ function ContactPage() {
         <img
           src={contactAircraft}
           alt="Aircraft in hangar maintenance setting"
-          className="absolute inset-0 h-full w-full object-cover object-center"
+          className="absolute inset-0 h-full w-full object-cover object-[58%_48%]"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,#001b2e_0%,#001b2e_38%,rgba(0,27,46,0.78)_58%,rgba(0,27,46,0.25)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,#001b2e_0%,rgba(0,27,46,0.98)_34%,rgba(0,27,46,0.72)_56%,rgba(0,27,46,0.1)_100%)]" />
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#001b2e] to-transparent" />
         <div className="relative mx-auto max-w-7xl px-6 py-24">
           <div>
@@ -50,9 +55,12 @@ function ContactPage() {
               Talk to the desk.
             </h1>
             <p className="mt-6 max-w-xl text-base leading-8 text-white/60">
-              The operations team responds directly — no sales funnel, no ticketing queue.
-              If your aircraft is currently grounded,{" "}
-              <Link to="/submit-aog" className="text-accent underline underline-offset-2 hover:opacity-80">
+              The operations team responds directly — no sales funnel, no ticketing queue. If your
+              aircraft is currently grounded,{" "}
+              <Link
+                to="/submit-aog"
+                className="text-accent underline underline-offset-2 hover:opacity-80"
+              >
                 submit an AOG request
               </Link>{" "}
               instead.
@@ -65,7 +73,6 @@ function ContactPage() {
       <section className="bg-background border-b border-border">
         <div className="mx-auto max-w-7xl px-6 py-20">
           <div className="grid gap-16 lg:grid-cols-[1fr_1.5fr] lg:items-start">
-
             {/* Left: contact details */}
             <div className="space-y-10">
               <div>
@@ -73,16 +80,15 @@ function ContactPage() {
                   Operations desk
                 </div>
                 <div className="space-y-4">
-                  <a
-                    href="mailto:desk@planeserve.aero"
-                    className="flex items-center gap-3 group"
-                  >
+                  <a href="mailto:desk@planeserve.aero" className="flex items-center gap-3 group">
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-sm border border-border bg-card group-hover:border-accent/40 transition-colors">
                       <Mail className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
                     </div>
                     <div>
                       <div className="text-sm font-medium">desk@planeserve.aero</div>
-                      <div className="text-xs text-muted-foreground">For all operational enquiries</div>
+                      <div className="text-xs text-muted-foreground">
+                        For all operational enquiries
+                      </div>
                     </div>
                   </a>
                   <div className="flex items-center gap-3">
@@ -95,11 +101,18 @@ function ContactPage() {
                     </div>
                   </div>
                   <div className="mt-4 rounded-sm border border-accent/30 bg-accent/8 px-4 py-3">
-                    <div className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">AOG Hotline</div>
-                    <a href="mailto:aog@planeserve.aero" className="text-sm font-semibold hover:underline">
+                    <div className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">
+                      AOG Hotline
+                    </div>
+                    <a
+                      href="mailto:aog@planeserve.aero"
+                      className="text-sm font-semibold hover:underline"
+                    >
                       aog@planeserve.aero
                     </a>
-                    <div className="text-xs text-muted-foreground mt-0.5">Active AOG only · answered within minutes</div>
+                    <div className="text-xs text-muted-foreground mt-0.5">
+                      Active AOG only · answered within minutes
+                    </div>
                   </div>
                 </div>
               </div>
@@ -113,8 +126,14 @@ function ContactPage() {
                 <ul className="space-y-3">
                   {[
                     { label: "New enrolment", desc: "Discuss adding your aircraft or fleet." },
-                    { label: "Supplier network", desc: "Apply to join as a vetted parts supplier." },
-                    { label: "AMO partnerships", desc: "Referral arrangements and preferred network." },
+                    {
+                      label: "Supplier network",
+                      desc: "Apply to join as a vetted parts supplier.",
+                    },
+                    {
+                      label: "AMO partnerships",
+                      desc: "Referral arrangements and preferred network.",
+                    },
                     { label: "Media & press", desc: "Industry commentary and case studies." },
                   ].map(({ label, desc }) => (
                     <li key={label} className="flex gap-3 text-sm">
@@ -153,7 +172,13 @@ function ContactPage() {
               {sent ? (
                 <div className="flex flex-col items-center justify-center py-16 text-center">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-success/10 mb-4">
-                    <svg className="h-6 w-6 text-success" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                    <svg
+                      className="h-6 w-6 text-success"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      viewBox="0 0 24 24"
+                    >
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                   </div>

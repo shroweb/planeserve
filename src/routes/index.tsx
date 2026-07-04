@@ -72,12 +72,12 @@ function Home() {
         <img
           src={heroImage}
           alt="Business aircraft on the ramp outside a maintenance hangar"
-          className="absolute inset-0 h-full w-full object-cover object-[58%_center]"
+          className="absolute inset-0 h-full w-full object-cover object-[56%_46%] md:object-[58%_48%]"
         />
-        <div className="absolute inset-0 bg-[#001b2e]/20" />
-        <div className="absolute inset-0 hidden bg-[linear-gradient(90deg,#001b2e_0%,rgba(0,27,46,0.98)_34%,rgba(0,27,46,0.82)_52%,rgba(0,27,46,0.34)_78%,rgba(0,27,46,0.12)_100%)] md:block" />
-        <div className="absolute inset-0 bg-[linear-gradient(110deg,#001b2e_0%,rgba(0,27,46,0.96)_42%,rgba(0,27,46,0.55)_78%,rgba(0,27,46,0.2)_100%)] md:hidden" />
-        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#001b2e] to-transparent" />
+        <div className="absolute inset-0 bg-[#001b2e]/10" />
+        <div className="absolute inset-0 hidden bg-[linear-gradient(90deg,#001b2e_0%,rgba(0,27,46,0.98)_28%,rgba(0,27,46,0.82)_44%,rgba(0,27,46,0.34)_64%,rgba(0,27,46,0.04)_100%)] md:block" />
+        <div className="absolute inset-0 bg-[linear-gradient(110deg,#001b2e_0%,rgba(0,27,46,0.96)_40%,rgba(0,27,46,0.5)_74%,rgba(0,27,46,0.12)_100%)] md:hidden" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#001b2e]/95 to-transparent" />
 
         <div className="relative mx-auto flex min-h-[90vh] max-w-7xl flex-col justify-center px-6 py-12 md:mx-0 md:w-[50%] md:max-w-none md:px-12 md:py-20 lg:px-20 xl:px-28 2xl:px-36">
           <div className="w-fit inline-flex items-center gap-2 border border-white/15 bg-white/8 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70 backdrop-blur">
@@ -137,9 +137,11 @@ function Home() {
             ].map(({ Icon, title, desc }) => (
               <div
                 key={title}
-                className="flex gap-4 px-6 py-8 first:pl-0 last:pr-0 sm:first:pl-6 sm:last:pr-6"
+                className="flex gap-5 px-6 py-9 first:pl-0 last:pr-0 sm:first:pl-6 sm:last:pr-6"
               >
-                <Icon className="mt-0.5 h-5 w-5 shrink-0 text-accent" strokeWidth={1.5} />
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-sm bg-accent/10 text-accent">
+                  <Icon className="h-7 w-7" strokeWidth={1.7} />
+                </div>
                 <div>
                   <div className="font-semibold text-sm">{title}</div>
                   <p className="mt-1.5 text-sm leading-6 text-muted-foreground">{desc}</p>
