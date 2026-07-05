@@ -118,6 +118,7 @@ export type AircraftRecord = {
   numberOfEngines: number;
   propellerManufacturer: string;
   propellerType: string;
+  propellerSerialNumbers: string;
   maintenanceProgramme: string;
   nationality: string;
   registryStandard: string;
@@ -216,6 +217,7 @@ function toAircraftRecord(row: {
   numberOfEngines: number;
   propellerManufacturer: string;
   propellerType: string;
+  propellerSerialNumbers: string;
   maintenanceProgramme: string;
   nationality: string;
   registryStandard: string;
@@ -801,6 +803,7 @@ export const createAircraft = createServerFn({ method: "POST" })
       numberOfEngines: z.number().optional().default(2),
       propellerManufacturer: z.string().optional().default(""),
       propellerType: z.string().optional().default(""),
+      propellerSerialNumbers: z.string().optional().default(""),
       maintenanceProgramme: z.string().optional().default(""),
       registryStandard: z.string().optional().default(""),
       amoName: z.string().optional().default(""),
@@ -842,6 +845,7 @@ export const createAircraft = createServerFn({ method: "POST" })
       numberOfEngines: data.numberOfEngines,
       propellerManufacturer: data.propellerManufacturer,
       propellerType: data.propellerType,
+      propellerSerialNumbers: data.propellerSerialNumbers,
       maintenanceProgramme: data.maintenanceProgramme,
       registryStandard: data.registryStandard,
       amoName: data.amoName,
@@ -1649,6 +1653,9 @@ export async function createApiAircraft(data: {
   engineSeries?: string;
   engineSerialNumbers?: string;
   numberOfEngines?: number;
+  propellerManufacturer?: string;
+  propellerType?: string;
+  propellerSerialNumbers?: string;
   maintenanceProgramme?: string;
   registryStandard?: string;
   amoName?: string;
@@ -1687,6 +1694,9 @@ export async function createApiAircraft(data: {
     engineSeries: data.engineSeries ?? "",
     engineSerialNumbers: data.engineSerialNumbers ?? "",
     numberOfEngines: data.numberOfEngines ?? 2,
+    propellerManufacturer: data.propellerManufacturer ?? "",
+    propellerType: data.propellerType ?? "",
+    propellerSerialNumbers: data.propellerSerialNumbers ?? "",
     maintenanceProgramme: data.maintenanceProgramme ?? "",
     registryStandard: data.registryStandard ?? "",
     amoName: data.amoName ?? "",
@@ -1727,6 +1737,9 @@ export async function createApiAircraft(data: {
     engineSeries: data.engineSeries ?? "",
     engineSerialNumbers: data.engineSerialNumbers ?? "",
     numberOfEngines: data.numberOfEngines ?? 2,
+    propellerManufacturer: data.propellerManufacturer ?? "",
+    propellerType: data.propellerType ?? "",
+    propellerSerialNumbers: data.propellerSerialNumbers ?? "",
     maintenanceProgramme: data.maintenanceProgramme ?? "",
     nationality: "",
     registryStandard: data.registryStandard ?? "",
@@ -2086,6 +2099,7 @@ export const updateAircraftProfile = createServerFn({ method: "POST" })
       numberOfEngines: z.number().optional().default(2),
       propellerManufacturer: z.string().optional().default(""),
       propellerType: z.string().optional().default(""),
+      propellerSerialNumbers: z.string().optional().default(""),
       maintenanceProgramme: z.string().optional().default(""),
       registryStandard: z.string().optional().default(""),
       amoName: z.string().optional().default(""),
@@ -2116,6 +2130,7 @@ export const updateAircraftProfile = createServerFn({ method: "POST" })
         numberOfEngines: data.numberOfEngines,
         propellerManufacturer: data.propellerManufacturer,
         propellerType: data.propellerType,
+        propellerSerialNumbers: data.propellerSerialNumbers,
         maintenanceProgramme: data.maintenanceProgramme,
         registryStandard: data.registryStandard,
         amoName: data.amoName,
@@ -3492,6 +3507,7 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
       engineSerialNumbers: z.string().default(""),
       propellerManufacturer: z.string().default(""),
       propellerType: z.string().default(""),
+      propellerSerialNumbers: z.string().default(""),
       maintenanceProgramme: z.string().default(""),
       insurer: z.string().default(""),
       policyReference: z.string().default(""),
@@ -3564,6 +3580,7 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
       numberOfEngines: data.engineCount,
       propellerManufacturer: data.propellerManufacturer,
       propellerType: data.propellerType,
+      propellerSerialNumbers: data.propellerSerialNumbers,
       maintenanceProgramme: data.maintenanceProgramme,
       registryStandard: "",
       amoName: "",

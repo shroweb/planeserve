@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
 import { ArrowRightIcon, AircraftIcon, SlaIcon } from "@/components/app/PlaneServeIcons";
-import contactAircraft from "@/assets/WhatsApp Image 2026-06-28 at 10.29.12.jpeg";
+import contactAircraft from "@/assets/gulfstream-dusk-ramp.jpeg";
 import { Mail } from "lucide-react";
 import { useState } from "react";
 

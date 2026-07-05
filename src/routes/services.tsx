@@ -20,7 +20,7 @@ export const Route = createFileRoute("/services")({
       { title: "Services — AOG cover for enrolled business aircraft" },
       {
         name: "description",
-        content: "Aircraft Program is an aircraft enrolment programme covering AOG parts sourcing, supplier outreach, trace verification, and dispatch coordination for enrolled business aircraft.",
+        content: "Aircraft Program is an aircraft enrolment program covering AOG parts sourcing, supplier outreach, trace verification, and dispatch coordination for enrolled business aircraft.",
       },
     ],
   }),
@@ -37,7 +37,7 @@ function ServicesPage() {
           <h1 className="mt-6 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl lg:text-6xl">
             Everything included in the{" "}
             <span className="text-accent">
-              Aircraft Program programme.
+              Aircraft Program.
             </span>
           </h1>
           <p className="mt-8 max-w-2xl text-base leading-8 text-white/70 md:text-lg">
@@ -196,7 +196,7 @@ function ServicesPage() {
         </div>
       </section>
 
-      {/* ── Cover Model: Programme ───────────────────────────────────────── */}
+      {/* ── Cover Model: Program ───────────────────────────────────────── */}
       <section className="bg-background border-b border-border">
         <div className="mx-auto max-w-7xl px-6 py-24">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -207,7 +207,7 @@ function ServicesPage() {
                   ["Request intake", "24/7"],
                   ["Supplier quotes", "Verified"],
                   ["Freight tracking", "Included"],
-                  ["Operator updates", "Live"],
+                  ["Owner/operator updates", "Live"],
                   ["Profile storage", "Permanent"],
                   ["AOG requests", "Included"],
                   ["Option pricing", "Clear"],
@@ -221,15 +221,15 @@ function ServicesPage() {
             </div>
             
             <div className="order-1 lg:order-2">
-              <Eyebrow>The Programme Model</Eyebrow>
+              <Eyebrow>The Program Model</Eyebrow>
               <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl leading-tight">
                 Retained support, not <br />
                 <span className="text-accent ">transactional billing.</span>
               </h2>
               <p className="mt-6 text-base leading-8 text-muted-foreground">
-                Aircraft Program is a programme for aircraft owners and operators. You enrol your aircraft once, and the desk is yours.
+                Aircraft Program is a support program for aircraft owners and operators. You enrol your aircraft once, and the desk is yours.
                 No per-case fees and no additional costs for 24/7 support. Part options are priced
-                clearly before approval, including any Aircraft Program commission.
+                clearly before approval, including the fixed Aircraft Program sourcing fee.
               </p>
               <ul className="mt-8 space-y-4">
                 {[
@@ -343,7 +343,7 @@ function ServicesPage() {
                   "24/7 desk availability — no out-of-hours cut-off",
                   "Aircraft profile and context stored permanently",
                   "AMO and freight coordination",
-                  "Operator updates throughout each case",
+                  "Owner/operator updates throughout each case",
                   "Clear part option pricing before approval",
                   "Trace documentation review and gap flagging",
                 ].map((item) => (

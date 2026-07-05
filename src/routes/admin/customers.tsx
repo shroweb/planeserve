@@ -19,7 +19,7 @@ export const Route = createFileRoute("/admin/customers")({
 const CHECKLIST = [
   "Introductory call completed",
   "Engine details confirmed",
-  "Maintenance programme confirmed",
+  "Maintenance program confirmed",
   "PIC direct mobile (24/7) confirmed",
   "AMO out-of-hours number confirmed",
   "Insurer details confirmed",

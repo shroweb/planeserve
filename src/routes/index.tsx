@@ -14,6 +14,7 @@ import {
   BillingIcon,
   ChevronDownIcon,
   MessageIcon,
+  DocumentIcon,
 } from "@/components/app/PlaneServeIcons";
 import { useState, useEffect } from "react";
 
@@ -89,7 +90,7 @@ function Home() {
           </h1>
           <div className="max-w-3xl">
             <p className="mt-7 max-w-xl text-base leading-8 text-white/75 md:text-lg">
-              Aircraft Program is an enrolment programme for aircraft owners and operators. Enrol your
+              Aircraft Program is an enrolment program for aircraft owners and operators. Enrol your
               aircraft, put your details on file, and the desk is ready to source parts the moment
               you go AOG.
             </p>
@@ -127,7 +128,7 @@ function Home() {
               {
                 Icon: BillingIcon,
                 title: "Predictable costs",
-                desc: "Flat monthly fee per aircraft, with sourcing options and any Aircraft Program commission made clear before approval.",
+                desc: "Flat monthly fee per aircraft, with sourcing options and the fixed Aircraft Program sourcing fee made clear before approval.",
               },
               {
                 Icon: SlaIcon,
@@ -169,7 +170,7 @@ function Home() {
           <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-muted-foreground md:text-lg">
             The service grew from years of owners and operators asking James Moon for help finding
             parts that had slipped out of obvious distribution. Aircraft Program turns those calls into a
-            formal aircraft enrolment programme with a retained AOG desk behind it.
+            formal aircraft enrolment program with a retained AOG desk behind it.
           </p>
         </div>
       </section>
@@ -189,15 +190,15 @@ function Home() {
                 is grounded and the pressure is mounting.
               </p>
 
-              <div className="mt-10 space-y-6">
+              <div className="mt-10 grid gap-5 sm:grid-cols-2">
                 <div className="flex gap-4">
                   <div className="flex-none flex h-10 w-10 items-center justify-center rounded-sm bg-destructive/25">
                     <SearchIcon className="h-5 w-5 text-destructive" />
                   </div>
                   <div>
-                    <div className="font-semibold text-white">Fragmented knowledge</div>
+                    <div className="font-semibold text-white">No supplier account</div>
                     <p className="mt-1 text-sm text-white/55">
-                      Searching endless inventories and calling unknown suppliers at 2am.
+                      You may never have opened an account with the parts provider holding the component.
                     </p>
                   </div>
                 </div>
@@ -206,9 +207,31 @@ function Home() {
                     <SlaIcon className="h-5 w-5 text-destructive" />
                   </div>
                   <div>
-                    <div className="font-semibold text-white">Cold-start delays</div>
+                    <div className="font-semibold text-white">Approval route unclear</div>
                     <p className="mt-1 text-sm text-white/55">
-                      Hours lost just explaining the aircraft configuration and part urgency.
+                      You may not know which dealers hold dual EASA/FAA Part 145 approval.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex-none flex h-10 w-10 items-center justify-center rounded-sm bg-destructive/25">
+                    <DocumentIcon className="h-5 w-5 text-destructive" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-white">Documentation pressure</div>
+                    <p className="mt-1 text-sm text-white/55">
+                      You may not know exactly which release documents your registration authority requires.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex-none flex h-10 w-10 items-center justify-center rounded-sm bg-destructive/25">
+                    <MessageIcon className="h-5 w-5 text-destructive" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-white">Urgent negotiation</div>
+                    <p className="mt-1 text-sm text-white/55">
+                      You may not have negotiated an urgent part while the aircraft is already AOG.
                     </p>
                   </div>
                 </div>
@@ -250,6 +273,41 @@ function Home() {
         </div>
       </section>
 
+      {/* ── AMO Relationship ────────────────────────────────────────────── */}
+      <section className="bg-background border-b border-border">
+        <div className="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+          <div>
+            <Eyebrow>Working With Your AMO</Eyebrow>
+            <h2 className="mt-4 text-3xl font-semibold leading-tight tracking-tight md:text-4xl">
+              Your AMO looks after the aircraft.{" "}
+              <span className="text-accent">We look after the parts the market makes difficult.</span>
+            </h2>
+          </div>
+          <div>
+            <p className="text-base leading-8 text-muted-foreground">
+              The two work together. Your AMO installs, inspects, and certifies. Aircraft Program
+              finds and verifies the component when the obvious channels run dry, then keeps your
+              maintenance team in the loop with the documents, trace notes, and delivery details
+              they need.
+            </p>
+            <div className="mt-8 grid gap-4 sm:grid-cols-3">
+              {[
+                ["AMO", "Installs and certifies"],
+                ["Aircraft Program", "Finds and verifies"],
+                ["Owner / operator", "Reviews and approves"],
+              ].map(([title, desc]) => (
+                <div key={title} className="rounded-sm border border-border bg-card p-5">
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-accent">
+                    {title}
+                  </div>
+                  <div className="mt-2 text-sm font-semibold">{desc}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── Dispatch Log / Scenario ───────────────────────────────────────── */}
       <section className="bg-background border-b border-border">
         <div className="mx-auto max-w-7xl px-6 py-24">
@@ -258,7 +316,7 @@ function Home() {
               <Eyebrow>What Actually Happens</Eyebrow>
               <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl leading-tight">
                 From grounded to moving,{" "}
-                <span className="text-accent">without the cold-start delay.</span>
+                <span className="text-accent">without rebuilding the case from scratch.</span>
               </h2>
               <p className="mt-6 text-base leading-8 text-muted-foreground">
                 Because your aircraft details are already on file, the desk skips the discovery
@@ -420,9 +478,14 @@ function Home() {
                 Simple retained support per aircraft.
               </h2>
               <p className="mt-5 text-sm leading-7 text-muted-foreground">
-                One flat fee keeps your aircraft profile on file and the desk active. No per-case
-                charges, with supplier options and Aircraft Program commission shown before you approve.
+                One flat fee keeps your aircraft profile on file and the desk active. Supplier
+                options and the fixed Aircraft Program sourcing fee are shown before you approve.
               </p>
+              <div className="mt-6 rounded-sm border border-accent/25 bg-accent/10 p-4 text-sm leading-7 text-muted-foreground">
+                <strong className="text-foreground">How we are incentivised:</strong> we earn a fixed
+                sourcing fee on every part we procure. We present you with all qualified options.
+                You choose. Our fee is the same regardless of which option you select.
+              </div>
               <ul className="mt-8 space-y-3">
                 {[
                   "24/7 AOG request access",
@@ -493,7 +556,7 @@ function Home() {
           {/* Right: dark content panel */}
           <div className="brand-dark bg-[#001b2e] text-white px-10 py-20 flex flex-col justify-center lg:px-16">
             <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-accent">
-              Aircraft enrolment programme
+              Aircraft enrolment program
             </div>
             <h2 className="mt-5 text-4xl font-bold tracking-tight leading-[1.1] md:text-5xl lg:text-[1.65rem] xl:text-[2rem] lg:whitespace-nowrap">
               Enrol before the AOG, <span className="text-accent">not during it.</span>

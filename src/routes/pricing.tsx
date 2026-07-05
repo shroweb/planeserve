@@ -24,13 +24,13 @@ function Pricing() {
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <section className="brand-dark bg-[#001b2e] text-white">
         <div className="mx-auto max-w-7xl px-6 py-24 text-center">
-          <Eyebrow>Aircraft Enrolment Programme</Eyebrow>
+          <Eyebrow>Aircraft Enrolment Program</Eyebrow>
           <h1 className="mt-6 text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl lg:text-6xl">
             Retained support. <span className="text-accent">No surprises.</span>
           </h1>
           <p className="mx-auto mt-8 max-w-xl text-base leading-8 text-white/70 md:text-lg">
-            One programme fee per aircraft covers the full AOG parts desk. Supplier options, lead
-            time, documentation, and Aircraft Program commission are shown before approval.
+            One program fee per aircraft covers the full AOG parts desk. Supplier options, lead
+            time, documentation, and the fixed Aircraft Program sourcing fee are shown before approval.
           </p>
         </div>
       </section>
@@ -41,13 +41,13 @@ function Pricing() {
           <div className="grid lg:grid-cols-3 gap-12">
             {[
               {
-                t: "Per-Aircraft Programme",
+                t: "Per-Aircraft Program",
                 d: "We believe support should be ready before you need it. A simple monthly or annual fee keeps your aircraft details on file and your desk activated.",
                 Icon: CoverIcon,
               },
               {
                 t: "Clear Option Pricing",
-                d: "Our value is in sourcing, verification, and coordination. Any Aircraft Program commission is included in the option before you approve it.",
+                d: "We earn a fixed sourcing fee on every part we procure. It is shown before approval, and it does not change based on which qualified option you select.",
                 Icon: AogIcon,
               },
               {
@@ -116,7 +116,7 @@ function Pricing() {
                   Best Value
                 </div>
                 <div className="text-xs font-bold text-accent uppercase tracking-widest mb-2">
-                  Annual Programme
+                  Annual Program
                 </div>
                 <div className="flex items-baseline gap-2 mb-6">
                   <span className="text-5xl font-semibold tracking-tight">$1,000</span>
@@ -160,18 +160,18 @@ function Pricing() {
         <div className="mx-auto max-w-3xl px-6">
           <div className="flex items-center gap-3 mb-12">
             <HelpCircle className="h-6 w-6 text-accent" strokeWidth={1.5} />
-            <h2 className="text-2xl font-semibold tracking-tight">Aircraft Programme FAQ</h2>
+            <h2 className="text-2xl font-semibold tracking-tight">Aircraft Program FAQ</h2>
           </div>
 
           <div className="space-y-8">
             {[
               {
                 q: "Is there a per-request or per-case fee?",
-                a: "No. Your programme fee covers unlimited AOG requests for each enrolled aircraft. We don't believe in charging you more when you need support the most.",
+                a: "No. Your program fee covers unlimited AOG requests for each enrolled aircraft. We don't believe in charging you more when you need support the most.",
               },
               {
                 q: "How are part options priced?",
-                a: "Each option is presented before approval with the supplier route, documentation, lead time, and Aircraft Program commission clearly included.",
+                a: "Each option is presented before approval with the supplier route, documentation, lead time, and our fixed sourcing fee clearly included.",
               },
               {
                 q: "When does AOG cover become active?",

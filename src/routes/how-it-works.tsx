@@ -37,7 +37,7 @@ function HowItWorks() {
           <Eyebrow>The Process. The Preparation. The Difference it Makes.</Eyebrow>
           <h1 className="mt-6 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl lg:text-6xl">
             Most AOG support starts when you call.{" "}
-            <span className="text-accent">The PSP starts long before that.</span>
+            <span className="text-accent">Aircraft Program starts long before that.</span>
           </h1>
           <p className="mt-8 max-w-3xl text-base leading-8 text-white/70 md:text-lg">
             The critical difference between a one-day AOG and a one-week AOG is rarely the parts
@@ -73,7 +73,7 @@ function HowItWorks() {
                 {
                   t: "Aircraft Enrolment",
                   Icon: DocumentIcon,
-                  d: "Enrolment takes less than five minutes. You provide your aircraft's registration, serial number, type, engine fit, and base of operations. That information is held on file and forms the foundation of your PSP support record — available to the desk immediately, at any hour. The biggest cause of AOG delay isn't just finding the part — it's the administrative cold start. Enrolment eliminates it entirely.",
+                  d: "Enrolment takes less than five minutes. You provide your aircraft's registration, serial number, type, engine fit, and base of operations. That information is held on file and forms the foundation of your Aircraft Program support record — available to the desk immediately, at any hour. The biggest cause of AOG delay is often rebuilding basic context under pressure. Enrolment removes that delay.",
                 },
                 {
                   t: "Aircraft Record",
@@ -152,7 +152,7 @@ function HowItWorks() {
             <p className="mt-6 text-base leading-8 text-muted-foreground">
               Because your aircraft record is already on file, the desk bypasses the discovery phase
               entirely. There are no registration numbers to find, no engine series to confirm, no
-              cold start. The focus from the first moment is resolution.
+              administrative rebuild. The focus from the first moment is resolution.
             </p>
           </div>
 
@@ -279,11 +279,11 @@ function HowItWorks() {
         </div>
       </section>
 
-      {/* ── Why PSP Makes the Difference ─────────────────────────────────── */}
+      {/* ── Why Aircraft Program Makes the Difference ────────────────────── */}
       <section className="bg-card border-b border-border">
         <div className="mx-auto max-w-7xl px-6 py-24">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <Eyebrow>Why Enrol on the PSP</Eyebrow>
+            <Eyebrow>Why Enrol with Aircraft Program</Eyebrow>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl">
               Why the retained model wins.
             </h2>
@@ -292,7 +292,7 @@ function HowItWorks() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
-                t: "No Cold Starts",
+                t: "No Blank File",
                 Icon: AogIcon,
                 d: "We do not ask for engine serials at 2am. They are already on file. The desk is active from the moment you make contact.",
               },
@@ -344,7 +344,7 @@ function HowItWorks() {
             Enrol your aircraft.
           </h2>
           <p className="mt-6 mx-auto max-w-xl text-base text-white/60">
-            It takes less than five minutes to add your aircraft and activate your PSP support desk.
+            It takes less than five minutes to add your aircraft and activate your Aircraft Program support desk.
             The sooner your record is on file, the sooner the desk is ready to move.
           </p>
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">

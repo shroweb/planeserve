@@ -42,6 +42,12 @@ type Tab =
   | "passport"
   | "remove";
 
+const PROPELLER_CATEGORIES = new Set(["Turboprop", "Single Engine", "Multi Engine"]);
+
+function hasPropeller(category: string) {
+  return PROPELLER_CATEGORIES.has(category);
+}
+
 function AircraftPage() {
   const { id: searchId } = Route.useSearch();
   const { data: aircraft = [] } = useQuery({
@@ -193,11 +199,14 @@ function OverviewTab({ aircraft }: { aircraft: AircraftRecord }) {
         <KV k="Serial Number" v={aircraft.serialNumber || "—"} />
         <KV k="Year of Manufacture" v={aircraft.yearOfManufacture || "—"} />
         <KV k="Type of Operations" v={aircraft.typeOfOperations || "—"} />
-        {aircraft.category === "Turboprop" && (
-          <KV
-            k="Propeller"
-            v={`${aircraft.propellerManufacturer} ${aircraft.propellerType}`.trim() || "—"}
-          />
+        {hasPropeller(aircraft.category) && (
+          <>
+            <KV
+              k="Propeller"
+              v={`${aircraft.propellerManufacturer} ${aircraft.propellerType}`.trim() || "—"}
+            />
+            <KV k="Propeller serials" v={aircraft.propellerSerialNumbers || "—"} />
+          </>
         )}
       </Section>
       <Section title="Subscription">
@@ -224,6 +233,7 @@ function EngineTab({ aircraft }: { aircraft: AircraftRecord }) {
     numberOfEngines: aircraft.numberOfEngines,
     propellerManufacturer: aircraft.propellerManufacturer,
     propellerType: aircraft.propellerType,
+    propellerSerialNumbers: aircraft.propellerSerialNumbers,
     maintenanceProgramme: aircraft.maintenanceProgramme,
     registryStandard: aircraft.registryStandard,
     totalAirframeHours: aircraft.totalAirframeHours,
@@ -293,7 +303,7 @@ function EngineTab({ aircraft }: { aircraft: AircraftRecord }) {
             onChange={(e) => setForm((f) => ({ ...f, numberOfEngines: Number(e.target.value) }))}
           />
         </Field>
-        {aircraft.category === "Turboprop" && (
+        {hasPropeller(aircraft.category) && (
           <>
             <Field label="Propeller manufacturer">
               <input
@@ -313,6 +323,16 @@ function EngineTab({ aircraft }: { aircraft: AircraftRecord }) {
                 onChange={(e) => setForm((f) => ({ ...f, propellerType: e.target.value }))}
               />
             </Field>
+            <Field label="Propeller serial numbers">
+              <input
+                className={inputCls}
+                value={form.propellerSerialNumbers}
+                placeholder="e.g. P12345, P12346"
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, propellerSerialNumbers: e.target.value }))
+                }
+              />
+            </Field>
           </>
         )}
         <Field label="Total airframe hours">
@@ -323,7 +343,7 @@ function EngineTab({ aircraft }: { aircraft: AircraftRecord }) {
             onChange={(e) => setForm((f) => ({ ...f, totalAirframeHours: e.target.value }))}
           />
         </Field>
-        <Field label="Maintenance programme">
+        <Field label="Maintenance program">
           <input
             className={inputCls}
             value={form.maintenanceProgramme}
@@ -368,6 +388,7 @@ function ContactsTab({ aircraft }: { aircraft: AircraftRecord }) {
           numberOfEngines: aircraft.numberOfEngines,
           propellerManufacturer: aircraft.propellerManufacturer,
           propellerType: aircraft.propellerType,
+          propellerSerialNumbers: aircraft.propellerSerialNumbers,
           maintenanceProgramme: aircraft.maintenanceProgramme,
           registryStandard: aircraft.registryStandard,
           totalAirframeHours: aircraft.totalAirframeHours,
@@ -548,13 +569,14 @@ function VerificationTab({ aircraft }: { aircraft: AircraftRecord }) {
     { label: "Engine manufacturer", value: aircraft.engineManufacturer },
     { label: "Engine type", value: aircraft.engineType },
     { label: "Engine serial numbers", value: aircraft.engineSerialNumbers },
-    ...(aircraft.category === "Turboprop"
+    ...(hasPropeller(aircraft.category)
       ? [
           { label: "Propeller manufacturer", value: aircraft.propellerManufacturer },
           { label: "Propeller type / model", value: aircraft.propellerType },
+          { label: "Propeller serial numbers", value: aircraft.propellerSerialNumbers },
         ]
       : []),
-    { label: "Maintenance programme", value: aircraft.maintenanceProgramme },
+    { label: "Maintenance program", value: aircraft.maintenanceProgramme },
     { label: "Registry standard", value: aircraft.registryStandard },
     { label: "AMO name", value: aircraft.amoName },
     { label: "AMO phone", value: aircraft.amoPhone },
@@ -869,7 +891,7 @@ function QuickEditTab({ aircraft }: { aircraft: AircraftRecord }) {
           />
         </Field>
         <div className="md:col-span-2">
-          <Field label="Maintenance programme">
+          <Field label="Maintenance program">
             <input
               className={inputCls}
               value={form.maintenanceProgramme}

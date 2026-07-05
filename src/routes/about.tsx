@@ -73,7 +73,7 @@ function AboutPage() {
                   paperwork, supplier confirmation, and movement.
                 </p>
                 <p>
-                  Aircraft Program turns that informal support into a formal programme: aircraft details
+                  Aircraft Program turns that informal support into a formal program: aircraft details
                   on file before the problem, and a sourcing desk ready when the request lands.
                 </p>
               </div>
@@ -113,7 +113,7 @@ function AboutPage() {
                   Older aircraft. Thinner catalogues.
                 </p>
                 <h3 className="mt-3 max-w-xl text-2xl font-semibold leading-tight text-white md:text-3xl">
-                  A programme built for the parts search that cannot start from zero.
+                  A program built for the parts search that cannot start from zero.
                 </h3>
               </div>
             </div>

@@ -145,6 +145,7 @@ export const aircraft = pgTable(
     numberOfEngines: integer("number_of_engines").notNull().default(2),
     propellerManufacturer: text("propeller_manufacturer").notNull().default(""),
     propellerType: text("propeller_type").notNull().default(""),
+    propellerSerialNumbers: text("propeller_serial_numbers").notNull().default(""),
     maintenanceProgramme: text("maintenance_programme").notNull().default(""),
     nationality: text("nationality").notNull().default(""),
     registryStandard: text("registry_standard").notNull().default(""),

@@ -10,15 +10,12 @@ export function SiteFooter() {
           <div>
             <PlaneServeLogo wordClassName="text-sm font-semibold tracking-tight text-white" />
             <p className="mt-3 text-xs leading-relaxed text-white/50">
-              A programme for aircraft owners and operators that puts the aircraft record, contacts,
+              A program for aircraft owners and operators that puts the aircraft record, contacts,
               and AOG parts desk in place before the request arrives.
             </p>
             <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-accent/70">
-              AOG Cover & Intelligence — The Aircraft Enrolment Programme
+              AOG Cover & Intelligence — The Aircraft Enrolment Program
             </p>
-            <div className="mt-4 text-xs font-medium text-success">
-              Desk active · 24/7 controller cover
-            </div>
           </div>
 
           <FooterCol
@@ -84,7 +81,7 @@ export function SiteFooter() {
             © {new Date().getFullYear()} Aircraft Program Ltd. All rights reserved.
           </div>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-white/25 tracking-wide">
-            <span>Operations · London · Geneva · Dubai</span>
+            <span className="font-medium text-success">Desk active · 24/7 controller cover</span>
             <a
               href="https://shroweb.com"
               target="_blank"

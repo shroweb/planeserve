@@ -59,7 +59,7 @@ function ValueSummaryPage() {
         <div className="mb-6">
           <h1 className="text-2xl font-semibold tracking-tight">Value Summary</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Estimated cost avoidance and operational impact of your Aircraft Program aircraft programme
+            Estimated cost avoidance and operational impact of your Aircraft Program aircraft program
           </p>
         </div>
 
@@ -74,7 +74,7 @@ function ValueSummaryPage() {
                 <p className="mt-4 text-base font-semibold">No value to report yet</p>
                 <p className="mx-auto mt-1.5 max-w-md text-sm text-muted-foreground">
                   As Aircraft Program resolves AOG cases for your fleet, the estimated cost avoided and
-                  your programme ROI will appear here — with a per-case breakdown.
+                  your program ROI will appear here — with a per-case breakdown.
                 </p>
                 <Link
                   to="/submit-aog"

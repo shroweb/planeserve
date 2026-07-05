@@ -93,6 +93,7 @@ type FormData = {
   engineSerialNumbers: string;
   propellerManufacturer: string;
   propellerType: string;
+  propellerSerialNumbers: string;
   maintenanceProgramme: string;
   insurer: string;
   policyReference: string;
@@ -108,6 +109,12 @@ type FormData = {
   plan: "monthly" | "annual";
   agreed: boolean;
 };
+
+const PROPELLER_CATEGORIES = new Set<FormData["category"]>([
+  "Turboprop",
+  "Single Engine",
+  "Multi Engine",
+]);
 
 const defaultForm: FormData = {
   usageType: "",
@@ -131,6 +138,7 @@ const defaultForm: FormData = {
   engineSerialNumbers: "",
   propellerManufacturer: "",
   propellerType: "",
+  propellerSerialNumbers: "",
   maintenanceProgramme: "",
   insurer: "",
   policyReference: "",
@@ -187,6 +195,7 @@ function EnrolPage() {
   const [form, setForm] = useState<FormData>(defaultForm);
   const [stepError, setStepError] = useState<string | null>(null);
   const [confirmation, setConfirmation] = useState<{ ref: string; email: string } | null>(null);
+  const showPropellerFields = PROPELLER_CATEGORIES.has(form.category);
 
   const set = <K extends keyof FormData>(k: K, v: FormData[K]) => {
     setStepError(null);
@@ -761,7 +770,7 @@ function Step3({
             />
           </Field>
         </div>
-        {form.category === "Turboprop" && (
+        {showPropellerFields && (
           <>
             <Field label="Propeller manufacturer">
               <input
@@ -779,9 +788,18 @@ function Step3({
                 placeholder="e.g. HC-B4TN-3"
               />
             </Field>
+            <Field label="Propeller serial numbers">
+              <textarea
+                rows={2}
+                className={`${inputCls} md:col-span-2`}
+                value={form.propellerSerialNumbers}
+                onChange={(e) => set("propellerSerialNumbers", e.target.value)}
+                placeholder="e.g. P12345, P12346"
+              />
+            </Field>
           </>
         )}
-        <Field label="Maintenance programme">
+        <Field label="Maintenance program">
           <input
             className={inputCls}
             value={form.maintenanceProgramme}
@@ -1062,12 +1080,13 @@ function Step5({
           { label: "Year", value: form.year },
           { label: "Base airport", value: form.baseAirport },
           { label: "Engine", value: `${form.engineManufacturer} ${form.engineType}`.trim() },
-          ...(form.category === "Turboprop"
+          ...(showPropellerFields
             ? [
                 {
                   label: "Propeller",
                   value: `${form.propellerManufacturer} ${form.propellerType}`.trim(),
                 },
+                { label: "Propeller serial numbers", value: form.propellerSerialNumbers },
               ]
             : []),
           { label: "Total airframe hours", value: form.totalAirframeHours },

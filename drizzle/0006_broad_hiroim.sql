@@ -1,0 +1,1 @@
+ALTER TABLE "aircraft" ADD COLUMN "propeller_serial_numbers" text DEFAULT '' NOT NULL;

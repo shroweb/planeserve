@@ -12,6 +12,12 @@ import {
 import { X } from "lucide-react";
 import { useState } from "react";
 
+const PROPELLER_CATEGORIES = new Set(["Turboprop", "Single Engine", "Multi Engine"]);
+
+function hasPropeller(category: string) {
+  return PROPELLER_CATEGORIES.has(category);
+}
+
 export const Route = createFileRoute("/admin/aircraft")({
   beforeLoad: async () => {
     try {
@@ -252,13 +258,16 @@ function AircraftDetailPanel({
             <Detail label="Engine series" value={aircraft.engineSeries} />
             <Detail label="Engine count" value={String(aircraft.numberOfEngines)} />
             <Detail label="Engine serials" value={aircraft.engineSerialNumbers} />
-            {aircraft.category === "Turboprop" && (
-              <Detail
-                label="Propeller"
-                value={`${aircraft.propellerManufacturer} ${aircraft.propellerType}`.trim()}
-              />
+            {hasPropeller(aircraft.category) && (
+              <>
+                <Detail
+                  label="Propeller"
+                  value={`${aircraft.propellerManufacturer} ${aircraft.propellerType}`.trim()}
+                />
+                <Detail label="Propeller serials" value={aircraft.propellerSerialNumbers} />
+              </>
             )}
-            <Detail label="Maintenance programme" value={aircraft.maintenanceProgramme} />
+            <Detail label="Maintenance program" value={aircraft.maintenanceProgramme} />
             <Detail label="Registry standard" value={aircraft.registryStandard} />
             <Detail label="Total airframe hours" value={aircraft.totalAirframeHours} />
           </Section>
