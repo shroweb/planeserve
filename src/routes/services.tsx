@@ -46,12 +46,12 @@ function ServicesPage() {
         </div>
       </section>
 
-      {/* ── Service Pillar: Readiness ─────────────────────────────────────── */}
+      {/* ── Readiness service ─────────────────────────────────────────────── */}
       <section className="bg-background border-b border-border">
         <div className="mx-auto max-w-7xl px-6 py-24">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <Eyebrow>Pillar 01</Eyebrow>
+              <Eyebrow>Before The AOG</Eyebrow>
               <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl leading-tight">
                 Pre-AOG Readiness & <br />
                 <span className="text-accent ">Aircraft Records.</span>
@@ -118,11 +118,11 @@ function ServicesPage() {
         <div className="absolute inset-0 bg-[#001b2e]/40" />
       </div>
 
-      {/* ── Service Pillar: The Desk ──────────────────────────────────────── */}
+      {/* ── AOG desk service ──────────────────────────────────────────────── */}
       <section className="bg-card border-b border-border">
         <div className="mx-auto max-w-7xl px-6 py-24">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <Eyebrow>Pillar 02</Eyebrow>
+            <Eyebrow>When Parts Are Needed</Eyebrow>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl leading-tight">
               The AOG Support Desk & <br />
               <span className="text-accent ">Global Supplier Network.</span>
