@@ -195,7 +195,6 @@ function EnrolPage() {
   const [form, setForm] = useState<FormData>(defaultForm);
   const [stepError, setStepError] = useState<string | null>(null);
   const [confirmation, setConfirmation] = useState<{ ref: string; email: string } | null>(null);
-  const showPropellerFields = PROPELLER_CATEGORIES.has(form.category);
 
   const set = <K extends keyof FormData>(k: K, v: FormData[K]) => {
     setStepError(null);
@@ -644,6 +643,8 @@ function Step3({
   form: FormData;
   set: <K extends keyof FormData>(k: K, v: FormData[K]) => void;
 }) {
+  const showPropellerFields = PROPELLER_CATEGORIES.has(form.category);
+
   return (
     <div>
       <h2 className="text-lg font-semibold mb-1">Aircraft details</h2>
