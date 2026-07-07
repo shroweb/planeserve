@@ -950,6 +950,7 @@ function Step5({
   );
 
   const plan = form.plan;
+  const showPropellerFields = PROPELLER_CATEGORIES.has(form.category);
 
   function stopLoading() {
     submittingRef.current = false;
