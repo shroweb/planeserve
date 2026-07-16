@@ -7,10 +7,15 @@ const baseURL = process.env.BETTER_AUTH_URL ?? "http://localhost:8080";
 // isn't trusted. The configured baseURL is always trusted; in non-production
 // we also trust common localhost dev ports so a mismatched BETTER_AUTH_URL or
 // dev port can't silently break auth.
-const trustedOrigins =
-  process.env.NODE_ENV === "production"
-    ? [baseURL]
-    : [baseURL, "http://localhost:8080", "http://localhost:8083", "http://localhost:3000"];
+const trustedOrigins = [
+  baseURL,
+  "https://aircraftprogram.com",
+  "https://www.aircraftprogram.com",
+  "https://planeserve.vercel.app",
+  "http://localhost:8080",
+  "http://localhost:8083",
+  "http://localhost:3000",
+];
 
 type AuthLike = {
   handler: (request: Request) => Promise<Response> | Response;
