@@ -97,7 +97,7 @@ function Account() {
   if (!user || !profileForm) return null;
 
   return (
-    <AppShell>
+    <AppShell variant={user.isAdmin ? "admin" : "member"}>
       <div className="max-w-2xl">
         <h1 className="text-2xl font-semibold tracking-tight mb-6">Account</h1>
 
