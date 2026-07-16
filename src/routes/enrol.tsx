@@ -1004,12 +1004,6 @@ function Step5({
       return;
     }
 
-    if (!form.postalCode.trim()) {
-      setCardError("Please enter your ZIP or Postcode.");
-      stopLoading();
-      return;
-    }
-
     submittingRef.current = true;
     setLoading(true);
     setCardError(null);
@@ -1224,7 +1218,6 @@ function Step5({
               className="min-h-[46px] w-full rounded-sm border border-input bg-background px-3.5 text-sm placeholder:text-muted-foreground/55 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
               value={form.postalCode}
               onChange={(e) => set("postalCode", e.target.value)}
-              required
             />
           </div>
         </div>
