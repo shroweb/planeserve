@@ -1,13 +1,7 @@
 import { Link } from "@tanstack/react-router";
 
 export function PlaneServeMark({ className = "h-9 w-9" }: { className?: string }) {
-  return (
-    <img
-      src="/favicon.png"
-      className={className}
-      alt="Aircraft Program Mark"
-    />
-  );
+  return <img src="/favicon.png" className={className} alt="Aircraft Program Mark" />;
 }
 
 export function PlaneServeLogo({
@@ -15,15 +9,17 @@ export function PlaneServeLogo({
   onClick,
   className = "",
   wordClassName = "",
+  variant = "dark",
 }: {
   to?: string;
   onClick?: () => void;
   className?: string;
   wordClassName?: string;
+  variant?: "dark" | "white";
 }) {
   const content = (
     <img
-      src="/logo.png"
+      src={variant === "white" ? "/logo-white.png" : "/logo.png"}
       className="h-8 w-auto shrink-0"
       alt="Aircraft Program Logo"
     />

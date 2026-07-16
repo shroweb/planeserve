@@ -16,6 +16,7 @@ import { Route as SubmitAogRouteImport } from './routes/submit-aog'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SetPasswordRouteImport } from './routes/set-password'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrePositioningRouteImport } from './routes/pre-positioning'
 import { Route as PartsIntelligenceRouteImport } from './routes/parts-intelligence'
@@ -91,6 +92,11 @@ const SetPasswordRoute = SetPasswordRouteImport.update({
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PricingRoute = PricingRouteImport.update({
@@ -320,6 +326,7 @@ export interface FileRoutesByFullPath {
   '/parts-intelligence': typeof PartsIntelligenceRoute
   '/pre-positioning': typeof PrePositioningRoute
   '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
   '/services': typeof ServicesRoute
   '/set-password': typeof SetPasswordRoute
   '/signup': typeof SignupRoute
@@ -370,6 +377,7 @@ export interface FileRoutesByTo {
   '/parts-intelligence': typeof PartsIntelligenceRoute
   '/pre-positioning': typeof PrePositioningRoute
   '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
   '/services': typeof ServicesRoute
   '/set-password': typeof SetPasswordRoute
   '/signup': typeof SignupRoute
@@ -421,6 +429,7 @@ export interface FileRoutesById {
   '/parts-intelligence': typeof PartsIntelligenceRoute
   '/pre-positioning': typeof PrePositioningRoute
   '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
   '/services': typeof ServicesRoute
   '/set-password': typeof SetPasswordRoute
   '/signup': typeof SignupRoute
@@ -473,6 +482,7 @@ export interface FileRouteTypes {
     | '/parts-intelligence'
     | '/pre-positioning'
     | '/pricing'
+    | '/privacy'
     | '/services'
     | '/set-password'
     | '/signup'
@@ -523,6 +533,7 @@ export interface FileRouteTypes {
     | '/parts-intelligence'
     | '/pre-positioning'
     | '/pricing'
+    | '/privacy'
     | '/services'
     | '/set-password'
     | '/signup'
@@ -573,6 +584,7 @@ export interface FileRouteTypes {
     | '/parts-intelligence'
     | '/pre-positioning'
     | '/pricing'
+    | '/privacy'
     | '/services'
     | '/set-password'
     | '/signup'
@@ -624,6 +636,7 @@ export interface RootRouteChildren {
   PartsIntelligenceRoute: typeof PartsIntelligenceRoute
   PrePositioningRoute: typeof PrePositioningRoute
   PricingRoute: typeof PricingRoute
+  PrivacyRoute: typeof PrivacyRoute
   ServicesRoute: typeof ServicesRoute
   SetPasswordRoute: typeof SetPasswordRoute
   SignupRoute: typeof SignupRoute
@@ -703,6 +716,13 @@ declare module '@tanstack/react-router' {
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pricing': {
@@ -1016,6 +1036,7 @@ const rootRouteChildren: RootRouteChildren = {
   PartsIntelligenceRoute: PartsIntelligenceRoute,
   PrePositioningRoute: PrePositioningRoute,
   PricingRoute: PricingRoute,
+  PrivacyRoute: PrivacyRoute,
   ServicesRoute: ServicesRoute,
   SetPasswordRoute: SetPasswordRoute,
   SignupRoute: SignupRoute,

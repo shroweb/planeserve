@@ -56,13 +56,10 @@ export function SupplierAppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen bg-[oklch(0.97_0.005_240)] text-foreground">
       <aside className="hidden w-64 shrink-0 flex-col bg-[oklch(0.14_0.02_250)] text-white md:flex">
-        <div className="flex items-center gap-2 px-6 py-5 border-b border-white/10">
-          <PlaneServeMark className="h-9 w-9 shrink-0" />
-          <div>
-            <div className="text-sm font-semibold tracking-tight">Aircraft Program</div>
-            <div className="text-[10px] uppercase tracking-widest text-white/50">
-              Supplier Portal
-            </div>
+        <div className="px-6 py-5 border-b border-white/10">
+          <img src="/logo-white.png" className="h-8 w-auto mb-1" alt="Aircraft Program Logo" />
+          <div className="text-[9px] uppercase tracking-widest text-white/40 font-semibold pl-0.5">
+            Supplier Portal
           </div>
         </div>
         <div className="border-b border-white/10 px-4 py-4">

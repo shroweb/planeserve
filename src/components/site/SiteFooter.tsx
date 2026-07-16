@@ -8,7 +8,7 @@ export function SiteFooter() {
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr_1fr]">
           {/* Brand */}
           <div>
-            <PlaneServeLogo wordClassName="text-sm font-semibold tracking-tight text-white" />
+            <PlaneServeLogo variant="white" />
             <p className="mt-3 text-xs leading-relaxed text-white/50">
               A program for aircraft owners and operators that puts the aircraft record, contacts,
               and AOG parts desk in place before the request arrives.
@@ -77,8 +77,16 @@ export function SiteFooter() {
 
       <div className="border-t border-white/10">
         <div className="mx-auto max-w-7xl flex flex-wrap items-center justify-between gap-3 px-6 py-5">
-          <div className="text-xs text-white/35">
-            © {new Date().getFullYear()} Aircraft Program Ltd. All rights reserved.
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-white/35">
+            <span>© {new Date().getFullYear()} Aircraft Program Ltd. All rights reserved.</span>
+            <span>·</span>
+            <Link to="/subscriber-agreement" className="hover:text-white transition-colors">
+              Terms & Conditions
+            </Link>
+            <span>·</span>
+            <Link to="/privacy" className="hover:text-white transition-colors">
+              Privacy Policy
+            </Link>
           </div>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-white/25 tracking-wide">
             <span className="font-medium text-success">Desk active · 24/7 controller cover</span>
