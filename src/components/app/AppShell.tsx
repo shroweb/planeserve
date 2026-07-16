@@ -333,7 +333,7 @@ export function AppShell({ children, variant = "member" }: Props) {
                 </div>
               ) : (
                 <div className="text-[11px] text-white/40">
-                  {variant === "member" ? "Member" : "Operations"} · {shortRole}
+                  {variant === "member" ? "Member" : "Operations"}
                 </div>
               )}
             </div>

@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { Linkedin } from "lucide-react";
 import { PlaneServeLogo } from "@/components/site/PlaneServeLogo";
 
 export function SiteFooter() {
@@ -65,13 +66,34 @@ export function SiteFooter() {
               { to: "/how-it-works", label: "Trace standards" },
             ]}
           />
-          <FooterCol
-            title="Company"
-            items={[
-              { to: "/about", label: "About" },
-              { to: "/contact", label: "Contact" },
-            ]}
-          />
+          <div>
+            <div className="text-[10px] font-semibold uppercase tracking-wider text-white/40 mb-3">
+              Company
+            </div>
+            <ul className="space-y-2.5">
+              {[
+                { to: "/about", label: "About" },
+                { to: "/contact", label: "Contact" },
+              ].map((i) => (
+                <li key={i.label}>
+                  <Link to={i.to} className="text-sm text-white/55 hover:text-white transition-colors">
+                    {i.label}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <a
+                  href="https://linkedin.com/company/aircraft-program"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 text-sm text-white/55 hover:text-white transition-colors"
+                >
+                  <Linkedin className="h-3.5 w-3.5" />
+                  LinkedIn
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -79,7 +101,7 @@ export function SiteFooter() {
         <div className="mx-auto max-w-7xl flex flex-wrap items-center justify-between gap-3 px-6 py-5">
           <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-white/35">
             <span>
-              © {new Date().getFullYear()} Aircraft Program Ltd. Part of Moon Jet Group. All rights
+              © {new Date().getFullYear()} Aircraft Program. Part of Moon Jet Group. All rights
               reserved.
             </span>
             <span>·</span>
@@ -93,6 +115,16 @@ export function SiteFooter() {
           </div>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-white/25 tracking-wide">
             <span className="font-medium text-success">Desk active · 24/7 controller cover</span>
+            <a
+              href="https://linkedin.com/company/aircraft-program"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Aircraft Program on LinkedIn"
+              className="inline-flex items-center gap-1.5 text-white/40 transition-colors hover:text-white"
+            >
+              <Linkedin className="h-3.5 w-3.5" />
+              <span>LinkedIn</span>
+            </a>
             <a
               href="https://shroweb.com"
               target="_blank"
