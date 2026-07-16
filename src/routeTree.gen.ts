@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ValueSummaryRouteImport } from './routes/value-summary'
 import { Route as TeamRouteImport } from './routes/team'
+import { Route as SubscriberAgreementRouteImport } from './routes/subscriber-agreement'
 import { Route as SubmitAogRouteImport } from './routes/submit-aog'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SetPasswordRouteImport } from './routes/set-password'
@@ -65,6 +66,11 @@ const ValueSummaryRoute = ValueSummaryRouteImport.update({
 const TeamRoute = TeamRouteImport.update({
   id: '/team',
   path: '/team',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SubscriberAgreementRoute = SubscriberAgreementRouteImport.update({
+  id: '/subscriber-agreement',
+  path: '/subscriber-agreement',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SubmitAogRoute = SubmitAogRouteImport.update({
@@ -318,6 +324,7 @@ export interface FileRoutesByFullPath {
   '/set-password': typeof SetPasswordRoute
   '/signup': typeof SignupRoute
   '/submit-aog': typeof SubmitAogRoute
+  '/subscriber-agreement': typeof SubscriberAgreementRoute
   '/team': typeof TeamRoute
   '/value-summary': typeof ValueSummaryRoute
   '/admin/aircraft': typeof AdminAircraftRoute
@@ -367,6 +374,7 @@ export interface FileRoutesByTo {
   '/set-password': typeof SetPasswordRoute
   '/signup': typeof SignupRoute
   '/submit-aog': typeof SubmitAogRoute
+  '/subscriber-agreement': typeof SubscriberAgreementRoute
   '/team': typeof TeamRoute
   '/value-summary': typeof ValueSummaryRoute
   '/admin/aircraft': typeof AdminAircraftRoute
@@ -417,6 +425,7 @@ export interface FileRoutesById {
   '/set-password': typeof SetPasswordRoute
   '/signup': typeof SignupRoute
   '/submit-aog': typeof SubmitAogRoute
+  '/subscriber-agreement': typeof SubscriberAgreementRoute
   '/team': typeof TeamRoute
   '/value-summary': typeof ValueSummaryRoute
   '/admin/aircraft': typeof AdminAircraftRoute
@@ -468,6 +477,7 @@ export interface FileRouteTypes {
     | '/set-password'
     | '/signup'
     | '/submit-aog'
+    | '/subscriber-agreement'
     | '/team'
     | '/value-summary'
     | '/admin/aircraft'
@@ -517,6 +527,7 @@ export interface FileRouteTypes {
     | '/set-password'
     | '/signup'
     | '/submit-aog'
+    | '/subscriber-agreement'
     | '/team'
     | '/value-summary'
     | '/admin/aircraft'
@@ -566,6 +577,7 @@ export interface FileRouteTypes {
     | '/set-password'
     | '/signup'
     | '/submit-aog'
+    | '/subscriber-agreement'
     | '/team'
     | '/value-summary'
     | '/admin/aircraft'
@@ -616,6 +628,7 @@ export interface RootRouteChildren {
   SetPasswordRoute: typeof SetPasswordRoute
   SignupRoute: typeof SignupRoute
   SubmitAogRoute: typeof SubmitAogRoute
+  SubscriberAgreementRoute: typeof SubscriberAgreementRoute
   TeamRoute: typeof TeamRoute
   ValueSummaryRoute: typeof ValueSummaryRoute
   AdminAircraftRoute: typeof AdminAircraftRoute
@@ -655,6 +668,13 @@ declare module '@tanstack/react-router' {
       path: '/team'
       fullPath: '/team'
       preLoaderRoute: typeof TeamRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/subscriber-agreement': {
+      id: '/subscriber-agreement'
+      path: '/subscriber-agreement'
+      fullPath: '/subscriber-agreement'
+      preLoaderRoute: typeof SubscriberAgreementRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/submit-aog': {
@@ -1000,6 +1020,7 @@ const rootRouteChildren: RootRouteChildren = {
   SetPasswordRoute: SetPasswordRoute,
   SignupRoute: SignupRoute,
   SubmitAogRoute: SubmitAogRoute,
+  SubscriberAgreementRoute: SubscriberAgreementRoute,
   TeamRoute: TeamRoute,
   ValueSummaryRoute: ValueSummaryRoute,
   AdminAircraftRoute: AdminAircraftRoute,

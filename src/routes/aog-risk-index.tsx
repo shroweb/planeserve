@@ -174,8 +174,8 @@ function AogRiskIndexPage() {
             </p>
           </div>
           <p className="text-xs leading-relaxed text-muted-foreground mt-3 pt-3 border-t border-border">
-            Scores above 70 indicate parts that are historically hard to source quickly. Aircraft Program
-            proactively monitors and alerts you to changes.
+            Scores above 70 indicate parts that are historically hard to source quickly. Aircraft
+            Program proactively monitors and alerts you to changes.
           </p>
         </div>
       </div>

@@ -793,13 +793,7 @@
     "public.aircraft_category": {
       "name": "aircraft_category",
       "schema": "public",
-      "values": [
-        "Business Jet",
-        "Turboprop",
-        "Single Engine",
-        "Multi Engine",
-        "Helicopter"
-      ]
+      "values": ["Business Jet", "Turboprop", "Single Engine", "Multi Engine", "Helicopter"]
     },
     "public.aog_status": {
       "name": "aog_status",
@@ -863,56 +857,32 @@
     "public.invoice_status": {
       "name": "invoice_status",
       "schema": "public",
-      "values": [
-        "Draft",
-        "Paid",
-        "Void"
-      ]
+      "values": ["Draft", "Paid", "Void"]
     },
     "public.plan": {
       "name": "plan",
       "schema": "public",
-      "values": [
-        "monthly",
-        "annual"
-      ]
+      "values": ["monthly", "annual"]
     },
     "public.profile_role": {
       "name": "profile_role",
       "schema": "public",
-      "values": [
-        "Owner",
-        "Operator",
-        "Management Company",
-        "Maintenance Provider",
-        "Other"
-      ]
+      "values": ["Owner", "Operator", "Management Company", "Maintenance Provider", "Other"]
     },
     "public.subscription_status": {
       "name": "subscription_status",
       "schema": "public",
-      "values": [
-        "Active",
-        "Pending",
-        "Cancelled"
-      ]
+      "values": ["Active", "Pending", "Cancelled"]
     },
     "public.urgency": {
       "name": "urgency",
       "schema": "public",
-      "values": [
-        "Aircraft grounded",
-        "Dispatch affected",
-        "Planned sourcing"
-      ]
+      "values": ["Aircraft grounded", "Dispatch affected", "Planned sourcing"]
     },
     "public.verification_status": {
       "name": "verification_status",
       "schema": "public",
-      "values": [
-        "Pending",
-        "Verified"
-      ]
+      "values": ["Pending", "Verified"]
     }
   },
   "schemas": {},

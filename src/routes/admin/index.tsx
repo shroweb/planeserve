@@ -3,10 +3,21 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import { AppShell } from "@/components/app/AppShell";
 import { StatCard, StatusPill, RoleChip, BarMeter, statusTone } from "@/components/app/ui";
-import { ensureAdminSession, getAdminOverview, getStripeAdminData, updateAogStatus } from "@/lib/app.functions";
+import {
+  ensureAdminSession,
+  getAdminOverview,
+  getStripeAdminData,
+  updateAogStatus,
+} from "@/lib/app.functions";
 import { AlertTriangle, ChevronRight, CreditCard } from "lucide-react";
 import { AogIcon, ClearedIcon, NetworkIcon } from "@/components/app/PlaneServeIcons";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin/")({
@@ -20,7 +31,19 @@ export const Route = createFileRoute("/admin/")({
   component: AdminOverview,
 });
 
-const AOG_STATUSES = ["Submitted","Acknowledged","Sourcing","Options ready","Awaiting approval","Confirmed","Order placed","In transit","Arrived","Resolved","Cancelled"] as const;
+const AOG_STATUSES = [
+  "Submitted",
+  "Acknowledged",
+  "Sourcing",
+  "Options ready",
+  "Awaiting approval",
+  "Confirmed",
+  "Order placed",
+  "In transit",
+  "Arrived",
+  "Resolved",
+  "Cancelled",
+] as const;
 
 function elapsed(createdAt: string) {
   const mins = Math.floor((Date.now() - new Date(createdAt).getTime()) / 60000);
@@ -39,7 +62,10 @@ function pendingAge(iso: string) {
 
 function AdminOverview() {
   const queryClient = useQueryClient();
-  const { data, isLoading } = useQuery({ queryKey: ["admin-overview"], queryFn: () => getAdminOverview() });
+  const { data, isLoading } = useQuery({
+    queryKey: ["admin-overview"],
+    queryFn: () => getAdminOverview(),
+  });
   const { data: stripe } = useQuery({
     queryKey: ["stripe-admin"],
     queryFn: () => getStripeAdminData(),
@@ -103,7 +129,6 @@ function AdminOverview() {
     if (bBreached !== aBreached) return bBreached - aBreached;
     return b.priorityScore - a.priorityScore;
   });
-
 
   function generateReport() {
     if (!data) return toast.error("Admin data is still loading.");
@@ -202,11 +227,17 @@ function AdminOverview() {
       {/* Primary ops metrics — operationally critical, given visual priority */}
       <div className="mt-6 grid grid-cols-2 gap-4">
         <div className="rounded-lg border border-border bg-[oklch(0.13_0.025_250)] px-6 py-5 text-white">
-          <div className="text-[11px] font-semibold uppercase tracking-widest text-white/45">Open AOG</div>
-          <div className="mt-3 text-5xl font-semibold tracking-tight text-accent">{openRequests.length}</div>
+          <div className="text-[11px] font-semibold uppercase tracking-widest text-white/45">
+            Open AOG
+          </div>
+          <div className="mt-3 text-5xl font-semibold tracking-tight text-accent">
+            {openRequests.length}
+          </div>
         </div>
         <div className="rounded-lg border border-border bg-[oklch(0.13_0.025_250)] px-6 py-5 text-white">
-          <div className="text-[11px] font-semibold uppercase tracking-widest text-white/45">Avg first response</div>
+          <div className="text-[11px] font-semibold uppercase tracking-widest text-white/45">
+            Avg first response
+          </div>
           <div className="mt-3 text-5xl font-semibold tracking-tight text-blue-400">
             {metrics?.avgFirstResponseMins != null ? `${metrics.avgFirstResponseMins}m` : "—"}
           </div>
@@ -222,7 +253,11 @@ function AdminOverview() {
         return (
           <div className="mt-4 grid grid-cols-2 gap-4">
             <StatCard label="Cases this week" value={String(casesThisWeek)} icon={ClearedIcon} />
-            <StatCard label="Suppliers live" value={String(metrics?.suppliersLive ?? 0)} icon={NetworkIcon} />
+            <StatCard
+              label="Suppliers live"
+              value={String(metrics?.suppliersLive ?? 0)}
+              icon={NetworkIcon}
+            />
           </div>
         );
       })()}
@@ -267,7 +302,9 @@ function AdminOverview() {
                         <span className="line-clamp-1 max-w-[160px] block">{r.affectedSystem}</span>
                       </td>
                       <td className="px-2 py-2.5 font-mono text-xs">
-                        <span className="line-clamp-1 max-w-[130px] block">{r.location || "—"}</span>
+                        <span className="line-clamp-1 max-w-[130px] block">
+                          {r.location || "—"}
+                        </span>
                       </td>
                       <td className="px-2 py-2.5">
                         <div className="flex items-center gap-2">
@@ -283,7 +320,9 @@ function AdminOverview() {
                         <Select
                           value={r.status}
                           onValueChange={async (value) => {
-                            await updateAogStatus({ data: { id: r.id, status: value as typeof AOG_STATUSES[number] } });
+                            await updateAogStatus({
+                              data: { id: r.id, status: value as (typeof AOG_STATUSES)[number] },
+                            });
                             queryClient.invalidateQueries({ queryKey: ["admin-overview"] });
                           }}
                         >
@@ -369,29 +408,40 @@ function AdminOverview() {
               {(() => {
                 const resolved = requests.filter((r) => r.status === "Resolved").length;
                 const rate = requests.length ? Math.round((resolved / requests.length) * 100) : 0;
-                const rateTone = rate >= 70 ? "text-success" : rate >= 40 ? "text-accent" : "text-destructive";
+                const rateTone =
+                  rate >= 70 ? "text-success" : rate >= 40 ? "text-accent" : "text-destructive";
                 return (
                   <>
                     <div className="flex items-center justify-between py-2 border-b border-border">
                       <div>
                         <div className="text-xs font-medium">Enrolled aircraft</div>
-                        <div className="text-[10px] text-muted-foreground mt-0.5">across {users.length} operator{users.length !== 1 ? "s" : ""}</div>
+                        <div className="text-[10px] text-muted-foreground mt-0.5">
+                          across {users.length} operator{users.length !== 1 ? "s" : ""}
+                        </div>
                       </div>
                       <div className="text-base font-semibold tabular-nums">{aircraft.length}</div>
                     </div>
                     <div className="flex items-center justify-between py-2 border-b border-border">
                       <div>
                         <div className="text-xs font-medium">Resolution rate</div>
-                        <div className="text-[10px] text-muted-foreground mt-0.5">{resolved} of {requests.length} cases · target 70%</div>
+                        <div className="text-[10px] text-muted-foreground mt-0.5">
+                          {resolved} of {requests.length} cases · target 70%
+                        </div>
                       </div>
-                      <div className={`text-base font-semibold tabular-nums ${rateTone}`}>{requests.length ? `${rate}%` : "—"}</div>
+                      <div className={`text-base font-semibold tabular-nums ${rateTone}`}>
+                        {requests.length ? `${rate}%` : "—"}
+                      </div>
                     </div>
                     <div className="flex items-center justify-between py-2">
                       <div>
                         <div className="text-xs font-medium">Active suppliers</div>
-                        <div className="text-[10px] text-muted-foreground mt-0.5">in vetted network</div>
+                        <div className="text-[10px] text-muted-foreground mt-0.5">
+                          in vetted network
+                        </div>
                       </div>
-                      <div className="text-base font-semibold tabular-nums">{metrics?.suppliersLive ?? 0}</div>
+                      <div className="text-base font-semibold tabular-nums">
+                        {metrics?.suppliersLive ?? 0}
+                      </div>
                     </div>
                   </>
                 );

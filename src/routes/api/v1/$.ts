@@ -23,7 +23,7 @@ const aircraftInputSchema = z.object({
   baseAirport: z.string().min(1),
   engineManufacturer: z.string().optional(),
   engineType: z.string().optional(),
-  engineSeries: z.string().optional(),
+  engineProgram: z.string().optional(),
   engineSerialNumbers: z.string().optional(),
   numberOfEngines: z.number().optional(),
   propellerManufacturer: z.string().optional(),
@@ -34,7 +34,12 @@ const aircraftInputSchema = z.object({
   amoName: z.string().optional(),
   amoPhone: z.string().optional(),
   amoEmergencyPhone: z.string().optional(),
+  amoEmail: z.string().optional(),
+  amoLocation: z.string().optional(),
   picPhone: z.string().optional(),
+  picName: z.string().optional(),
+  picEmail: z.string().optional(),
+  apuMakeModel: z.string().optional(),
   maintenancePoc: z.string().optional(),
   insurerName: z.string().optional(),
   insurerPolicyRef: z.string().optional(),
@@ -228,7 +233,8 @@ async function handleApiRequest(request: Request) {
       {
         error: {
           code: codeForStatus(status),
-          message: error instanceof Error ? error.message : "Unexpected Aircraft Program API error.",
+          message:
+            error instanceof Error ? error.message : "Unexpected Aircraft Program API error.",
         },
       },
       { status },

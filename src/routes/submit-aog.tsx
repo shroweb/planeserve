@@ -168,8 +168,8 @@ function SubmitAog() {
             <CheckCircle2 className="mx-auto h-11 w-11 text-success" strokeWidth={1.5} />
             <h1 className="mt-4 text-2xl font-semibold tracking-tight">AOG case opened</h1>
             <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-muted-foreground">
-              The Aircraft Program desk has been alerted. Your handler will acknowledge the case and begin
-              sourcing against the aircraft profile on file.
+              The Aircraft Program desk has been alerted. Your handler will acknowledge the case and
+              begin sourcing against the aircraft profile on file.
             </p>
           </div>
 
@@ -237,8 +237,8 @@ function SubmitAog() {
               </p>
               <h1 className="text-2xl font-bold leading-tight sm:text-xl">Submit AOG</h1>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-white/70 sm:mt-1">
-                Call the hotline first. We pick up 24/7. If you cannot call, complete the form and
-                we will call you within 5 minutes.
+                Submit AOG details here first. Once submitted, our sourcing team will review the
+                case and begin searching immediately.
               </p>
             </div>
           </div>
@@ -294,8 +294,8 @@ function SubmitAog() {
             {[
               {
                 n: 1,
-                title: "Handler calls you",
-                desc: "Within 5 minutes. Have aircraft documents ready.",
+                title: "Handler reviews case",
+                desc: "Within 5 minutes. Sourcing begins immediately.",
               },
               {
                 n: 2,
@@ -372,6 +372,64 @@ function SubmitAog() {
               placeholder="e.g. LFPB Paris Le Bourget, or city name"
               className={formControlCls}
             />
+          </div>
+
+          {/* Grounded check */}
+          <div>
+            <label className="text-sm font-medium">Is the aircraft currently grounded?</label>
+            <div className="mt-1.5 flex flex-col gap-3 sm:flex-row sm:gap-6">
+              <label className="flex items-center gap-2.5 cursor-pointer rounded-lg border border-border bg-card px-4 py-3 hover:bg-muted/10 transition-colors flex-1">
+                <input
+                  type="radio"
+                  name="urgency_radio"
+                  checked={form.urgency === "Aircraft grounded"}
+                  onChange={() => setForm((f) => ({ ...f, urgency: "Aircraft grounded" }))}
+                  className="h-4 w-4 text-accent border-gray-300 focus:ring-accent"
+                />
+                <div>
+                  <p className="text-sm font-semibold text-foreground">Yes — Grounded (AOG)</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Urgent parts desk triage needed.
+                  </p>
+                </div>
+              </label>
+              <label className="flex items-center gap-2.5 cursor-pointer rounded-lg border border-border bg-card px-4 py-3 hover:bg-muted/10 transition-colors flex-1">
+                <input
+                  type="radio"
+                  name="urgency_radio"
+                  checked={form.urgency !== "Aircraft grounded"}
+                  onChange={() => setForm((f) => ({ ...f, urgency: "Dispatch affected" }))}
+                  className="h-4 w-4 text-accent border-gray-300 focus:ring-accent"
+                />
+                <div>
+                  <p className="text-sm font-semibold text-foreground">
+                    No — Dispatch affected / Planned
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Operational but support requested.
+                  </p>
+                </div>
+              </label>
+            </div>
+            {form.urgency !== "Aircraft grounded" && (
+              <div className="mt-3 pl-6 border-l-2 border-accent/20">
+                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Urgency classification
+                </label>
+                <select
+                  value={form.urgency}
+                  onChange={(e) => setForm((f) => ({ ...f, urgency: e.target.value as any }))}
+                  className={`${formControlCls} mt-1.5`}
+                >
+                  <option value="Dispatch affected">
+                    Dispatch affected (MEL item / Next flight affected)
+                  </option>
+                  <option value="Planned sourcing">
+                    Planned sourcing (Scheduled maintenance / Spares build)
+                  </option>
+                </select>
+              </div>
+            )}
           </div>
 
           {/* Issue description */}

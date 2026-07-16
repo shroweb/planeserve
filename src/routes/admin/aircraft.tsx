@@ -75,7 +75,9 @@ function AdminAircraft() {
         <StatCard label="Active aircraft" value={String(activeAircraft.length)} />
         <StatCard
           label="Pending verification"
-          value={String(activeAircraft.filter((item) => item.verificationStatus === "Pending").length)}
+          value={String(
+            activeAircraft.filter((item) => item.verificationStatus === "Pending").length,
+          )}
         />
         <StatCard
           label="Categories"
@@ -255,7 +257,7 @@ function AircraftDetailPanel({
               label="Engine"
               value={`${aircraft.engineManufacturer} ${aircraft.engineType}`.trim()}
             />
-            <Detail label="Engine series" value={aircraft.engineSeries} />
+            <Detail label="Engine program" value={aircraft.engineProgram} />
             <Detail label="Engine count" value={String(aircraft.numberOfEngines)} />
             <Detail label="Engine serials" value={aircraft.engineSerialNumbers} />
             {hasPropeller(aircraft.category) && (
@@ -270,13 +272,20 @@ function AircraftDetailPanel({
             <Detail label="Maintenance program" value={aircraft.maintenanceProgramme} />
             <Detail label="Registry standard" value={aircraft.registryStandard} />
             <Detail label="Total airframe hours" value={aircraft.totalAirframeHours} />
+            {aircraft.category === "Business Jet" && (
+              <Detail label="APU make & model" value={aircraft.apuMakeModel} />
+            )}
           </Section>
 
           <Section title="Contacts & Insurance">
             <Detail label="AMO" value={aircraft.amoName} />
             <Detail label="AMO phone" value={aircraft.amoPhone} />
             <Detail label="AMO emergency" value={aircraft.amoEmergencyPhone} />
+            <Detail label="AMO email" value={aircraft.amoEmail} />
+            <Detail label="AMO location" value={aircraft.amoLocation} />
+            <Detail label="PIC name" value={aircraft.picName} />
             <Detail label="PIC mobile" value={aircraft.picPhone} />
+            <Detail label="PIC email" value={aircraft.picEmail} />
             <Detail label="Maintenance POC" value={aircraft.maintenancePoc} />
             <Detail label="Insurer" value={aircraft.insurerName} />
             <Detail label="Policy reference" value={aircraft.insurerPolicyRef} />

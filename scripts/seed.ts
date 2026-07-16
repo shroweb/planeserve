@@ -78,7 +78,7 @@ async function main() {
   // Reseeds recreate the auth user with a fresh id, orphaning old profile rows.
   // Drop any stale admin profiles and keep the better-auth flag in sync so the
   // admin account works immediately with no manual SQL.
-  await pool.query('delete from profiles where lower(email) = $1 and user_id <> $2', [
+  await pool.query("delete from profiles where lower(email) = $1 and user_id <> $2", [
     "admin@planeserve.aero",
     adminUserId,
   ]);

@@ -258,25 +258,16 @@ function SupplierInboxPage() {
     <SupplierAppShell>
       <div className="max-w-5xl">
         <div className="mb-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-          {pending.length} open request{pending.length === 1 ? "" : "s"} ·{" "}
-          {responded.length} quoted
+          {pending.length} open request{pending.length === 1 ? "" : "s"} · {responded.length} quoted
         </div>
         <h1 className="text-2xl font-semibold tracking-tight">Incoming sourcing requests</h1>
 
         {/* Stat row (real metrics) */}
         <div className="mt-5 mb-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
           <StatCard label="Open RFQs" value={String(pending.length)} tone="gold" />
-          <StatCard
-            label="Avg response"
-            value={avgResponseLabel}
-            tone="blue"
-          />
+          <StatCard label="Avg response" value={avgResponseLabel} tone="blue" />
           <StatCard label="Quoted" value={String(responded.length)} />
-          <StatCard
-            label="Win rate · 90d"
-            value={winRateLabel}
-            tone="green"
-          />
+          <StatCard label="Win rate · 90d" value={winRateLabel} tone="green" />
         </div>
 
         {pending.length === 0 && responded.length === 0 && (
@@ -378,9 +369,7 @@ function SupplierInboxPage() {
                       <div className="text-right shrink-0">
                         <div className="flex items-center justify-end gap-1.5">
                           {now - new Date(rfq.sentAt).getTime() < 60 * 60 * 1000 && (
-                            <StatusPill tone="gold">
-                              New
-                            </StatusPill>
+                            <StatusPill tone="gold">New</StatusPill>
                           )}
                           {(() => {
                             const w = quoteWindow(rfq.sentAt, now);

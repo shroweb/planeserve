@@ -339,7 +339,8 @@ function ApplicationCard({ app, onAction }: { app: Application; onAction: () => 
     if (isNaN(d.getTime())) return { label: expiry, cls: "text-muted-foreground" };
     const days = Math.floor((d.getTime() - Date.now()) / 86_400_000);
     if (days < 0) return { label: `Expired ${expiry}`, cls: "text-destructive font-medium" };
-    if (days <= 30) return { label: `Expires ${expiry} (${days}d)`, cls: "text-accent font-medium" };
+    if (days <= 30)
+      return { label: `Expires ${expiry} (${days}d)`, cls: "text-accent font-medium" };
     return { label: `Valid · ${expiry}`, cls: "text-success" };
   }
 

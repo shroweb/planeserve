@@ -12,6 +12,7 @@ import {
   archiveAircraft,
   AircraftRecord,
   AogRecord,
+  activateCoverSelf,
 } from "@/lib/app.functions";
 import { uploadBrowserFile } from "@/lib/file-upload";
 import { useState, useEffect } from "react";
@@ -192,33 +193,58 @@ function AircraftDetail({ aircraft }: { aircraft: AircraftRecord }) {
 function OverviewTab({ aircraft }: { aircraft: AircraftRecord }) {
   return (
     <div className="grid gap-6 md:grid-cols-2">
-      <Section title="Identity">
-        <KV k="Registration" v={aircraft.registration} />
-        <KV k="Category" v={aircraft.category} />
-        <KV k="Make / Model" v={aircraft.makeModel} />
-        <KV k="Serial Number" v={aircraft.serialNumber || "—"} />
-        <KV k="Year of Manufacture" v={aircraft.yearOfManufacture || "—"} />
-        <KV k="Type of Operations" v={aircraft.typeOfOperations || "—"} />
-        {hasPropeller(aircraft.category) && (
-          <>
-            <KV
-              k="Propeller"
-              v={`${aircraft.propellerManufacturer} ${aircraft.propellerType}`.trim() || "—"}
-            />
-            <KV k="Propeller serials" v={aircraft.propellerSerialNumbers || "—"} />
-          </>
-        )}
-      </Section>
-      <Section title="Subscription">
-        <KV k="Plan" v={aircraft.plan === "monthly" ? "Monthly ($100/mo)" : "Annual ($1,000/yr)"} />
-        <KV k="Subscription" v={aircraft.subscriptionStatus} />
-        <KV
-          k="AOG Cover"
-          v={aircraft.verificationStatus === "Verified" ? "Active" : "Pending verification"}
-        />
-        <KV k="Base Airport" v={aircraft.baseAirport || "—"} />
-        <KV k="Owner / Operator" v={aircraft.ownerOperatorName || "—"} />
-      </Section>
+      <div className="space-y-6">
+        <Section title="Identity">
+          <KV k="Registration" v={aircraft.registration} />
+          <KV k="Category" v={aircraft.category} />
+          <KV k="Make / Model" v={aircraft.makeModel} />
+          <KV k="Serial Number" v={aircraft.serialNumber || "—"} />
+          <KV k="Year of Manufacture" v={aircraft.yearOfManufacture || "—"} />
+          <KV k="Type of Operations" v={aircraft.typeOfOperations || "—"} />
+        </Section>
+        <Section title="Subscription">
+          <KV
+            k="Plan"
+            v={aircraft.plan === "monthly" ? "Monthly ($100/mo)" : "Annual ($1,000/yr)"}
+          />
+          <KV k="Subscription" v={aircraft.subscriptionStatus} />
+          <KV
+            k="AOG Cover"
+            v={aircraft.verificationStatus === "Verified" ? "Active" : "Pending verification"}
+          />
+          <KV k="Base Airport" v={aircraft.baseAirport || "—"} />
+          <KV k="Owner / Operator" v={aircraft.ownerOperatorName || "—"} />
+        </Section>
+      </div>
+      <div>
+        <Section title="Engine & Maintenance">
+          <KV
+            k="Engine"
+            v={`${aircraft.engineManufacturer} ${aircraft.engineType}`.trim() || "—"}
+          />
+          <KV k="Engine program" v={aircraft.engineProgram || "—"} />
+          <KV
+            k="Engine count"
+            v={aircraft.numberOfEngines ? String(aircraft.numberOfEngines) : "—"}
+          />
+          <KV k="Engine serials" v={aircraft.engineSerialNumbers || "—"} />
+          {hasPropeller(aircraft.category) && (
+            <>
+              <KV
+                k="Propeller"
+                v={`${aircraft.propellerManufacturer} ${aircraft.propellerType}`.trim() || "—"}
+              />
+              <KV k="Propeller serials" v={aircraft.propellerSerialNumbers || "—"} />
+            </>
+          )}
+          {aircraft.category === "Business Jet" && (
+            <KV k="APU make & model" v={aircraft.apuMakeModel || "—"} />
+          )}
+          <KV k="Total airframe hours" v={aircraft.totalAirframeHours || "—"} />
+          <KV k="Maintenance program" v={aircraft.maintenanceProgramme || "—"} />
+          <KV k="Registry standard" v={aircraft.registryStandard || "—"} />
+        </Section>
+      </div>
     </div>
   );
 }
@@ -228,7 +254,7 @@ function EngineTab({ aircraft }: { aircraft: AircraftRecord }) {
   const [form, setForm] = useState({
     engineManufacturer: aircraft.engineManufacturer,
     engineType: aircraft.engineType,
-    engineSeries: aircraft.engineSeries,
+    engineProgram: aircraft.engineProgram,
     engineSerialNumbers: aircraft.engineSerialNumbers,
     numberOfEngines: aircraft.numberOfEngines,
     propellerManufacturer: aircraft.propellerManufacturer,
@@ -237,6 +263,7 @@ function EngineTab({ aircraft }: { aircraft: AircraftRecord }) {
     maintenanceProgramme: aircraft.maintenanceProgramme,
     registryStandard: aircraft.registryStandard,
     totalAirframeHours: aircraft.totalAirframeHours,
+    apuMakeModel: aircraft.apuMakeModel || "",
   });
 
   const mutation = useMutation({
@@ -248,7 +275,11 @@ function EngineTab({ aircraft }: { aircraft: AircraftRecord }) {
           amoName: aircraft.amoName,
           amoPhone: aircraft.amoPhone,
           amoEmergencyPhone: aircraft.amoEmergencyPhone,
+          amoEmail: aircraft.amoEmail,
+          amoLocation: aircraft.amoLocation,
           picPhone: aircraft.picPhone,
+          picName: aircraft.picName,
+          picEmail: aircraft.picEmail,
           maintenancePoc: aircraft.maintenancePoc,
           insurerName: aircraft.insurerName,
           insurerPolicyRef: aircraft.insurerPolicyRef,
@@ -278,11 +309,11 @@ function EngineTab({ aircraft }: { aircraft: AircraftRecord }) {
             onChange={(e) => setForm((f) => ({ ...f, engineType: e.target.value }))}
           />
         </Field>
-        <Field label="Engine series">
+        <Field label="Engine program">
           <input
             className={inputCls}
-            value={form.engineSeries}
-            onChange={(e) => setForm((f) => ({ ...f, engineSeries: e.target.value }))}
+            value={form.engineProgram}
+            onChange={(e) => setForm((f) => ({ ...f, engineProgram: e.target.value }))}
           />
         </Field>
         <Field label="Engine serial numbers">
@@ -310,9 +341,7 @@ function EngineTab({ aircraft }: { aircraft: AircraftRecord }) {
                 className={inputCls}
                 value={form.propellerManufacturer}
                 placeholder="Hartzell, McCauley, MT-Propeller"
-                onChange={(e) =>
-                  setForm((f) => ({ ...f, propellerManufacturer: e.target.value }))
-                }
+                onChange={(e) => setForm((f) => ({ ...f, propellerManufacturer: e.target.value }))}
               />
             </Field>
             <Field label="Propeller type / model">
@@ -328,12 +357,20 @@ function EngineTab({ aircraft }: { aircraft: AircraftRecord }) {
                 className={inputCls}
                 value={form.propellerSerialNumbers}
                 placeholder="e.g. P12345, P12346"
-                onChange={(e) =>
-                  setForm((f) => ({ ...f, propellerSerialNumbers: e.target.value }))
-                }
+                onChange={(e) => setForm((f) => ({ ...f, propellerSerialNumbers: e.target.value }))}
               />
             </Field>
           </>
+        )}
+        {aircraft.category === "Business Jet" && (
+          <Field label="APU make & model">
+            <input
+              className={inputCls}
+              value={form.apuMakeModel}
+              placeholder="e.g. Honeywell GTCP36-150"
+              onChange={(e) => setForm((f) => ({ ...f, apuMakeModel: e.target.value }))}
+            />
+          </Field>
         )}
         <Field label="Total airframe hours">
           <input
@@ -370,7 +407,11 @@ function ContactsTab({ aircraft }: { aircraft: AircraftRecord }) {
     amoName: aircraft.amoName,
     amoPhone: aircraft.amoPhone,
     amoEmergencyPhone: aircraft.amoEmergencyPhone,
+    amoEmail: aircraft.amoEmail,
+    amoLocation: aircraft.amoLocation,
+    picName: aircraft.picName || "",
     picPhone: aircraft.picPhone,
+    picEmail: aircraft.picEmail || "",
     maintenancePoc: aircraft.maintenancePoc,
     insurerName: aircraft.insurerName,
     insurerPolicyRef: aircraft.insurerPolicyRef,
@@ -383,7 +424,7 @@ function ContactsTab({ aircraft }: { aircraft: AircraftRecord }) {
           id: aircraft.id,
           engineManufacturer: aircraft.engineManufacturer,
           engineType: aircraft.engineType,
-          engineSeries: aircraft.engineSeries,
+          engineProgram: aircraft.engineProgram,
           engineSerialNumbers: aircraft.engineSerialNumbers,
           numberOfEngines: aircraft.numberOfEngines,
           propellerManufacturer: aircraft.propellerManufacturer,
@@ -392,6 +433,7 @@ function ContactsTab({ aircraft }: { aircraft: AircraftRecord }) {
           maintenanceProgramme: aircraft.maintenanceProgramme,
           registryStandard: aircraft.registryStandard,
           totalAirframeHours: aircraft.totalAirframeHours,
+          apuMakeModel: aircraft.apuMakeModel,
           ...form,
         },
       }),
@@ -426,11 +468,45 @@ function ContactsTab({ aircraft }: { aircraft: AircraftRecord }) {
             onChange={(e) => setForm((f) => ({ ...f, amoEmergencyPhone: e.target.value }))}
           />
         </Field>
+        <Field label="AMO email address">
+          <input
+            type="email"
+            className={inputCls}
+            value={form.amoEmail}
+            placeholder="e.g. ops@gamaaviation.com"
+            onChange={(e) => setForm((f) => ({ ...f, amoEmail: e.target.value }))}
+          />
+        </Field>
+        <Field label="AMO location (timezone)">
+          <input
+            className={inputCls}
+            value={form.amoLocation}
+            placeholder="e.g. London (GMT) / New York (EST)"
+            onChange={(e) => setForm((f) => ({ ...f, amoLocation: e.target.value }))}
+          />
+        </Field>
+        <Field label="Pilot in Command name">
+          <input
+            className={inputCls}
+            value={form.picName}
+            placeholder="e.g. Captain Oliver Bancroft"
+            onChange={(e) => setForm((f) => ({ ...f, picName: e.target.value }))}
+          />
+        </Field>
         <Field label="Pilot in Command (direct mobile)">
           <input
             className={inputCls}
             value={form.picPhone}
             onChange={(e) => setForm((f) => ({ ...f, picPhone: e.target.value }))}
+          />
+        </Field>
+        <Field label="Pilot in Command email">
+          <input
+            type="email"
+            className={inputCls}
+            value={form.picEmail}
+            placeholder="pic@company.com"
+            onChange={(e) => setForm((f) => ({ ...f, picEmail: e.target.value }))}
           />
         </Field>
         <Field label="Maintenance point of contact">
@@ -565,9 +641,11 @@ function DocumentsTab({ aircraft }: { aircraft: AircraftRecord }) {
 }
 
 function VerificationTab({ aircraft }: { aircraft: AircraftRecord }) {
+  const qc = useQueryClient();
   const tier2Fields = [
     { label: "Engine manufacturer", value: aircraft.engineManufacturer },
     { label: "Engine type", value: aircraft.engineType },
+    { label: "Engine program", value: aircraft.engineProgram },
     { label: "Engine serial numbers", value: aircraft.engineSerialNumbers },
     ...(hasPropeller(aircraft.category)
       ? [
@@ -576,12 +654,19 @@ function VerificationTab({ aircraft }: { aircraft: AircraftRecord }) {
           { label: "Propeller serial numbers", value: aircraft.propellerSerialNumbers },
         ]
       : []),
+    ...(aircraft.category === "Business Jet"
+      ? [{ label: "APU make & model", value: aircraft.apuMakeModel }]
+      : []),
     { label: "Maintenance program", value: aircraft.maintenanceProgramme },
     { label: "Registry standard", value: aircraft.registryStandard },
     { label: "AMO name", value: aircraft.amoName },
     { label: "AMO phone", value: aircraft.amoPhone },
     { label: "AMO out-of-hours", value: aircraft.amoEmergencyPhone },
+    { label: "AMO email address", value: aircraft.amoEmail },
+    { label: "AMO location (timezone)", value: aircraft.amoLocation },
+    { label: "Pilot in Command name", value: aircraft.picName },
     { label: "Pilot in Command mobile", value: aircraft.picPhone },
+    { label: "Pilot in Command email", value: aircraft.picEmail },
     { label: "Insurer name", value: aircraft.insurerName },
     { label: "Policy reference", value: aircraft.insurerPolicyRef },
     { label: "Total airframe hours", value: aircraft.totalAirframeHours },
@@ -591,6 +676,18 @@ function VerificationTab({ aircraft }: { aircraft: AircraftRecord }) {
   const total = tier2Fields.length;
   const percent = Math.round((complete / total) * 100);
   const isVerified = aircraft.verificationStatus === "Verified";
+
+  const mutation = useMutation({
+    mutationFn: () => activateCoverSelf({ data: { id: aircraft.id } }),
+    onSuccess: () => {
+      toast.success("Cover activated successfully!");
+      qc.invalidateQueries({ queryKey: ["aircraft"] });
+      qc.invalidateQueries({ queryKey: ["billing"] });
+      qc.invalidateQueries({ queryKey: ["dashboard"] });
+      qc.invalidateQueries({ queryKey: ["value-summary"] });
+    },
+    onError: (err) => toast.error(err instanceof Error ? err.message : "Failed to activate cover."),
+  });
 
   return (
     <div className="space-y-6">
@@ -614,7 +711,7 @@ function VerificationTab({ aircraft }: { aircraft: AircraftRecord }) {
             <p className="mt-1 text-xs font-normal leading-5 text-muted-foreground">
               {isVerified
                 ? "Aircraft Program has verified this aircraft and the AOG desk can support it formally."
-                : "Your subscription is active. Formal AOG cover starts once Aircraft Program verifies the aircraft details below."}
+                : "Your subscription is active. Complete your aircraft profile details and activate cover instantly below."}
             </p>
           </div>
         </div>
@@ -636,6 +733,41 @@ function VerificationTab({ aircraft }: { aircraft: AircraftRecord }) {
           />
         </div>
       </div>
+
+      {!isVerified && (
+        <div className="space-y-4">
+          {percent < 100 ? (
+            <div className="rounded-md border border-amber-200 bg-amber-50/50 p-4 text-sm text-amber-800">
+              <p className="font-semibold">Complete cover profile to activate</p>
+              <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
+                Please complete the remaining {total - complete} fields in your{" "}
+                <span className="font-medium text-foreground">Engine & Maintenance</span> and{" "}
+                <span className="font-medium text-foreground">Contacts</span> tabs. All profile
+                fields must be filled before cover can be activated.
+              </p>
+            </div>
+          ) : (
+            <div className="rounded-md border border-green-200 bg-green-50/50 p-4 text-sm text-green-800">
+              <p className="font-semibold">All details completed</p>
+              <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
+                You have completed 100% of the required cover profile fields. Confirm that the
+                information is accurate to activate cover immediately.
+              </p>
+            </div>
+          )}
+          <button
+            onClick={() => mutation.mutate()}
+            disabled={percent < 100 || mutation.isPending}
+            className={`w-full rounded-sm py-2.5 text-sm font-semibold text-center transition-all ${
+              percent < 100
+                ? "bg-muted text-muted-foreground cursor-not-allowed border border-border"
+                : "bg-accent text-accent-foreground hover:bg-accent/90 shadow-sm"
+            }`}
+          >
+            {mutation.isPending ? "Activating Cover..." : "Confirm details & activate cover"}
+          </button>
+        </div>
+      )}
 
       <div className="space-y-2">
         {tier2Fields.map((f) => (
@@ -692,8 +824,8 @@ function RemoveAircraftTab({ aircraft }: { aircraft: AircraftRecord }) {
           Remove {aircraft.registration} from active cover
         </p>
         <p className="mt-1 text-xs leading-5 text-muted-foreground">
-          This archives the aircraft and cancels its active cover status in Aircraft Program. Case history,
-          documents, and Parts Passport records are retained for audit purposes.
+          This archives the aircraft and cancels its active cover status in Aircraft Program. Case
+          history, documents, and Parts Passport records are retained for audit purposes.
         </p>
       </div>
       <div className="grid gap-4 md:grid-cols-2">

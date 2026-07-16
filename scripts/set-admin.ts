@@ -42,7 +42,7 @@ async function main() {
 
   // Clean up any orphaned duplicate profile rows for this email (stale user ids
   // left behind by earlier reseeds) so lookups stay unambiguous.
-  await pool.query('delete from profiles where lower(email) = $1 and user_id <> $2', [
+  await pool.query("delete from profiles where lower(email) = $1 and user_id <> $2", [
     email,
     user.id,
   ]);

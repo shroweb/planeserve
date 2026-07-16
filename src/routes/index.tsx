@@ -158,8 +158,9 @@ function Home() {
         <div className="mx-auto max-w-4xl px-6 py-20 text-center">
           <Eyebrow>What is Aircraft Program?</Eyebrow>
           <p className="mt-8 text-2xl font-bold leading-relaxed md:text-3xl lg:text-4xl lg:leading-tight">
-            Aircraft Program is a <span className="text-accent">retained AOG parts support service</span>{" "}
-            for private and business aircraft.
+            Aircraft Program is a{" "}
+            <span className="text-accent">retained AOG parts support service</span> for private and
+            business aircraft.
           </p>
           <p className="mx-auto mt-8 max-w-2xl text-base leading-8 text-muted-foreground md:text-lg">
             When an enrolled aircraft goes technical, your aircraft details, support contacts and
@@ -169,8 +170,8 @@ function Home() {
           </p>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-muted-foreground md:text-lg">
             The service grew from years of owners and operators asking James Moon for help finding
-            parts that had slipped out of obvious distribution. Aircraft Program turns those calls into a
-            formal aircraft enrolment program with a retained AOG desk behind it.
+            parts that had slipped out of obvious distribution. Aircraft Program turns those calls
+            into a formal aircraft enrolment program with a retained AOG desk behind it.
           </p>
         </div>
       </section>
@@ -198,7 +199,8 @@ function Home() {
                   <div>
                     <div className="font-semibold text-white">No supplier account</div>
                     <p className="mt-1 text-sm text-white/55">
-                      You may never have opened an account with the parts provider holding the component.
+                      You may never have opened an account with the parts provider holding the
+                      component.
                     </p>
                   </div>
                 </div>
@@ -220,7 +222,8 @@ function Home() {
                   <div>
                     <div className="font-semibold text-white">Documentation pressure</div>
                     <p className="mt-1 text-sm text-white/55">
-                      You may not know exactly which release documents your registration authority requires.
+                      You may not know exactly which release documents your registration authority
+                      requires.
                     </p>
                   </div>
                 </div>
@@ -280,7 +283,9 @@ function Home() {
             <Eyebrow>Working With Your AMO</Eyebrow>
             <h2 className="mt-4 text-3xl font-semibold leading-tight tracking-tight md:text-4xl">
               Your AMO looks after the aircraft.{" "}
-              <span className="text-accent">We look after the parts the market makes difficult.</span>
+              <span className="text-accent">
+                We look after the parts the market makes difficult.
+              </span>
             </h2>
           </div>
           <div>
@@ -441,9 +446,9 @@ function Home() {
               Founded by an aviation entrepreneur. Built from necessity.
             </h2>
             <p className="mt-5 max-w-2xl text-sm leading-7 text-white/55">
-              Aircraft Program came from the repeated reality of legacy aircraft ownership: an operator
-              needs a difficult part, the obvious channels have gone quiet, and someone with the
-              right network has to know where to look.
+              Aircraft Program came from the repeated reality of legacy aircraft ownership: an
+              operator needs a difficult part, the obvious channels have gone quiet, and someone
+              with the right network has to know where to look.
             </p>
             <blockquote className="mt-8">
               <p className="font-serif text-2xl italic leading-[1.5] tracking-normal text-white/90 md:text-3xl md:leading-[1.45]">
@@ -482,9 +487,9 @@ function Home() {
                 options and the fixed Aircraft Program sourcing fee are shown before you approve.
               </p>
               <div className="mt-6 rounded-sm border border-accent/25 bg-accent/10 p-4 text-sm leading-7 text-muted-foreground">
-                <strong className="text-foreground">How we are incentivised:</strong> we earn a fixed
-                sourcing fee on every part we procure. We present you with all qualified options.
-                You choose. Our fee is the same regardless of which option you select.
+                <strong className="text-foreground">How we are incentivised:</strong> we earn a
+                fixed sourcing fee on every part we procure. We present you with all qualified
+                options. You choose. Our fee is the same regardless of which option you select.
               </div>
               <ul className="mt-8 space-y-3">
                 {[

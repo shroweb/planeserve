@@ -134,106 +134,103 @@ function Billing() {
           <div className="divide-y divide-border">
             {useStripeInvoices &&
               stripeInvoices.map((inv) => (
-                  <div
-                    key={inv.stripeId}
-                    className="flex items-center justify-between px-5 py-4 text-sm"
-                  >
-                    <div>
-                      <div className="font-mono text-xs text-muted-foreground">
-                        {inv.number ?? inv.stripeId.slice(-8)}
-                      </div>
-                      <div className="text-xs text-muted-foreground mt-0.5">
-                        {new Date(inv.created * 1000).toLocaleDateString("en-GB", {
-                          day: "numeric",
-                          month: "short",
-                          year: "numeric",
-                        })}
-                      </div>
+                <div
+                  key={inv.stripeId}
+                  className="flex items-center justify-between px-5 py-4 text-sm"
+                >
+                  <div>
+                    <div className="font-mono text-xs text-muted-foreground">
+                      {inv.number ?? inv.stripeId.slice(-8)}
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="text-right">
-                        <div className="font-medium">
-                          {((inv.amountPaid || inv.amountDue) / 100).toLocaleString("en-US", {
-                            style: "currency",
-                            currency: (inv.currency ?? "usd").toUpperCase(),
-                          })}
-                        </div>
-                        <div
-                          className={`text-xs font-medium ${inv.status === "paid" ? "text-emerald-600" : inv.status === "open" ? "text-amber-600" : "text-muted-foreground"}`}
-                        >
-                          {inv.status}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        {inv.pdfUrl && (
-                          <a
-                            href={inv.pdfUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="flex items-center gap-1 rounded-sm border border-border px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:bg-muted transition-colors"
-                          >
-                            <Download className="h-3 w-3" /> PDF
-                          </a>
-                        )}
-                        {inv.hostedUrl && (
-                          <a
-                            href={inv.hostedUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="flex items-center gap-1 rounded-sm border border-border px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:bg-muted transition-colors"
-                          >
-                            View <ExternalLink className="h-3 w-3" />
-                          </a>
-                        )}
-                      </div>
+                    <div className="text-xs text-muted-foreground mt-0.5">
+                      {new Date(inv.created * 1000).toLocaleDateString("en-GB", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      })}
                     </div>
                   </div>
-                ))}
-            {(!useStripeInvoices ? dbInvoices : platformInvoices).slice(0, 5).map((invoice) => (
-                  <div
-                    key={invoice.id}
-                    className="flex items-center justify-between px-5 py-4 text-sm"
-                  >
-                    <div>
-                      <div className="font-mono text-xs">{invoice.id.slice(-8)}</div>
-                      {invoice.description && (
-                        <div className="mt-0.5 max-w-[15rem] truncate text-xs font-medium">
-                          {invoice.description}
-                        </div>
-                      )}
-                      <div className="text-xs text-muted-foreground">
-                        {new Date(invoice.createdAt).toLocaleDateString("en-GB", {
-                          day: "numeric",
-                          month: "short",
-                          year: "numeric",
+                  <div className="flex items-center gap-3">
+                    <div className="text-right">
+                      <div className="font-medium">
+                        {((inv.amountPaid || inv.amountDue) / 100).toLocaleString("en-US", {
+                          style: "currency",
+                          currency: (inv.currency ?? "usd").toUpperCase(),
                         })}
                       </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="text-right">
-                        <div className="font-medium">
-                          {(invoice.amountCents / 100).toLocaleString("en-US", {
-                            style: "currency",
-                            currency: (invoice.currency ?? "usd").toUpperCase(),
-                          })}
-                        </div>
-                        <div className="text-xs text-muted-foreground">{invoice.status}</div>
+                      <div
+                        className={`text-xs font-medium ${inv.status === "paid" ? "text-emerald-600" : inv.status === "open" ? "text-amber-600" : "text-muted-foreground"}`}
+                      >
+                        {inv.status}
                       </div>
-                      {stripe?.portalUrl ? (
+                    </div>
+                    <div className="flex items-center gap-1">
+                      {inv.pdfUrl && (
                         <a
-                          href={stripe.portalUrl}
+                          href={inv.pdfUrl}
                           target="_blank"
                           rel="noreferrer"
                           className="flex items-center gap-1 rounded-sm border border-border px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:bg-muted transition-colors"
                         >
-                          <ExternalLink className="h-3 w-3" /> View
+                          <Download className="h-3 w-3" /> PDF
                         </a>
-                      ) : (
-                        <span className="text-xs text-muted-foreground/50 italic">PDF pending</span>
+                      )}
+                      {inv.hostedUrl && (
+                        <a
+                          href={inv.hostedUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="flex items-center gap-1 rounded-sm border border-border px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:bg-muted transition-colors"
+                        >
+                          View <ExternalLink className="h-3 w-3" />
+                        </a>
                       )}
                     </div>
                   </div>
-                ))}
+                </div>
+              ))}
+            {(!useStripeInvoices ? dbInvoices : platformInvoices).slice(0, 5).map((invoice) => (
+              <div key={invoice.id} className="flex items-center justify-between px-5 py-4 text-sm">
+                <div>
+                  <div className="font-mono text-xs">{invoice.id.slice(-8)}</div>
+                  {invoice.description && (
+                    <div className="mt-0.5 max-w-[15rem] truncate text-xs font-medium">
+                      {invoice.description}
+                    </div>
+                  )}
+                  <div className="text-xs text-muted-foreground">
+                    {new Date(invoice.createdAt).toLocaleDateString("en-GB", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="text-right">
+                    <div className="font-medium">
+                      {(invoice.amountCents / 100).toLocaleString("en-US", {
+                        style: "currency",
+                        currency: (invoice.currency ?? "usd").toUpperCase(),
+                      })}
+                    </div>
+                    <div className="text-xs text-muted-foreground">{invoice.status}</div>
+                  </div>
+                  {stripe?.portalUrl ? (
+                    <a
+                      href={stripe.portalUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-1 rounded-sm border border-border px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:bg-muted transition-colors"
+                    >
+                      <ExternalLink className="h-3 w-3" /> View
+                    </a>
+                  ) : (
+                    <span className="text-xs text-muted-foreground/50 italic">PDF pending</span>
+                  )}
+                </div>
+              </div>
+            ))}
             {!useStripeInvoices && !dbInvoices.length && (
               <div className="px-5 py-8 text-sm text-muted-foreground">No invoices yet.</div>
             )}

@@ -38,8 +38,8 @@ function AdminLogin() {
             <Eyebrow>Backend Admin</Eyebrow>
             <H2>Sign in to Aircraft Program operations.</H2>
             <p className="mt-5 max-w-xl text-sm leading-7 text-muted-foreground">
-              Admin access is reserved for the Aircraft Program operations team to manage enrolments,
-              aircraft records, customers and AOG requests.
+              Admin access is reserved for the Aircraft Program operations team to manage
+              enrolments, aircraft records, customers and AOG requests.
             </p>
           </div>
 

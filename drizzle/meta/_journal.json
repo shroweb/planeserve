@@ -50,6 +50,20 @@
       "when": 1783282256244,
       "tag": "0006_broad_hiroim",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1783692902303,
+      "tag": "0007_rename_engine_series",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1784202977883,
+      "tag": "0008_add_pic_apu_fields",
+      "breakpoints": true
     }
   ]
 }

@@ -36,7 +36,9 @@ export function PlaneServeLogo({
   const content = (
     <>
       <PlaneServeMark className="h-9 w-9 shrink-0" />
-      <span className={wordClassName || "text-base font-semibold tracking-tight"}>Aircraft Program</span>
+      <span className={wordClassName || "text-base font-semibold tracking-tight"}>
+        Aircraft Program
+      </span>
     </>
   );
 

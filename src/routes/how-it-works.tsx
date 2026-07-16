@@ -21,7 +21,8 @@ export const Route = createFileRoute("/how-it-works")({
       { title: "How it Works — The Aircraft Program AOG support journey" },
       {
         name: "description",
-        content: "Learn how Aircraft Program moves your aircraft from 'grounded' to 'serviceable' using a retained support desk and pre-captured context.",
+        content:
+          "Learn how Aircraft Program moves your aircraft from 'grounded' to 'serviceable' using a retained support desk and pre-captured context.",
       },
     ],
   }),
@@ -59,12 +60,14 @@ function HowItWorks() {
               </div>
               <h2 className="text-3xl font-semibold tracking-tight md:text-4xl leading-tight">
                 Before the AOG.{" "}
-                <span className="text-accent">The work that happens before anything goes wrong.</span>
+                <span className="text-accent">
+                  The work that happens before anything goes wrong.
+                </span>
               </h2>
               <p className="mt-6 text-base leading-8 text-muted-foreground">
-                Aircraft Program is not a marketplace you log into during a crisis. It is a retained AOG
-                desk where your aircraft record, AMO contacts, and trace requirements are already on
-                file long before the first call comes in.
+                Aircraft Program is not a marketplace you log into during a crisis. It is a retained
+                AOG desk where your aircraft record, AMO contacts, and trace requirements are
+                already on file long before the first call comes in.
               </p>
             </div>
 
@@ -146,8 +149,7 @@ function HowItWorks() {
               <AogIcon className="h-5 w-5 text-accent" />
             </div>
             <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
-              When the call comes in,{" "}
-              <span className="text-accent">we're already moving.</span>
+              When the call comes in, <span className="text-accent">we're already moving.</span>
             </h2>
             <p className="mt-6 text-base leading-8 text-muted-foreground">
               Because your aircraft record is already on file, the desk bypasses the discovery phase
@@ -199,7 +201,9 @@ function HowItWorks() {
               return (
                 <div key={step.t} className="p-8 bg-background flex gap-6">
                   <div className="flex-none">
-                    <div className="text-xs font-bold text-accent/60 tracking-widest mb-3">{step.n}</div>
+                    <div className="text-xs font-bold text-accent/60 tracking-widest mb-3">
+                      {step.n}
+                    </div>
                     <div className="flex h-9 w-9 items-center justify-center rounded-sm bg-accent/10 border border-accent/20">
                       <Icon className="h-4 w-4 text-accent" strokeWidth={1.5} />
                     </div>
@@ -237,8 +241,7 @@ function HowItWorks() {
                 <MessageIcon className="h-5 w-5 text-accent" />
               </div>
               <h2 className="text-3xl font-semibold tracking-tight md:text-4xl leading-tight">
-                Options, approval, and{" "}
-                <span className="text-accent">coordinated dispatch.</span>
+                Options, approval, and <span className="text-accent">coordinated dispatch.</span>
               </h2>
               <p className="mt-6 text-base leading-8 text-muted-foreground">
                 Options land with side-by-side transparency. Once you approve, we handle the order
@@ -251,8 +254,12 @@ function HowItWorks() {
                     <ClearedIcon className="h-5 w-5 text-accent" />
                   </div>
                   <div>
-                    <div className="font-semibold text-sm uppercase tracking-wider text-accent mb-1">Approval</div>
-                    <p className="text-sm text-muted-foreground">Approve the preferred option from the dashboard or directly with the desk.</p>
+                    <div className="font-semibold text-sm uppercase tracking-wider text-accent mb-1">
+                      Approval
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Approve the preferred option from the dashboard or directly with the desk.
+                    </p>
                   </div>
                 </div>
                 <div className="flex gap-4">
@@ -260,8 +267,13 @@ function HowItWorks() {
                     <SlaIcon className="h-5 w-5 text-accent" />
                   </div>
                   <div>
-                    <div className="font-semibold text-sm uppercase tracking-wider text-accent mb-1">Tracking</div>
-                    <p className="text-sm text-muted-foreground">AWB tracked — freight route, carrier, and estimated arrival updated as it moves.</p>
+                    <div className="font-semibold text-sm uppercase tracking-wider text-accent mb-1">
+                      Tracking
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      AWB tracked — freight route, carrier, and estimated arrival updated as it
+                      moves.
+                    </p>
                   </div>
                 </div>
                 <div className="flex gap-4">
@@ -269,8 +281,13 @@ function HowItWorks() {
                     <BookOpen className="h-5 w-5 text-accent" strokeWidth={1.5} />
                   </div>
                   <div>
-                    <div className="font-semibold text-sm uppercase tracking-wider text-accent mb-1">Record</div>
-                    <p className="text-sm text-muted-foreground">Part number, trace documentation, and case reference added permanently to the aircraft record.</p>
+                    <div className="font-semibold text-sm uppercase tracking-wider text-accent mb-1">
+                      Record
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Part number, trace documentation, and case reference added permanently to the
+                      aircraft record.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -344,8 +361,8 @@ function HowItWorks() {
             Enrol your aircraft.
           </h2>
           <p className="mt-6 mx-auto max-w-xl text-base text-white/60">
-            It takes less than five minutes to add your aircraft and activate your Aircraft Program support desk.
-            The sooner your record is on file, the sooner the desk is ready to move.
+            It takes less than five minutes to add your aircraft and activate your Aircraft Program
+            support desk. The sooner your record is on file, the sooner the desk is ready to move.
           </p>
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Link

@@ -8,7 +8,7 @@ import {
 import { AppShell } from "@/components/app/AppShell";
 import { authClient } from "@/lib/auth-client";
 import { useEffect, useRef, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, ChevronRight, ChevronLeft, Lock, LogIn, UserPlus } from "lucide-react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
@@ -99,7 +99,9 @@ type FormData = {
   policyReference: string;
   totalAirframeHours: string;
   primaryContactName: string;
+  picName: string;
   picDirectMobile: string;
+  picEmail: string;
   opsContactName: string;
   opsContactEmail: string;
   managerName: string;
@@ -108,12 +110,14 @@ type FormData = {
   confirmPassword: string;
   plan: "monthly" | "annual";
   agreed: boolean;
+  postalCode: string;
 };
 
 const PROPELLER_CATEGORIES = new Set<FormData["category"]>([
   "Turboprop",
   "Single Engine",
   "Multi Engine",
+  "Helicopter",
 ]);
 
 const defaultForm: FormData = {
@@ -144,7 +148,9 @@ const defaultForm: FormData = {
   policyReference: "",
   totalAirframeHours: "",
   primaryContactName: "",
+  picName: "",
   picDirectMobile: "",
+  picEmail: "",
   opsContactName: "",
   opsContactEmail: "",
   managerName: "",
@@ -153,6 +159,7 @@ const defaultForm: FormData = {
   confirmPassword: "",
   plan: "monthly",
   agreed: false,
+  postalCode: "",
 };
 
 function validateStep(step: number, form: FormData, isSignedIn = false): string | null {
@@ -180,10 +187,18 @@ function validateStep(step: number, form: FormData, isSignedIn = false): string 
     if (!form.baseAirport.trim()) return "Base airport ICAO is required.";
     if (!form.ownerOperatorName.trim()) return "Owner / operator name is required.";
   }
+  if (step === 4) {
+    if (!form.primaryContactName.trim()) return "Primary contact name is required.";
+    if (!form.picName.trim()) return "Pilot in Command (PIC) name is required.";
+    if (!form.picDirectMobile.trim()) return "PIC direct mobile is required.";
+    if (!form.picEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.picEmail))
+      return "A valid PIC email address is required.";
+  }
   return null;
 }
 
 function EnrolPage() {
+  const queryClient = useQueryClient();
   const session = authClient.useSession();
   const isSignedIn = Boolean(session.data?.user);
   const { data: accountUser } = useQuery({
@@ -243,9 +258,9 @@ function EnrolPage() {
               Create your account before enrolling an aircraft.
             </h1>
             <p className="mt-5 max-w-xl text-sm leading-7 text-muted-foreground">
-              Aircraft Program stores aircraft records against a secure account. Sign in if you already
-              have one, or create a free account first. Payment is only taken when you add an
-              aircraft and choose its support plan.
+              Aircraft Program stores aircraft records against a secure account. Sign in if you
+              already have one, or create a free account first. Payment is only taken when you add
+              an aircraft and choose its support plan.
             </p>
           </div>
 
@@ -316,8 +331,8 @@ function EnrolPage() {
             Cover activation pending
           </p>
           <p className="mt-1 text-sm text-muted-foreground">
-            You can sign in immediately. The AOG desk marks cover active once the aircraft profile
-            has been checked.
+            You can sign in immediately. Complete your aircraft profile details and activate cover
+            instantly under the Verification tab.
           </p>
         </div>
         <div className="bg-card border border-border rounded-xl p-5 text-left space-y-3 text-sm">
@@ -326,15 +341,15 @@ function EnrolPage() {
             {[
               {
                 n: 1,
-                text: "A Aircraft Program handler will call you within 2 hours to run through your aircraft profile.",
+                text: "Sign in to your dashboard and select your aircraft to complete its profile details.",
               },
               {
                 n: 2,
-                text: "Your handler confirms engine details, AMO contacts, PIC mobile, and delivers your Parts Intelligence briefing.",
+                text: "Fill in all fields in the 'Engine & Maintenance' and 'Contacts' tabs, and upload verification documents.",
               },
               {
                 n: 3,
-                text: "Handler marks your aircraft as verified — your dashboard updates to AOG Cover active immediately.",
+                text: "Go to the 'Verification' tab and click 'Confirm details & activate cover' to set your cover live instantly.",
               },
             ].map(({ n, text }) => (
               <div key={n} className="flex gap-3">
@@ -450,7 +465,14 @@ function EnrolPage() {
               form={form}
               set={set}
               isSignedIn={isSignedIn}
-              onComplete={(ref, email) => setConfirmation({ ref, email })}
+              onComplete={(ref, email) => {
+                queryClient.invalidateQueries({ queryKey: ["aircraft"] });
+                queryClient.invalidateQueries({ queryKey: ["billing"] });
+                queryClient.invalidateQueries({ queryKey: ["stripe-billing"] });
+                queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+                queryClient.invalidateQueries({ queryKey: ["value-summary"] });
+                setConfirmation({ ref, email });
+              }}
             />
           </Elements>
         )}
@@ -790,12 +812,11 @@ function Step3({
               />
             </Field>
             <Field label="Propeller serial numbers">
-              <textarea
-                rows={2}
-                className={`${inputCls} md:col-span-2`}
+              <input
+                className={inputCls}
                 value={form.propellerSerialNumbers}
                 onChange={(e) => set("propellerSerialNumbers", e.target.value)}
-                placeholder="e.g. P12345, P12346"
+                placeholder="e.g. BUA25927, BUA25928"
               />
             </Field>
           </>
@@ -858,12 +879,29 @@ function Step4({
             onChange={(e) => set("primaryContactName", e.target.value)}
           />
         </Field>
+        <Field label="Pilot in Command (PIC) name" required>
+          <input
+            className={inputCls}
+            value={form.picName}
+            onChange={(e) => set("picName", e.target.value)}
+            placeholder="e.g. Captain Oliver Bancroft"
+          />
+        </Field>
         <Field label="PIC direct mobile (24/7)" required>
           <input
             className={inputCls}
             value={form.picDirectMobile}
             onChange={(e) => set("picDirectMobile", e.target.value)}
             placeholder="+44 7700 900001"
+          />
+        </Field>
+        <Field label="PIC email address" required>
+          <input
+            type="email"
+            className={inputCls}
+            value={form.picEmail}
+            onChange={(e) => set("picEmail", e.target.value)}
+            placeholder="pic@company.com"
           />
         </Field>
         <Field label="Ops contact name">
@@ -966,6 +1004,12 @@ function Step5({
       return;
     }
 
+    if (!form.postalCode.trim()) {
+      setCardError("Please enter your ZIP or Postcode.");
+      stopLoading();
+      return;
+    }
+
     submittingRef.current = true;
     setLoading(true);
     setCardError(null);
@@ -980,7 +1024,13 @@ function Step5({
     const { error: pmError, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
       card: cardElement,
-      billing_details: { name: `${form.firstName} ${form.lastName}`, email: form.email },
+      billing_details: {
+        name: `${form.firstName} ${form.lastName}`,
+        email: form.email,
+        address: {
+          postal_code: form.postalCode,
+        },
+      },
     });
 
     if (pmError || !paymentMethod) {
@@ -1140,23 +1190,45 @@ function Step5({
       {/* Card input */}
       <div>
         <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3">
-          Payment
+          Payment Details
         </p>
-        <div className="rounded-sm border border-input bg-background px-4 py-3 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/20">
-          <CardElement
-            options={{
-              style: {
-                base: {
-                  fontSize: "14px",
-                  color: "oklch(0.2 0.02 250)",
-                  "::placeholder": { color: "oklch(0.6 0 0)" },
-                },
-                invalid: { color: "oklch(0.55 0.22 25)" },
-              },
-            }}
-          />
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <div className="sm:col-span-2">
+            <label className="block text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
+              Card Number / Expiry / CVC
+            </label>
+            <div className="rounded-sm border border-input bg-background px-4 py-3 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/20 min-h-[46px] flex items-center">
+              <CardElement
+                className="w-full"
+                options={{
+                  hidePostalCode: true,
+                  style: {
+                    base: {
+                      fontSize: "14px",
+                      color: "oklch(0.2 0.02 250)",
+                      "::placeholder": { color: "oklch(0.6 0 0)" },
+                    },
+                    invalid: { color: "oklch(0.55 0.22 25)" },
+                  },
+                }}
+              />
+            </div>
+          </div>
+          <div>
+            <label className="block text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
+              ZIP / Postcode
+            </label>
+            <input
+              type="text"
+              placeholder="e.g. 90210 / SW1A 1AA"
+              className="min-h-[46px] w-full rounded-sm border border-input bg-background px-3.5 text-sm placeholder:text-muted-foreground/55 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
+              value={form.postalCode}
+              onChange={(e) => set("postalCode", e.target.value)}
+              required
+            />
+          </div>
         </div>
-        <p className="flex items-center gap-1.5 mt-2 text-[11px] text-muted-foreground">
+        <p className="flex items-center gap-1.5 mt-2.5 text-[11px] text-muted-foreground">
           <Lock className="h-3 w-3" />
           Secured by Stripe. Aircraft Program never stores your card details.
         </p>
@@ -1172,9 +1244,9 @@ function Step5({
         />
         <span className="text-sm text-muted-foreground">
           I accept the Aircraft Program{" "}
-          <a href="#" className="text-accent underline">
+          <Link to="/subscriber-agreement" target="_blank" className="text-accent underline">
             subscriber agreement
-          </a>{" "}
+          </Link>{" "}
           and confirm all details are accurate.
         </span>
       </label>

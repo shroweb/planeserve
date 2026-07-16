@@ -54,6 +54,16 @@ function AdminAmoPage() {
                         POC: <span className="text-foreground">{a.maintenancePoc}</span>
                       </p>
                     )}
+                    {a.amoEmail && (
+                      <p className="text-xs mt-1 text-muted-foreground">
+                        Email: <span className="text-foreground font-mono">{a.amoEmail}</span>
+                      </p>
+                    )}
+                    {a.amoLocation && (
+                      <p className="text-xs mt-1 text-muted-foreground">
+                        Location: <span className="text-foreground">{a.amoLocation}</span>
+                      </p>
+                    )}
                   </div>
                   <div className="text-right text-xs space-y-1 shrink-0">
                     {a.amoPhone && (

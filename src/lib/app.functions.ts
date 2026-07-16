@@ -113,7 +113,7 @@ export type AircraftRecord = {
   declineReason: string;
   engineManufacturer: string;
   engineType: string;
-  engineSeries: string;
+  engineProgram: string;
   engineSerialNumbers: string;
   numberOfEngines: number;
   propellerManufacturer: string;
@@ -125,7 +125,12 @@ export type AircraftRecord = {
   amoName: string;
   amoPhone: string;
   amoEmergencyPhone: string;
+  amoEmail: string;
+  amoLocation: string;
   picPhone: string;
+  picName: string;
+  picEmail: string;
+  apuMakeModel: string;
   maintenancePoc: string;
   insurerName: string;
   insurerPolicyRef: string;
@@ -212,7 +217,7 @@ function toAircraftRecord(row: {
   declineReason: string;
   engineManufacturer: string;
   engineType: string;
-  engineSeries: string;
+  engineProgram: string;
   engineSerialNumbers: string;
   numberOfEngines: number;
   propellerManufacturer: string;
@@ -224,7 +229,12 @@ function toAircraftRecord(row: {
   amoName: string;
   amoPhone: string;
   amoEmergencyPhone: string;
+  amoEmail: string;
+  amoLocation: string;
   picPhone: string;
+  picName: string;
+  picEmail: string;
+  apuMakeModel: string;
   maintenancePoc: string;
   insurerName: string;
   insurerPolicyRef: string;
@@ -798,7 +808,7 @@ export const createAircraft = createServerFn({ method: "POST" })
       plan: planSchema,
       engineManufacturer: z.string().optional().default(""),
       engineType: z.string().optional().default(""),
-      engineSeries: z.string().optional().default(""),
+      engineProgram: z.string().optional().default(""),
       engineSerialNumbers: z.string().optional().default(""),
       numberOfEngines: z.number().optional().default(2),
       propellerManufacturer: z.string().optional().default(""),
@@ -809,7 +819,12 @@ export const createAircraft = createServerFn({ method: "POST" })
       amoName: z.string().optional().default(""),
       amoPhone: z.string().optional().default(""),
       amoEmergencyPhone: z.string().optional().default(""),
+      amoEmail: z.string().optional().default(""),
+      amoLocation: z.string().optional().default(""),
       picPhone: z.string().optional().default(""),
+      picName: z.string().optional().default(""),
+      picEmail: z.string().optional().default(""),
+      apuMakeModel: z.string().optional().default(""),
       maintenancePoc: z.string().optional().default(""),
       insurerName: z.string().optional().default(""),
       insurerPolicyRef: z.string().optional().default(""),
@@ -840,7 +855,7 @@ export const createAircraft = createServerFn({ method: "POST" })
       verificationStatus: "Pending",
       engineManufacturer: data.engineManufacturer,
       engineType: data.engineType,
-      engineSeries: data.engineSeries,
+      engineProgram: data.engineProgram,
       engineSerialNumbers: data.engineSerialNumbers,
       numberOfEngines: data.numberOfEngines,
       propellerManufacturer: data.propellerManufacturer,
@@ -851,7 +866,12 @@ export const createAircraft = createServerFn({ method: "POST" })
       amoName: data.amoName,
       amoPhone: data.amoPhone,
       amoEmergencyPhone: data.amoEmergencyPhone,
+      amoEmail: data.amoEmail,
+      amoLocation: data.amoLocation,
       picPhone: data.picPhone,
+      picName: data.picName,
+      picEmail: data.picEmail,
+      apuMakeModel: data.apuMakeModel,
       maintenancePoc: data.maintenancePoc,
       insurerName: data.insurerName,
       insurerPolicyRef: data.insurerPolicyRef,
@@ -938,7 +958,7 @@ export const createAogRequest = createServerFn({ method: "POST" })
 
     const shortRef = crypto.randomUUID().slice(0, 8).toUpperCase();
     const requestId = `AOG-${shortRef}`;
-    const caseReference = `PS-${new Date().getFullYear()}-${shortRef}`;
+    const caseReference = `AP-${new Date().getFullYear()}-${shortRef}`;
 
     await db.insert(schema.aogRequests).values({
       id: requestId,
@@ -1650,7 +1670,7 @@ export async function createApiAircraft(data: {
   baseAirport: string;
   engineManufacturer?: string;
   engineType?: string;
-  engineSeries?: string;
+  engineProgram?: string;
   engineSerialNumbers?: string;
   numberOfEngines?: number;
   propellerManufacturer?: string;
@@ -1661,7 +1681,12 @@ export async function createApiAircraft(data: {
   amoName?: string;
   amoPhone?: string;
   amoEmergencyPhone?: string;
+  amoEmail?: string;
+  amoLocation?: string;
   picPhone?: string;
+  picName?: string;
+  picEmail?: string;
+  apuMakeModel?: string;
   maintenancePoc?: string;
   insurerName?: string;
   insurerPolicyRef?: string;
@@ -1691,7 +1716,7 @@ export async function createApiAircraft(data: {
     verificationStatus: "Pending",
     engineManufacturer: data.engineManufacturer ?? "",
     engineType: data.engineType ?? "",
-    engineSeries: data.engineSeries ?? "",
+    engineProgram: data.engineProgram ?? "",
     engineSerialNumbers: data.engineSerialNumbers ?? "",
     numberOfEngines: data.numberOfEngines ?? 2,
     propellerManufacturer: data.propellerManufacturer ?? "",
@@ -1702,7 +1727,12 @@ export async function createApiAircraft(data: {
     amoName: data.amoName ?? "",
     amoPhone: data.amoPhone ?? "",
     amoEmergencyPhone: data.amoEmergencyPhone ?? "",
+    amoEmail: data.amoEmail ?? "",
+    amoLocation: data.amoLocation ?? "",
     picPhone: data.picPhone ?? "",
+    picName: data.picName ?? "",
+    picEmail: data.picEmail ?? "",
+    apuMakeModel: data.apuMakeModel ?? "",
     maintenancePoc: data.maintenancePoc ?? "",
     insurerName: data.insurerName ?? "",
     insurerPolicyRef: data.insurerPolicyRef ?? "",
@@ -1734,7 +1764,7 @@ export async function createApiAircraft(data: {
     verificationStatus: "Pending",
     engineManufacturer: data.engineManufacturer ?? "",
     engineType: data.engineType ?? "",
-    engineSeries: data.engineSeries ?? "",
+    engineProgram: data.engineProgram ?? "",
     engineSerialNumbers: data.engineSerialNumbers ?? "",
     numberOfEngines: data.numberOfEngines ?? 2,
     propellerManufacturer: data.propellerManufacturer ?? "",
@@ -1746,7 +1776,12 @@ export async function createApiAircraft(data: {
     amoName: data.amoName ?? "",
     amoPhone: data.amoPhone ?? "",
     amoEmergencyPhone: data.amoEmergencyPhone ?? "",
+    amoEmail: data.amoEmail ?? "",
+    amoLocation: data.amoLocation ?? "",
     picPhone: data.picPhone ?? "",
+    picName: data.picName ?? "",
+    picEmail: data.picEmail ?? "",
+    apuMakeModel: data.apuMakeModel ?? "",
     maintenancePoc: data.maintenancePoc ?? "",
     insurerName: data.insurerName ?? "",
     insurerPolicyRef: data.insurerPolicyRef ?? "",
@@ -2094,7 +2129,7 @@ export const updateAircraftProfile = createServerFn({ method: "POST" })
       id: z.string().min(1),
       engineManufacturer: z.string().optional().default(""),
       engineType: z.string().optional().default(""),
-      engineSeries: z.string().optional().default(""),
+      engineProgram: z.string().optional().default(""),
       engineSerialNumbers: z.string().optional().default(""),
       numberOfEngines: z.number().optional().default(2),
       propellerManufacturer: z.string().optional().default(""),
@@ -2105,7 +2140,12 @@ export const updateAircraftProfile = createServerFn({ method: "POST" })
       amoName: z.string().optional().default(""),
       amoPhone: z.string().optional().default(""),
       amoEmergencyPhone: z.string().optional().default(""),
+      amoEmail: z.string().optional().default(""),
+      amoLocation: z.string().optional().default(""),
       picPhone: z.string().optional().default(""),
+      picName: z.string().optional().default(""),
+      picEmail: z.string().optional().default(""),
+      apuMakeModel: z.string().optional().default(""),
       maintenancePoc: z.string().optional().default(""),
       insurerName: z.string().optional().default(""),
       insurerPolicyRef: z.string().optional().default(""),
@@ -2125,7 +2165,7 @@ export const updateAircraftProfile = createServerFn({ method: "POST" })
       .set({
         engineManufacturer: data.engineManufacturer,
         engineType: data.engineType,
-        engineSeries: data.engineSeries,
+        engineProgram: data.engineProgram,
         engineSerialNumbers: data.engineSerialNumbers,
         numberOfEngines: data.numberOfEngines,
         propellerManufacturer: data.propellerManufacturer,
@@ -2136,7 +2176,12 @@ export const updateAircraftProfile = createServerFn({ method: "POST" })
         amoName: data.amoName,
         amoPhone: data.amoPhone,
         amoEmergencyPhone: data.amoEmergencyPhone,
+        amoEmail: data.amoEmail,
+        amoLocation: data.amoLocation,
         picPhone: data.picPhone,
+        picName: data.picName,
+        picEmail: data.picEmail,
+        apuMakeModel: data.apuMakeModel,
         maintenancePoc: data.maintenancePoc,
         insurerName: data.insurerName,
         insurerPolicyRef: data.insurerPolicyRef,
@@ -3471,6 +3516,8 @@ export const getAmoNetwork = createServerFn({ method: "GET" }).handler(async () 
       amoName: schema.aircraft.amoName,
       amoPhone: schema.aircraft.amoPhone,
       amoEmergencyPhone: schema.aircraft.amoEmergencyPhone,
+      amoEmail: schema.aircraft.amoEmail,
+      amoLocation: schema.aircraft.amoLocation,
       maintenancePoc: schema.aircraft.maintenancePoc,
       baseAirport: schema.aircraft.baseAirport,
     })
@@ -3515,6 +3562,8 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
       // step 4 – contacts
       primaryContactName: z.string().default(""),
       picDirectMobile: z.string().default(""),
+      picName: z.string().default(""),
+      picEmail: z.string().default(""),
       opsContactName: z.string().default(""),
       opsContactEmail: z.string().default(""),
       managerName: z.string().default(""),
@@ -3523,6 +3572,7 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
       stripeSubscriptionId: z.string().optional(),
       stripeCustomerId: z.string().optional(),
       plan: z.enum(["monthly", "annual"]).default("monthly"),
+      postalCode: z.string().optional().default(""),
     }),
   )
   .handler(async ({ data }) => {
@@ -3554,8 +3604,15 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
         email: data.email,
         company: data.companyName || data.managementCompany,
         phone: data.mobile,
+        postalCode: data.postalCode,
       })
-      .onConflictDoNothing();
+      .onConflictDoUpdate({
+        target: schema.profiles.userId,
+        set: {
+          phone: data.mobile,
+          postalCode: data.postalCode,
+        },
+      });
 
     const aircraftId = `ac_${crypto.randomUUID()}`;
     const subscriptionId = `sub_${crypto.randomUUID()}`;
@@ -3575,7 +3632,7 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
       verificationStatus: "Pending",
       engineManufacturer: data.engineManufacturer,
       engineType: data.engineType,
-      engineSeries: "",
+      engineProgram: "",
       engineSerialNumbers: data.engineSerialNumbers,
       numberOfEngines: data.engineCount,
       propellerManufacturer: data.propellerManufacturer,
@@ -3586,7 +3643,11 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
       amoName: "",
       amoPhone: "",
       amoEmergencyPhone: "",
+      amoEmail: "",
+      amoLocation: "",
       picPhone: data.picDirectMobile,
+      picName: data.picName,
+      picEmail: data.picEmail,
       maintenancePoc: data.opsContactName,
       insurerName: data.insurer,
       insurerPolicyRef: data.policyReference,
@@ -3656,7 +3717,7 @@ export const createSubscriberEnrolment = createServerFn({ method: "POST" })
        <p><a href="${appUrl("/admin/enrolments")}">Review enrolment</a></p>`,
     );
 
-    const ref = `PS-${data.registration.toUpperCase()}-${Date.now().toString(36).toUpperCase()}`;
+    const ref = `AP-${data.registration.toUpperCase()}-${Date.now().toString(36).toUpperCase()}`;
     return { userId, aircraftId, ref };
   });
 
@@ -4309,6 +4370,25 @@ export const addTeamMember = createServerFn({ method: "POST" })
       role: data.role,
       createdAt: new Date(),
     });
+
+    try {
+      const { sendEmail, emailLayout } = await import("@/lib/email.server");
+      const companyName = user.company || "Aircraft Program Fleet";
+      await sendEmail(
+        data.memberEmail,
+        `Invitation to join ${companyName} on Aircraft Program`,
+        emailLayout(
+          "Invitation to join Aircraft Program",
+          `<p>Hi ${escapeHtml(data.memberName)},</p>
+           <p><strong>${escapeHtml(user.name)}</strong> has added you to their team on the Aircraft Program platform.</p>
+           <p>You can now be contacted during AOG support operations for their fleet.</p>
+           <p>Access the platform dashboard to manage your notifications and cases: <a href="${appUrl("/dashboard")}">Open Dashboard</a></p>`,
+        ),
+      );
+    } catch (err) {
+      console.error("[Aircraft Program] Failed to send team invitation email", err);
+    }
+
     return { ok: true, id };
   });
 
@@ -4627,3 +4707,51 @@ export const getStripeBillingData = createServerFn({ method: "GET" }).handler(as
     })),
   };
 });
+
+export const activateCoverSelf = createServerFn({ method: "POST" })
+  .inputValidator(z.object({ id: z.string().min(1) }))
+  .handler(async ({ data }) => {
+    const user = await currentUser();
+    const { eq, and, db, schema } = await loadServerAuth();
+
+    const [ac] = await db
+      .select({
+        userId: schema.aircraft.userId,
+        registration: schema.aircraft.registration,
+        verificationStatus: schema.aircraft.verificationStatus,
+      })
+      .from(schema.aircraft)
+      .where(and(eq(schema.aircraft.id, data.id), eq(schema.aircraft.userId, user.id)));
+
+    if (!ac) throw new Error("Aircraft not found or access denied.");
+
+    if (ac.verificationStatus === "Verified") {
+      return { ok: true };
+    }
+
+    await db
+      .update(schema.aircraft)
+      .set({ verificationStatus: "Verified", updatedAt: new Date() })
+      .where(eq(schema.aircraft.id, data.id));
+
+    await createNotificationInternal(
+      db,
+      schema,
+      ac.userId,
+      "Billing",
+      "AOG cover active",
+      `Your AOG cover for ${ac.registration} is now active. You can submit AOG requests for this aircraft.`,
+    );
+
+    await sendJourneyEmail(
+      user.email,
+      `Aircraft Program AOG cover active — ${ac.registration}`,
+      "AOG Cover Active",
+      `<p>Hi ${escapeHtml(user.name || "there")},</p>
+       <p>Your AOG cover for <strong>${escapeHtml(ac.registration)}</strong> is now active.</p>
+       <p>You can now submit AOG requests from your dashboard, and the parts sourcing team will handle your request immediately.</p>
+       <p><a href="${appUrl("/dashboard")}">Go to Dashboard</a></p>`,
+    );
+
+    return { ok: true };
+  });

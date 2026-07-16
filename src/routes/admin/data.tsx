@@ -113,8 +113,12 @@ function UsmTab() {
         .split(/\r?\n/)
         .map((row) => row.trim())
         .filter(Boolean);
-      const [, ...dataRows] =
-        rows[0]?.toLowerCase().includes("part") ? rows : ["partNumber,aircraftType,description,availabilityPct,trend,supplierCount,priceCents,currency,riskScore,notes", ...rows];
+      const [, ...dataRows] = rows[0]?.toLowerCase().includes("part")
+        ? rows
+        : [
+            "partNumber,aircraftType,description,availabilityPct,trend,supplierCount,priceCents,currency,riskScore,notes",
+            ...rows,
+          ];
 
       await Promise.all(
         dataRows.map((row) => {

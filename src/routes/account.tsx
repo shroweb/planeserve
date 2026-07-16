@@ -143,9 +143,7 @@ function Account() {
             <Field label="Address line 1">
               <input
                 value={profileForm.addressLine1}
-                onChange={(e) =>
-                  setProfileForm((f) => ({ ...f!, addressLine1: e.target.value }))
-                }
+                onChange={(e) => setProfileForm((f) => ({ ...f!, addressLine1: e.target.value }))}
                 className={inputCls}
                 placeholder="Hangar, building, street"
               />
@@ -153,9 +151,7 @@ function Account() {
             <Field label="Address line 2">
               <input
                 value={profileForm.addressLine2}
-                onChange={(e) =>
-                  setProfileForm((f) => ({ ...f!, addressLine2: e.target.value }))
-                }
+                onChange={(e) => setProfileForm((f) => ({ ...f!, addressLine2: e.target.value }))}
                 className={inputCls}
                 placeholder="Optional"
               />
@@ -180,9 +176,7 @@ function Account() {
               <Field label="Postcode / ZIP">
                 <input
                   value={profileForm.postalCode}
-                  onChange={(e) =>
-                    setProfileForm((f) => ({ ...f!, postalCode: e.target.value }))
-                  }
+                  onChange={(e) => setProfileForm((f) => ({ ...f!, postalCode: e.target.value }))}
                   className={inputCls}
                   placeholder="SW1A 1AA"
                 />

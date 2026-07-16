@@ -157,8 +157,9 @@ function SupplierApplyPage() {
             <div>
               <h1 className="text-2xl font-semibold mb-2">Application submitted</h1>
               <p className="text-muted-foreground text-sm">
-                Thank you for applying to the Aircraft Program supplier network. Our desk reviews all
-                applications within 24 hours. You'll receive an email once a decision has been made.
+                Thank you for applying to the Aircraft Program supplier network. Our desk reviews
+                all applications within 24 hours. You'll receive an email once a decision has been
+                made.
               </p>
             </div>
             <div className="bg-card border border-border rounded-xl p-5 text-left space-y-3 text-sm">

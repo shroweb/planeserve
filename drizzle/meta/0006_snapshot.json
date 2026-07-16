@@ -2374,13 +2374,7 @@
     "public.aircraft_category": {
       "name": "aircraft_category",
       "schema": "public",
-      "values": [
-        "Business Jet",
-        "Turboprop",
-        "Single Engine",
-        "Multi Engine",
-        "Helicopter"
-      ]
+      "values": ["Business Jet", "Turboprop", "Single Engine", "Multi Engine", "Helicopter"]
     },
     "public.aog_status": {
       "name": "aog_status",
@@ -2444,97 +2438,52 @@
     "public.invoice_status": {
       "name": "invoice_status",
       "schema": "public",
-      "values": [
-        "Draft",
-        "Paid",
-        "Void",
-        "Refunded"
-      ]
+      "values": ["Draft", "Paid", "Void", "Refunded"]
     },
     "public.message_sender_type": {
       "name": "message_sender_type",
       "schema": "public",
-      "values": [
-        "subscriber",
-        "admin",
-        "system"
-      ]
+      "values": ["subscriber", "admin", "system"]
     },
     "public.notification_category": {
       "name": "notification_category",
       "schema": "public",
-      "values": [
-        "AOG",
-        "Intelligence",
-        "Billing"
-      ]
+      "values": ["AOG", "Intelligence", "Billing"]
     },
     "public.plan": {
       "name": "plan",
       "schema": "public",
-      "values": [
-        "monthly",
-        "annual"
-      ]
+      "values": ["monthly", "annual"]
     },
     "public.rfq_status": {
       "name": "rfq_status",
       "schema": "public",
-      "values": [
-        "sent",
-        "responded",
-        "declined",
-        "expired"
-      ]
+      "values": ["sent", "responded", "declined", "expired"]
     },
     "public.profile_role": {
       "name": "profile_role",
       "schema": "public",
-      "values": [
-        "Owner",
-        "Operator",
-        "Management Company",
-        "Maintenance Provider",
-        "Other"
-      ]
+      "values": ["Owner", "Operator", "Management Company", "Maintenance Provider", "Other"]
     },
     "public.subscription_status": {
       "name": "subscription_status",
       "schema": "public",
-      "values": [
-        "Active",
-        "Pending",
-        "Cancelled"
-      ]
+      "values": ["Active", "Pending", "Cancelled"]
     },
     "public.supplier_condition": {
       "name": "supplier_condition",
       "schema": "public",
-      "values": [
-        "Serviceable",
-        "Exchange",
-        "Overhauled",
-        "New",
-        "As Removed"
-      ]
+      "values": ["Serviceable", "Exchange", "Overhauled", "New", "As Removed"]
     },
     "public.urgency": {
       "name": "urgency",
       "schema": "public",
-      "values": [
-        "Aircraft grounded",
-        "Dispatch affected",
-        "Planned sourcing"
-      ]
+      "values": ["Aircraft grounded", "Dispatch affected", "Planned sourcing"]
     },
     "public.verification_status": {
       "name": "verification_status",
       "schema": "public",
-      "values": [
-        "Pending",
-        "Verified",
-        "Declined"
-      ]
+      "values": ["Pending", "Verified", "Declined"]
     }
   },
   "schemas": {},

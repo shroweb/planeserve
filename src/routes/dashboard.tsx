@@ -124,27 +124,28 @@ function Dashboard() {
       {grounded.length > 0 && (
         <div className="mt-6 rounded-md border border-destructive/25 bg-destructive/5 px-4 py-4 sm:px-5">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-destructive text-white">
-            <AogIcon className="h-5 w-5" strokeWidth={1.8} />
-          </div>
-          <div className="min-w-0 flex-1">
-            <div className="text-sm font-semibold text-destructive">
-              {grounded.length === 1
-                ? `${grounded[0].registration} is grounded at ${grounded[0].location || "—"} — ${grounded[0].affectedSystem}`
-                : `${grounded.length} aircraft AOG — highest priority: ${grounded[0].registration} at ${grounded[0].location || "—"}`}
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-destructive text-white">
+              <AogIcon className="h-5 w-5" strokeWidth={1.8} />
             </div>
-            <div className="mt-0.5 text-xs text-muted-foreground">
-              Case {grounded[0].id.slice(-8).toUpperCase()} · priority {grounded[0].priorityScore} ·
-              the desk is handling sourcing{grounded.length > 1 ? ` · ${grounded.length - 1} more active` : ""}.
+            <div className="min-w-0 flex-1">
+              <div className="text-sm font-semibold text-destructive">
+                {grounded.length === 1
+                  ? `${grounded[0].registration} is grounded at ${grounded[0].location || "—"} — ${grounded[0].affectedSystem}`
+                  : `${grounded.length} aircraft AOG — highest priority: ${grounded[0].registration} at ${grounded[0].location || "—"}`}
+              </div>
+              <div className="mt-0.5 text-xs text-muted-foreground">
+                Case {grounded[0].id.slice(-8).toUpperCase()} · priority {grounded[0].priorityScore}{" "}
+                · the desk is handling sourcing
+                {grounded.length > 1 ? ` · ${grounded.length - 1} more active` : ""}.
+              </div>
             </div>
-          </div>
-          <Link
-            to="/aog/$id"
-            params={{ id: grounded[0].id }}
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-md bg-destructive px-4 py-2 text-sm font-semibold text-white hover:bg-destructive/90"
-          >
-            Open case <ArrowRightIcon className="h-4 w-4" />
-          </Link>
+            <Link
+              to="/aog/$id"
+              params={{ id: grounded[0].id }}
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-md bg-destructive px-4 py-2 text-sm font-semibold text-white hover:bg-destructive/90"
+            >
+              Open case <ArrowRightIcon className="h-4 w-4" />
+            </Link>
           </div>
           {grounded.length > 1 && (
             <div className="mt-4 grid gap-2 border-t border-destructive/15 pt-3 sm:grid-cols-2">
@@ -193,17 +194,14 @@ function Dashboard() {
           </div>
           <div className="p-5">
             {featured ? (
-              <CaseTimeline
-                request={featured}
-                events={eventsByRequest[featured.id] ?? []}
-              />
+              <CaseTimeline request={featured} events={eventsByRequest[featured.id] ?? []} />
             ) : (
               <div className="rounded-md border border-dashed border-border bg-muted/20 p-8 text-center">
                 <AircraftIcon className="mx-auto h-8 w-8 text-muted-foreground" strokeWidth={1.5} />
                 <div className="mt-3 text-sm font-semibold">No active AOG cases</div>
                 <p className="mx-auto mt-1 max-w-sm text-xs text-muted-foreground">
-                  When an aircraft is grounded or dispatch is affected, submit a request and the desk
-                  starts sourcing immediately.
+                  When an aircraft is grounded or dispatch is affected, submit a request and the
+                  desk starts sourcing immediately.
                 </p>
                 {aircraft.length > 0 && (
                   <Link
@@ -252,9 +250,7 @@ function Dashboard() {
                       {a.makeModel} · {a.baseAirport || "—"}
                     </div>
                   </div>
-                  <StatusPill tone={op.tone}>
-                    {op.label}
-                  </StatusPill>
+                  <StatusPill tone={op.tone}>{op.label}</StatusPill>
                 </div>
               );
             })}

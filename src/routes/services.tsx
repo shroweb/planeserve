@@ -20,7 +20,8 @@ export const Route = createFileRoute("/services")({
       { title: "Services — AOG cover for enrolled business aircraft" },
       {
         name: "description",
-        content: "Aircraft Program is an aircraft enrolment program covering AOG parts sourcing, supplier outreach, trace verification, and dispatch coordination for enrolled business aircraft.",
+        content:
+          "Aircraft Program is an aircraft enrolment program covering AOG parts sourcing, supplier outreach, trace verification, and dispatch coordination for enrolled business aircraft.",
       },
     ],
   }),
@@ -35,13 +36,11 @@ function ServicesPage() {
         <div className="mx-auto max-w-7xl px-6 py-24">
           <Eyebrow>What's Included</Eyebrow>
           <h1 className="mt-6 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl lg:text-6xl">
-            Everything included in the{" "}
-            <span className="text-accent">
-              Aircraft Program.
-            </span>
+            Everything included in the <span className="text-accent">Aircraft Program.</span>
           </h1>
           <p className="mt-8 max-w-2xl text-base leading-8 text-white/70 md:text-lg">
-            One per-aircraft enrolment covers the full AOG parts desk. We source parts, verify paperwork, and coordinate freight — all for enrolled aircraft, with no per-case fees.
+            One per-aircraft enrolment covers the full AOG parts desk. We source parts, verify
+            paperwork, and coordinate freight — all for enrolled aircraft, with no per-case fees.
           </p>
         </div>
       </section>
@@ -57,34 +56,44 @@ function ServicesPage() {
                 <span className="text-accent ">Aircraft Records.</span>
               </h2>
               <p className="mt-6 text-base leading-8 text-muted-foreground">
-                Before your aircraft goes technical, Aircraft Program captures the aircraft record — registration, engine serials, base ICAO, AMO contacts, and insurer details — so the desk can move immediately when the call comes in.
+                Before your aircraft goes technical, Aircraft Program captures the aircraft record —
+                registration, engine serials, base ICAO, AMO contacts, and insurer details — so the
+                desk can move immediately when the call comes in.
               </p>
-              
+
               <div className="mt-10 grid gap-8 sm:grid-cols-2">
                 <div>
                   <div className="flex items-center gap-3 mb-3">
                     <InventoryIcon className="h-5 w-5 text-accent" />
-                    <div className="font-semibold text-sm uppercase tracking-wider">Profile Storage</div>
+                    <div className="font-semibold text-sm uppercase tracking-wider">
+                      Profile Storage
+                    </div>
                   </div>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Engine serials, part number history, and maintenance contacts held on file permanently.
+                    Engine serials, part number history, and maintenance contacts held on file
+                    permanently.
                   </p>
                 </div>
                 <div>
                   <div className="flex items-center gap-3 mb-3">
                     <CoverIcon className="h-5 w-5 text-accent" />
-                    <div className="font-semibold text-sm uppercase tracking-wider">Tier 2 Verification</div>
+                    <div className="font-semibold text-sm uppercase tracking-wider">
+                      Tier 2 Verification
+                    </div>
                   </div>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    We verify your support contacts and AMO lines in advance, ensuring a clear path for authorization.
+                    We verify your support contacts and AMO lines in advance, ensuring a clear path
+                    for authorization.
                   </p>
                 </div>
               </div>
             </div>
-            
+
             <div className="bg-card border border-border p-1 rounded-sm shadow-sm overflow-hidden">
               <div className="brand-dark bg-[#001b2e] p-8 text-white">
-                <div className="text-[10px] font-bold text-accent uppercase tracking-widest mb-4">Readiness Audit</div>
+                <div className="text-[10px] font-bold text-accent uppercase tracking-widest mb-4">
+                  Readiness Audit
+                </div>
                 <div className="space-y-3">
                   <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
                     <div className="h-full w-[85%] bg-accent" />
@@ -95,7 +104,12 @@ function ServicesPage() {
                   </div>
                 </div>
                 <div className="mt-8 space-y-4">
-                  {["Engines Verified", "Base ICAO Recorded", "AMO Linked", "Insurance Verified"].map((item) => (
+                  {[
+                    "Engines Verified",
+                    "Base ICAO Recorded",
+                    "AMO Linked",
+                    "Insurance Verified",
+                  ].map((item) => (
                     <div key={item} className="flex items-center gap-3 text-xs text-white/80">
                       <ClearedIcon className="h-3.5 w-3.5 text-accent" />
                       {item}
@@ -128,11 +142,11 @@ function ServicesPage() {
               <span className="text-accent ">Global Supplier Network.</span>
             </h2>
             <p className="mt-6 text-base leading-8 text-muted-foreground">
-              When an aircraft goes AOG, the desk activates. We move straight into sourcing across 
-              a global, vetted network of suppliers, specialized in older business platforms.
+              When an aircraft goes AOG, the desk activates. We move straight into sourcing across a
+              global, vetted network of suppliers, specialized in older business platforms.
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-border border border-border overflow-hidden rounded-sm">
             {[
               {
@@ -158,7 +172,10 @@ function ServicesPage() {
             ].map((s) => {
               const ServiceIcon = s.Icon;
               return (
-                <div key={s.t} className="bg-background p-8 group hover:bg-muted/30 transition-colors">
+                <div
+                  key={s.t}
+                  className="bg-background p-8 group hover:bg-muted/30 transition-colors"
+                >
                   <ServiceIcon className="h-7 w-7 text-accent mb-6" strokeWidth={1.5} />
                   <h3 className="font-semibold text-base mb-3 tracking-tight">{s.t}</h3>
                   <p className="text-sm leading-relaxed text-muted-foreground">{s.d}</p>
@@ -213,13 +230,15 @@ function ServicesPage() {
                   ["Option pricing", "Clear"],
                 ].map(([label, value]) => (
                   <div key={label} className="p-4 border border-border bg-card rounded-sm">
-                    <div className="text-[10px] text-muted-foreground uppercase font-bold mb-1">{label}</div>
+                    <div className="text-[10px] text-muted-foreground uppercase font-bold mb-1">
+                      {label}
+                    </div>
                     <div className="text-sm font-semibold text-accent">{value}</div>
                   </div>
                 ))}
               </div>
             </div>
-            
+
             <div className="order-1 lg:order-2">
               <Eyebrow>The Program Model</Eyebrow>
               <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl leading-tight">
@@ -227,9 +246,10 @@ function ServicesPage() {
                 <span className="text-accent ">transactional billing.</span>
               </h2>
               <p className="mt-6 text-base leading-8 text-muted-foreground">
-                Aircraft Program is a support program for aircraft owners and operators. You enrol your aircraft once, and the desk is yours.
-                No per-case fees and no additional costs for 24/7 support. Part options are priced
-                clearly before approval, including the fixed Aircraft Program sourcing fee.
+                Aircraft Program is a support program for aircraft owners and operators. You enrol
+                your aircraft once, and the desk is yours. No per-case fees and no additional costs
+                for 24/7 support. Part options are priced clearly before approval, including the
+                fixed Aircraft Program sourcing fee.
               </p>
               <ul className="mt-8 space-y-4">
                 {[
@@ -298,13 +318,18 @@ function ServicesPage() {
                   side: "left",
                 },
               ].map(({ step, phase, title, desc, side }) => (
-                <div key={step} className={`relative grid lg:grid-cols-2 gap-8 lg:gap-16 items-center ${side === "right" ? "lg:direction-rtl" : ""}`}>
+                <div
+                  key={step}
+                  className={`relative grid lg:grid-cols-2 gap-8 lg:gap-16 items-center ${side === "right" ? "lg:direction-rtl" : ""}`}
+                >
                   <div className={`${side === "right" ? "lg:order-2" : ""}`}>
                     <div className="flex items-center gap-3 mb-3">
                       <span className="flex h-8 w-8 items-center justify-center rounded-sm bg-accent text-white text-xs font-bold">
                         {step}
                       </span>
-                      <span className="text-xs font-semibold uppercase tracking-widest text-accent">{phase}</span>
+                      <span className="text-xs font-semibold uppercase tracking-widest text-accent">
+                        {phase}
+                      </span>
                     </div>
                     <h3 className="text-xl font-semibold tracking-tight">{title}</h3>
                     <p className="mt-3 text-sm leading-7 text-muted-foreground">{desc}</p>
@@ -326,14 +351,17 @@ function ServicesPage() {
               What's included — and what isn't.
             </h2>
             <p className="mt-4 text-sm text-muted-foreground">
-              We believe in full transparency. No hidden exclusions, no surprises at the worst moment.
+              We believe in full transparency. No hidden exclusions, no surprises at the worst
+              moment.
             </p>
           </div>
           <div className="grid gap-8 lg:grid-cols-2">
             <div className="rounded-sm border border-border bg-background p-8">
               <div className="flex items-center gap-2 mb-6">
                 <div className="h-2 w-2 rounded-full bg-accent" />
-                <span className="text-xs font-semibold uppercase tracking-widest text-accent">Included</span>
+                <span className="text-xs font-semibold uppercase tracking-widest text-accent">
+                  Included
+                </span>
               </div>
               <ul className="space-y-4">
                 {[
@@ -357,7 +385,9 @@ function ServicesPage() {
             <div className="rounded-sm border border-border bg-background p-8">
               <div className="flex items-center gap-2 mb-6">
                 <div className="h-2 w-2 rounded-full bg-muted-foreground" />
-                <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Not covered</span>
+                <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                  Not covered
+                </span>
               </div>
               <ul className="space-y-4">
                 {[
@@ -375,9 +405,10 @@ function ServicesPage() {
                 ))}
               </ul>
               <div className="mt-8 rounded-sm border border-border bg-muted/30 p-4 text-xs leading-6 text-muted-foreground">
-                <strong className="text-foreground">On availability:</strong> For older platforms, parts
-                availability depends on the supplier market — that's outside our control. What we control is the
-                speed and breadth of the outreach, and the quality of what we present back to you.
+                <strong className="text-foreground">On availability:</strong> For older platforms,
+                parts availability depends on the supplier market — that's outside our control. What
+                we control is the speed and breadth of the outreach, and the quality of what we
+                present back to you.
               </div>
             </div>
           </div>
@@ -391,7 +422,8 @@ function ServicesPage() {
             Enrol your aircraft.
           </h2>
           <p className="mt-6 mx-auto max-w-xl text-base text-white/60">
-            Enrol your aircraft and complete the profile — Aircraft Program is then ready before you need it.
+            Enrol your aircraft and complete the profile — Aircraft Program is then ready before you
+            need it.
           </p>
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Link

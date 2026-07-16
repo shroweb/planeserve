@@ -15,7 +15,9 @@ export function fileToBase64(file: File): Promise<string> {
 
 // Upload a File and return its storage key + name. Throws on >10MB (server also
 // enforces). Shared by aircraft documents, AOG attachments and supplier docs.
-export async function uploadBrowserFile(file: File): Promise<{ storageKey: string; fileName: string }> {
+export async function uploadBrowserFile(
+  file: File,
+): Promise<{ storageKey: string; fileName: string }> {
   if (file.size > 10 * 1024 * 1024) throw new Error("File too large (max 10MB).");
   const dataBase64 = await fileToBase64(file);
   const res = await uploadFile({

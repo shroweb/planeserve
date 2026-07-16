@@ -140,7 +140,7 @@ export const aircraft = pgTable(
     // Tier 2 fields (required for full cover)
     engineManufacturer: text("engine_manufacturer").notNull().default(""),
     engineType: text("engine_type").notNull().default(""),
-    engineSeries: text("engine_series").notNull().default(""),
+    engineProgram: text("engine_program").notNull().default(""),
     engineSerialNumbers: text("engine_serial_numbers").notNull().default(""),
     numberOfEngines: integer("number_of_engines").notNull().default(2),
     propellerManufacturer: text("propeller_manufacturer").notNull().default(""),
@@ -152,7 +152,12 @@ export const aircraft = pgTable(
     amoName: text("amo_name").notNull().default(""),
     amoPhone: text("amo_phone").notNull().default(""),
     amoEmergencyPhone: text("amo_emergency_phone").notNull().default(""),
+    amoEmail: text("amo_email").notNull().default(""),
+    amoLocation: text("amo_location").notNull().default(""),
     picPhone: text("pic_phone").notNull().default(""),
+    picName: text("pic_name").notNull().default(""),
+    picEmail: text("pic_email").notNull().default(""),
+    apuMakeModel: text("apu_make_model").notNull().default(""),
     maintenancePoc: text("maintenance_poc").notNull().default(""),
     insurerName: text("insurer_name").notNull().default(""),
     insurerPolicyRef: text("insurer_policy_ref").notNull().default(""),
@@ -172,46 +177,50 @@ export const aircraft = pgTable(
   ],
 );
 
-export const aogRequests = pgTable("aog_requests", {
-  id: text("id").primaryKey(),
-  userId: text("user_id").notNull(),
-  aircraftId: text("aircraft_id").notNull(),
-  registration: text("registration").notNull(),
-  location: text("location").notNull().default(""),
-  aircraftType: text("aircraft_type").notNull().default(""),
-  ataChapter: ataChapterEnum("ata_chapter"),
-  affectedSystem: text("affected_system").notNull(),
-  partNumber: text("part_number").notNull().default(""),
-  issueDescription: text("issue_description").notNull(),
-  urgency: urgencyEnum("urgency").notNull(),
-  contactName: text("contact_name").notNull().default(""),
-  contactPhone: text("contact_phone").notNull().default(""),
-  contactEmail: text("contact_email").notNull().default(""),
-  // Operational context fields (from submit form)
-  peopleOnBoard: text("people_on_board").notNull().default(""),
-  flyingDeadline: text("flying_deadline").notNull().default(""),
-  amoAware: text("amo_aware").notNull().default(""),
-  caseReference: text("case_reference").notNull().default(""),
-  status: aogStatusEnum("status").notNull().default("Submitted"),
-  exceptionStates: text("exception_states").array().notNull().default([]),
-  // Freight tracking (populated by admin)
-  freightCourier: text("freight_courier").default(""),
-  freightTrackingRef: text("freight_tracking_ref").default(""),
-  freightExpectedArrival: timestamp("freight_expected_arrival", { withTimezone: true }),
-  freightNotes: text("freight_notes").default(""),
-  // Handler / ops fields
-  handlerId: text("handler_id").notNull().default(""),
-  awbNumber: text("awb_number").notNull().default(""),
-  caseRating: integer("case_rating"),
-  caseRatingComment: text("case_rating_comment").notNull().default(""),
-  handoverNotes: text("handover_notes").notNull().default(""),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
-}, (table) => [
-  index("aog_requests_user_id_idx").on(table.userId),
-  index("aog_requests_aircraft_id_idx").on(table.aircraftId),
-  index("aog_requests_status_idx").on(table.status),
-]);
+export const aogRequests = pgTable(
+  "aog_requests",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id").notNull(),
+    aircraftId: text("aircraft_id").notNull(),
+    registration: text("registration").notNull(),
+    location: text("location").notNull().default(""),
+    aircraftType: text("aircraft_type").notNull().default(""),
+    ataChapter: ataChapterEnum("ata_chapter"),
+    affectedSystem: text("affected_system").notNull(),
+    partNumber: text("part_number").notNull().default(""),
+    issueDescription: text("issue_description").notNull(),
+    urgency: urgencyEnum("urgency").notNull(),
+    contactName: text("contact_name").notNull().default(""),
+    contactPhone: text("contact_phone").notNull().default(""),
+    contactEmail: text("contact_email").notNull().default(""),
+    // Operational context fields (from submit form)
+    peopleOnBoard: text("people_on_board").notNull().default(""),
+    flyingDeadline: text("flying_deadline").notNull().default(""),
+    amoAware: text("amo_aware").notNull().default(""),
+    caseReference: text("case_reference").notNull().default(""),
+    status: aogStatusEnum("status").notNull().default("Submitted"),
+    exceptionStates: text("exception_states").array().notNull().default([]),
+    // Freight tracking (populated by admin)
+    freightCourier: text("freight_courier").default(""),
+    freightTrackingRef: text("freight_tracking_ref").default(""),
+    freightExpectedArrival: timestamp("freight_expected_arrival", { withTimezone: true }),
+    freightNotes: text("freight_notes").default(""),
+    // Handler / ops fields
+    handlerId: text("handler_id").notNull().default(""),
+    awbNumber: text("awb_number").notNull().default(""),
+    caseRating: integer("case_rating"),
+    caseRatingComment: text("case_rating_comment").notNull().default(""),
+    handoverNotes: text("handover_notes").notNull().default(""),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [
+    index("aog_requests_user_id_idx").on(table.userId),
+    index("aog_requests_aircraft_id_idx").on(table.aircraftId),
+    index("aog_requests_status_idx").on(table.status),
+  ],
+);
 
 export const aogRequestAttachments = pgTable("aog_request_attachments", {
   id: text("id").primaryKey(),
@@ -221,60 +230,76 @@ export const aogRequestAttachments = pgTable("aog_request_attachments", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
-export const aircraftDocuments = pgTable("aircraft_documents", {
-  id: text("id").primaryKey(),
-  aircraftId: text("aircraft_id").notNull(),
-  userId: text("user_id").notNull(),
-  documentType: text("document_type").notNull(), // e.g., 'Insurance', 'Registration'
-  fileName: text("file_name").notNull(),
-  storageKey: text("storage_key").notNull().default(""),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-}, (table) => [index("aircraft_documents_aircraft_id_idx").on(table.aircraftId)]);
+export const aircraftDocuments = pgTable(
+  "aircraft_documents",
+  {
+    id: text("id").primaryKey(),
+    aircraftId: text("aircraft_id").notNull(),
+    userId: text("user_id").notNull(),
+    documentType: text("document_type").notNull(), // e.g., 'Insurance', 'Registration'
+    fileName: text("file_name").notNull(),
+    storageKey: text("storage_key").notNull().default(""),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [index("aircraft_documents_aircraft_id_idx").on(table.aircraftId)],
+);
 
-export const aogStatusEvents = pgTable("aog_status_events", {
-  id: text("id").primaryKey(),
-  requestId: text("request_id").notNull(),
-  status: aogStatusEnum("status").notNull(),
-  note: text("note").notNull().default(""),
-  createdByUserId: text("created_by_user_id").notNull().default(""),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-}, (table) => [index("aog_status_events_request_id_idx").on(table.requestId)]);
+export const aogStatusEvents = pgTable(
+  "aog_status_events",
+  {
+    id: text("id").primaryKey(),
+    requestId: text("request_id").notNull(),
+    status: aogStatusEnum("status").notNull(),
+    note: text("note").notNull().default(""),
+    createdByUserId: text("created_by_user_id").notNull().default(""),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [index("aog_status_events_request_id_idx").on(table.requestId)],
+);
 
-export const subscriptions = pgTable("subscriptions", {
-  id: text("id").primaryKey(),
-  userId: text("user_id").notNull(),
-  aircraftId: text("aircraft_id").notNull(),
-  plan: planEnum("plan").notNull(),
-  status: subscriptionStatusEnum("status").notNull().default("Active"),
-  mockProviderRef: text("mock_provider_ref").notNull().default("mock-payment"),
-  stripeCustomerId: text("stripe_customer_id"),
-  stripeSubscriptionId: text("stripe_subscription_id"),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
-}, (table) => [
-  index("subscriptions_user_id_idx").on(table.userId),
-  index("subscriptions_aircraft_id_idx").on(table.aircraftId),
-  index("subscriptions_stripe_subscription_id_idx").on(table.stripeSubscriptionId),
-]);
+export const subscriptions = pgTable(
+  "subscriptions",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id").notNull(),
+    aircraftId: text("aircraft_id").notNull(),
+    plan: planEnum("plan").notNull(),
+    status: subscriptionStatusEnum("status").notNull().default("Active"),
+    mockProviderRef: text("mock_provider_ref").notNull().default("mock-payment"),
+    stripeCustomerId: text("stripe_customer_id"),
+    stripeSubscriptionId: text("stripe_subscription_id"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [
+    index("subscriptions_user_id_idx").on(table.userId),
+    index("subscriptions_aircraft_id_idx").on(table.aircraftId),
+    index("subscriptions_stripe_subscription_id_idx").on(table.stripeSubscriptionId),
+  ],
+);
 
-export const invoices = pgTable("invoices", {
-  id: text("id").primaryKey(),
-  userId: text("user_id").notNull(),
-  subscriptionId: text("subscription_id").notNull(),
-  requestId: text("request_id").notNull().default(""),
-  quoteId: text("quote_id").notNull().default(""),
-  description: text("description").notNull().default(""),
-  amountCents: integer("amount_cents").notNull(),
-  currency: text("currency").notNull().default("usd"),
-  status: invoiceStatusEnum("status").notNull().default("Paid"),
-  emailedAt: timestamp("emailed_at", { withTimezone: true }),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-}, (table) => [
-  index("invoices_user_id_idx").on(table.userId),
-  index("invoices_subscription_id_idx").on(table.subscriptionId),
-  index("invoices_request_id_idx").on(table.requestId),
-  index("invoices_quote_id_idx").on(table.quoteId),
-]);
+export const invoices = pgTable(
+  "invoices",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id").notNull(),
+    subscriptionId: text("subscription_id").notNull(),
+    requestId: text("request_id").notNull().default(""),
+    quoteId: text("quote_id").notNull().default(""),
+    description: text("description").notNull().default(""),
+    amountCents: integer("amount_cents").notNull(),
+    currency: text("currency").notNull().default("usd"),
+    status: invoiceStatusEnum("status").notNull().default("Paid"),
+    emailedAt: timestamp("emailed_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [
+    index("invoices_user_id_idx").on(table.userId),
+    index("invoices_subscription_id_idx").on(table.subscriptionId),
+    index("invoices_request_id_idx").on(table.requestId),
+    index("invoices_quote_id_idx").on(table.quoteId),
+  ],
+);
 
 export const adminNotes = pgTable("admin_notes", {
   id: text("id").primaryKey(),
@@ -285,25 +310,29 @@ export const adminNotes = pgTable("admin_notes", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
-export const supplierQuotes = pgTable("supplier_quotes", {
-  id: text("id").primaryKey(),
-  requestId: text("request_id").notNull(),
-  supplierName: text("supplier_name").notNull(),
-  condition: supplierConditionEnum("condition").notNull().default("Serviceable"),
-  priceCents: integer("price_cents").notNull().default(0),
-  currency: text("currency").notNull().default("usd"),
-  leadTime: text("lead_time").notNull().default(""),
-  paperwork: text("paperwork").notNull().default(""),
-  freightRoute: text("freight_route").notNull().default(""),
-  notes: text("notes").notNull().default(""),
-  validUntil: timestamp("valid_until", { withTimezone: true }),
-  approvedAt: timestamp("approved_at", { withTimezone: true }),
-  approvedByUserId: text("approved_by_user_id"),
-  createdByUserId: text("created_by_user_id").notNull().default(""),
-  awbNumber: text("awb_number").notNull().default(""),
-  netPriceCents: integer("net_price_cents").notNull().default(0),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-}, (table) => [index("supplier_quotes_request_id_idx").on(table.requestId)]);
+export const supplierQuotes = pgTable(
+  "supplier_quotes",
+  {
+    id: text("id").primaryKey(),
+    requestId: text("request_id").notNull(),
+    supplierName: text("supplier_name").notNull(),
+    condition: supplierConditionEnum("condition").notNull().default("Serviceable"),
+    priceCents: integer("price_cents").notNull().default(0),
+    currency: text("currency").notNull().default("usd"),
+    leadTime: text("lead_time").notNull().default(""),
+    paperwork: text("paperwork").notNull().default(""),
+    freightRoute: text("freight_route").notNull().default(""),
+    notes: text("notes").notNull().default(""),
+    validUntil: timestamp("valid_until", { withTimezone: true }),
+    approvedAt: timestamp("approved_at", { withTimezone: true }),
+    approvedByUserId: text("approved_by_user_id"),
+    createdByUserId: text("created_by_user_id").notNull().default(""),
+    awbNumber: text("awb_number").notNull().default(""),
+    netPriceCents: integer("net_price_cents").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [index("supplier_quotes_request_id_idx").on(table.requestId)],
+);
 
 // ── New enums (v2) ────────────────────────────────────────────────────────────
 
@@ -323,30 +352,38 @@ export const rfqStatusEnum = pgEnum("rfq_status", ["sent", "responded", "decline
 
 // ── New tables (v2) ───────────────────────────────────────────────────────────
 
-export const messages = pgTable("messages", {
-  id: text("id").primaryKey(),
-  requestId: text("request_id").notNull().default(""),
-  userId: text("user_id").notNull(),
-  senderId: text("sender_id").notNull(),
-  senderType: messageSenderTypeEnum("sender_type").notNull().default("subscriber"),
-  body: text("body").notNull(),
-  isRead: boolean("is_read").notNull().default(false),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-}, (table) => [
-  index("messages_request_id_idx").on(table.requestId),
-  index("messages_user_id_idx").on(table.userId),
-]);
+export const messages = pgTable(
+  "messages",
+  {
+    id: text("id").primaryKey(),
+    requestId: text("request_id").notNull().default(""),
+    userId: text("user_id").notNull(),
+    senderId: text("sender_id").notNull(),
+    senderType: messageSenderTypeEnum("sender_type").notNull().default("subscriber"),
+    body: text("body").notNull(),
+    isRead: boolean("is_read").notNull().default(false),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [
+    index("messages_request_id_idx").on(table.requestId),
+    index("messages_user_id_idx").on(table.userId),
+  ],
+);
 
-export const notifications = pgTable("notifications", {
-  id: text("id").primaryKey(),
-  userId: text("user_id").notNull(),
-  category: notificationCategoryEnum("category").notNull().default("AOG"),
-  title: text("title").notNull(),
-  body: text("body").notNull().default(""),
-  requestId: text("request_id"),
-  isRead: boolean("is_read").notNull().default(false),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-}, (table) => [index("notifications_user_id_idx").on(table.userId)]);
+export const notifications = pgTable(
+  "notifications",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id").notNull(),
+    category: notificationCategoryEnum("category").notNull().default("AOG"),
+    title: text("title").notNull(),
+    body: text("body").notNull().default(""),
+    requestId: text("request_id"),
+    isRead: boolean("is_read").notNull().default(false),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [index("notifications_user_id_idx").on(table.userId)],
+);
 
 export const usmMarketSignals = pgTable("usm_market_signals", {
   id: text("id").primaryKey(),
@@ -364,15 +401,19 @@ export const usmMarketSignals = pgTable("usm_market_signals", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
-export const caseFailureLog = pgTable("case_failure_log", {
-  id: text("id").primaryKey(),
-  requestId: text("request_id").notNull(),
-  failureCause: text("failure_cause").notNull(),
-  hoursAtFailure: text("hours_at_failure").notNull().default(""),
-  coFailureNotes: text("co_failure_notes").notNull().default(""),
-  loggedBy: text("logged_by").notNull(),
-  loggedAt: timestamp("logged_at", { withTimezone: true }).notNull().defaultNow(),
-}, (table) => [index("case_failure_log_request_id_idx").on(table.requestId)]);
+export const caseFailureLog = pgTable(
+  "case_failure_log",
+  {
+    id: text("id").primaryKey(),
+    requestId: text("request_id").notNull(),
+    failureCause: text("failure_cause").notNull(),
+    hoursAtFailure: text("hours_at_failure").notNull().default(""),
+    coFailureNotes: text("co_failure_notes").notNull().default(""),
+    loggedBy: text("logged_by").notNull(),
+    loggedAt: timestamp("logged_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [index("case_failure_log_request_id_idx").on(table.requestId)],
+);
 
 export const supplierCompanies = pgTable("supplier_companies", {
   id: text("id").primaryKey(),
@@ -420,39 +461,51 @@ export const supplierComplianceDocs = pgTable(
   (table) => [index("supplier_compliance_docs_company_id_idx").on(table.supplierCompanyId)],
 );
 
-export const supplierUsers = pgTable("supplier_users", {
-  userId: text("user_id").primaryKey(),
-  supplierCompanyId: text("supplier_company_id").notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-}, (table) => [index("supplier_users_company_id_idx").on(table.supplierCompanyId)]);
+export const supplierUsers = pgTable(
+  "supplier_users",
+  {
+    userId: text("user_id").primaryKey(),
+    supplierCompanyId: text("supplier_company_id").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [index("supplier_users_company_id_idx").on(table.supplierCompanyId)],
+);
 
-export const supplierTeamMembers = pgTable("supplier_team_members", {
-  id: text("id").primaryKey(),
-  supplierCompanyId: text("supplier_company_id").notNull(),
-  name: text("name").notNull().default(""),
-  email: text("email").notNull().default(""),
-  role: text("role").notNull().default("AOG contact"),
-  phone: text("phone").notNull().default(""),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-}, (table) => [index("supplier_team_members_company_id_idx").on(table.supplierCompanyId)]);
+export const supplierTeamMembers = pgTable(
+  "supplier_team_members",
+  {
+    id: text("id").primaryKey(),
+    supplierCompanyId: text("supplier_company_id").notNull(),
+    name: text("name").notNull().default(""),
+    email: text("email").notNull().default(""),
+    role: text("role").notNull().default("AOG contact"),
+    phone: text("phone").notNull().default(""),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [index("supplier_team_members_company_id_idx").on(table.supplierCompanyId)],
+);
 
-export const supplierRfqs = pgTable("supplier_rfqs", {
-  id: text("id").primaryKey(),
-  requestId: text("request_id").notNull(),
-  supplierCompanyId: text("supplier_company_id").notNull(),
-  partDescription: text("part_description").notNull().default(""),
-  partNumber: text("part_number").notNull().default(""),
-  aircraftType: text("aircraft_type").notNull().default(""),
-  location: text("location").notNull().default(""),
-  documentationRequired: text("documentation_required").notNull().default(""),
-  status: rfqStatusEnum("status").notNull().default("sent"),
-  sentAt: timestamp("sent_at", { withTimezone: true }).notNull().defaultNow(),
-  respondedAt: timestamp("responded_at", { withTimezone: true }),
-  quoteSubmitted: boolean("quote_submitted").notNull().default(false),
-}, (table) => [
-  index("supplier_rfqs_request_id_idx").on(table.requestId),
-  index("supplier_rfqs_company_id_idx").on(table.supplierCompanyId),
-]);
+export const supplierRfqs = pgTable(
+  "supplier_rfqs",
+  {
+    id: text("id").primaryKey(),
+    requestId: text("request_id").notNull(),
+    supplierCompanyId: text("supplier_company_id").notNull(),
+    partDescription: text("part_description").notNull().default(""),
+    partNumber: text("part_number").notNull().default(""),
+    aircraftType: text("aircraft_type").notNull().default(""),
+    location: text("location").notNull().default(""),
+    documentationRequired: text("documentation_required").notNull().default(""),
+    status: rfqStatusEnum("status").notNull().default("sent"),
+    sentAt: timestamp("sent_at", { withTimezone: true }).notNull().defaultNow(),
+    respondedAt: timestamp("responded_at", { withTimezone: true }),
+    quoteSubmitted: boolean("quote_submitted").notNull().default(false),
+  },
+  (table) => [
+    index("supplier_rfqs_request_id_idx").on(table.requestId),
+    index("supplier_rfqs_company_id_idx").on(table.supplierCompanyId),
+  ],
+);
 
 export const teamMembers = pgTable("team_members", {
   id: text("id").primaryKey(),

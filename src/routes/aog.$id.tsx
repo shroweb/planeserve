@@ -86,12 +86,12 @@ function AogCasePage() {
           <CheckCircle2 className="mx-auto h-10 w-10 text-accent" strokeWidth={1.5} />
           <h1 className="mt-4 text-2xl font-semibold tracking-tight">Option approved</h1>
           <p className="mt-3 text-sm text-muted-foreground">
-            Aircraft Program is placing the order through the approved source. You will receive updates
-            as the part progresses to your location.
+            Aircraft Program is placing the order through the approved source. You will receive
+            updates as the part progresses to your location.
           </p>
           <p className="mt-2 text-xs leading-5 text-muted-foreground">
-            Payment and order instructions are handled by Aircraft Program. Supplier bank details are not
-            sent directly to the subscriber.
+            Payment and order instructions are handled by Aircraft Program. Supplier bank details
+            are not sent directly to the subscriber.
           </p>
           {q && (
             <div className="mt-6 rounded-sm border border-border bg-background p-4 text-left text-sm">
@@ -230,9 +230,9 @@ function AogCasePage() {
               </SectionTitle>
               {canApprove && (
                 <p className="mb-4 text-sm text-muted-foreground">
-                  Aircraft Program has sourced the following options. Please review and approve one to
-                  proceed. Aircraft Program will then confirm order/payment instructions and coordinate
-                  the supplier.
+                  Aircraft Program has sourced the following options. Please review and approve one
+                  to proceed. Aircraft Program will then confirm order/payment instructions and
+                  coordinate the supplier.
                 </p>
               )}
               <div className="space-y-4">
@@ -257,8 +257,8 @@ function AogCasePage() {
                 <div>
                   <div className="font-medium text-foreground">Sourcing in progress</div>
                   <div className="mt-1">
-                    Aircraft Program is actively sourcing options for this AOG. You will receive an update
-                    when options are ready for your approval.
+                    Aircraft Program is actively sourcing options for this AOG. You will receive an
+                    update when options are ready for your approval.
                   </div>
                 </div>
               </div>
@@ -319,8 +319,8 @@ function OptionCard({
           )}
           {canApprove && !quote.approvedAt && (
             <p className="mt-3 text-[11px] leading-5 text-muted-foreground">
-              Approval authorises Aircraft Program to proceed with this option. Aircraft Program controls
-              payment/order instructions and supplier dispatch coordination.
+              Approval authorises Aircraft Program to proceed with this option. Aircraft Program
+              controls payment/order instructions and supplier dispatch coordination.
             </p>
           )}
         </div>

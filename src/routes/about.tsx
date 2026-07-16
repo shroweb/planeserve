@@ -44,9 +44,9 @@ function AboutPage() {
             <span className="text-accent">Built from necessity.</span>
           </h1>
           <p className="mt-8 max-w-2xl text-base leading-8 text-white/65 md:text-lg">
-            Aircraft Program was not designed on a whiteboard. It grew from a problem that kept presenting
-            itself across years of trading aircraft and working alongside owners and operators in
-            the legacy market.
+            Aircraft Program was not designed on a whiteboard. It grew from a problem that kept
+            presenting itself across years of trading aircraft and working alongside owners and
+            operators in the legacy market.
           </p>
         </div>
       </section>
@@ -73,8 +73,9 @@ function AboutPage() {
                   paperwork, supplier confirmation, and movement.
                 </p>
                 <p>
-                  Aircraft Program turns that informal support into a formal program: aircraft details
-                  on file before the problem, and a sourcing desk ready when the request lands.
+                  Aircraft Program turns that informal support into a formal program: aircraft
+                  details on file before the problem, and a sourcing desk ready when the request
+                  lands.
                 </p>
               </div>
 
@@ -129,9 +130,9 @@ function AboutPage() {
           </p>
           <blockquote>
             <p className="text-3xl font-semibold leading-[1.45] tracking-tight text-white md:text-4xl md:leading-[1.4]">
-              "The same conversation kept finding me. An owner would call and the need was always the same:
-              I can't find this part, and I don't know where else to look. I kept helping because I could.
-              Eventually it became obvious that this wasn't a favour."
+              "The same conversation kept finding me. An owner would call and the need was always
+              the same: I can't find this part, and I don't know where else to look. I kept helping
+              because I could. Eventually it became obvious that this wasn't a favour."
             </p>
             <footer className="mt-10 flex items-center justify-center gap-4">
               <div className="h-px w-8 bg-accent/40" />
@@ -195,10 +196,10 @@ function AboutPage() {
                 Deep knowledge, global supplier access.
               </h2>
               <p className="mt-6 text-base leading-8 text-white/60">
-                Aircraft Program's desk combines aviation supply chain experience with a vetted global
-                network of parts suppliers. We specialise in older business platforms — the aircraft
-                where the OEM catalogue runs thin and the right part requires knowing who to call,
-                not just where to look.
+                Aircraft Program's desk combines aviation supply chain experience with a vetted
+                global network of parts suppliers. We specialise in older business platforms — the
+                aircraft where the OEM catalogue runs thin and the right part requires knowing who
+                to call, not just where to look.
               </p>
               <ul className="mt-10 space-y-4">
                 {[
@@ -243,8 +244,8 @@ function AboutPage() {
               How we compare.
             </h2>
             <p className="mt-4 text-sm text-muted-foreground">
-              Most operators manage AOG reactively. Aircraft Program is built for the operators who want
-              to be ready before the call comes in.
+              Most operators manage AOG reactively. Aircraft Program is built for the operators who
+              want to be ready before the call comes in.
             </p>
           </div>
 

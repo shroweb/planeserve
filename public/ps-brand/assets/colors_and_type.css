@@ -16,40 +16,40 @@
      ---------------------------------------------------------- */
 
   /* Ink & neutrals — primary text, dark sidebars, hero overlays */
-  --ps-ink: #18202a;       /* primary text / dark sidebar */
-  --ps-ink-2: #202d3d;     /* navigation / hero overlay */
-  --ps-ink-3: #2f3d4d;     /* secondary headings on light */
-  --ps-graphite: #5a6469;  /* secondary / muted text */
-  --ps-titanium: #a8b2bd;  /* text on dark surfaces */
+  --ps-ink: #18202a; /* primary text / dark sidebar */
+  --ps-ink-2: #202d3d; /* navigation / hero overlay */
+  --ps-ink-3: #2f3d4d; /* secondary headings on light */
+  --ps-graphite: #5a6469; /* secondary / muted text */
+  --ps-titanium: #a8b2bd; /* text on dark surfaces */
 
   /* Surfaces */
-  --ps-paper: #ffffff;     /* cards, panels, forms */
-  --ps-bone: #f5f7f8;      /* app background */
-  --ps-linen: #e8eef0;     /* muted UI fill */
-  --ps-vellum: #f4f6f7;    /* table headers, footers, insets */
+  --ps-paper: #ffffff; /* cards, panels, forms */
+  --ps-bone: #f5f7f8; /* app background */
+  --ps-linen: #e8eef0; /* muted UI fill */
+  --ps-vellum: #f4f6f7; /* table headers, footers, insets */
 
   /* Borders */
-  --ps-border: #dde3e8;    /* default borders / dividers */
-  --ps-border-2: #c8d2d9;  /* input borders / stronger dividers */
+  --ps-border: #dde3e8; /* default borders / dividers */
+  --ps-border-2: #c8d2d9; /* input borders / stronger dividers */
 
   /* Signal & semantic */
   /* Brand accent — single blue accent (gold/copper retired from branding) */
-  --ps-copper: #2563C9;       /* legacy alias → now the blue accent */
-  --ps-copper-hover: #1E51A8;
+  --ps-copper: #2563c9; /* legacy alias → now the blue accent */
+  --ps-copper-hover: #1e51a8;
   --ps-copper-soft: #dde7f7;
-  --ps-runway: #2f6f73;       /* operational highlight / info */
-  --ps-forest: #1f5132;       /* success deep */
+  --ps-runway: #2f6f73; /* operational highlight / info */
+  --ps-forest: #1f5132; /* success deep */
   --ps-forest-soft: #d6e2d6;
-  --ps-slate: #2e4a5c;        /* ops badge */
+  --ps-slate: #2e4a5c; /* ops badge */
   --ps-slate-soft: #d8dfe3;
-  --ps-crimson: #8b1f1f;      /* error / grounded */
+  --ps-crimson: #8b1f1f; /* error / grounded */
   --ps-crimson-soft: #efd6d2;
 
   /* Status (per brand guidelines) */
-  --ps-success: #2f7d55;   /* verified docs, resolved */
-  --ps-warning: #b7791f;   /* waiting, missing action */
-  --ps-error: #b64235;     /* grounded aircraft, missing critical docs */
-  --ps-info: #2f6f73;      /* in progress, notices */
+  --ps-success: #2f7d55; /* verified docs, resolved */
+  --ps-warning: #b7791f; /* waiting, missing action */
+  --ps-error: #b64235; /* grounded aircraft, missing critical docs */
+  --ps-info: #2f6f73; /* in progress, notices */
 
   /* ----------------------------------------------------------
      SEMANTIC color aliases (use these in components)
@@ -57,22 +57,22 @@
   --bg: var(--ps-bone);
   --surface: var(--ps-paper);
   --surface-inset: var(--ps-vellum);
-  --fg1: var(--ps-ink);        /* primary text */
-  --fg2: var(--ps-ink-3);      /* body text */
-  --fg3: var(--ps-graphite);   /* muted / labels */
+  --fg1: var(--ps-ink); /* primary text */
+  --fg2: var(--ps-ink-3); /* body text */
+  --fg3: var(--ps-graphite); /* muted / labels */
   --fg-on-dark: #f4f7f8;
   --fg-on-dark-muted: var(--ps-titanium);
   --border: var(--ps-border);
   --border-strong: var(--ps-border-2);
   --accent: var(--ps-copper);
-  --accent-fg: var(--ps-ink);  /* text on copper */
+  --accent-fg: var(--ps-ink); /* text on copper */
   --link: var(--ps-runway);
 
   /* Sidebar (dark) */
-  --sidebar-bg: #232f3d;          /* ≈ oklch(0.14 0.02 250) used in app shell */
-  --sidebar-fg: rgba(255,255,255,0.65);
+  --sidebar-bg: #232f3d; /* ≈ oklch(0.14 0.02 250) used in app shell */
+  --sidebar-fg: rgba(255, 255, 255, 0.65);
   --sidebar-fg-active: var(--ps-copper);
-  --sidebar-border: rgba(255,255,255,0.10);
+  --sidebar-border: rgba(255, 255, 255, 0.1);
 
   /* ----------------------------------------------------------
      TYPE — families
@@ -82,14 +82,14 @@
   --font-serif: var(--font-sans); /* no serif/italic — emphasis is the accent colour */
 
   /* CTA / action accent (interactive) — distinct from copper signal */
-  --ps-cta: #2563C9;
-  --ps-cta-hover: #1E51A8;
+  --ps-cta: #2563c9;
+  --ps-cta-hover: #1e51a8;
   --ps-cta-soft: #dde7f7;
 
   /* Type scale (px) */
-  --t-display: 88px;   /* brand hero / cover */
-  --t-hero: 64px;      /* landing H1 */
-  --t-h1: 36px;        /* page H1 */
+  --t-display: 88px; /* brand hero / cover */
+  --t-hero: 64px; /* landing H1 */
+  --t-h1: 36px; /* page H1 */
   --t-h2: 28px;
   --t-h3: 22px;
   --t-h4: 18px;
@@ -97,13 +97,13 @@
   --t-body-sm: 14px;
   --t-table: 13px;
   --t-meta: 12px;
-  --t-micro: 11px;     /* uppercase labels */
+  --t-micro: 11px; /* uppercase labels */
 
   /* Tracking */
   --track-display: -0.035em;
   --track-head: -0.02em;
   --track-tight: -0.005em;
-  --track-caps: 0.14em;   /* uppercase mono labels */
+  --track-caps: 0.14em; /* uppercase mono labels */
   --track-caps-ui: 0.08em;
 
   /* Weights */
@@ -116,9 +116,9 @@
      ---------------------------------------------------------- */
   --r-xs: 2px;
   --r-sm: 3px;
-  --r-md: 4px;   /* default: buttons, inputs, cards */
+  --r-md: 4px; /* default: buttons, inputs, cards */
   --r-lg: 6px;
-  --r-xl: 8px;   /* max card radius */
+  --r-xl: 8px; /* max card radius */
   --r-pill: 999px;
 
   /* ----------------------------------------------------------
@@ -140,7 +140,7 @@
   --shadow-1: 0 1px 0 rgba(14, 21, 24, 0.04), 0 1px 2px rgba(14, 21, 24, 0.06);
   --shadow-2: 0 1px 0 rgba(14, 21, 24, 0.04), 0 8px 24px -8px rgba(14, 21, 24, 0.16);
   --shadow-panel: 0 18px 50px rgb(24 32 42 / 0.08);
-  --shadow-focus: 0 0 0 3px rgb(14 21 24 / 0.08);     /* neutral focus */
+  --shadow-focus: 0 0 0 3px rgb(14 21 24 / 0.08); /* neutral focus */
   --shadow-focus-runway: 0 0 0 3px rgb(47 111 115 / 0.18);
 }
 
@@ -162,21 +162,24 @@
   line-height: 1.02;
   letter-spacing: var(--track-head);
 }
-h1, .ps-h1 {
+h1,
+.ps-h1 {
   font-family: var(--font-sans);
   font-weight: var(--w-semibold);
   font-size: var(--t-h1);
   line-height: 1.1;
   letter-spacing: var(--track-head);
 }
-h2, .ps-h2 {
+h2,
+.ps-h2 {
   font-family: var(--font-sans);
   font-weight: var(--w-semibold);
   font-size: var(--t-h2);
   line-height: 1.15;
   letter-spacing: var(--track-head);
 }
-h3, .ps-h3 {
+h3,
+.ps-h3 {
   font-family: var(--font-sans);
   font-weight: var(--w-semibold);
   font-size: var(--t-h3);
@@ -190,7 +193,8 @@ h3, .ps-h3 {
   line-height: 1.3;
   letter-spacing: var(--track-tight);
 }
-p, .ps-body {
+p,
+.ps-body {
   font-family: var(--font-sans);
   font-weight: var(--w-regular);
   font-size: var(--t-body);
@@ -204,7 +208,8 @@ p, .ps-body {
 }
 /* Italic editorial accent — pair inside a sans headline, e.g.
    "Hard-to-source aircraft parts, <em>handled fast.</em>" */
-.ps-serif, em.ps-serif {
+.ps-serif,
+em.ps-serif {
   font-family: var(--font-sans);
   font-style: normal;
   font-weight: var(--w-semibold);
@@ -212,7 +217,8 @@ p, .ps-body {
   letter-spacing: -0.01em;
 }
 /* Numeric / IDs / data — always mono with tabular figures */
-.ps-mono, .ps-num {
+.ps-mono,
+.ps-num {
   font-family: var(--font-mono);
   font-feature-settings: "tnum" 1;
   letter-spacing: -0.01em;
@@ -226,7 +232,8 @@ p, .ps-body {
   font-weight: var(--w-medium);
   color: var(--fg3);
 }
-code, .ps-code {
+code,
+.ps-code {
   font-family: var(--font-mono);
   font-size: 0.92em;
   background: var(--ps-linen);

@@ -54,8 +54,7 @@ const conditions: SupplierCondition[] = [
   "As Removed",
 ];
 const filters = ["All", ...statuses] as const;
-const adminInputCls =
-  "h-10 w-full rounded-sm border border-input bg-card px-3 text-sm";
+const adminInputCls = "h-10 w-full rounded-sm border border-input bg-card px-3 text-sm";
 
 function AdminAog() {
   const [filter, setFilter] = useState<(typeof filters)[number]>("All");
@@ -302,8 +301,7 @@ function CaseDetailPanel({
   });
 
   const sendRfqMutation = useMutation({
-    mutationFn: (data: Parameters<typeof sendSupplierRfq>[0]["data"]) =>
-      sendSupplierRfq({ data }),
+    mutationFn: (data: Parameters<typeof sendSupplierRfq>[0]["data"]) => sendSupplierRfq({ data }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-aog-with-quotes"] });
       toast.success("RFQ sent to supplier portal.");
@@ -827,9 +825,7 @@ function CaseDetailPanel({
                 <select
                   required
                   value={rfqForm.supplierCompanyId}
-                  onChange={(e) =>
-                    setRfqForm((f) => ({ ...f, supplierCompanyId: e.target.value }))
-                  }
+                  onChange={(e) => setRfqForm((f) => ({ ...f, supplierCompanyId: e.target.value }))}
                   className={adminInputCls}
                 >
                   <option value="">Select supplier…</option>
@@ -851,9 +847,7 @@ function CaseDetailPanel({
               <QField label="Part / issue description">
                 <input
                   value={rfqForm.partDescription}
-                  onChange={(e) =>
-                    setRfqForm((f) => ({ ...f, partDescription: e.target.value }))
-                  }
+                  onChange={(e) => setRfqForm((f) => ({ ...f, partDescription: e.target.value }))}
                   placeholder="Hydraulic pump assembly"
                   className={adminInputCls}
                 />
@@ -984,7 +978,12 @@ function CaseDetailPanel({
                   onChange={(e) => updateQuote("leadTime", e.target.value)}
                   className={adminInputCls}
                 >
-                  {["In stock — immediate", "In stock — 24h to prepare", "Can source — 48–72h", "Can source — 1 week"].map((o) => (
+                  {[
+                    "In stock — immediate",
+                    "In stock — 24h to prepare",
+                    "Can source — 48–72h",
+                    "Can source — 1 week",
+                  ].map((o) => (
                     <option key={o}>{o}</option>
                   ))}
                 </select>
@@ -995,7 +994,13 @@ function CaseDetailPanel({
                   onChange={(e) => updateQuote("paperwork", e.target.value)}
                   className={adminInputCls}
                 >
-                  {["EASA Form 1", "FAA Form 8130-3", "Both EASA & FAA", "TCCA Form 1", "No documentation"].map((o) => (
+                  {[
+                    "EASA Form 1",
+                    "FAA Form 8130-3",
+                    "Both EASA & FAA",
+                    "TCCA Form 1",
+                    "No documentation",
+                  ].map((o) => (
                     <option key={o}>{o}</option>
                   ))}
                 </select>
@@ -1165,7 +1170,9 @@ function Td({ children }: { children: React.ReactNode }) {
 
 function PriorityBadge({ score }: { score: number }) {
   return (
-    <StatusPill tone={score >= 80 ? "red" : score >= 55 ? "gold" : "neutral"}>{score}/100</StatusPill>
+    <StatusPill tone={score >= 80 ? "red" : score >= 55 ? "gold" : "neutral"}>
+      {score}/100
+    </StatusPill>
   );
 }
 

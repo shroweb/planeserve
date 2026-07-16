@@ -1,5 +1,17 @@
-ALTER TYPE "public"."invoice_status" ADD VALUE 'Refunded';--> statement-breakpoint
-ALTER TYPE "public"."verification_status" ADD VALUE 'Declined';--> statement-breakpoint
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_type t JOIN pg_enum e ON t.oid = e.enumtypid WHERE t.typname = 'invoice_status' AND e.enumlabel = 'Refunded') THEN
+    ALTER TYPE "public"."invoice_status" ADD VALUE 'Refunded';
+  END IF;
+END
+$$;--> statement-breakpoint
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_type t JOIN pg_enum e ON t.oid = e.enumtypid WHERE t.typname = 'verification_status' AND e.enumlabel = 'Declined') THEN
+    ALTER TYPE "public"."verification_status" ADD VALUE 'Declined';
+  END IF;
+END
+$$;--> statement-breakpoint
 CREATE TABLE "file_blobs" (
 	"id" text PRIMARY KEY NOT NULL,
 	"file_name" text NOT NULL,

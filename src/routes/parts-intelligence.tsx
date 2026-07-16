@@ -64,17 +64,15 @@ function PartsIntelligencePage() {
         <div className="mb-6">
           <h1 className="text-2xl font-semibold tracking-tight">Parts Intelligence</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Availability risk for your fleet, updated as Aircraft Program adds market signals, supplier
-            checks and case failure logs.
+            Availability risk for your fleet, updated as Aircraft Program adds market signals,
+            supplier checks and case failure logs.
           </p>
         </div>
 
         {/* Summary cards */}
         <div className="grid gap-4 mb-6 sm:grid-cols-4">
           <div className="bg-card border border-border rounded-lg p-4">
-            <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">
-              Fleet risk
-            </p>
+            <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Fleet risk</p>
             <p className={`text-2xl font-semibold ${riskColour(avgRisk)}`}>{avgRisk || "—"}</p>
           </div>
           <div className="bg-card border border-border rounded-lg p-4">
@@ -212,9 +210,9 @@ function PartsIntelligencePage() {
 
         {filtered.length > 0 && (
           <p className="mt-3 text-xs leading-5 text-muted-foreground">
-            Data is updated by Aircraft Program analysts today and is structured so supplier feeds or
-            inventory APIs can be connected later. Availability and pricing are indicative; contact
-            the desk for pre-positioning advice.
+            Data is updated by Aircraft Program analysts today and is structured so supplier feeds
+            or inventory APIs can be connected later. Availability and pricing are indicative;
+            contact the desk for pre-positioning advice.
           </p>
         )}
       </div>

@@ -30,7 +30,8 @@ function Pricing() {
           </h1>
           <p className="mx-auto mt-8 max-w-xl text-base leading-8 text-white/70 md:text-lg">
             One program fee per aircraft covers the full AOG parts desk. Supplier options, lead
-            time, documentation, and the fixed Aircraft Program sourcing fee are shown before approval.
+            time, documentation, and the fixed Aircraft Program sourcing fee are shown before
+            approval.
           </p>
         </div>
       </section>
