@@ -12,10 +12,11 @@ import { ExternalLink, Download, CreditCard } from "lucide-react";
 
 export const Route = createFileRoute("/billing")({
   beforeLoad: async () => {
-    try {
-      await ensureSession();
-    } catch {
+    const user = await ensureSession().catch(() => {
       throw redirect({ to: "/login" });
+    });
+    if (user?.isSupplier) {
+      throw redirect({ to: "/supplier" });
     }
   },
   component: Billing,

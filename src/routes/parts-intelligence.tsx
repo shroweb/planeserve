@@ -8,10 +8,11 @@ import { useState } from "react";
 
 export const Route = createFileRoute("/parts-intelligence")({
   beforeLoad: async () => {
-    try {
-      await ensureSession();
-    } catch {
+    const user = await ensureSession().catch(() => {
       throw redirect({ to: "/login" });
+    });
+    if (user?.isSupplier) {
+      throw redirect({ to: "/supplier" });
     }
   },
   component: PartsIntelligencePage,

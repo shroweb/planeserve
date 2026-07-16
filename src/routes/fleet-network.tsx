@@ -11,10 +11,11 @@ import { Plane, AlertTriangle, CheckCircle2, Clock } from "lucide-react";
 
 export const Route = createFileRoute("/fleet-network")({
   beforeLoad: async () => {
-    try {
-      await ensureSession();
-    } catch {
+    const user = await ensureSession().catch(() => {
       throw redirect({ to: "/login" });
+    });
+    if (user?.isSupplier) {
+      throw redirect({ to: "/supplier" });
     }
   },
   component: FleetNetworkPage,

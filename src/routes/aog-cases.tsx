@@ -26,10 +26,11 @@ import { useState } from "react";
 
 export const Route = createFileRoute("/aog-cases")({
   beforeLoad: async () => {
-    try {
-      await ensureSession();
-    } catch {
+    const user = await ensureSession().catch(() => {
       throw redirect({ to: "/login" });
+    });
+    if (user?.isSupplier) {
+      throw redirect({ to: "/supplier" });
     }
   },
   component: AogCasesPage,

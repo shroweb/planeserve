@@ -10,10 +10,11 @@ import { ArrowRight, CheckCircle2, Clock3, MessageCircle, Phone, Zap } from "luc
 
 export const Route = createFileRoute("/submit-aog")({
   beforeLoad: async () => {
-    try {
-      await ensureSession();
-    } catch {
+    const user = await ensureSession().catch(() => {
       throw redirect({ to: "/login" });
+    });
+    if (user?.isSupplier) {
+      throw redirect({ to: "/supplier" });
     }
   },
   component: SubmitAog,

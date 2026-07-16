@@ -6,10 +6,11 @@ import { TrendingDown, Clock, Package, CheckCircle2, ArrowRight } from "lucide-r
 
 export const Route = createFileRoute("/value-summary")({
   beforeLoad: async () => {
-    try {
-      await ensureSession();
-    } catch {
+    const user = await ensureSession().catch(() => {
       throw redirect({ to: "/login" });
+    });
+    if (user?.isSupplier) {
+      throw redirect({ to: "/supplier" });
     }
   },
   component: ValueSummaryPage,

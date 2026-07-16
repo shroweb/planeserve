@@ -23,10 +23,11 @@ import { ArrowRight, CheckCircle2, Clock3, FileUp, Plane } from "lucide-react";
 export const Route = createFileRoute("/aircraft")({
   validateSearch: z.object({ id: z.string().optional() }),
   beforeLoad: async () => {
-    try {
-      await ensureSession();
-    } catch {
+    const user = await ensureSession().catch(() => {
       throw redirect({ to: "/login" });
+    });
+    if (user?.isSupplier) {
+      throw redirect({ to: "/supplier" });
     }
   },
   component: AircraftPage,
