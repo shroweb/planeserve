@@ -7,10 +7,13 @@ import { AogIcon, ArrowRightIcon, AircraftIcon } from "@/components/app/PlaneSer
 
 export const Route = createFileRoute("/dashboard")({
   beforeLoad: async () => {
-    try {
-      await ensureSession();
-    } catch {
+    const user = await ensureSession().catch(() => {
       throw redirect({ to: "/login" });
+    });
+    if (user?.isAdmin) {
+      throw redirect({ to: "/admin" });
+    } else if (user?.isSupplier) {
+      throw redirect({ to: "/supplier" });
     }
   },
   component: Dashboard,

@@ -95,6 +95,7 @@ export type UserRecord = {
   country: string;
   role: Role;
   isAdmin: boolean;
+  isSupplier?: boolean;
   createdAt: string;
 };
 
@@ -405,6 +406,11 @@ async function currentUser(): Promise<UserRecord> {
     .where(eq(schema.profiles.userId, session.user.id));
 
   if (profile) {
+    const [supplierRow] = await db
+      .select()
+      .from(schema.supplierUsers)
+      .where(eq(schema.supplierUsers.userId, session.user.id));
+
     return {
       id: profile.userId,
       name: profile.name,
@@ -419,6 +425,7 @@ async function currentUser(): Promise<UserRecord> {
       country: profile.country,
       role: profile.role,
       isAdmin: profile.isAdmin,
+      isSupplier: !!supplierRow,
       createdAt: profile.createdAt.toISOString(),
     };
   }
@@ -459,6 +466,7 @@ async function currentUser(): Promise<UserRecord> {
     country: "",
     role: "Operator",
     isAdmin: false,
+    isSupplier: false,
     createdAt: new Date().toISOString(),
   };
 }

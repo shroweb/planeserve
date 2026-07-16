@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { ArrowRight, ShieldCheck } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { z } from "zod";
+import { getSessionUser } from "@/lib/app.functions";
 
 export const Route = createFileRoute("/login")({
   validateSearch: z.object({ redirect: z.string().optional() }),
@@ -24,12 +25,26 @@ function Login() {
     e.preventDefault();
     setLoading(true);
     const result = await authClient.signIn.email({ email, password });
-    setLoading(false);
     if (result.error) {
+      setLoading(false);
       toast.error(result.error.message || "Incorrect email or password.");
       return;
     }
-    nav({ to: redirectTo as never });
+    
+    try {
+      const user = await getSessionUser();
+      setLoading(false);
+      if (user?.isAdmin) {
+        nav({ to: "/admin" as never });
+      } else if (user?.isSupplier) {
+        nav({ to: "/supplier" as never });
+      } else {
+        nav({ to: redirectTo as never });
+      }
+    } catch {
+      setLoading(false);
+      nav({ to: redirectTo as never });
+    }
   }
 
   return (

@@ -19,7 +19,7 @@ export function ViewAsSwitcher({ current }: { current: View }) {
     staleTime: 60_000,
     retry: false,
   });
-  if (!user?.isAdmin) return null;
+  return null;
 
   function switchTo(view: View) {
     if (view === "Admin") router.navigate({ to: "/admin" });
