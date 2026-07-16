@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation } from "@tanstack/react-query";
 import { createSupplierApplication } from "@/lib/app.functions";
 import { PublicLayout } from "@/components/site/PublicLayout";
@@ -662,9 +662,9 @@ function Step5({
         />
         <span className="text-sm text-muted-foreground">
           I accept the Aircraft Program{" "}
-          <a href="#" className="text-primary underline">
+          <Link to="/supplier-terms" target="_blank" className="text-primary underline hover:opacity-90">
             supplier terms & conditions
-          </a>
+          </Link>
           .
         </span>
       </label>

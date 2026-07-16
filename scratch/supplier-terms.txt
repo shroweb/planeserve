@@ -1,0 +1,352 @@
+AIRCRAFT PROGRAM
+AOG Cover & Intelligence
+SUPPLIER TERMS AND CONDITIONS
+Version 1.0  |  Effective date: 08 July 2026
+These Terms apply to all parts enquiries, quotations, purchase orders, and supply transactions placed by Aircraft Program with any supplier.
+
+IMPORTANT — PLEASE READ BEFORE RESPONDING TO ANY REQUEST FOR QUOTATION
+By responding to an RFQ from Aircraft Program, accepting a purchase order, or supplying any part in response to an Aircraft Program request, you agree to be bound by these Supplier Terms and Conditions. If you do not agree to these Terms, do not respond to the RFQ or accept the purchase order.
+These Terms apply in addition to, and take precedence over, any supplier standard terms unless Aircraft Program has separately agreed otherwise in writing.
+
+Issued by: Aircraft Program  |  A trading name of Moon Jet Group Ltd  |  Company No. 15121199
+Rmt Accountants & Business Advisors Ltd, Gosforth Park Avenue, Newcastle Upon Tyne, NE12 8EG  |  info@aircraftprogram.com
+
+
+1.  Interpretation
+In these Terms the following words have these meanings:
+
+Term
+Meaning
+"Aircraft Program"
+Moon Jet Group Ltd (Company No. 15121199) trading as Aircraft Program, registered address: Rmt Accountants & Business Advisors Ltd, Gosforth Park Avenue, Newcastle Upon Tyne, NE12 8EG. References to "us", "we", or "our" mean Aircraft Program.
+"Supplier" / "you"
+The company, firm, or individual who receives and responds to an RFQ from Aircraft Program or who accepts a Purchase Order from Aircraft Program.
+"Client (Owner or Operator)"
+The aircraft owner or operator on whose behalf Aircraft Program is sourcing the Part. References to "Client" in these Terms mean the Client (Owner or Operator) as defined here. Aircraft Program acts as the Client's disclosed procurement agent. The Client is the ultimate principal to whom the Part is supplied.
+"Part"
+Any aircraft component, assembly, consumable, life-limited part, rotable, or repair article quoted for or supplied under a Purchase Order.
+"RFQ"
+A Request for Quotation issued by Aircraft Program to the Supplier identifying the required Part, applicable aircraft type, and minimum documentation standard.
+"Purchase Order" / "PO"
+A formal written order issued by Aircraft Program to the Supplier confirming the Part, price, delivery terms, and documentation requirements. No purchase obligation arises unless and until a PO is issued.
+"Release Documentation"
+The regulatory release certificate required for the Part — FAA Form 8130-3, EASA Form 1, UK CAA Form 1, or dual-release, as specified in the PO.
+"Back-to-Birth Trace"
+For life-limited parts (LLPs): the complete chain of documentation establishing the part's full operational history from manufacture to the current transaction, sufficient to verify cycles consumed and remaining life with no unaccountable gaps.
+"Serviceable"
+The Part is in a condition fit for installation on a certificated aircraft, meets all applicable airworthiness standards, and is accompanied by Release Documentation that satisfies the regulatory requirements of the Client's registration authority.
+"Airworthiness Authority"
+The civil aviation authority having jurisdiction over the Client's aircraft registration — including but not limited to the FAA (USA), EASA (EU), UK CAA (United Kingdom), and GCAA (UAE).
+
+
+2.  Status of Aircraft Program — Disclosed Agent
+Aircraft Program acts in all sourcing transactions as the disclosed procurement agent of the Client. This means:
+Aircraft Program is not buying the Part for its own account or for resale.
+The beneficial title to any Part acquired passes directly to the Client on delivery.
+The Supplier's legal relationship in respect of the Part itself is with the Client, not with Aircraft Program.
+Aircraft Program's role is to identify, negotiate, and coordinate the supply of the Part on the Client's behalf.
+
+Disclosure of the Client's identity: Aircraft Program does not disclose the identity of the Client to the Supplier except where required for regulatory compliance (for example, for dual-release documentation). The Supplier acknowledges and accepts this structure.
+
+The Supplier should not seek to contact the Client directly. Any commercial, warranty, or quality claims arising from the supply of a Part must be directed to Aircraft Program in the first instance. Aircraft Program will liaise with the Client and direct claims appropriately.
+
+
+3.  Request for Quotation
+3.1  RFQ Content
+Each RFQ issued by Aircraft Program will specify:
+The required Part — part number, nomenclature, applicable aircraft type and engine variant
+The minimum condition standard required (Serviceable, Overhauled, Repaired, New)
+The Release Documentation required — 8130-3, EASA Form 1, UK CAA Form 1, or dual-release
+For life-limited parts: the minimum remaining cycles or hours required and the requirement for Back-to-Birth Trace
+The delivery location and any freight or lead time requirements
+The RFQ reference number and response deadline
+
+3.2  Quotation Response
+A Supplier's quotation in response to an RFQ must include:
+Part number, description, and condition
+Condition tag or traceability statement
+The Release Documentation that will accompany the Part
+For LLPs: the number of cycles or hours remaining and a statement confirming Back-to-Birth Trace availability
+Unit price in the currency quoted — exclusive of freight unless freight is included
+Lead time to readiness and estimated delivery date
+Country of despatch and export/import requirements if applicable
+Whether a core return is required as a condition of sale, and the core charge if applicable
+
+3.3  No Purchase Obligation
+An RFQ is an invitation to quote. Aircraft Program is under no obligation to accept any quotation or to place a Purchase Order with any Supplier who responds. No purchase obligation exists until a Purchase Order is issued and accepted.
+
+
+4.  Purchase Orders
+4.1  Formation of Contract
+A contract for the supply of a Part arises when Aircraft Program issues a Purchase Order and the Supplier either accepts it in writing or commences preparation of the Part for despatch, whichever is earlier. The PO constitutes the complete agreement between the parties in respect of that transaction. The Supplier's standard terms do not apply unless Aircraft Program has expressly agreed to incorporate specific provisions in writing.
+
+4.2  PO Content
+Every Purchase Order will specify:
+The PO reference number
+Part number, description, condition, and quantity
+The agreed unit price and total price in the quoted currency
+Delivery address and method
+Required Release Documentation — this is a binding specification, not a preference
+For LLPs: the minimum remaining life requirement and Back-to-Birth Trace requirement
+Any core return requirement and applicable credit terms
+The payment terms agreed for that transaction
+
+4.3  Amendments
+No amendment to a Purchase Order is valid unless confirmed in writing by Aircraft Program. The Supplier must not vary the Part specification, substitute an alternative part, or change the agreed documentation without prior written consent from Aircraft Program.
+
+4.4  Cancellation
+Aircraft Program may cancel a Purchase Order at any time before the Part is despatched by giving written notice to the Supplier. Where the Supplier has incurred documented, reasonable direct costs in reliance on the PO before cancellation, Aircraft Program will reimburse those costs on receipt of a valid invoice with supporting evidence. No other cancellation fees or loss of profit claims will be accepted.
+
+
+5.  Part Condition, Documentation, and Regulatory Compliance
+5.1  Condition Warranty
+By accepting a Purchase Order, the Supplier warrants that the Part:
+Is in the condition stated in the quotation and confirmed in the PO
+Is Serviceable and fit for installation on a certificated aircraft of the type specified
+Has no known defects, damage, or unresolved maintenance actions that would affect airworthiness
+Has not been involved in any accident, incident, or exposure to unusual stress, heat, or chemical contamination
+Has not been scrapped, condemned, or previously rejected by any airworthiness authority or approved maintenance organisation
+Is not a suspected unapproved part (SUP) and is not the subject of any airworthiness directive, alert service bulletin, or mandatory modification that requires removal or replacement
+
+5.2  Release Documentation — Mandatory
+The Release Documentation specified in the Purchase Order is a mandatory requirement, not a preference. The Supplier must supply the Part with the exact documentation type specified. No substitution is acceptable without Aircraft Program's prior written approval.
+
+Registration authority
+Required documentation
+Acceptable from supplier
+N-registered (USA)
+FAA Form 8130-3
+✓ FAA Form 8130-3 from FAA Part 145 AMO or DAR
+G-registered / EASA member states
+EASA Form 1 or UK CAA Form 1
+✓ EASA Form 1 from EASA Part 145 AMO ✓ UK CAA Form 1 from UK CAA Part 145 AMO
+US supplier / non-US aircraft
+Dual-release required where possible
+✓ Both FAA 8130-3 AND EASA Form 1 / UK CAA Form 1 Required when specified in PO
+Other registrations
+As specified in PO
+Supplier must confirm capability before accepting PO
+✕ NOT acceptable (any registration)
+Manufacturer's Certificate of Conformance only
+✕ C of C alone is NOT acceptable as sole release document
+✕ NOT acceptable
+Trace documents without regulatory release
+✕ Work orders, inspection records, or trace alone without Form 1 or 8130-3
+
+5.3  Life-Limited Parts — Additional Requirements
+CRITICAL — LIFE-LIMITED PARTS (LLPs): These requirements are non-negotiable. Failure to comply will result in rejection and return at the Supplier's cost.
+
+For any Part identified as life-limited in the Purchase Order, the Supplier must supply:
+1. Back-to-Birth Trace — complete unbroken documentation chain from manufacture to current owner, establishing cycles consumed and remaining life with no unaccountable gaps
+2. Time Since New (TSN) and Cycles Since New (CSN) clearly stated on the Release Documentation
+3. Any overhaul records showing time since overhaul (TSO/CSO) where applicable
+4. Written confirmation that the Part has never been exposed to conditions that would require retirement or inspection under applicable airworthiness directives
+5. The original manufacturer's life limit and the remaining life in cycles and hours
+
+Aircraft Program will not accept an LLP without complete Back-to-Birth Trace. A gap in the trace chain is grounds for rejection regardless of the Release Documentation.
+
+5.4  Suspected Unapproved Parts
+The Supplier warrants that no Part supplied under these Terms is or contains a suspected unapproved part as defined by the FAA (AC 21-29), EASA, or UK CAA. If at any time the Supplier becomes aware or has reason to suspect that a Part previously supplied to Aircraft Program may be an unapproved part, the Supplier must notify Aircraft Program immediately in writing, providing all available information. The Supplier must cooperate fully with any investigation by an airworthiness authority.
+
+5.5  Export and Import Compliance
+The Supplier is responsible for compliance with all applicable export control regulations — including but not limited to the International Traffic in Arms Regulations (ITAR), the Export Administration Regulations (EAR), and UK Strategic Export Controls — for any Part supplied under these Terms. The Supplier must notify Aircraft Program before accepting a PO if any export licence or restriction applies to the Part. Aircraft Program will not accept liability for delays or non-delivery caused by the Supplier's failure to obtain necessary export authorisations.
+
+
+6.  Delivery
+6.1  Packing and Labelling
+The Supplier must pack the Part in a manner appropriate for its type and value — protecting it from damage, electrostatic discharge where applicable, and environmental exposure during transit. Packing must include:
+The Part clearly identified by part number and serial number (where applicable) on the external packaging
+The Release Documentation physically with the Part — not sent separately unless agreed in writing
+The PO reference number on all outer packaging and shipping documentation
+For LLPs: all trace documentation in a clearly marked envelope inside the package
+
+6.2  Airway Bill and Tracking
+The Supplier must provide the Airway Bill (AWB) number and courier tracking details to Aircraft Program immediately on despatch — by email to info@aircraftprogram.com with the PO reference in the subject line. Failure to provide tracking details promptly delays the AOG resolution and is treated as a material failure to perform.
+
+6.3  Lead Time
+Time is of the essence for all deliveries under these Terms. The Supplier must notify Aircraft Program immediately if any confirmed lead time cannot be met. Aircraft Program reserves the right to cancel a PO without cancellation fee if the Supplier fails to meet a confirmed lead time by more than 12 hours without prior notification and agreement.
+
+6.4  Risk and Title
+Risk in the Part passes to the Client on delivery to the delivery address specified in the PO. Title to the Part passes to the Client on Aircraft Program's receipt of the Release Documentation and confirmation that payment has cleared.
+
+
+7.  Price and Payment
+7.1  Price
+The price payable for each Part is the price confirmed in the Purchase Order. No price variation is acceptable after PO issuance unless agreed in writing by Aircraft Program before despatch.
+
+7.2  Payment Terms
+Aircraft Program's standard payment terms are payment within 30 days of receipt of a valid invoice. For urgent AOG transactions, Aircraft Program may agree shorter payment terms at the time of PO issuance — such agreed terms will be stated in the PO. A valid invoice must:
+Reference the PO number
+Show the Part number, description, quantity, and unit price
+Show the Aircraft Program company details correctly: Moon Jet Group Ltd t/a Aircraft Program, Company No. 15121199
+Be addressed to: Aircraft Program, info@aircraftprogram.com
+Be submitted within 7 days of despatch
+
+7.3  Payment Before Order
+Aircraft Program does not place a Purchase Order until the Client's funds have cleared. This means Aircraft Program's payment to the Supplier is funded at the time of order. The Supplier should not commence preparation of a Part for Aircraft Program on the basis of a verbal commitment only — a written Purchase Order is required.
+
+7.4  Currency
+Payment will be made in the currency confirmed in the Purchase Order. Aircraft Program will not accept retrospective currency conversion requests.
+
+7.5  Core Returns
+Where a core return is required as a condition of sale, the PO will specify the core charge and return timeframe. Aircraft Program will use reasonable endeavours to arrange return of the core unit. The Supplier must issue a credit note for the core charge within 5 business days of confirmed core receipt. Failure to issue a credit promptly entitles Aircraft Program to deduct the core charge from any future payment due.
+
+
+8.  Warranties and Remedies
+8.1  Supplier Warranties
+The Supplier warrants to Aircraft Program and the Client that:
+The Part corresponds to the description, part number, and condition stated in the quotation and confirmed in the PO
+The Part is free from material defects in material and workmanship
+The Release Documentation is genuine, accurate, and has been issued by an organisation holding the relevant regulatory approval
+All statements made in the quotation regarding condition, trace, cycles, and history are true and complete
+The Supplier has title to the Part and the right to sell it
+The Supplier is not aware of any outstanding lien, encumbrance, or dispute affecting title to the Part
+
+8.2  Warranty Period
+The Supplier's warranty runs for 12 months from the date of delivery of the Part to the delivery address, or until installation, whichever is earlier. For parts that are not installed within 3 months of delivery, the Supplier's warranty runs from the date of installation for a period of 12 months or the remaining warranty period, whichever is longer.
+
+8.3  Remedy for Defective or Incorrectly Documented Parts
+If a Part is found to be defective, not as described, or accompanied by documentation that is incorrect, incomplete, or fraudulent, Aircraft Program will notify the Supplier in writing. The Supplier must, within 5 business days of notification:
+Arrange collection of the Part at the Supplier's cost
+Provide a full replacement Part with correct documentation, or
+Issue a full refund of the purchase price
+
+Where a defective or incorrectly documented Part has caused an extended AOG, the Supplier is liable for reasonably foreseeable losses caused by the delay, including the cost of alternative sourcing and additional freight. This clause does not limit any other legal remedy available to Aircraft Program or the Client.
+
+8.4  Fraudulent Documentation — Strict Liability
+FRAUDULENT DOCUMENTATION: If a Supplier provides false Release Documentation, a fraudulent Back-to-Birth Trace, or any document that misrepresents the condition, history, origin, or regulatory status of a Part, the Supplier accepts unlimited liability for all losses arising from that fraud — including but not limited to:
+
+— Cost of removal and replacement of the Part from the aircraft
+— Inspection and rectification costs arising from installation of the Part
+— Any regulatory action, fine, or enforcement cost arising from the installation
+— Aircraft Program's legal costs in defending any claim brought against it by the Client or any airworthiness authority
+— Reputational damage to Aircraft Program quantified as a reasonable estimate of loss of business
+
+No limitation of liability applies where the Supplier has provided fraudulent documentation. Aircraft Program will report any confirmed documentation fraud to the relevant airworthiness authority — FAA, EASA, UK CAA, or the appropriate national authority — without prior notice to the Supplier.
+
+
+9.  Quality Assurance and Record Keeping
+9.1  Regulatory Approvals
+The Supplier must hold and maintain the regulatory approvals necessary to supply Parts with the Release Documentation specified in Aircraft Program's Purchase Orders. Aircraft Program may request evidence of current approval status at any time. Failure to maintain required approvals is grounds for immediate suspension from the Aircraft Program supplier network.
+
+9.2  Record Retention
+The Supplier must retain all records relating to Parts supplied to Aircraft Program for a minimum of 8 years from the date of supply. Records must include:
+The original quotation and Purchase Order
+Release Documentation (copy)
+Traceability records — including Back-to-Birth Trace for LLPs
+Overhaul and repair records where applicable
+Export documentation
+Any inspection records, test results, or condition assessments
+
+On Aircraft Program's request, the Supplier must produce any such records within 5 business days. This obligation survives termination of any supply relationship between the parties.
+
+9.3  Recall and Airworthiness Directives
+If any Part supplied to Aircraft Program is subsequently subject to a recall, mandatory action, or Airworthiness Directive requiring inspection, modification, or removal, the Supplier must notify Aircraft Program in writing within 24 hours of becoming aware of the requirement. The Supplier must provide all available documentation to support compliance action.
+
+
+10.  Confidentiality
+10.1  Supplier Confidentiality Obligations
+The Supplier must treat as strictly confidential:
+The identity of the Client on whose behalf Aircraft Program is sourcing the Part
+The pricing, terms, and details of any Purchase Order placed by Aircraft Program
+Any information about Aircraft Program's supply chain, customer base, or operational procedures that comes to the Supplier's attention
+
+10.2  Direct Contact with Operators
+The Supplier must not seek to identify or contact the Client directly — whether during or after the transaction — for the purpose of offering parts or services outside the Aircraft Program supply arrangement. If the Supplier becomes aware of the Client's identity through the course of a transaction, that information must not be used for any commercial purpose outside the specific transaction.
+
+Breach of this clause entitles Aircraft Program to terminate all supply arrangements with the Supplier immediately and to pursue recovery of any losses arising from the breach.
+
+
+11.  Limitation of Liability
+11.1  Aircraft Program's Liability to the Supplier
+Aircraft Program's maximum liability to the Supplier for any claim arising from these Terms or any purchase transaction — whether in contract, tort, or otherwise — is limited to the price paid by Aircraft Program for the specific Part to which the claim relates. Aircraft Program is not liable to the Supplier for:
+Loss of profit or anticipated profit
+Loss of opportunity or loss of contract
+Consequential, indirect, or special losses
+Any losses arising from cancellation of a Purchase Order in accordance with clause 4.4
+
+11.2  No Limitation on Supplier's Liability for Fraud or Wilful Misconduct
+Nothing in these Terms limits the Supplier's liability to Aircraft Program or the Client for fraudulent misrepresentation, deliberate concealment, or wilful misconduct. Where the Supplier has provided fraudulent documentation, clause 8.4 applies and no limitation of liability is available to the Supplier.
+
+
+12.  Compliance, Anti-Bribery, and Sanctions
+12.1  Anti-Bribery
+The Supplier warrants that it has not offered, given, or agreed to give any payment, gift, or advantage to any person at Aircraft Program in connection with obtaining any supply arrangement or Purchase Order. The Supplier must comply with the Bribery Act 2010 (UK) and all equivalent legislation in the Supplier's jurisdiction. Breach of this clause entitles Aircraft Program to terminate all arrangements with the Supplier immediately without liability.
+
+12.2  Sanctions Compliance
+The Supplier warrants that neither the Supplier nor any Part supplied under these Terms is subject to any applicable sanctions, trade restrictions, or export prohibitions imposed by the United Nations, the United States, the European Union, or the United Kingdom. Aircraft Program will not knowingly transact with any sanctioned party or in respect of any sanctioned aircraft or jurisdiction. The Supplier must notify Aircraft Program immediately if any sanctions issue arises in connection with a Purchase Order.
+
+
+13.  Aircraft Program Supplier Network
+13.1  Network Approval
+Aircraft Program maintains an approved supplier network. Suppliers who regularly transact with Aircraft Program may be formally approved following assessment of regulatory compliance, documentation quality, response times, and transaction history. Approval is at Aircraft Program's discretion and may be withdrawn at any time.
+
+13.2  Performance Standards
+Suppliers in the Aircraft Program network are assessed on:
+Documentation accuracy — Release Documentation complete and correct on first presentation
+Response time — quotation provided within the RFQ deadline
+Lead time adherence — Parts despatched within confirmed lead time
+Communication — AWB and tracking details provided on despatch
+Core compliance — core charges credited within agreed timeframe
+Dispute resolution — warranty claims handled promptly and without unnecessary escalation
+
+13.3  Removal from Network
+Aircraft Program may remove a Supplier from the approved network without notice where:
+The Supplier provides inaccurate, incomplete, or fraudulent documentation on any transaction
+The Supplier breaches the confidentiality obligations in clause 10
+The Supplier is the subject of any regulatory investigation, suspension, or sanction
+The Supplier fails to meet performance standards on three or more consecutive transactions
+The Supplier contacts a Client directly in breach of clause 10.2
+
+Removal from the network does not affect obligations arising under previously issued Purchase Orders.
+
+
+14.  General
+14.1  Governing Law
+These Terms and all purchase transactions under them are governed by the laws of England and Wales. Any dispute that cannot be resolved by negotiation will be referred to the courts of England and Wales, which shall have exclusive jurisdiction.
+
+14.2  Entire Agreement
+These Terms constitute the entire agreement between Aircraft Program and the Supplier in respect of the supply of Parts. They supersede all previous representations, discussions, and agreements. No variation is effective unless agreed in writing by Aircraft Program.
+
+14.3  Supplier's Standard Terms
+The Supplier's standard terms and conditions — whether printed on a quotation, delivery note, invoice, or any other document — do not apply and are expressly rejected, unless Aircraft Program has separately agreed in writing to incorporate specific provisions. The act of responding to an RFQ or accepting a PO constitutes acceptance of these Terms.
+
+14.4  Waiver
+A failure by Aircraft Program to enforce any provision of these Terms at any time does not constitute a waiver of that provision or any other provision.
+
+14.5  Severability
+If any provision of these Terms is found to be invalid or unenforceable, that provision will be modified to the minimum extent necessary to make it valid and enforceable. The remaining provisions continue in full force.
+
+14.6  Notices
+Notices under these Terms must be in writing. Aircraft Program accepts notices by email to info@aircraftprogram.com with the subject line clearly identifying the Purchase Order reference and the nature of the notice. The Supplier must provide Aircraft Program with a valid email address for notices at the time of first transaction.
+
+14.7  Third Party Rights
+The Client (as owner or operator of the aircraft) is an intended third-party beneficiary of the warranties and documentation obligations in clauses 5 and 8 of these Terms for the purposes of the Contracts (Rights of Third Parties) Act 1999. No other third party has rights under these Terms.
+
+14.8  Version
+These Terms are version 1.0, effective 08 July 2026. Aircraft Program may update these Terms from time to time. The version in force at the time a Purchase Order is issued governs that transaction. Current Terms are available at www.aircraftprogram.com.
+
+
+Contact and Purchase Order Enquiries
+Entity
+Moon Jet Group Ltd trading as Aircraft Program
+Company No.
+15121199
+Registered address
+Rmt Accountants & Business Advisors Ltd, Gosforth Park Avenue, Newcastle Upon Tyne, United Kingdom, NE12 8EG
+Purchase Orders / RFQs
+info@aircraftprogram.com — quote PO reference in subject line
+Invoices
+info@aircraftprogram.com — invoice must reference PO number
+AWB / tracking
+info@aircraftprogram.com — send on despatch, PO ref in subject
+Website
+www.aircraftprogram.com
+Telephone
++44 7402 465 194
+Governing law
+England and Wales
+
+SUPPLIER ACCEPTANCE
+By responding to any RFQ from Aircraft Program, accepting any Purchase Order, or supplying any Part in response to an Aircraft Program request, the Supplier confirms that it has read and agrees to be bound by these Supplier Terms and Conditions in their entirety.
+These Terms take precedence over the Supplier's own standard terms except where Aircraft Program has separately agreed in writing.
