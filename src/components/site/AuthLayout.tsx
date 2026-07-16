@@ -31,7 +31,8 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
         <div className="w-full max-w-sm">
           <PlaneServeLogo
             className="mb-8"
-            wordClassName="text-lg font-semibold tracking-tight text-foreground"
+            size="lg"
+            wordClassName="text-2xl font-semibold tracking-tight text-foreground"
           />
           {children}
         </div>

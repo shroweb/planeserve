@@ -300,7 +300,7 @@ function SubmitAog() {
               {
                 n: 2,
                 title: "Parts sourcing begins",
-                desc: "We search 300+ suppliers live while on the phone.",
+                desc: "We search 300+ suppliers live.",
               },
               {
                 n: 3,

@@ -10,17 +10,19 @@ export function PlaneServeLogo({
   className = "",
   wordClassName = "",
   variant = "dark",
+  size = "md",
 }: {
   to?: string;
   onClick?: () => void;
   className?: string;
   wordClassName?: string;
   variant?: "dark" | "white";
+  size?: "md" | "lg";
 }) {
   const content = (
     <img
       src={variant === "white" ? "/logo-white.png" : "/logo.png"}
-      className="h-8 w-auto shrink-0"
+      className={size === "lg" ? "h-14 w-auto shrink-0" : "h-8 w-auto shrink-0"}
       alt="Aircraft Program Logo"
     />
   );

@@ -101,8 +101,16 @@ export function SiteFooter() {
         <div className="mx-auto max-w-7xl flex flex-wrap items-center justify-between gap-3 px-6 py-5">
           <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-white/35">
             <span>
-              © {new Date().getFullYear()} Aircraft Program. Part of Moon Jet Group. All rights
-              reserved.
+              © {new Date().getFullYear()} Aircraft Program. Part of{" "}
+              <a
+                href="https://moonjetgroup.com"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-white transition-colors"
+              >
+                Moon Jet Group
+              </a>
+              . All rights reserved.
             </span>
             <span>·</span>
             <Link to="/subscriber-agreement" className="hover:text-white transition-colors">
