@@ -116,16 +116,6 @@ export function SiteFooter() {
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-white/25 tracking-wide">
             <span className="font-medium text-success">Desk active · 24/7 controller cover</span>
             <a
-              href="https://linkedin.com/company/aircraft-program"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Aircraft Program on LinkedIn"
-              className="inline-flex items-center gap-1.5 text-white/40 transition-colors hover:text-white"
-            >
-              <Linkedin className="h-3.5 w-3.5" />
-              <span>LinkedIn</span>
-            </a>
-            <a
               href="https://shroweb.com"
               target="_blank"
               rel="noreferrer"

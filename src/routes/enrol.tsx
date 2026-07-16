@@ -598,7 +598,7 @@ function Step2({
             className={inputCls}
             value={form.mobile}
             onChange={(e) => set("mobile", e.target.value)}
-            placeholder="+44 7700 900000"
+            placeholder="+44 7402 465 194"
           />
         </Field>
         <Field label="WhatsApp number">

@@ -190,7 +190,7 @@ function SubmitAog() {
             <div className="rounded-lg border border-border bg-muted/20 p-4 text-center">
               <Phone className="mx-auto mb-2 h-4 w-4 text-muted-foreground" />
               <p className="text-sm font-semibold">AOG hotline</p>
-              <p className="mt-1 text-xs text-muted-foreground">+44 7700 900000</p>
+              <p className="mt-1 text-xs text-muted-foreground">+44 7402 465 194</p>
             </div>
           </div>
 
@@ -259,9 +259,9 @@ function SubmitAog() {
             <p className="text-[10px] font-semibold uppercase tracking-widest text-white/50 mb-2">
               AOG Hotline — 24/7
             </p>
-            <p className="text-2xl font-bold tracking-tight mb-4">+44 7700 900000</p>
+            <p className="text-2xl font-bold tracking-tight mb-4">+44 7402 465 194</p>
             <a
-              href="tel:+447700900000"
+              href="tel:+447402465194"
               className="flex items-center justify-center gap-2 w-full rounded-lg bg-red-600 hover:bg-red-700 text-white py-2.5 text-sm font-semibold transition-colors"
             >
               <Phone className="h-4 w-4" />
@@ -272,9 +272,9 @@ function SubmitAog() {
             <p className="text-[10px] font-semibold uppercase tracking-widest text-white/50 mb-2">
               WhatsApp
             </p>
-            <p className="text-2xl font-bold tracking-tight mb-4">+44 7700 900000</p>
+            <p className="text-2xl font-bold tracking-tight mb-4">+44 7402 465 194</p>
             <a
-              href="https://wa.me/447700900000"
+              href="https://wa.me/447402465194"
               target="_blank"
               rel="noreferrer"
               className="flex items-center justify-center gap-2 w-full rounded-lg bg-[#25D366] hover:bg-[#1ebe5d] text-white py-2.5 text-sm font-semibold transition-colors"
@@ -568,7 +568,7 @@ function SubmitAog() {
                 type="tel"
                 value={form.contactPhone}
                 onChange={(e) => setForm((f) => ({ ...f, contactPhone: e.target.value }))}
-                placeholder="+44 7700 900000"
+                placeholder="+44 7402 465 194"
                 className={formControlCls}
               />
             </div>

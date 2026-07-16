@@ -80,12 +80,12 @@ function ContactPage() {
                   Operations desk
                 </div>
                 <div className="space-y-4">
-                  <a href="mailto:desk@planeserve.aero" className="flex items-center gap-3 group">
+                  <a href="mailto:desk@aircraftprogram.com" className="flex items-center gap-3 group">
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-sm border border-border bg-card group-hover:border-accent/40 transition-colors">
                       <Mail className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
                     </div>
                     <div>
-                      <div className="text-sm font-medium">desk@planeserve.aero</div>
+                      <div className="text-sm font-medium">desk@aircraftprogram.com</div>
                       <div className="text-xs text-muted-foreground">
                         For all operational enquiries
                       </div>
@@ -105,10 +105,10 @@ function ContactPage() {
                       AOG Hotline
                     </div>
                     <a
-                      href="mailto:aog@planeserve.aero"
+                      href="mailto:aog@aircraftprogram.com"
                       className="text-sm font-semibold hover:underline"
                     >
-                      aog@planeserve.aero
+                      aog@aircraftprogram.com
                     </a>
                     <div className="text-xs text-muted-foreground mt-0.5">
                       Active AOG only · answered within minutes
