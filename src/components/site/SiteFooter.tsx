@@ -78,7 +78,10 @@ export function SiteFooter() {
       <div className="border-t border-white/10">
         <div className="mx-auto max-w-7xl flex flex-wrap items-center justify-between gap-3 px-6 py-5">
           <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-white/35">
-            <span>© {new Date().getFullYear()} Aircraft Program Ltd. All rights reserved.</span>
+            <span>
+              © {new Date().getFullYear()} Aircraft Program Ltd. Part of Moon Jet Group. All rights
+              reserved.
+            </span>
             <span>·</span>
             <Link to="/subscriber-agreement" className="hover:text-white transition-colors">
               Terms & Conditions
