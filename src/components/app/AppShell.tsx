@@ -98,7 +98,7 @@ const adminSections: { title: string; items: NavItem[] }[] = [
   {
     title: "Tools",
     items: [
-      { to: "/admin/data", label: "Data", icon: InventoryIcon },
+      { to: "/admin/data", label: "AOG Risk Signals", icon: GaugeIcon },
       { to: "/admin/amo", label: "AMO Network", icon: NetworkIcon },
     ],
   },

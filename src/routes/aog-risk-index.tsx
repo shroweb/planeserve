@@ -6,10 +6,11 @@ import { AlertTriangle, ShieldCheck, TrendingUp } from "lucide-react";
 
 export const Route = createFileRoute("/aog-risk-index")({
   beforeLoad: async () => {
-    try {
-      await ensureSession();
-    } catch {
+    const user = await ensureSession().catch(() => {
       throw redirect({ to: "/login" });
+    });
+    if (user?.isSupplier) {
+      throw redirect({ to: "/supplier" });
     }
   },
   component: AogRiskIndexPage,
