@@ -21,12 +21,37 @@ export async function sendEmail(to: string, subject: string, html: string) {
 
 // Minimal branded wrapper so transactional emails share one look.
 export function emailLayout(heading: string, body: string) {
+  // Gracefully style any standard anchor links in the email body
+  const styledBody = body.replace(/<a\b/g, '<a style="color: #0f172a; font-weight: 600; text-decoration: underline;"');
+
   return `
-    <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:32px 24px">
-      <h2 style="font-size:20px;font-weight:600;margin:0 0 12px">${heading}</h2>
-      <div style="color:#555;font-size:14px;line-height:1.6">${body}</div>
-      <hr style="border:none;border-top:1px solid #eee;margin:24px 0" />
-      <p style="color:#bbb;font-size:11px">Aircraft Program AOG Support · ops@aircraftprogram.com</p>
+    <div style="background-color: #f4f5f7; padding: 40px 16px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; min-height: 100%;">
+      <div style="max-width: 560px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); border-top: 4px solid #0f172a;">
+        
+        <!-- Header with Logo -->
+        <div style="padding: 32px 32px 16px; text-align: center; border-bottom: 1px solid #f1f5f9;">
+          <img src="https://www.aircraftprogram.com/logo.png" alt="Aircraft Program" style="height: 32px; width: auto; display: inline-block;" />
+        </div>
+
+        <!-- Main Content Body -->
+        <div style="padding: 32px;">
+          <h2 style="color: #0f172a; font-size: 20px; font-weight: 700; margin-top: 0; margin-bottom: 16px; line-height: 1.3;">${heading}</h2>
+          <div style="color: #334155; font-size: 15px; line-height: 1.6; margin-bottom: 8px;">${styledBody}</div>
+        </div>
+
+        <!-- Footer -->
+        <div style="padding: 24px 32px; background-color: #f8fafc; border-top: 1px solid #f1f5f9; text-align: center;">
+          <p style="color: #64748b; font-size: 12px; margin: 0 0 4px; font-weight: 600;">Aircraft Program AOG Support</p>
+          <p style="color: #94a3b8; font-size: 11px; margin: 0;">
+            <a href="mailto:ops@aircraftprogram.com" style="color: #0f172a; text-decoration: none;">ops@aircraftprogram.com</a> · 
+            <a href="https://www.aircraftprogram.com" style="color: #0f172a; text-decoration: none;">www.aircraftprogram.com</a>
+          </p>
+          <p style="color: #cbd5e1; font-size: 10px; margin: 16px 0 0;">
+            This email was sent by Aircraft Program. You are receiving this because you are enrolled in the AOG Support network.
+          </p>
+        </div>
+
+      </div>
     </div>
   `;
 }
