@@ -1334,6 +1334,26 @@ export const verifyAircraft = createServerFn({ method: "POST" })
         "AOG cover active",
         `Your AOG cover for ${ac.registration} is now active. You can submit AOG requests for this aircraft.`,
       );
+
+      const [owner] = await db
+        .select({ email: schema.profiles.email, name: schema.profiles.name })
+        .from(schema.profiles)
+        .where(eq(schema.profiles.userId, ac.userId));
+
+      if (owner?.email) {
+        const { sendEmail, emailLayout } = await import("@/lib/email.server");
+        await sendEmail(
+          owner.email,
+          `Aircraft Program AOG cover active — ${ac.registration}`,
+          emailLayout(
+            "Cover approved and active",
+            `<p>Hi ${owner.name || "there"},</p>
+             <p>Great news! The operations desk has verified the details for <strong>${ac.registration}</strong>.</p>
+             <p>Your Aircraft Program AOG cover is now <strong>active</strong>, and you can submit AOG requests for this aircraft directly through the platform.</p>
+             <p><a href="${appUrl("/dashboard")}">Open your dashboard</a></p>`,
+          ),
+        ).catch((err) => console.warn("Verify email failed", err));
+      }
     }
 
     return { ok: true };
