@@ -1141,7 +1141,7 @@ export const getAdminCustomers = createServerFn({ method: "GET" }).handler(async
   await currentAdmin();
   const { desc, db, schema } = await loadServerAuth();
 
-  const [profileRows, aircraftRows, requestRows] = await Promise.all([
+  const [profileRows, aircraftRows, requestRows, subscriptionRows] = await Promise.all([
     db.select().from(schema.profiles).orderBy(desc(schema.profiles.createdAt)),
     db.select().from(schema.aircraft).orderBy(desc(schema.aircraft.createdAt)),
     db
@@ -1153,21 +1153,26 @@ export const getAdminCustomers = createServerFn({ method: "GET" }).handler(async
       })
       .from(schema.aogRequests)
       .orderBy(desc(schema.aogRequests.createdAt)),
+    db.select().from(schema.subscriptions),
   ]);
 
   return {
     users: profileRows
       .filter((p) => !p.isAdmin)
-      .map((p) => ({
-        id: p.userId,
-        name: p.name,
-        email: p.email,
-        company: p.company,
-        phone: p.phone,
-        role: p.role,
-        isAdmin: p.isAdmin,
-        createdAt: p.createdAt.toISOString(),
-      })),
+      .map((p) => {
+        const sub = subscriptionRows.find((s) => s.userId === p.userId && s.stripeCustomerId);
+        return {
+          id: p.userId,
+          name: p.name,
+          email: p.email,
+          company: p.company,
+          phone: p.phone,
+          role: p.role,
+          isAdmin: p.isAdmin,
+          stripeCustomerId: sub?.stripeCustomerId ?? null,
+          createdAt: p.createdAt.toISOString(),
+        };
+      }),
     aircraft: aircraftRows.map(toAircraftRecord),
     requests: requestRows.map((r) => ({
       id: r.id,
@@ -4648,8 +4653,8 @@ export const getStripeAdminData = createServerFn({ method: "GET" }).handler(asyn
       pdfUrl: inv.invoice_pdf,
       hostedUrl: inv.hosted_invoice_url,
       created: inv.created,
-      customerEmail: typeof inv.customer === "object" ? (inv.customer as any)?.email : null,
-      customerName: inv.customer_name,
+      customerEmail: inv.customer_email || (typeof inv.customer === "object" ? (inv.customer as any)?.email : null),
+      customerName: inv.customer_name || inv.customer_email,
     })),
     mrrCents,
     pastDueCount: pastDueStripeIds.length,
@@ -4693,6 +4698,14 @@ export const getStripeBillingData = createServerFn({ method: "GET" }).handler(as
 
   // No Stripe customer yet — create one lazily so the portal works for all users
   if (stripeCustomerIds.length === 0) {
+    if (subs.length === 0) {
+      return {
+        hasStripe: false,
+        portalUrl: null,
+        customerId: null,
+        invoices: [],
+      };
+    }
     const newCustomer = await stripe.customers.create({
       email: user.email,
       name: user.name,

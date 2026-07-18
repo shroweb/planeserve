@@ -42,6 +42,28 @@ function fmt(cents: number, currency = "usd") {
   });
 }
 
+function safeDateLabel(timestamp: number | null | undefined): string {
+  if (!timestamp || isNaN(timestamp)) return "—";
+  const d = new Date(timestamp * 1000);
+  if (isNaN(d.getTime())) return "—";
+  return d.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
+
+function safeCsvDate(timestamp: number | null | undefined): string {
+  if (!timestamp || isNaN(timestamp)) return "";
+  const d = new Date(timestamp * 1000);
+  if (isNaN(d.getTime())) return "";
+  try {
+    return d.toISOString().slice(0, 10);
+  } catch {
+    return "";
+  }
+}
+
 function csvEscape(value: unknown) {
   const text = String(value ?? "");
   return `"${text.replace(/"/g, '""')}"`;
@@ -84,7 +106,7 @@ function AdminRevenuePage() {
         (s.amountCents / 100).toFixed(2),
         "USD",
         s.status,
-        new Date(s.currentPeriodEnd * 1000).toISOString().slice(0, 10),
+        safeCsvDate(s.currentPeriodEnd),
       ]),
       [],
       ["Upcoming renewals"],
@@ -94,7 +116,7 @@ function AdminRevenuePage() {
         r.interval || "",
         (r.amountCents / 100).toFixed(2),
         "USD",
-        new Date(r.currentPeriodEnd * 1000).toISOString().slice(0, 10),
+        safeCsvDate(r.currentPeriodEnd),
       ]),
       [],
       ["Invoices"],
@@ -105,8 +127,7 @@ function AdminRevenuePage() {
         ((inv.amountPaid || inv.amountDue) / 100).toFixed(2),
         inv.currency?.toUpperCase(),
         inv.status,
-        new Date(inv.created * 1000).toISOString().slice(0, 10),
-        inv.pdfUrl || "",
+        safeCsvDate(inv.created),
       ]),
     ];
     downloadCsv(`planeserve-revenue-${new Date().toISOString().slice(0, 10)}.csv`, rows);
@@ -249,11 +270,7 @@ function AdminRevenuePage() {
                       <td className="px-4 py-2 capitalize text-xs">{r.interval}</td>
                       <td className="px-4 py-2 text-xs font-medium">{fmt(r.amountCents)}</td>
                       <td className="px-4 py-2 text-xs text-muted-foreground">
-                        {new Date(r.currentPeriodEnd * 1000).toLocaleDateString("en-GB", {
-                          day: "numeric",
-                          month: "short",
-                          year: "numeric",
-                        })}
+                        {safeDateLabel(r.currentPeriodEnd)}
                       </td>
                     </tr>
                   ))}
@@ -300,11 +317,7 @@ function AdminRevenuePage() {
                       )}
                     </td>
                     <td className="px-4 py-2 text-xs text-muted-foreground">
-                      {new Date(s.currentPeriodEnd * 1000).toLocaleDateString("en-GB", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
+                      {safeDateLabel(s.currentPeriodEnd)}
                     </td>
                     <td className="px-4 py-2">
                       <span

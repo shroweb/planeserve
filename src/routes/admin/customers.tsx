@@ -4,6 +4,7 @@ import { AppShell } from "@/components/app/AppShell";
 import { ensureAdminSession, getAdminCustomers, verifyAircraft } from "@/lib/app.functions";
 import { CheckCircle2, ChevronDown, ChevronUp, Phone, X, ExternalLink } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin/customers")({
   beforeLoad: async () => {
@@ -462,12 +463,29 @@ function CustomerDrawer({
 
       {/* Actions */}
       <div className="flex gap-2 px-5 py-4">
-        <button className="flex-1 flex items-center justify-center gap-2 rounded-md border border-border py-2 text-sm font-medium hover:bg-muted/60">
+        <a
+          href={`mailto:${user.email}?subject=Aircraft%20Program%20Support`}
+          className="flex-1 flex items-center justify-center gap-2 rounded-md border border-border py-2 text-sm font-medium hover:bg-muted/60 text-foreground no-underline text-center"
+        >
           Message
-        </button>
-        <button className="flex-1 flex items-center justify-center gap-2 rounded-md bg-[oklch(0.13_0.025_250)] py-2 text-sm font-semibold text-white hover:opacity-90">
-          Open account <ExternalLink className="h-3.5 w-3.5" />
-        </button>
+        </a>
+        {user.stripeCustomerId ? (
+          <a
+            href={`https://dashboard.stripe.com/customers/${user.stripeCustomerId}`}
+            target="_blank"
+            rel="noreferrer"
+            className="flex-1 flex items-center justify-center gap-2 rounded-md bg-[oklch(0.13_0.025_250)] py-2 text-sm font-semibold text-white hover:opacity-90 no-underline text-center"
+          >
+            Open account <ExternalLink className="h-3.5 w-3.5" />
+          </a>
+        ) : (
+          <button
+            onClick={() => toast.info("No billing account active (no aircraft enrolled yet).")}
+            className="flex-1 flex items-center justify-center gap-2 rounded-md bg-muted py-2 text-sm font-semibold text-muted-foreground cursor-not-allowed text-center"
+          >
+            Open account <ExternalLink className="h-3.5 w-3.5" />
+          </button>
+        )}
       </div>
     </div>
   );
