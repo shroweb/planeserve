@@ -11,6 +11,17 @@ export const Route = createFileRoute("/subscriber-agreement")({
         content:
           "The terms and conditions for Aircraft Program subscription and 24/7 AOG parts desk support.",
       },
+      {
+        property: "og:title",
+        content: "Subscriber Agreement — Aircraft Program",
+      },
+      {
+        property: "og:description",
+        content:
+          "The terms and conditions for Aircraft Program subscription and 24/7 AOG parts desk support.",
+      },
+      { property: "og:url", content: "https://aircraftprogram.com/subscriber-agreement" },
+      { property: "og:type", content: "website" },
     ],
   }),
   component: SubscriberAgreementPage,

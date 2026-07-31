@@ -24,6 +24,17 @@ export const Route = createFileRoute("/how-it-works")({
         content:
           "Learn how Aircraft Program moves your aircraft from 'grounded' to 'serviceable' using a retained support desk and pre-captured context.",
       },
+      {
+        property: "og:title",
+        content: "How it Works — The Aircraft Program AOG support journey",
+      },
+      {
+        property: "og:description",
+        content:
+          "Learn how Aircraft Program moves your aircraft from 'grounded' to 'serviceable' using a retained support desk and pre-captured context.",
+      },
+      { property: "og:url", content: "https://aircraftprogram.com/how-it-works" },
+      { property: "og:type", content: "website" },
     ],
   }),
   component: HowItWorks,

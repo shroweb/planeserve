@@ -13,6 +13,17 @@ export const Route = createFileRoute("/pricing")({
         content:
           "Simple retained AOG support for enrolled aircraft, with clear sourcing options and approval before any part is ordered.",
       },
+      {
+        property: "og:title",
+        content: "Pricing — Simple retained support per aircraft",
+      },
+      {
+        property: "og:description",
+        content:
+          "Simple retained AOG support for enrolled aircraft, with clear sourcing options and approval before any part is ordered.",
+      },
+      { property: "og:url", content: "https://aircraftprogram.com/pricing" },
+      { property: "og:type", content: "website" },
     ],
   }),
   component: Pricing,

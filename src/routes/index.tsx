@@ -27,6 +27,17 @@ export const Route = createFileRoute("/")({
         content:
           "Aircraft Program is a retained AOG parts support service for private and business aircraft. We keep your aircraft details ready before downtime starts, then help source hard-to-find parts.",
       },
+      {
+        property: "og:title",
+        content: "Aircraft Program — AOG parts support for aircraft that cannot wait",
+      },
+      {
+        property: "og:description",
+        content:
+          "Aircraft Program is a retained AOG parts support service for private and business aircraft. We keep your aircraft details ready before downtime starts, then help source hard-to-find parts.",
+      },
+      { property: "og:url", content: "https://aircraftprogram.com/" },
+      { property: "og:type", content: "website" },
     ],
   }),
   component: Home,
