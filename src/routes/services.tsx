@@ -32,7 +32,7 @@ export const Route = createFileRoute("/services")({
         content:
           "Aircraft Program is an aircraft enrolment program covering AOG parts sourcing, supplier outreach, trace verification, and dispatch coordination for enrolled business aircraft.",
       },
-      { property: "og:url", content: "https://aircraftprogram.com/services" },
+      { property: "og:url", content: "https://www.aircraftprogram.com/services" },
       { property: "og:type", content: "website" },
     ],
   }),

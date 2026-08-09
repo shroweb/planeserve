@@ -18,7 +18,7 @@ export const Route = createFileRoute("/supplier-terms")({
         property: "og:description",
         content: "Aircraft Program Supplier Terms and Conditions. General terms governing all aircraft parts procurement and supplier network transactions.",
       },
-      { property: "og:url", content: "https://aircraftprogram.com/supplier-terms" },
+      { property: "og:url", content: "https://www.aircraftprogram.com/supplier-terms" },
       { property: "og:type", content: "website" },
     ],
   }),

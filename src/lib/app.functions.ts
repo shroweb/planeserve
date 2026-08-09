@@ -2528,7 +2528,7 @@ function escapeHtml(value: string | null | undefined) {
 
 function appUrl(path = "") {
   const base =
-    process.env.BETTER_AUTH_URL || process.env.VITE_APP_URL || "https://planeserve.vercel.app";
+    process.env.BETTER_AUTH_URL || process.env.VITE_APP_URL || "https://www.aircraftprogram.com";
   return `${base.replace(/\/$/, "")}${path}`;
 }
 

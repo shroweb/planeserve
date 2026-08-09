@@ -20,7 +20,7 @@ export const Route = createFileRoute("/privacy")({
         content:
           "Aircraft Program Privacy Policy. Learn how we handle your personal and aircraft data under UK GDPR.",
       },
-      { property: "og:url", content: "https://aircraftprogram.com/privacy" },
+      { property: "og:url", content: "https://www.aircraftprogram.com/privacy" },
       { property: "og:type", content: "website" },
     ],
   }),

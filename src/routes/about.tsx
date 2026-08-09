@@ -29,7 +29,7 @@ export const Route = createFileRoute("/about")({
         content:
           "The story behind Aircraft Program, founded by aviation entrepreneur James Moon as a structured answer to hard-to-source aircraft parts and AOG support.",
       },
-      { property: "og:url", content: "https://aircraftprogram.com/about" },
+      { property: "og:url", content: "https://www.aircraftprogram.com/about" },
       { property: "og:type", content: "website" },
     ],
   }),

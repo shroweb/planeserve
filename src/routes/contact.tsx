@@ -24,7 +24,7 @@ export const Route = createFileRoute("/contact")({
         content:
           "Talk to the Aircraft Program operations desk. For new enrolments, active AOG support, supplier enquiries, or general questions.",
       },
-      { property: "og:url", content: "https://aircraftprogram.com/contact" },
+      { property: "og:url", content: "https://www.aircraftprogram.com/contact" },
       { property: "og:type", content: "website" },
     ],
   }),

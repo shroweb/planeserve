@@ -2,77 +2,77 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Home Page -->
   <url>
-    <loc>https://aircraftprogram.com/</loc>
+    <loc>https://www.aircraftprogram.com/</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <!-- Services -->
   <url>
-    <loc>https://aircraftprogram.com/services</loc>
+    <loc>https://www.aircraftprogram.com/services</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <!-- How It Works -->
   <url>
-    <loc>https://aircraftprogram.com/how-it-works</loc>
+    <loc>https://www.aircraftprogram.com/how-it-works</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <!-- Pricing -->
   <url>
-    <loc>https://aircraftprogram.com/pricing</loc>
+    <loc>https://www.aircraftprogram.com/pricing</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <!-- About -->
   <url>
-    <loc>https://aircraftprogram.com/about</loc>
+    <loc>https://www.aircraftprogram.com/about</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <!-- Contact -->
   <url>
-    <loc>https://aircraftprogram.com/contact</loc>
+    <loc>https://www.aircraftprogram.com/contact</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <!-- Signup -->
   <url>
-    <loc>https://aircraftprogram.com/signup</loc>
+    <loc>https://www.aircraftprogram.com/signup</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <!-- Login -->
   <url>
-    <loc>https://aircraftprogram.com/login</loc>
+    <loc>https://www.aircraftprogram.com/login</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <!-- Subscriber Agreement -->
   <url>
-    <loc>https://aircraftprogram.com/subscriber-agreement</loc>
+    <loc>https://www.aircraftprogram.com/subscriber-agreement</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <!-- Supplier Terms -->
   <url>
-    <loc>https://aircraftprogram.com/supplier-terms</loc>
+    <loc>https://www.aircraftprogram.com/supplier-terms</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <!-- Privacy Policy -->
   <url>
-    <loc>https://aircraftprogram.com/privacy</loc>
+    <loc>https://www.aircraftprogram.com/privacy</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

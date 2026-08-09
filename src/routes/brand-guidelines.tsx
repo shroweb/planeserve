@@ -18,7 +18,7 @@ export const Route = createFileRoute("/brand-guidelines")({
         content:
           "A visual brand system for Aircraft Program, covering colour, typography, UI components, tone and aviation operations design principles.",
       },
-      { property: "og:url", content: "https://aircraftprogram.com/brand-guidelines" },
+      { property: "og:url", content: "https://www.aircraftprogram.com/brand-guidelines" },
       { property: "og:type", content: "website" },
     ],
   }),

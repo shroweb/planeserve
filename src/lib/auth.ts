@@ -61,7 +61,7 @@ async function createConfiguredAuth(): Promise<AuthLike> {
           "Reset your Aircraft Program password",
           `
           <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:32px 24px">
-            <img src="https://aircraftprogram.com/logo.png" alt="Aircraft Program" style="height:32px;margin-bottom:24px" />
+            <img src="https://www.aircraftprogram.com/logo.png" alt="Aircraft Program" style="height:32px;margin-bottom:24px" />
             <h2 style="font-size:20px;font-weight:600;margin:0 0 12px">Reset your password</h2>
             <p style="color:#555;font-size:14px;line-height:1.6;margin:0 0 24px">
               Hi ${name}, we received a request to reset your Aircraft Program password.

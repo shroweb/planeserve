@@ -33,7 +33,7 @@ export const Route = createFileRoute("/how-it-works")({
         content:
           "Learn how Aircraft Program moves your aircraft from 'grounded' to 'serviceable' using a retained support desk and pre-captured context.",
       },
-      { property: "og:url", content: "https://aircraftprogram.com/how-it-works" },
+      { property: "og:url", content: "https://www.aircraftprogram.com/how-it-works" },
       { property: "og:type", content: "website" },
     ],
   }),
