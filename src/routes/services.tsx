@@ -21,7 +21,7 @@ export const Route = createFileRoute("/services")({
       {
         name: "description",
         content:
-          "Aircraft Program is an aircraft enrolment program covering AOG parts sourcing, supplier outreach, trace verification, and dispatch coordination for enrolled business aircraft.",
+          "Explore Aircraft Program coverage: AOG parts sourcing, supplier outreach, trace verification and dispatch coordination for enrolled aircraft.",
       },
       {
         property: "og:title",
@@ -30,7 +30,7 @@ export const Route = createFileRoute("/services")({
       {
         property: "og:description",
         content:
-          "Aircraft Program is an aircraft enrolment program covering AOG parts sourcing, supplier outreach, trace verification, and dispatch coordination for enrolled business aircraft.",
+          "Explore Aircraft Program coverage: AOG parts sourcing, supplier outreach, trace verification and dispatch coordination for enrolled aircraft.",
       },
       { property: "og:url", content: "https://www.aircraftprogram.com/services" },
       { property: "og:type", content: "website" },

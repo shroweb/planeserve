@@ -10,8 +10,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
       <div className="brand-dark relative hidden w-1/2 flex-col justify-end overflow-hidden bg-[oklch(0.13_0.025_250)] lg:flex">
         <img
           src={heroImage}
-          alt=""
-          aria-hidden
+          alt="Aircraft on the ramp before AOG support"
           className="absolute inset-0 h-full w-full object-cover object-[58%_center] opacity-80"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.10_0.02_250)] via-[oklch(0.12_0.02_250)]/30 to-transparent" />

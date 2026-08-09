@@ -1,4 +1,20 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /supplier
+Disallow: /dashboard
+Disallow: /enrol
+Disallow: /submit-aog
+Disallow: /aog-cases
+Disallow: /aircraft
+Disallow: /billing
+Disallow: /team
+Disallow: /account
+Disallow: /notifications
+Disallow: /messages
+Disallow: /parts-intelligence
+Disallow: /fleet-network
+Disallow: /aog-risk-index
+Disallow: /value-summary
 
 Sitemap: https://www.aircraftprogram.com/sitemap.xml

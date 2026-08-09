@@ -10,6 +10,25 @@ import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { z } from "zod";
 
 export const Route = createFileRoute("/signup")({
+  head: () => ({
+    meta: [
+      { title: "Create an account — Aircraft Program" },
+      {
+        name: "description",
+        content:
+          "Create an Aircraft Program owner or operator account before enrolling aircraft for AOG support.",
+      },
+      { name: "robots", content: "noindex,follow" },
+      { property: "og:title", content: "Create an account — Aircraft Program" },
+      {
+        property: "og:description",
+        content:
+          "Create an Aircraft Program owner or operator account before enrolling aircraft for AOG support.",
+      },
+      { property: "og:url", content: "https://www.aircraftprogram.com/signup" },
+      { property: "og:type", content: "website" },
+    ],
+  }),
   validateSearch: z.object({ redirect: z.string().optional() }),
   component: Signup,
 });
@@ -132,7 +151,9 @@ function Signup() {
         <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">
           <div>
             <Eyebrow>Customer Account</Eyebrow>
-            <H2>Create your Aircraft Program account.</H2>
+            <h1 className="mt-3 text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
+              Create your Aircraft Program account.
+            </h1>
             <p className="mt-5 text-sm leading-7 text-muted-foreground">
               Create a free owner/operator account first. Payment is only taken when you enrol an
               aircraft and choose its monthly or annual support plan.

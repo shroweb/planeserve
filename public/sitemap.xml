@@ -42,20 +42,6 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  <!-- Signup -->
-  <url>
-    <loc>https://www.aircraftprogram.com/signup</loc>
-    <lastmod>2026-07-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <!-- Login -->
-  <url>
-    <loc>https://www.aircraftprogram.com/login</loc>
-    <lastmod>2026-07-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
   <!-- Subscriber Agreement -->
   <url>
     <loc>https://www.aircraftprogram.com/subscriber-agreement</loc>

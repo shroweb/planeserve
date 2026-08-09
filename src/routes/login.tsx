@@ -8,6 +8,25 @@ import { z } from "zod";
 import { getSessionUser } from "@/lib/app.functions";
 
 export const Route = createFileRoute("/login")({
+  head: () => ({
+    meta: [
+      { title: "Sign in — Aircraft Program" },
+      {
+        name: "description",
+        content:
+          "Sign in to the Aircraft Program member area to manage aircraft, AOG cases, documents and billing.",
+      },
+      { name: "robots", content: "noindex,follow" },
+      { property: "og:title", content: "Sign in — Aircraft Program" },
+      {
+        property: "og:description",
+        content:
+          "Sign in to the Aircraft Program member area to manage aircraft, AOG cases, documents and billing.",
+      },
+      { property: "og:url", content: "https://www.aircraftprogram.com/login" },
+      { property: "og:type", content: "website" },
+    ],
+  }),
   validateSearch: z.object({ redirect: z.string().optional() }),
   component: Login,
 });
