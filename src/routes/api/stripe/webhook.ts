@@ -20,11 +20,17 @@ export const Route = createFileRoute("/api/stripe/webhook")({
           return new Response("Webhook not configured", { status: 400 });
         }
 
+        const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+        if (!stripeSecretKey) {
+          console.error("[stripe webhook] STRIPE_SECRET_KEY is not configured");
+          return new Response("Webhook not configured", { status: 500 });
+        }
+
         // Raw body is required for signature verification.
         const body = await request.text();
 
         const Stripe = (await import("stripe")).default;
-        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+        const stripe = new Stripe(stripeSecretKey);
 
         let event: import("stripe").Stripe.Event;
         try {
