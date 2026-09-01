@@ -129,9 +129,8 @@ export function SiteFooter() {
               rel="noreferrer"
               className="inline-flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.3em] text-white transition-opacity hover:opacity-80"
             >
-              Developed by Shro
+              Developed by Shro Web
               <ExternalLink className="h-2.5 w-2.5" strokeWidth={3} />
-              Web
             </a>
           </div>
         </div>
