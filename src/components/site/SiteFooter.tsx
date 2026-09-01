@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Linkedin } from "lucide-react";
+import { ExternalLink, Linkedin } from "lucide-react";
 import { PlaneServeLogo } from "@/components/site/PlaneServeLogo";
 
 export function SiteFooter() {
@@ -127,9 +127,13 @@ export function SiteFooter() {
               href="https://shroweb.com"
               target="_blank"
               rel="noreferrer"
-              className="text-white/35 transition-colors hover:text-white"
+              className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.3em] text-white transition-opacity hover:opacity-80"
             >
-              Web Development by Shro Web
+              Developed by Shro
+              <span className="inline-flex items-center justify-center rounded-[4px] border-2 border-white p-0.5">
+                <ExternalLink className="h-3 w-3" strokeWidth={2.5} />
+              </span>
+              Web
             </a>
           </div>
         </div>
