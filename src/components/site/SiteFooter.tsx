@@ -127,12 +127,10 @@ export function SiteFooter() {
               href="https://shroweb.com"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.3em] text-white transition-opacity hover:opacity-80"
+              className="inline-flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.3em] text-white transition-opacity hover:opacity-80"
             >
               Developed by Shro
-              <span className="inline-flex items-center justify-center rounded-[4px] border-2 border-white p-0.5">
-                <ExternalLink className="h-3 w-3" strokeWidth={2.5} />
-              </span>
+              <ExternalLink className="h-2.5 w-2.5" strokeWidth={3} />
               Web
             </a>
           </div>
