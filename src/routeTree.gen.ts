@@ -19,9 +19,8 @@ import { Route as SetPasswordRouteImport } from './routes/set-password'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
-import { Route as PartsSourcingRouteImport } from './routes/parts-sourcing'
-import { Route as PartsAirframeRouteImport } from './routes/parts.$airframe'
 import { Route as PrePositioningRouteImport } from './routes/pre-positioning'
+import { Route as PartsSourcingRouteImport } from './routes/parts-sourcing'
 import { Route as PartsIntelligenceRouteImport } from './routes/parts-intelligence'
 import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as MessagesRouteImport } from './routes/messages'
@@ -46,6 +45,7 @@ import { Route as SuppliersApplyRouteImport } from './routes/suppliers/apply'
 import { Route as SupplierQuoteHistoryRouteImport } from './routes/supplier/quote-history'
 import { Route as SupplierProfileRouteImport } from './routes/supplier/profile'
 import { Route as SupplierLoginRouteImport } from './routes/supplier/login'
+import { Route as PartsAirframeRouteImport } from './routes/parts.$airframe'
 import { Route as AogIdRouteImport } from './routes/aog.$id'
 import { Route as AdminSuppliersRouteImport } from './routes/admin/suppliers'
 import { Route as AdminRevenueRouteImport } from './routes/admin/revenue'
@@ -112,19 +112,14 @@ const PricingRoute = PricingRouteImport.update({
   path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PartsSourcingRoute = PartsSourcingRouteImport.update({
-  id: '/parts-sourcing',
-  path: '/parts-sourcing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PartsAirframeRoute = PartsAirframeRouteImport.update({
-  id: '/parts/$airframe',
-  path: '/parts/$airframe',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const PrePositioningRoute = PrePositioningRouteImport.update({
   id: '/pre-positioning',
   path: '/pre-positioning',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PartsSourcingRoute = PartsSourcingRouteImport.update({
+  id: '/parts-sourcing',
+  path: '/parts-sourcing',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PartsIntelligenceRoute = PartsIntelligenceRouteImport.update({
@@ -247,6 +242,11 @@ const SupplierLoginRoute = SupplierLoginRouteImport.update({
   path: '/supplier/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PartsAirframeRoute = PartsAirframeRouteImport.update({
+  id: '/parts/$airframe',
+  path: '/parts/$airframe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AogIdRoute = AogIdRouteImport.update({
   id: '/aog/$id',
   path: '/aog/$id',
@@ -343,7 +343,6 @@ export interface FileRoutesByFullPath {
   '/notifications': typeof NotificationsRoute
   '/parts-intelligence': typeof PartsIntelligenceRoute
   '/parts-sourcing': typeof PartsSourcingRoute
-  '/parts/$airframe': typeof PartsAirframeRoute
   '/pre-positioning': typeof PrePositioningRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
@@ -366,6 +365,7 @@ export interface FileRoutesByFullPath {
   '/admin/revenue': typeof AdminRevenueRoute
   '/admin/suppliers': typeof AdminSuppliersRoute
   '/aog/$id': typeof AogIdRoute
+  '/parts/$airframe': typeof PartsAirframeRoute
   '/supplier/login': typeof SupplierLoginRoute
   '/supplier/profile': typeof SupplierProfileRoute
   '/supplier/quote-history': typeof SupplierQuoteHistoryRoute
@@ -397,7 +397,6 @@ export interface FileRoutesByTo {
   '/notifications': typeof NotificationsRoute
   '/parts-intelligence': typeof PartsIntelligenceRoute
   '/parts-sourcing': typeof PartsSourcingRoute
-  '/parts/$airframe': typeof PartsAirframeRoute
   '/pre-positioning': typeof PrePositioningRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
@@ -420,6 +419,7 @@ export interface FileRoutesByTo {
   '/admin/revenue': typeof AdminRevenueRoute
   '/admin/suppliers': typeof AdminSuppliersRoute
   '/aog/$id': typeof AogIdRoute
+  '/parts/$airframe': typeof PartsAirframeRoute
   '/supplier/login': typeof SupplierLoginRoute
   '/supplier/profile': typeof SupplierProfileRoute
   '/supplier/quote-history': typeof SupplierQuoteHistoryRoute
@@ -452,7 +452,6 @@ export interface FileRoutesById {
   '/notifications': typeof NotificationsRoute
   '/parts-intelligence': typeof PartsIntelligenceRoute
   '/parts-sourcing': typeof PartsSourcingRoute
-  '/parts/$airframe': typeof PartsAirframeRoute
   '/pre-positioning': typeof PrePositioningRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
@@ -475,6 +474,7 @@ export interface FileRoutesById {
   '/admin/revenue': typeof AdminRevenueRoute
   '/admin/suppliers': typeof AdminSuppliersRoute
   '/aog/$id': typeof AogIdRoute
+  '/parts/$airframe': typeof PartsAirframeRoute
   '/supplier/login': typeof SupplierLoginRoute
   '/supplier/profile': typeof SupplierProfileRoute
   '/supplier/quote-history': typeof SupplierQuoteHistoryRoute
@@ -508,7 +508,6 @@ export interface FileRouteTypes {
     | '/notifications'
     | '/parts-intelligence'
     | '/parts-sourcing'
-    | '/parts/$airframe'
     | '/pre-positioning'
     | '/pricing'
     | '/privacy'
@@ -531,6 +530,7 @@ export interface FileRouteTypes {
     | '/admin/revenue'
     | '/admin/suppliers'
     | '/aog/$id'
+    | '/parts/$airframe'
     | '/supplier/login'
     | '/supplier/profile'
     | '/supplier/quote-history'
@@ -562,7 +562,6 @@ export interface FileRouteTypes {
     | '/notifications'
     | '/parts-intelligence'
     | '/parts-sourcing'
-    | '/parts/$airframe'
     | '/pre-positioning'
     | '/pricing'
     | '/privacy'
@@ -585,6 +584,7 @@ export interface FileRouteTypes {
     | '/admin/revenue'
     | '/admin/suppliers'
     | '/aog/$id'
+    | '/parts/$airframe'
     | '/supplier/login'
     | '/supplier/profile'
     | '/supplier/quote-history'
@@ -616,7 +616,6 @@ export interface FileRouteTypes {
     | '/notifications'
     | '/parts-intelligence'
     | '/parts-sourcing'
-    | '/parts/$airframe'
     | '/pre-positioning'
     | '/pricing'
     | '/privacy'
@@ -639,6 +638,7 @@ export interface FileRouteTypes {
     | '/admin/revenue'
     | '/admin/suppliers'
     | '/aog/$id'
+    | '/parts/$airframe'
     | '/supplier/login'
     | '/supplier/profile'
     | '/supplier/quote-history'
@@ -671,7 +671,6 @@ export interface RootRouteChildren {
   NotificationsRoute: typeof NotificationsRoute
   PartsIntelligenceRoute: typeof PartsIntelligenceRoute
   PartsSourcingRoute: typeof PartsSourcingRoute
-  PartsAirframeRoute: typeof PartsAirframeRoute
   PrePositioningRoute: typeof PrePositioningRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -694,6 +693,7 @@ export interface RootRouteChildren {
   AdminRevenueRoute: typeof AdminRevenueRoute
   AdminSuppliersRoute: typeof AdminSuppliersRoute
   AogIdRoute: typeof AogIdRoute
+  PartsAirframeRoute: typeof PartsAirframeRoute
   SupplierLoginRoute: typeof SupplierLoginRoute
   SupplierProfileRoute: typeof SupplierProfileRoute
   SupplierQuoteHistoryRoute: typeof SupplierQuoteHistoryRoute
@@ -785,13 +785,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrePositioningRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/parts-intelligence': {
-      id: '/parts-intelligence'
-      path: '/parts-intelligence'
-      fullPath: '/parts-intelligence'
-      preLoaderRoute: typeof PartsIntelligenceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/parts-sourcing': {
       id: '/parts-sourcing'
       path: '/parts-sourcing'
@@ -799,11 +792,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PartsSourcingRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/parts/$airframe': {
-      id: '/parts/$airframe'
-      path: '/parts/$airframe'
-      fullPath: '/parts/$airframe'
-      preLoaderRoute: typeof PartsAirframeRouteImport
+    '/parts-intelligence': {
+      id: '/parts-intelligence'
+      path: '/parts-intelligence'
+      fullPath: '/parts-intelligence'
+      preLoaderRoute: typeof PartsIntelligenceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/notifications': {
@@ -967,6 +960,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SupplierLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/parts/$airframe': {
+      id: '/parts/$airframe'
+      path: '/parts/$airframe'
+      fullPath: '/parts/$airframe'
+      preLoaderRoute: typeof PartsAirframeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/aog/$id': {
       id: '/aog/$id'
       path: '/aog/$id'
@@ -1095,7 +1095,6 @@ const rootRouteChildren: RootRouteChildren = {
   NotificationsRoute: NotificationsRoute,
   PartsIntelligenceRoute: PartsIntelligenceRoute,
   PartsSourcingRoute: PartsSourcingRoute,
-  PartsAirframeRoute: PartsAirframeRoute,
   PrePositioningRoute: PrePositioningRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
@@ -1118,6 +1117,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRevenueRoute: AdminRevenueRoute,
   AdminSuppliersRoute: AdminSuppliersRoute,
   AogIdRoute: AogIdRoute,
+  PartsAirframeRoute: PartsAirframeRoute,
   SupplierLoginRoute: SupplierLoginRoute,
   SupplierProfileRoute: SupplierProfileRoute,
   SupplierQuoteHistoryRoute: SupplierQuoteHistoryRoute,

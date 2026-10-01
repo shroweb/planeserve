@@ -90,7 +90,7 @@ function Signup() {
     }));
     if (!welcome.ok) {
       setEmailStatus(
-        welcome.reason ??
+        ("reason" in welcome ? welcome.reason : undefined) ??
           "Account created, but the welcome email did not send. Check the Resend configuration.",
       );
       toast.warning("Account created, but the welcome email did not send.");

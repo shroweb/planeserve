@@ -200,7 +200,7 @@ function AircraftDetailPanel({
   onVerify,
 }: {
   aircraft: AircraftRecord;
-  owner?: UserRecord;
+  owner?: any;
   verifying: boolean;
   onClose: () => void;
   onVerify: () => void;
