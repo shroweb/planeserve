@@ -4796,3 +4796,92 @@ export const activateCoverSelf = createServerFn({ method: "POST" })
 
     return { ok: true };
   });
+
+export const submitOneOffPartRequest = createServerFn({ method: "POST" })
+  .inputValidator(
+    z.object({
+      name: z.string().min(1, "Full name is required"),
+      email: z.string().email("Valid business email is required"),
+      phone: z.string().optional(),
+      company: z.string().optional(),
+      aircraftType: z.string().min(1, "Aircraft type/model is required"),
+      aircraftReg: z.string().optional(),
+      partNumber: z.string().min(1, "Part number is required"),
+      partDescription: z.string().optional(),
+      condition: z.string().default("Any Certified (Fastest)"),
+      urgency: z.string().default("AOG Grounded"),
+      deliveryLocation: z.string().min(1, "Delivery base or airport ICAO is required"),
+      additionalNotes: z.string().optional(),
+    }),
+  )
+  .handler(async ({ data }) => {
+    const reference = `REQ-${Date.now().toString(36).toUpperCase().slice(-5)}-${Math.floor(
+      100 + Math.random() * 900,
+    )}`;
+
+    const adminBody = `
+      <p>A new one-off parts sourcing request has been submitted by a non-enrolled operator/buyer.</p>
+      <table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px;">
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600; width: 160px;">Reference:</td><td><strong>${reference}</strong></td></tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600;">Part Number (P/N):</td><td><code style="background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-weight: bold;">${escapeHtml(data.partNumber)}</code></td></tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600;">Description:</td><td>${escapeHtml(data.partDescription || "Not provided")}</td></tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600;">Aircraft Type:</td><td>${escapeHtml(data.aircraftType)}</td></tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600;">Registration:</td><td>${escapeHtml(data.aircraftReg || "Not specified")}</td></tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600;">Condition Required:</td><td>${escapeHtml(data.condition)}</td></tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600;">Urgency:</td><td><strong style="color: ${data.urgency.toLowerCase().includes("aog") ? "#dc2626" : "#2563eb"};">${escapeHtml(data.urgency)}</strong></td></tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600;">Delivery Base / ICAO:</td><td>${escapeHtml(data.deliveryLocation)}</td></tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600;">Contact Name:</td><td>${escapeHtml(data.name)}</td></tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600;">Contact Email:</td><td><a href="mailto:${escapeHtml(data.email)}">${escapeHtml(data.email)}</a></td></tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600;">Phone:</td><td>${escapeHtml(data.phone || "Not provided")}</td></tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600;">Company:</td><td>${escapeHtml(data.company || "Not provided")}</td></tr>
+        <tr><td style="padding: 8px 0; font-weight: 600; vertical-align: top;">Notes:</td><td>${escapeHtml(data.additionalNotes || "None")}</td></tr>
+      </table>
+      <p style="font-size: 13px; color: #64748b;"><em>Note: As this is a one-off non-enrolled request, the standard US$150–250 handling fee applies in addition to part cost and commission upon quote acceptance.</em></p>
+    `;
+
+    // Notify admins / desk
+    await sendAdminJourneyEmail(
+      `[Parts Desk] One-Off Request ${reference} — ${data.partNumber} (${data.aircraftType})`,
+      `New Parts Request: ${data.partNumber}`,
+      adminBody,
+    );
+
+    // Also send email to ops@aircraftprogram.com specifically
+    await sendJourneyEmail(
+      "ops@aircraftprogram.com",
+      `[Parts Desk] One-Off Request ${reference} — ${data.partNumber} (${data.aircraftType})`,
+      `New Parts Request: ${data.partNumber}`,
+      adminBody,
+    );
+
+    // Acknowledge receipt to requester
+    const customerBody = `
+      <p>Dear ${escapeHtml(data.name)},</p>
+      <p>We have acknowledged receipt of your one-off parts sourcing request for <strong>${escapeHtml(data.partNumber)}</strong> (${escapeHtml(data.aircraftType)}).</p>
+      <p>Your request reference is <strong>${reference}</strong>.</p>
+      <p>Our operations desk is now checking inventory across our vetted distributor and MRO network. For one-off requests, we aim to provide qualified availability and pricing within <strong>4 business hours</strong>.</p>
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px; margin: 18px 0; font-size: 13px;">
+        <strong>Sourcing Summary:</strong><br />
+        • Part Number: ${escapeHtml(data.partNumber)}<br />
+        • Condition: ${escapeHtml(data.condition)}<br />
+        • Destination: ${escapeHtml(data.deliveryLocation)}<br />
+        • Urgency: ${escapeHtml(data.urgency)}
+      </div>
+      <p style="font-size: 13px; color: #64748b;">
+        Need to expedite or have trace paperwork questions? You can reply directly to this email or contact the desk at <a href="mailto:ops@aircraftprogram.com">ops@aircraftprogram.com</a> quoting reference <strong>${reference}</strong>.
+      </p>
+      <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #e2e8f0; font-size: 12px; color: #64748b;">
+        Tip: To bypass one-off handling fees (US$150–250) and receive instant 24/7 AOG priority dispatch, you can enrol your aircraft anytime for US$100/month at <a href="${appUrl("/enrol")}">aircraftprogram.com/enrol</a>.
+      </p>
+    `;
+
+    await sendJourneyEmail(
+      data.email,
+      `Aircraft Program Parts Desk Request Acknowledged — ${reference}`,
+      `Request Acknowledged — Reference ${reference}`,
+      customerBody,
+    );
+
+    return { ok: true, reference };
+  });
+

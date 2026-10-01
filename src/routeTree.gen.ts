@@ -19,6 +19,8 @@ import { Route as SetPasswordRouteImport } from './routes/set-password'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as PartsSourcingRouteImport } from './routes/parts-sourcing'
+import { Route as PartsAirframeRouteImport } from './routes/parts.$airframe'
 import { Route as PrePositioningRouteImport } from './routes/pre-positioning'
 import { Route as PartsIntelligenceRouteImport } from './routes/parts-intelligence'
 import { Route as NotificationsRouteImport } from './routes/notifications'
@@ -108,6 +110,16 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PartsSourcingRoute = PartsSourcingRouteImport.update({
+  id: '/parts-sourcing',
+  path: '/parts-sourcing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PartsAirframeRoute = PartsAirframeRouteImport.update({
+  id: '/parts/$airframe',
+  path: '/parts/$airframe',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrePositioningRoute = PrePositioningRouteImport.update({
@@ -330,6 +342,8 @@ export interface FileRoutesByFullPath {
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/parts-intelligence': typeof PartsIntelligenceRoute
+  '/parts-sourcing': typeof PartsSourcingRoute
+  '/parts/$airframe': typeof PartsAirframeRoute
   '/pre-positioning': typeof PrePositioningRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
@@ -382,6 +396,8 @@ export interface FileRoutesByTo {
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/parts-intelligence': typeof PartsIntelligenceRoute
+  '/parts-sourcing': typeof PartsSourcingRoute
+  '/parts/$airframe': typeof PartsAirframeRoute
   '/pre-positioning': typeof PrePositioningRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
@@ -435,6 +451,8 @@ export interface FileRoutesById {
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/parts-intelligence': typeof PartsIntelligenceRoute
+  '/parts-sourcing': typeof PartsSourcingRoute
+  '/parts/$airframe': typeof PartsAirframeRoute
   '/pre-positioning': typeof PrePositioningRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
@@ -489,6 +507,8 @@ export interface FileRouteTypes {
     | '/messages'
     | '/notifications'
     | '/parts-intelligence'
+    | '/parts-sourcing'
+    | '/parts/$airframe'
     | '/pre-positioning'
     | '/pricing'
     | '/privacy'
@@ -541,6 +561,8 @@ export interface FileRouteTypes {
     | '/messages'
     | '/notifications'
     | '/parts-intelligence'
+    | '/parts-sourcing'
+    | '/parts/$airframe'
     | '/pre-positioning'
     | '/pricing'
     | '/privacy'
@@ -593,6 +615,8 @@ export interface FileRouteTypes {
     | '/messages'
     | '/notifications'
     | '/parts-intelligence'
+    | '/parts-sourcing'
+    | '/parts/$airframe'
     | '/pre-positioning'
     | '/pricing'
     | '/privacy'
@@ -646,6 +670,8 @@ export interface RootRouteChildren {
   MessagesRoute: typeof MessagesRoute
   NotificationsRoute: typeof NotificationsRoute
   PartsIntelligenceRoute: typeof PartsIntelligenceRoute
+  PartsSourcingRoute: typeof PartsSourcingRoute
+  PartsAirframeRoute: typeof PartsAirframeRoute
   PrePositioningRoute: typeof PrePositioningRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -764,6 +790,20 @@ declare module '@tanstack/react-router' {
       path: '/parts-intelligence'
       fullPath: '/parts-intelligence'
       preLoaderRoute: typeof PartsIntelligenceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/parts-sourcing': {
+      id: '/parts-sourcing'
+      path: '/parts-sourcing'
+      fullPath: '/parts-sourcing'
+      preLoaderRoute: typeof PartsSourcingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/parts/$airframe': {
+      id: '/parts/$airframe'
+      path: '/parts/$airframe'
+      fullPath: '/parts/$airframe'
+      preLoaderRoute: typeof PartsAirframeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/notifications': {
@@ -1054,6 +1094,8 @@ const rootRouteChildren: RootRouteChildren = {
   MessagesRoute: MessagesRoute,
   NotificationsRoute: NotificationsRoute,
   PartsIntelligenceRoute: PartsIntelligenceRoute,
+  PartsSourcingRoute: PartsSourcingRoute,
+  PartsAirframeRoute: PartsAirframeRoute,
   PrePositioningRoute: PrePositioningRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,

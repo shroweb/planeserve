@@ -24,6 +24,7 @@ export function SiteFooter() {
             items={[
               { to: "/how-it-works", label: "How it works" },
               { to: "/services", label: "Services" },
+              { to: "/parts-sourcing", label: "Parts Sourcing Desk" },
               { to: "/pricing", label: "Pricing" },
               { to: "/enrol", label: "Enrol aircraft" },
             ]}
