@@ -197,7 +197,7 @@ function PartsSourcingPage() {
 
       {/* ── Hero Section ─────────────────────────────────────────────────── */}
       <section className="brand-dark relative overflow-hidden bg-[#001b2e] text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(#1e88e5_1px,transparent_1px)] [background-size:24px_24px] opacity-10" />
+        <div className="absolute inset-0 bg-[radial-gradient(#2a6db5_1px,transparent_1px)] [background-size:24px_24px] opacity-10" />
         <div className="relative mx-auto max-w-7xl px-6 py-20 lg:py-24">
           <div className="mx-auto max-w-3xl text-center">
             <div className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-accent">
