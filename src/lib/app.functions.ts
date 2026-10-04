@@ -4822,6 +4822,30 @@ export const submitOneOffPartRequest = createServerFn({ method: "POST" })
       100 + Math.random() * 900,
     )}`;
 
+    // Persist to database
+    try {
+      const { db, schema } = await loadServerAuth();
+      await db.insert(schema.partsRequests).values({
+        id: reference,
+        reference,
+        name: data.name,
+        email: data.email,
+        phone: data.phone || null,
+        company: data.company || null,
+        aircraftType: data.aircraftType,
+        aircraftReg: data.aircraftReg || null,
+        partNumber: data.partNumber,
+        partDescription: data.partDescription || null,
+        condition: data.condition,
+        urgency: data.urgency,
+        deliveryLocation: data.deliveryLocation,
+        additionalNotes: data.additionalNotes || null,
+        status: "New",
+      });
+    } catch (err) {
+      console.error("Failed to insert parts request into database:", err);
+    }
+
     const adminBody = `
       <p>A new one-off parts sourcing request has been submitted by a non-enrolled operator/buyer.</p>
       <table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px;">
@@ -4831,7 +4855,7 @@ export const submitOneOffPartRequest = createServerFn({ method: "POST" })
         <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600;">Aircraft Type:</td><td>${escapeHtml(data.aircraftType)}</td></tr>
         <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600;">Registration:</td><td>${escapeHtml(data.aircraftReg || "Not specified")}</td></tr>
         <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600;">Condition Required:</td><td>${escapeHtml(data.condition)}</td></tr>
-        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600;">Urgency:</td><td><strong style="color: ${data.urgency.toLowerCase().includes("aog") ? "#dc2626" : "#2563eb"};">${escapeHtml(data.urgency)}</strong></td></tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600;">Urgency:</td><td><strong style="color: ${data.urgency.toLowerCase().includes("aog") ? "#dc2626" : "#001b2e"};">${escapeHtml(data.urgency)}</strong></td></tr>
         <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600;">Delivery Base / ICAO:</td><td>${escapeHtml(data.deliveryLocation)}</td></tr>
         <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600;">Contact Name:</td><td>${escapeHtml(data.name)}</td></tr>
         <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600;">Contact Email:</td><td><a href="mailto:${escapeHtml(data.email)}">${escapeHtml(data.email)}</a></td></tr>
@@ -4844,6 +4868,14 @@ export const submitOneOffPartRequest = createServerFn({ method: "POST" })
 
     // Notify admins / desk
     await sendAdminJourneyEmail(
+      `[Parts Desk] One-Off Request ${reference} — ${data.partNumber} (${data.aircraftType})`,
+      `New Parts Request: ${data.partNumber}`,
+      adminBody,
+    );
+
+    // Notify James Moon at Moon Jet Group directly
+    await sendJourneyEmail(
+      "jmoon@moonjetgroup.com",
       `[Parts Desk] One-Off Request ${reference} — ${data.partNumber} (${data.aircraftType})`,
       `New Parts Request: ${data.partNumber}`,
       adminBody,
@@ -4887,4 +4919,35 @@ export const submitOneOffPartRequest = createServerFn({ method: "POST" })
 
     return { ok: true, reference };
   });
+
+export const getPartsRequests = createServerFn({ method: "GET" }).handler(async () => {
+  await currentAdmin();
+  const { desc, db, schema } = await loadServerAuth();
+  const rows = await db
+    .select()
+    .from(schema.partsRequests)
+    .orderBy(desc(schema.partsRequests.createdAt));
+  return rows;
+});
+
+export const updatePartsRequestStatus = createServerFn({ method: "POST" })
+  .inputValidator(
+    z.object({
+      id: z.string(),
+      status: z.string(),
+    }),
+  )
+  .handler(async ({ data }) => {
+    await currentAdmin();
+    const { eq, db, schema } = await loadServerAuth();
+    await db
+      .update(schema.partsRequests)
+      .set({
+        status: data.status,
+        updatedAt: new Date(),
+      })
+      .where(eq(schema.partsRequests.id, data.id));
+    return { ok: true };
+  });
+
 

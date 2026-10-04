@@ -55,7 +55,7 @@ export function SupplierAppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen bg-[oklch(0.97_0.005_240)] text-foreground">
-      <aside className="hidden w-64 shrink-0 flex-col bg-[oklch(0.14_0.02_250)] text-white md:flex">
+      <aside className="hidden w-64 shrink-0 flex-col bg-[#001b2e] text-white md:flex">
         <div className="px-6 py-5 border-b border-white/10">
           <img src="/logo-white.png" className="h-8 w-auto mb-1" alt="Aircraft Program Logo" />
           <div className="text-[9px] uppercase tracking-widest text-white/40 font-semibold pl-0.5">

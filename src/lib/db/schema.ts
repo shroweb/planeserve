@@ -533,8 +533,38 @@ export const fileBlobs = pgTable(
   (table) => [index("file_blobs_owner_idx").on(table.ownerUserId)],
 );
 
+export const partsRequests = pgTable(
+  "parts_requests",
+  {
+    id: text("id").primaryKey(),
+    reference: text("reference").notNull().unique(),
+    name: text("name").notNull(),
+    email: text("email").notNull(),
+    phone: text("phone"),
+    company: text("company"),
+    aircraftType: text("aircraft_type").notNull(),
+    aircraftReg: text("aircraft_reg"),
+    partNumber: text("part_number").notNull(),
+    partDescription: text("part_description"),
+    condition: text("condition").notNull().default("Any Certified (Fastest)"),
+    urgency: text("urgency").notNull().default("AOG Grounded"),
+    deliveryLocation: text("delivery_location").notNull(),
+    additionalNotes: text("additional_notes"),
+    status: text("status").notNull().default("New"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [
+    index("parts_requests_email_idx").on(table.email),
+    index("parts_requests_status_idx").on(table.status),
+    index("parts_requests_created_at_idx").on(table.createdAt),
+  ],
+);
+
 // ── Type exports ──────────────────────────────────────────────────────────────
 
+export type PartsRequest = typeof partsRequests.$inferSelect;
+export type NewPartsRequest = typeof partsRequests.$inferInsert;
 export type Role = (typeof roleEnum.enumValues)[number];
 export type Plan = (typeof planEnum.enumValues)[number];
 export type SubStatus = (typeof subscriptionStatusEnum.enumValues)[number];

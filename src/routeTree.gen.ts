@@ -49,6 +49,7 @@ import { Route as PartsAirframeRouteImport } from './routes/parts.$airframe'
 import { Route as AogIdRouteImport } from './routes/aog.$id'
 import { Route as AdminSuppliersRouteImport } from './routes/admin/suppliers'
 import { Route as AdminRevenueRouteImport } from './routes/admin/revenue'
+import { Route as AdminPartsRequestsRouteImport } from './routes/admin/parts-requests'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as AdminEnrolmentsRouteImport } from './routes/admin/enrolments'
 import { Route as AdminDataRouteImport } from './routes/admin/data'
@@ -262,6 +263,11 @@ const AdminRevenueRoute = AdminRevenueRouteImport.update({
   path: '/admin/revenue',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminPartsRequestsRoute = AdminPartsRequestsRouteImport.update({
+  id: '/admin/parts-requests',
+  path: '/admin/parts-requests',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/admin/login',
   path: '/admin/login',
@@ -362,6 +368,7 @@ export interface FileRoutesByFullPath {
   '/admin/data': typeof AdminDataRoute
   '/admin/enrolments': typeof AdminEnrolmentsRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/parts-requests': typeof AdminPartsRequestsRoute
   '/admin/revenue': typeof AdminRevenueRoute
   '/admin/suppliers': typeof AdminSuppliersRoute
   '/aog/$id': typeof AogIdRoute
@@ -416,6 +423,7 @@ export interface FileRoutesByTo {
   '/admin/data': typeof AdminDataRoute
   '/admin/enrolments': typeof AdminEnrolmentsRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/parts-requests': typeof AdminPartsRequestsRoute
   '/admin/revenue': typeof AdminRevenueRoute
   '/admin/suppliers': typeof AdminSuppliersRoute
   '/aog/$id': typeof AogIdRoute
@@ -471,6 +479,7 @@ export interface FileRoutesById {
   '/admin/data': typeof AdminDataRoute
   '/admin/enrolments': typeof AdminEnrolmentsRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/parts-requests': typeof AdminPartsRequestsRoute
   '/admin/revenue': typeof AdminRevenueRoute
   '/admin/suppliers': typeof AdminSuppliersRoute
   '/aog/$id': typeof AogIdRoute
@@ -527,6 +536,7 @@ export interface FileRouteTypes {
     | '/admin/data'
     | '/admin/enrolments'
     | '/admin/login'
+    | '/admin/parts-requests'
     | '/admin/revenue'
     | '/admin/suppliers'
     | '/aog/$id'
@@ -581,6 +591,7 @@ export interface FileRouteTypes {
     | '/admin/data'
     | '/admin/enrolments'
     | '/admin/login'
+    | '/admin/parts-requests'
     | '/admin/revenue'
     | '/admin/suppliers'
     | '/aog/$id'
@@ -635,6 +646,7 @@ export interface FileRouteTypes {
     | '/admin/data'
     | '/admin/enrolments'
     | '/admin/login'
+    | '/admin/parts-requests'
     | '/admin/revenue'
     | '/admin/suppliers'
     | '/aog/$id'
@@ -690,6 +702,7 @@ export interface RootRouteChildren {
   AdminDataRoute: typeof AdminDataRoute
   AdminEnrolmentsRoute: typeof AdminEnrolmentsRoute
   AdminLoginRoute: typeof AdminLoginRoute
+  AdminPartsRequestsRoute: typeof AdminPartsRequestsRoute
   AdminRevenueRoute: typeof AdminRevenueRoute
   AdminSuppliersRoute: typeof AdminSuppliersRoute
   AogIdRoute: typeof AogIdRoute
@@ -988,6 +1001,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRevenueRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/parts-requests': {
+      id: '/admin/parts-requests'
+      path: '/admin/parts-requests'
+      fullPath: '/admin/parts-requests'
+      preLoaderRoute: typeof AdminPartsRequestsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/login': {
       id: '/admin/login'
       path: '/admin/login'
@@ -1114,6 +1134,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminDataRoute: AdminDataRoute,
   AdminEnrolmentsRoute: AdminEnrolmentsRoute,
   AdminLoginRoute: AdminLoginRoute,
+  AdminPartsRequestsRoute: AdminPartsRequestsRoute,
   AdminRevenueRoute: AdminRevenueRoute,
   AdminSuppliersRoute: AdminSuppliersRoute,
   AogIdRoute: AogIdRoute,
