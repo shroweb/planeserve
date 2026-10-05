@@ -21,8 +21,7 @@ export function SiteNav() {
   }
 
   return (
-    <header className="sticky top-0 z-40 bg-background/90 backdrop-blur-xl relative">
-      <div className="absolute bottom-0 inset-x-0 h-[3px] bg-gradient-to-r from-transparent via-accent to-transparent" />
+    <header className="sticky top-0 z-40 bg-background/90 backdrop-blur-xl relative border-b border-border">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3.5">
         <PlaneServeLogo
           to="/"
@@ -52,7 +51,7 @@ export function SiteNav() {
           </Link>
           <Link
             to="/enrol"
-            className="rounded-sm bg-accent px-4 py-2.5 text-[13px] font-semibold text-white"
+            className="rounded-sm bg-[#001b2e] hover:bg-[#002845] px-4 py-2.5 text-[13px] font-semibold text-white transition-colors shadow-xs"
           >
             Enrol Aircraft
           </Link>
@@ -95,7 +94,7 @@ export function SiteNav() {
               <Link
                 to="/enrol"
                 onClick={close}
-                className="block rounded-sm px-3 py-2.5 text-sm font-medium text-accent hover:bg-muted"
+                className="block rounded-sm px-3 py-2.5 text-sm font-semibold text-foreground hover:bg-muted"
               >
                 Enrol Aircraft
               </Link>

@@ -108,7 +108,7 @@ function Home() {
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
               <Link
                 to="/enrol"
-                className="inline-flex items-center justify-center gap-2 rounded-sm bg-accent px-8 py-4 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                className="inline-flex items-center justify-center gap-2 rounded-sm bg-white hover:bg-white/90 text-[#001b2e] px-8 py-4 text-sm font-semibold transition-colors shadow-sm"
               >
                 Enrol Aircraft <ArrowRightIcon className="h-4 w-4" />
               </Link>
