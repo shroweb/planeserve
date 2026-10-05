@@ -25,6 +25,7 @@ export function SiteFooter() {
               { to: "/how-it-works", label: "How it works" },
               { to: "/services", label: "Services" },
               { to: "/parts-sourcing", label: "Parts Sourcing Desk" },
+              { to: "/parts-sourcing", label: "Surplus Inventory Purchasing" },
               { to: "/pricing", label: "Pricing" },
               { to: "/enrol", label: "Enrol aircraft" },
             ]}
@@ -45,6 +46,7 @@ export function SiteFooter() {
               {[
                 { to: "/login", label: "Owner/operator sign in" },
                 { to: "/aircraft", label: "Aircraft profiles" },
+                { to: "/parts-sourcing", label: "Sell surplus inventory" },
                 { to: "/dashboard", label: "Documents" },
               ].map((i) => (
                 <li key={i.label}>

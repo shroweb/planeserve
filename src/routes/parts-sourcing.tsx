@@ -727,7 +727,95 @@ function PartsSourcingPage() {
           </div>
         </div>
       </section>
-      ──────────────────────────────────────────────────────────────────────── */}
+      {/* ── Aircraft & Surplus Inventory Purchasing ───────────────────────── */}
+      <section id="surplus-purchasing" className="py-24 bg-card border-b border-border">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="max-w-3xl">
+            <Eyebrow>Inventory Acquisitions</Eyebrow>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl text-foreground">
+              Aircraft &amp; Surplus Inventory Purchasing
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+              We actively purchase surplus rotable components, avionics packages, excess inventory, and complete end-of-life business aircraft directly from owners, operators, and maintenance facilities worldwide.
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+            <div className="rounded-xl border border-border bg-background p-6 shadow-sm">
+              <div className="h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center text-accent mb-4">
+                <ShieldCheck className="h-5 w-5" />
+              </div>
+              <h3 className="font-semibold text-base text-foreground mb-2">
+                Surplus Parts Acquisition
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                We purchase certified rotables, hydraulics, starters, avionics LRUs, and airframe components in all conditions, supported by verifiable trace documentation (FAA 8130-3 / EASA Form 1).
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 shadow-sm">
+              <div className="h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center text-accent mb-4">
+                <Plane className="h-5 w-5" />
+              </div>
+              <h3 className="font-semibold text-base text-foreground mb-2">
+                End-of-Life Aircraft Buyout
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                We acquire complete business aircraft nearing retirement or teardown. We handle rotable component recovery for overhaul and ensure responsible, compliant airframe dismantling.
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 shadow-sm">
+              <div className="h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center text-accent mb-4">
+                <CheckCircle2 className="h-5 w-5" />
+              </div>
+              <h3 className="font-semibold text-base text-foreground mb-2">
+                Cash Buyout or Credit
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Choose outright capital buyout for immediate cash release, or apply credits against your ongoing parts procurement and Aircraft Program coverage.
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 shadow-sm">
+              <div className="h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center text-accent mb-4">
+                <Building2 className="h-5 w-5" />
+              </div>
+              <h3 className="font-semibold text-base text-foreground mb-2">
+                Consignment Management
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                For high-value, slower-moving components, our desk can catalog, warehouse, and market your inventory directly across our international network of operators and MROs.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-12 rounded-xl border border-accent/30 bg-accent/5 p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div>
+              <h3 className="text-lg font-bold text-foreground">
+                Have surplus inventory or an aircraft to liquidate?
+              </h3>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Send your inventory listing (Excel / CSV) with part numbers, serials, and tag status to our acquisitions desk.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-3 shrink-0">
+              <a
+                href="mailto:parts@aircraftprogram.com?subject=Surplus%20Inventory%20Sale%20Inquiry"
+                className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-white hover:brightness-110 transition"
+              >
+                Email Acquisitions Desk <ArrowRight className="h-4 w-4" />
+              </a>
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-5 py-2.5 text-sm font-semibold text-foreground hover:bg-muted/50 transition"
+              >
+                Contact Us
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ── FAQ Section ──────────────────────────────────────────────────── */}
       <section className="py-20 bg-background">
