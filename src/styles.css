@@ -79,29 +79,29 @@
   --secondary-foreground: oklch(0.17 0.045 245);
   --muted: oklch(0.95 0.008 240);
   --muted-foreground: oklch(0.48 0.03 250); /* Moon Jet Slate #596473 */
-  --accent: oklch(0.529 0.132 253); /* Brand Blue #2a6db5 */
-  --accent-foreground: oklch(0.98 0.005 245);
-  --accent-on-dark: oklch(0.59 0.132 253); /* Luminous on Dark Navy */
+  --accent: oklch(0.17 0.045 245); /* Brand Navy #001b2e */
+  --accent-foreground: oklch(0.98 0.005 245); /* Crisp White */
+  --accent-on-dark: oklch(0.88 0.02 245); /* Luminous Silver-Blue on Dark Navy */
   --destructive: oklch(0.55 0.22 27);
   --destructive-foreground: oklch(0.98 0.003 90);
   --success: oklch(0.62 0.14 162);
   --success-foreground: oklch(0.98 0.003 90);
   --border: oklch(0.9 0.01 250);
   --input: oklch(0.92 0.01 250);
-  --ring: oklch(0.529 0.132 253);
-  --chart-1: oklch(0.529 0.132 253);
-  --chart-2: oklch(0.17 0.045 245);
+  --ring: oklch(0.17 0.045 245);
+  --chart-1: oklch(0.17 0.045 245);
+  --chart-2: oklch(0.35 0.045 245);
   --chart-3: oklch(0.48 0.03 250);
   --chart-4: oklch(0.6 0.1 220);
   --chart-5: oklch(0.3 0.04 250);
   --sidebar: oklch(0.17 0.045 245); /* Moon Jet Navy #001b2e */
   --sidebar-foreground: oklch(0.92 0.005 90);
-  --sidebar-primary: oklch(0.529 0.132 253);
+  --sidebar-primary: oklch(0.17 0.045 245);
   --sidebar-primary-foreground: oklch(0.98 0.005 245);
   --sidebar-accent: oklch(0.22 0.04 245);
   --sidebar-accent-foreground: oklch(0.92 0.005 90);
   --sidebar-border: oklch(1 0 0 / 8%);
-  --sidebar-ring: oklch(0.529 0.132 253);
+  --sidebar-ring: oklch(0.17 0.045 245);
 }
 
 .dark {
@@ -117,29 +117,29 @@
   --secondary-foreground: oklch(0.984 0.003 247.858);
   --muted: oklch(0.279 0.041 260.031);
   --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.529 0.132 253); /* Brand Blue #2a6db5 */
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --accent-on-dark: oklch(0.59 0.132 253);
+  --accent: oklch(0.88 0.02 245); /* Luminous on dark theme */
+  --accent-foreground: oklch(0.17 0.045 245); /* Navy text on light accent */
+  --accent-on-dark: oklch(0.88 0.02 245);
   --destructive: oklch(0.704 0.191 22.216);
   --destructive-foreground: oklch(0.984 0.003 247.858);
   --success: oklch(0.696 0.17 162.48);
   --success-foreground: oklch(0.984 0.003 247.858);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.529 0.132 253);
-  --chart-1: oklch(0.529 0.132 253);
+  --ring: oklch(0.17 0.045 245);
+  --chart-1: oklch(0.17 0.045 245);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.17 0.045 245); /* Moon Jet Navy #001b2e */
   --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.529 0.132 253);
+  --sidebar-primary: oklch(0.17 0.045 245);
   --sidebar-primary-foreground: oklch(0.98 0.005 245);
   --sidebar-accent: oklch(0.22 0.04 245);
   --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.529 0.132 253);
+  --sidebar-ring: oklch(0.17 0.045 245);
 }
 
 @layer base {

@@ -216,7 +216,7 @@ function Pricing() {
           <div className="mt-10">
             <Link
               to="/enrol"
-              className="inline-flex items-center justify-center gap-2 rounded-sm bg-accent px-8 py-4 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
+              className="inline-flex items-center justify-center gap-2 rounded-sm bg-white hover:bg-white/90 text-[#001b2e] px-8 py-4 text-sm font-semibold transition-colors shadow-sm"
             >
               Get started now <ArrowRightIcon className="h-4 w-4" />
             </Link>

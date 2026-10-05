@@ -277,7 +277,7 @@ function AirframePartsPage() {
     <PublicLayout>
       {/* ── Hero ────────────────────────────────────────────────────────── */}
       <section className="brand-dark relative overflow-hidden bg-[#001b2e] text-white py-20 lg:py-24">
-        <div className="absolute inset-0 bg-[radial-gradient(#2a6db5_1px,transparent_1px)] [background-size:24px_24px] opacity-10" />
+        <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:24px_24px] opacity-20" />
         <div className="relative mx-auto max-w-7xl px-6">
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-accent">
             <Link to="/parts-sourcing" className="hover:underline">
