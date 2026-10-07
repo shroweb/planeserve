@@ -4844,6 +4844,7 @@ export const submitOneOffPartRequest = createServerFn({ method: "POST" })
       });
     } catch (err) {
       console.error("Failed to insert parts request into database:", err);
+      throw new Error("Unable to record your request in the database. Please contact ops@aircraftprogram.com or try again.");
     }
 
     const adminBody = `

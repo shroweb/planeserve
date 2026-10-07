@@ -50,8 +50,14 @@ export function SiteNav() {
             Sign in
           </Link>
           <Link
+            to="/parts-sourcing"
+            className="rounded-sm border border-border bg-background hover:bg-muted px-3.5 py-2 text-[13px] font-medium text-foreground transition-colors"
+          >
+            Request a Part
+          </Link>
+          <Link
             to="/enrol"
-            className="rounded-sm bg-[#001b2e] hover:bg-[#002845] px-4 py-2.5 text-[13px] font-semibold text-white transition-colors shadow-xs"
+            className="rounded-sm bg-[#001b2e] hover:bg-[#002845] px-4 py-2 text-[13px] font-semibold text-white transition-colors shadow-xs"
           >
             Enrol Aircraft
           </Link>
@@ -83,18 +89,18 @@ export function SiteNav() {
                 {l.label}
               </Link>
             ))}
-            <div className="mt-2 border-t border-border pt-2">
+            <div className="mt-2 border-t border-border pt-2 space-y-1">
               <Link
-                to="/login"
+                to="/parts-sourcing"
                 onClick={close}
-                className="block rounded-sm px-3 py-2.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
+                className="block rounded-sm px-3 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
               >
-                Sign in
+                Request a Part
               </Link>
               <Link
                 to="/enrol"
                 onClick={close}
-                className="block rounded-sm px-3 py-2.5 text-sm font-semibold text-foreground hover:bg-muted"
+                className="block rounded-sm px-3 py-2.5 text-sm font-semibold text-white bg-[#001b2e] hover:bg-[#002845]"
               >
                 Enrol Aircraft
               </Link>
