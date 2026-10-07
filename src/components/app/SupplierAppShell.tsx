@@ -92,16 +92,28 @@ export function SupplierAppShell({ children }: { children: React.ReactNode }) {
                   <Link
                     key={l.label}
                     to={l.to}
-                    className={`flex items-center gap-3 rounded-sm px-3 py-2 text-sm transition-colors ${
+                    className={`group relative flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-all ${
                       active
-                        ? "bg-white/10 text-accent"
-                        : "text-white/65 hover:bg-white/5 hover:text-white"
+                        ? "bg-white/12 text-white font-semibold shadow-xs"
+                        : "text-white/60 hover:bg-white/5 hover:text-white"
                     }`}
                   >
-                    <Icon className="h-4 w-4 shrink-0 opacity-80" strokeWidth={1.5} />
+                    {active && (
+                      <span className="absolute left-0 top-1.5 bottom-1.5 w-1 rounded-r-full bg-white" />
+                    )}
+                    <Icon
+                      className={`h-4 w-4 shrink-0 transition-opacity ${
+                        active ? "text-white opacity-100" : "opacity-60 group-hover:opacity-100"
+                      }`}
+                      strokeWidth={active ? 2 : 1.5}
+                    />
                     <span className="flex-1">{l.label}</span>
                     {badge > 0 && (
-                      <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-bold text-background">
+                      <span
+                        className={`flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold ${
+                          active ? "bg-white text-[#001b2e]" : "bg-white/20 text-white"
+                        }`}
+                      >
                         {badge}
                       </span>
                     )}
