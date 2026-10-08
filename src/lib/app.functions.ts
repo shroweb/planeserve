@@ -4951,4 +4951,100 @@ export const updatePartsRequestStatus = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+export const sendPartsRequestQuote = createServerFn({ method: "POST" })
+  .inputValidator(
+    z.object({
+      id: z.string(),
+      quotedPrice: z.string().min(1, "Quoted price is required"),
+      quotedCondition: z.string().min(1, "Condition is required"),
+      quotedLeadTime: z.string().min(1, "Lead time / availability is required"),
+      quotedTraceDocs: z.string().default("FAA 8130-3 / EASA Form 1"),
+      quotedHandlingFee: z.string().optional(),
+      quotedNotes: z.string().optional(),
+    }),
+  )
+  .handler(async ({ data }) => {
+    await currentAdmin();
+    const { eq, db, schema } = await loadServerAuth();
+
+    const [req] = await db
+      .select()
+      .from(schema.partsRequests)
+      .where(eq(schema.partsRequests.id, data.id));
+
+    if (!req) throw new Error("Parts request not found.");
+
+    await db
+      .update(schema.partsRequests)
+      .set({
+        status: "Quoted",
+        quotedPrice: data.quotedPrice,
+        quotedCondition: data.quotedCondition,
+        quotedLeadTime: data.quotedLeadTime,
+        quotedTraceDocs: data.quotedTraceDocs,
+        quotedHandlingFee: data.quotedHandlingFee || null,
+        quotedNotes: data.quotedNotes || null,
+        quotedAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .where(eq(schema.partsRequests.id, data.id));
+
+    const quoteHtml = `
+      <p>Dear ${escapeHtml(req.name)},</p>
+      <p>Our operations desk has verified inventory, trace airworthiness documentation, and secured qualified pricing for your request <strong>${escapeHtml(req.reference)}</strong>.</p>
+      
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; margin: 20px 0;">
+        <h3 style="margin-top: 0; margin-bottom: 14px; color: #001b2e; font-size: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">Quotation Summary</h3>
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+          <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600; width: 170px; color: #64748b;">Part Number (P/N):</td><td><code style="background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 13px;">${escapeHtml(req.partNumber)}</code></td></tr>
+          ${req.partDescription ? `<tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600; color: #64748b;">Description:</td><td>${escapeHtml(req.partDescription)}</td></tr>` : ""}
+          <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600; color: #64748b;">Aircraft:</td><td>${escapeHtml(req.aircraftType)}${req.aircraftReg ? ` (${escapeHtml(req.aircraftReg)})` : ""}</td></tr>
+          <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600; color: #64748b;">Quoted Price:</td><td><strong style="color: #001b2e; font-size: 16px;">${escapeHtml(data.quotedPrice)}</strong></td></tr>
+          <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600; color: #64748b;">Condition:</td><td>${escapeHtml(data.quotedCondition)}</td></tr>
+          <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600; color: #64748b;">Availability / Dispatch:</td><td><strong>${escapeHtml(data.quotedLeadTime)}</strong></td></tr>
+          <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600; color: #64748b;">Trace Documentation:</td><td>${escapeHtml(data.quotedTraceDocs)}</td></tr>
+          ${data.quotedHandlingFee ? `<tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600; color: #64748b;">Handling / Sourcing Fee:</td><td>${escapeHtml(data.quotedHandlingFee)}</td></tr>` : ""}
+          <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 0; font-weight: 600; color: #64748b;">Delivery Destination:</td><td>${escapeHtml(req.deliveryLocation)}</td></tr>
+          ${data.quotedNotes ? `<tr><td style="padding: 8px 0; font-weight: 600; color: #64748b; vertical-align: top;">Desk Notes:</td><td>${escapeHtml(data.quotedNotes)}</td></tr>` : ""}
+        </table>
+      </div>
+
+      <div style="background: #001b2e; color: #ffffff; border-radius: 8px; padding: 16px; margin: 24px 0; text-align: center;">
+        <p style="margin: 0 0 10px; font-size: 14px; font-weight: 500;">To accept this quotation and release for dispatch:</p>
+        <p style="margin: 0; font-size: 13px;">
+          Reply directly to this email or contact the desk at <a href="mailto:ops@aircraftprogram.com" style="color: #ffffff; font-weight: bold; text-decoration: underline;">ops@aircraftprogram.com</a> quoting reference <strong>${escapeHtml(req.reference)}</strong>.
+        </p>
+      </div>
+
+      <p style="font-size: 12px; color: #64748b;">
+        * Note: Aviation components are subject to prior sale and market availability until formally confirmed.
+      </p>
+    `;
+
+    // Send to customer
+    await sendJourneyEmail(
+      req.email,
+      `[Quotation] ${req.reference} — ${req.partNumber} (${req.aircraftType})`,
+      `Official Parts Quotation: ${req.partNumber}`,
+      quoteHtml,
+    );
+
+    // Copy James Moon and Ops Desk
+    await sendJourneyEmail(
+      "jmoon@moonjetgroup.com",
+      `[Quote Sent] ${req.reference} — ${req.partNumber} quoted to ${req.name}`,
+      `Quotation Sent to Client: ${req.partNumber}`,
+      quoteHtml,
+    );
+
+    await sendJourneyEmail(
+      "ops@aircraftprogram.com",
+      `[Quote Sent] ${req.reference} — ${req.partNumber} quoted to ${req.name}`,
+      `Quotation Sent to Client: ${req.partNumber}`,
+      quoteHtml,
+    );
+
+    return { ok: true };
+  });
+
 
