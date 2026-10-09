@@ -1049,12 +1049,13 @@ export const getAdminOverview = createServerFn({ method: "GET" }).handler(async 
   await currentAdmin();
   const { inArray, asc, desc, db, schema } = await loadServerAuth();
 
-  const [profileRows, aircraftRows, requestRows, subRows, supplierRows] = await Promise.all([
+  const [profileRows, aircraftRows, requestRows, subRows, supplierRows, partsRequestsRows] = await Promise.all([
     db.select().from(schema.profiles).orderBy(desc(schema.profiles.createdAt)),
     db.select().from(schema.aircraft).orderBy(desc(schema.aircraft.createdAt)),
     db.select().from(schema.aogRequests).orderBy(desc(schema.aogRequests.createdAt)),
     db.select().from(schema.subscriptions),
     db.select().from(schema.supplierCompanies),
+    db.select().from(schema.partsRequests).orderBy(desc(schema.partsRequests.createdAt)),
   ]);
 
   const requestIds = requestRows.map((r) => r.id);
@@ -1090,6 +1091,10 @@ export const getAdminOverview = createServerFn({ method: "GET" }).handler(async 
   const mrrUsd = activeSubs.reduce((acc, s) => acc + (s.plan === "annual" ? 1000 / 12 : 100), 0);
 
   const suppliersLive = supplierRows.filter((s) => s.status === "approved").length;
+
+  const pendingPartsQuotes = partsRequestsRows.filter(
+    (r) => r.status === "New" || r.status === "In Review",
+  ).length;
 
   // Pending enrolments: operators with at least one unverified aircraft.
   const profileByUser = new Map(profileRows.map((p) => [p.userId, p]));
@@ -1127,11 +1132,26 @@ export const getAdminOverview = createServerFn({ method: "GET" }).handler(async 
       })),
     aircraft: aircraftRows.map(toAircraftRecord),
     requests: requestRows.map((r) => toAogRecord(r, attMap.get(r.id) ?? [])),
+    partsRequests: partsRequestsRows.map((r) => ({
+      id: r.id,
+      reference: r.reference,
+      aircraftReg: r.aircraftReg,
+      aircraftType: r.aircraftType,
+      partNumber: r.partNumber,
+      partDescription: r.partDescription,
+      condition: r.condition,
+      urgency: r.urgency,
+      status: r.status,
+      quotedPrice: r.quotedPrice,
+      quotedAt: r.quotedAt?.toISOString() ?? null,
+      createdAt: r.createdAt.toISOString(),
+    })),
     metrics: {
       avgFirstResponseMins,
       clearedToday,
       mrrUsd: Math.round(mrrUsd),
       suppliersLive,
+      pendingPartsQuotes,
     },
     pendingEnrolments,
   };
@@ -1187,9 +1207,11 @@ export const getAdminAircraft = createServerFn({ method: "GET" }).handler(async 
   await currentAdmin();
   const { desc, db, schema } = await loadServerAuth();
 
-  const [profileRows, aircraftRows] = await Promise.all([
+  const [profileRows, aircraftRows, aogRows, partsRows] = await Promise.all([
     db.select().from(schema.profiles).orderBy(desc(schema.profiles.createdAt)),
     db.select().from(schema.aircraft).orderBy(desc(schema.aircraft.createdAt)),
+    db.select().from(schema.aogRequests).orderBy(desc(schema.aogRequests.createdAt)),
+    db.select().from(schema.partsRequests).orderBy(desc(schema.partsRequests.createdAt)),
   ]);
 
   return {
@@ -1204,8 +1226,108 @@ export const getAdminAircraft = createServerFn({ method: "GET" }).handler(async 
       createdAt: p.createdAt.toISOString(),
     })),
     aircraft: aircraftRows.map(toAircraftRecord),
+    aogRequests: aogRows.map((r) => ({
+      id: r.id,
+      aircraftId: r.aircraftId,
+      registration: r.registration,
+      location: r.location,
+      aircraftType: r.aircraftType,
+      affectedSystem: r.affectedSystem,
+      partNumber: r.partNumber,
+      issueDescription: r.issueDescription,
+      urgency: r.urgency,
+      status: r.status,
+      contactName: r.contactName,
+      contactPhone: r.contactPhone,
+      createdAt: r.createdAt.toISOString(),
+    })),
+    partsRequests: partsRows.map((r) => ({
+      id: r.id,
+      reference: r.reference,
+      aircraftReg: r.aircraftReg,
+      aircraftType: r.aircraftType,
+      partNumber: r.partNumber,
+      partDescription: r.partDescription,
+      condition: r.condition,
+      urgency: r.urgency,
+      status: r.status,
+      quotedPrice: r.quotedPrice,
+      quotedCondition: r.quotedCondition,
+      quotedLeadTime: r.quotedLeadTime,
+      quotedTraceDocs: r.quotedTraceDocs,
+      quotedHandlingFee: r.quotedHandlingFee,
+      quotedNotes: r.quotedNotes,
+      quotedAt: r.quotedAt?.toISOString() ?? null,
+      createdAt: r.createdAt.toISOString(),
+    })),
   };
 });
+
+export const adminUpdateAircraftDossier = createServerFn({ method: "POST" })
+  .inputValidator(
+    z.object({
+      id: z.string().min(1),
+      baseAirport: z.string().optional(),
+      serialNumber: z.string().optional(),
+      yearOfManufacture: z.string().optional(),
+      typeOfOperations: z.string().optional(),
+      ownerOperatorName: z.string().optional(),
+      engineManufacturer: z.string().optional(),
+      engineType: z.string().optional(),
+      engineProgram: z.string().optional(),
+      engineSerialNumbers: z.string().optional(),
+      totalAirframeHours: z.string().optional(),
+      apuMakeModel: z.string().optional(),
+      maintenanceProgramme: z.string().optional(),
+      amoName: z.string().optional(),
+      amoPhone: z.string().optional(),
+      amoEmergencyPhone: z.string().optional(),
+      amoEmail: z.string().optional(),
+      amoLocation: z.string().optional(),
+      picName: z.string().optional(),
+      picPhone: z.string().optional(),
+      picEmail: z.string().optional(),
+      maintenancePoc: z.string().optional(),
+      insurerName: z.string().optional(),
+      insurerPolicyRef: z.string().optional(),
+    }),
+  )
+  .handler(async ({ data }) => {
+    await currentAdmin();
+    const { eq, db, schema } = await loadServerAuth();
+
+    await db
+      .update(schema.aircraft)
+      .set({
+        ...(data.baseAirport !== undefined && { baseAirport: data.baseAirport }),
+        ...(data.serialNumber !== undefined && { serialNumber: data.serialNumber }),
+        ...(data.yearOfManufacture !== undefined && { yearOfManufacture: data.yearOfManufacture }),
+        ...(data.typeOfOperations !== undefined && { typeOfOperations: data.typeOfOperations }),
+        ...(data.ownerOperatorName !== undefined && { ownerOperatorName: data.ownerOperatorName }),
+        ...(data.engineManufacturer !== undefined && { engineManufacturer: data.engineManufacturer }),
+        ...(data.engineType !== undefined && { engineType: data.engineType }),
+        ...(data.engineProgram !== undefined && { engineProgram: data.engineProgram }),
+        ...(data.engineSerialNumbers !== undefined && { engineSerialNumbers: data.engineSerialNumbers }),
+        ...(data.totalAirframeHours !== undefined && { totalAirframeHours: data.totalAirframeHours }),
+        ...(data.apuMakeModel !== undefined && { apuMakeModel: data.apuMakeModel }),
+        ...(data.maintenanceProgramme !== undefined && { maintenanceProgramme: data.maintenanceProgramme }),
+        ...(data.amoName !== undefined && { amoName: data.amoName }),
+        ...(data.amoPhone !== undefined && { amoPhone: data.amoPhone }),
+        ...(data.amoEmergencyPhone !== undefined && { amoEmergencyPhone: data.amoEmergencyPhone }),
+        ...(data.amoEmail !== undefined && { amoEmail: data.amoEmail }),
+        ...(data.amoLocation !== undefined && { amoLocation: data.amoLocation }),
+        ...(data.picName !== undefined && { picName: data.picName }),
+        ...(data.picPhone !== undefined && { picPhone: data.picPhone }),
+        ...(data.picEmail !== undefined && { picEmail: data.picEmail }),
+        ...(data.maintenancePoc !== undefined && { maintenancePoc: data.maintenancePoc }),
+        ...(data.insurerName !== undefined && { insurerName: data.insurerName }),
+        ...(data.insurerPolicyRef !== undefined && { insurerPolicyRef: data.insurerPolicyRef }),
+        updatedAt: new Date(),
+      })
+      .where(eq(schema.aircraft.id, data.id));
+
+    return { ok: true };
+  });
 
 export const getAdminAog = createServerFn({ method: "GET" }).handler(async () => {
   await currentAdmin();
@@ -5009,10 +5131,10 @@ export const sendPartsRequestQuote = createServerFn({ method: "POST" })
         </table>
       </div>
 
-      <div style="background: #001b2e; color: #ffffff; border-radius: 8px; padding: 16px; margin: 24px 0; text-align: center;">
-        <p style="margin: 0 0 10px; font-size: 14px; font-weight: 500;">To accept this quotation and release for dispatch:</p>
-        <p style="margin: 0; font-size: 13px;">
-          Reply directly to this email or contact the desk at <a href="mailto:ops@aircraftprogram.com" style="color: #ffffff; font-weight: bold; text-decoration: underline;">ops@aircraftprogram.com</a> quoting reference <strong>${escapeHtml(req.reference)}</strong>.
+      <div style="background: #001b2e; color: #ffffff; border-radius: 8px; padding: 18px 16px; margin: 24px 0; text-align: center;">
+        <p style="margin: 0 0 10px; font-size: 14px; font-weight: 600; color: #ffffff;">To accept this quotation and release for dispatch:</p>
+        <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #f1f5f9;">
+          Reply directly to this email or contact the desk at <a href="mailto:ops@aircraftprogram.com" style="color: #ffffff !important; font-weight: bold; text-decoration: underline;"><span style="color: #ffffff !important; font-weight: bold; text-decoration: underline;">ops@aircraftprogram.com</span></a> quoting reference <strong style="color: #ffffff;">${escapeHtml(req.reference)}</strong>.
         </p>
       </div>
 

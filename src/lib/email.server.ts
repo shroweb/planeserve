@@ -21,8 +21,11 @@ export async function sendEmail(to: string, subject: string, html: string) {
 
 // Minimal branded wrapper so transactional emails share one look.
 export function emailLayout(heading: string, body: string) {
-  // Gracefully style any standard anchor links in the email body
-  const styledBody = body.replace(/<a\b/g, '<a style="color: #0f172a; font-weight: 600; text-decoration: underline;"');
+  // Gracefully style any standard anchor links in the email body that don't already have inline style specified
+  const styledBody = body.replace(
+    /<a\b(?![^>]*\bstyle=)/gi,
+    '<a style="color: #001b2e; font-weight: 600; text-decoration: underline;"',
+  );
 
   return `
     <div style="background-color: #f4f5f7; padding: 40px 16px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; min-height: 100%;">

@@ -9,7 +9,7 @@ import {
   getStripeAdminData,
   updateAogStatus,
 } from "@/lib/app.functions";
-import { AlertTriangle, ChevronRight, CreditCard } from "lucide-react";
+import { AlertTriangle, ChevronRight, CreditCard, Package, Plane } from "lucide-react";
 import { AogIcon, ClearedIcon, NetworkIcon } from "@/components/app/PlaneServeIcons";
 import {
   Select,
@@ -115,6 +115,7 @@ function AdminOverview() {
   const users = data?.users ?? [];
   const aircraft = data?.aircraft ?? [];
   const requests = data?.requests ?? [];
+  const partsRequests = (data as any)?.partsRequests ?? [];
   const metrics = data?.metrics;
   const pendingEnrolments = data?.pendingEnrolments ?? [];
 
@@ -230,8 +231,15 @@ function AdminOverview() {
           <div className="text-[11px] font-semibold uppercase tracking-widest text-white/45">
             Open AOG
           </div>
-          <div className="mt-3 text-5xl font-semibold tracking-tight text-accent">
+          <div
+            className={`mt-3 text-5xl font-semibold tracking-tight ${
+              openRequests.length > 0 ? "text-amber-400 font-bold" : "text-white"
+            }`}
+          >
             {openRequests.length}
+          </div>
+          <div className="mt-2 text-xs text-white/50">
+            {openRequests.length === 0 ? "Desk is clear · 24/7 standby" : `${openRequests.length} active grounding event${openRequests.length > 1 ? "s" : ""}`}
           </div>
         </div>
         <div className="rounded-lg border border-border bg-[oklch(0.13_0.025_250)] px-6 py-5 text-white">
@@ -250,13 +258,28 @@ function AdminOverview() {
         const casesThisWeek = requests.filter(
           (r) => Date.now() - new Date(r.createdAt).getTime() < 7 * 24 * 60 * 60 * 1000,
         ).length;
+        const pendingQuotes = partsRequests.filter(
+          (r: any) => r.status === "New" || r.status === "In Review",
+        ).length;
         return (
-          <div className="mt-4 grid grid-cols-2 gap-4">
+          <div className="mt-4 grid grid-cols-2 gap-4 lg:grid-cols-4">
             <StatCard label="Cases this week" value={String(casesThisWeek)} icon={ClearedIcon} />
             <StatCard
               label="Suppliers live"
               value={String(metrics?.suppliersLive ?? 0)}
               icon={NetworkIcon}
+            />
+            <StatCard
+              label="Parts requests"
+              value={String(partsRequests.length)}
+              hint={pendingQuotes > 0 ? `${pendingQuotes} pending quote` : "Desk clear · Ready"}
+              icon={Package}
+            />
+            <StatCard
+              label="Enrolled fleet"
+              value={String(aircraft.length)}
+              hint={`${users.length} active operator${users.length !== 1 ? "s" : ""}`}
+              icon={Plane}
             />
           </div>
         );
@@ -395,6 +418,46 @@ function AdminOverview() {
               {pendingEnrolments.length === 0 && (
                 <div className="px-5 py-8 text-center text-sm text-muted-foreground">
                   No enrolments awaiting review.
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Parts Sourcing Desk Queue */}
+          <div className="rounded-lg border border-border bg-card">
+            <div className="flex items-center justify-between border-b border-border px-5 py-3">
+              <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                Parts desk · Recent requests
+              </span>
+              <Link to="/admin/parts-requests" className="text-xs text-muted-foreground hover:text-foreground">
+                View all ({partsRequests.length}) →
+              </Link>
+            </div>
+            <div className="divide-y divide-border">
+              {partsRequests.slice(0, 3).map((pr: any) => (
+                <div key={pr.id} className="flex items-center justify-between p-4">
+                  <div className="min-w-0 pr-3">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-xs font-bold text-foreground">{pr.reference}</span>
+                      <StatusPill tone={statusTone(pr.status)}>
+                        {pr.status}
+                      </StatusPill>
+                    </div>
+                    <div className="mt-1 truncate text-xs text-muted-foreground">
+                      <span className="font-semibold text-foreground">{pr.partNumber}</span> · {pr.aircraftType} {pr.aircraftReg ? `(${pr.aircraftReg})` : ""}
+                    </div>
+                  </div>
+                  <Link
+                    to="/admin/parts-requests"
+                    className="shrink-0 rounded-md border border-border bg-muted/40 px-2.5 py-1 text-xs font-semibold hover:bg-muted"
+                  >
+                    {pr.status === "Quoted" ? "Quoted" : "Reply"}
+                  </Link>
+                </div>
+              ))}
+              {partsRequests.length === 0 && (
+                <div className="px-5 py-6 text-center text-sm text-muted-foreground">
+                  No parts requests recorded.
                 </div>
               )}
             </div>
