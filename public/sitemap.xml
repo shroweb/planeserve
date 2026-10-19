@@ -63,4 +63,11 @@
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
+  <!-- What Does AOG Mean in Aviation -->
+  <url>
+    <loc>https://www.aircraftprogram.com/what-does-aog-mean-in-aviation</loc>
+    <lastmod>2026-10-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>

@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WhatDoesAogMeanInAviationRouteImport } from './routes/what-does-aog-mean-in-aviation'
 import { Route as ValueSummaryRouteImport } from './routes/value-summary'
 import { Route as TeamRouteImport } from './routes/team'
 import { Route as SupplierTermsRouteImport } from './routes/supplier-terms'
@@ -63,6 +64,12 @@ import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe/webhoo
 import { Route as ApiFilesIdRouteImport } from './routes/api/files/$id'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
+const WhatDoesAogMeanInAviationRoute =
+  WhatDoesAogMeanInAviationRouteImport.update({
+    id: '/what-does-aog-mean-in-aviation',
+    path: '/what-does-aog-mean-in-aviation',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ValueSummaryRoute = ValueSummaryRouteImport.update({
   id: '/value-summary',
   path: '/value-summary',
@@ -360,6 +367,7 @@ export interface FileRoutesByFullPath {
   '/supplier-terms': typeof SupplierTermsRoute
   '/team': typeof TeamRoute
   '/value-summary': typeof ValueSummaryRoute
+  '/what-does-aog-mean-in-aviation': typeof WhatDoesAogMeanInAviationRoute
   '/admin/aircraft': typeof AdminAircraftRoute
   '/admin/amo': typeof AdminAmoRoute
   '/admin/aog': typeof AdminAogRoute
@@ -415,6 +423,7 @@ export interface FileRoutesByTo {
   '/supplier-terms': typeof SupplierTermsRoute
   '/team': typeof TeamRoute
   '/value-summary': typeof ValueSummaryRoute
+  '/what-does-aog-mean-in-aviation': typeof WhatDoesAogMeanInAviationRoute
   '/admin/aircraft': typeof AdminAircraftRoute
   '/admin/amo': typeof AdminAmoRoute
   '/admin/aog': typeof AdminAogRoute
@@ -471,6 +480,7 @@ export interface FileRoutesById {
   '/supplier-terms': typeof SupplierTermsRoute
   '/team': typeof TeamRoute
   '/value-summary': typeof ValueSummaryRoute
+  '/what-does-aog-mean-in-aviation': typeof WhatDoesAogMeanInAviationRoute
   '/admin/aircraft': typeof AdminAircraftRoute
   '/admin/amo': typeof AdminAmoRoute
   '/admin/aog': typeof AdminAogRoute
@@ -528,6 +538,7 @@ export interface FileRouteTypes {
     | '/supplier-terms'
     | '/team'
     | '/value-summary'
+    | '/what-does-aog-mean-in-aviation'
     | '/admin/aircraft'
     | '/admin/amo'
     | '/admin/aog'
@@ -583,6 +594,7 @@ export interface FileRouteTypes {
     | '/supplier-terms'
     | '/team'
     | '/value-summary'
+    | '/what-does-aog-mean-in-aviation'
     | '/admin/aircraft'
     | '/admin/amo'
     | '/admin/aog'
@@ -638,6 +650,7 @@ export interface FileRouteTypes {
     | '/supplier-terms'
     | '/team'
     | '/value-summary'
+    | '/what-does-aog-mean-in-aviation'
     | '/admin/aircraft'
     | '/admin/amo'
     | '/admin/aog'
@@ -694,6 +707,7 @@ export interface RootRouteChildren {
   SupplierTermsRoute: typeof SupplierTermsRoute
   TeamRoute: typeof TeamRoute
   ValueSummaryRoute: typeof ValueSummaryRoute
+  WhatDoesAogMeanInAviationRoute: typeof WhatDoesAogMeanInAviationRoute
   AdminAircraftRoute: typeof AdminAircraftRoute
   AdminAmoRoute: typeof AdminAmoRoute
   AdminAogRoute: typeof AdminAogRoute
@@ -721,6 +735,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/what-does-aog-mean-in-aviation': {
+      id: '/what-does-aog-mean-in-aviation'
+      path: '/what-does-aog-mean-in-aviation'
+      fullPath: '/what-does-aog-mean-in-aviation'
+      preLoaderRoute: typeof WhatDoesAogMeanInAviationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/value-summary': {
       id: '/value-summary'
       path: '/value-summary'
@@ -1126,6 +1147,7 @@ const rootRouteChildren: RootRouteChildren = {
   SupplierTermsRoute: SupplierTermsRoute,
   TeamRoute: TeamRoute,
   ValueSummaryRoute: ValueSummaryRoute,
+  WhatDoesAogMeanInAviationRoute: WhatDoesAogMeanInAviationRoute,
   AdminAircraftRoute: AdminAircraftRoute,
   AdminAmoRoute: AdminAmoRoute,
   AdminAogRoute: AdminAogRoute,
