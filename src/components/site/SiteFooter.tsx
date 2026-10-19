@@ -76,6 +76,7 @@ export function SiteFooter() {
             <ul className="space-y-2.5">
               {[
                 { to: "/about", label: "About" },
+                { to: "/blog", label: "Blog" },
                 { to: "/contact", label: "Contact" },
               ].map((i) => (
                 <li key={i.label}>

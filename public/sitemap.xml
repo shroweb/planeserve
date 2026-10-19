@@ -63,9 +63,23 @@
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
+  <!-- Blog Index -->
+  <url>
+    <loc>https://www.aircraftprogram.com/blog</loc>
+    <lastmod>2026-10-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
   <!-- What Does AOG Mean in Aviation -->
   <url>
-    <loc>https://www.aircraftprogram.com/what-does-aog-mean-in-aviation</loc>
+    <loc>https://www.aircraftprogram.com/blog/what-does-aog-mean-in-aviation</loc>
+    <lastmod>2026-10-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- AOG Response Checklist -->
+  <url>
+    <loc>https://www.aircraftprogram.com/blog/aog-response-checklist</loc>
     <lastmod>2026-10-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

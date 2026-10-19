@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WhatDoesAogMeanInAviationRouteImport } from './routes/what-does-aog-mean-in-aviation'
 import { Route as ValueSummaryRouteImport } from './routes/value-summary'
 import { Route as TeamRouteImport } from './routes/team'
 import { Route as SupplierTermsRouteImport } from './routes/supplier-terms'
@@ -41,12 +40,15 @@ import { Route as AccountRouteImport } from './routes/account'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SupplierIndexRouteImport } from './routes/supplier/index'
+import { Route as BlogIndexRouteImport } from './routes/blog/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as SuppliersApplyRouteImport } from './routes/suppliers/apply'
 import { Route as SupplierQuoteHistoryRouteImport } from './routes/supplier/quote-history'
 import { Route as SupplierProfileRouteImport } from './routes/supplier/profile'
 import { Route as SupplierLoginRouteImport } from './routes/supplier/login'
 import { Route as PartsAirframeRouteImport } from './routes/parts.$airframe'
+import { Route as BlogWhatDoesAogMeanInAviationRouteImport } from './routes/blog/what-does-aog-mean-in-aviation'
+import { Route as BlogAogResponseChecklistRouteImport } from './routes/blog/aog-response-checklist'
 import { Route as AogIdRouteImport } from './routes/aog.$id'
 import { Route as AdminSuppliersRouteImport } from './routes/admin/suppliers'
 import { Route as AdminRevenueRouteImport } from './routes/admin/revenue'
@@ -64,12 +66,6 @@ import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe/webhoo
 import { Route as ApiFilesIdRouteImport } from './routes/api/files/$id'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
-const WhatDoesAogMeanInAviationRoute =
-  WhatDoesAogMeanInAviationRouteImport.update({
-    id: '/what-does-aog-mean-in-aviation',
-    path: '/what-does-aog-mean-in-aviation',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const ValueSummaryRoute = ValueSummaryRouteImport.update({
   id: '/value-summary',
   path: '/value-summary',
@@ -225,6 +221,11 @@ const SupplierIndexRoute = SupplierIndexRouteImport.update({
   path: '/supplier/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/admin/',
   path: '/admin/',
@@ -255,6 +256,18 @@ const PartsAirframeRoute = PartsAirframeRouteImport.update({
   path: '/parts/$airframe',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogWhatDoesAogMeanInAviationRoute =
+  BlogWhatDoesAogMeanInAviationRouteImport.update({
+    id: '/blog/what-does-aog-mean-in-aviation',
+    path: '/blog/what-does-aog-mean-in-aviation',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const BlogAogResponseChecklistRoute =
+  BlogAogResponseChecklistRouteImport.update({
+    id: '/blog/aog-response-checklist',
+    path: '/blog/aog-response-checklist',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AogIdRoute = AogIdRouteImport.update({
   id: '/aog/$id',
   path: '/aog/$id',
@@ -367,7 +380,6 @@ export interface FileRoutesByFullPath {
   '/supplier-terms': typeof SupplierTermsRoute
   '/team': typeof TeamRoute
   '/value-summary': typeof ValueSummaryRoute
-  '/what-does-aog-mean-in-aviation': typeof WhatDoesAogMeanInAviationRoute
   '/admin/aircraft': typeof AdminAircraftRoute
   '/admin/amo': typeof AdminAmoRoute
   '/admin/aog': typeof AdminAogRoute
@@ -380,12 +392,15 @@ export interface FileRoutesByFullPath {
   '/admin/revenue': typeof AdminRevenueRoute
   '/admin/suppliers': typeof AdminSuppliersRoute
   '/aog/$id': typeof AogIdRoute
+  '/blog/aog-response-checklist': typeof BlogAogResponseChecklistRoute
+  '/blog/what-does-aog-mean-in-aviation': typeof BlogWhatDoesAogMeanInAviationRoute
   '/parts/$airframe': typeof PartsAirframeRoute
   '/supplier/login': typeof SupplierLoginRoute
   '/supplier/profile': typeof SupplierProfileRoute
   '/supplier/quote-history': typeof SupplierQuoteHistoryRoute
   '/suppliers/apply': typeof SuppliersApplyRoute
   '/admin/': typeof AdminIndexRoute
+  '/blog/': typeof BlogIndexRoute
   '/supplier/': typeof SupplierIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/files/$id': typeof ApiFilesIdRoute
@@ -423,7 +438,6 @@ export interface FileRoutesByTo {
   '/supplier-terms': typeof SupplierTermsRoute
   '/team': typeof TeamRoute
   '/value-summary': typeof ValueSummaryRoute
-  '/what-does-aog-mean-in-aviation': typeof WhatDoesAogMeanInAviationRoute
   '/admin/aircraft': typeof AdminAircraftRoute
   '/admin/amo': typeof AdminAmoRoute
   '/admin/aog': typeof AdminAogRoute
@@ -436,12 +450,15 @@ export interface FileRoutesByTo {
   '/admin/revenue': typeof AdminRevenueRoute
   '/admin/suppliers': typeof AdminSuppliersRoute
   '/aog/$id': typeof AogIdRoute
+  '/blog/aog-response-checklist': typeof BlogAogResponseChecklistRoute
+  '/blog/what-does-aog-mean-in-aviation': typeof BlogWhatDoesAogMeanInAviationRoute
   '/parts/$airframe': typeof PartsAirframeRoute
   '/supplier/login': typeof SupplierLoginRoute
   '/supplier/profile': typeof SupplierProfileRoute
   '/supplier/quote-history': typeof SupplierQuoteHistoryRoute
   '/suppliers/apply': typeof SuppliersApplyRoute
   '/admin': typeof AdminIndexRoute
+  '/blog': typeof BlogIndexRoute
   '/supplier': typeof SupplierIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/files/$id': typeof ApiFilesIdRoute
@@ -480,7 +497,6 @@ export interface FileRoutesById {
   '/supplier-terms': typeof SupplierTermsRoute
   '/team': typeof TeamRoute
   '/value-summary': typeof ValueSummaryRoute
-  '/what-does-aog-mean-in-aviation': typeof WhatDoesAogMeanInAviationRoute
   '/admin/aircraft': typeof AdminAircraftRoute
   '/admin/amo': typeof AdminAmoRoute
   '/admin/aog': typeof AdminAogRoute
@@ -493,12 +509,15 @@ export interface FileRoutesById {
   '/admin/revenue': typeof AdminRevenueRoute
   '/admin/suppliers': typeof AdminSuppliersRoute
   '/aog/$id': typeof AogIdRoute
+  '/blog/aog-response-checklist': typeof BlogAogResponseChecklistRoute
+  '/blog/what-does-aog-mean-in-aviation': typeof BlogWhatDoesAogMeanInAviationRoute
   '/parts/$airframe': typeof PartsAirframeRoute
   '/supplier/login': typeof SupplierLoginRoute
   '/supplier/profile': typeof SupplierProfileRoute
   '/supplier/quote-history': typeof SupplierQuoteHistoryRoute
   '/suppliers/apply': typeof SuppliersApplyRoute
   '/admin/': typeof AdminIndexRoute
+  '/blog/': typeof BlogIndexRoute
   '/supplier/': typeof SupplierIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/files/$id': typeof ApiFilesIdRoute
@@ -538,7 +557,6 @@ export interface FileRouteTypes {
     | '/supplier-terms'
     | '/team'
     | '/value-summary'
-    | '/what-does-aog-mean-in-aviation'
     | '/admin/aircraft'
     | '/admin/amo'
     | '/admin/aog'
@@ -551,12 +569,15 @@ export interface FileRouteTypes {
     | '/admin/revenue'
     | '/admin/suppliers'
     | '/aog/$id'
+    | '/blog/aog-response-checklist'
+    | '/blog/what-does-aog-mean-in-aviation'
     | '/parts/$airframe'
     | '/supplier/login'
     | '/supplier/profile'
     | '/supplier/quote-history'
     | '/suppliers/apply'
     | '/admin/'
+    | '/blog/'
     | '/supplier/'
     | '/api/auth/$'
     | '/api/files/$id'
@@ -594,7 +615,6 @@ export interface FileRouteTypes {
     | '/supplier-terms'
     | '/team'
     | '/value-summary'
-    | '/what-does-aog-mean-in-aviation'
     | '/admin/aircraft'
     | '/admin/amo'
     | '/admin/aog'
@@ -607,12 +627,15 @@ export interface FileRouteTypes {
     | '/admin/revenue'
     | '/admin/suppliers'
     | '/aog/$id'
+    | '/blog/aog-response-checklist'
+    | '/blog/what-does-aog-mean-in-aviation'
     | '/parts/$airframe'
     | '/supplier/login'
     | '/supplier/profile'
     | '/supplier/quote-history'
     | '/suppliers/apply'
     | '/admin'
+    | '/blog'
     | '/supplier'
     | '/api/auth/$'
     | '/api/files/$id'
@@ -650,7 +673,6 @@ export interface FileRouteTypes {
     | '/supplier-terms'
     | '/team'
     | '/value-summary'
-    | '/what-does-aog-mean-in-aviation'
     | '/admin/aircraft'
     | '/admin/amo'
     | '/admin/aog'
@@ -663,12 +685,15 @@ export interface FileRouteTypes {
     | '/admin/revenue'
     | '/admin/suppliers'
     | '/aog/$id'
+    | '/blog/aog-response-checklist'
+    | '/blog/what-does-aog-mean-in-aviation'
     | '/parts/$airframe'
     | '/supplier/login'
     | '/supplier/profile'
     | '/supplier/quote-history'
     | '/suppliers/apply'
     | '/admin/'
+    | '/blog/'
     | '/supplier/'
     | '/api/auth/$'
     | '/api/files/$id'
@@ -707,7 +732,6 @@ export interface RootRouteChildren {
   SupplierTermsRoute: typeof SupplierTermsRoute
   TeamRoute: typeof TeamRoute
   ValueSummaryRoute: typeof ValueSummaryRoute
-  WhatDoesAogMeanInAviationRoute: typeof WhatDoesAogMeanInAviationRoute
   AdminAircraftRoute: typeof AdminAircraftRoute
   AdminAmoRoute: typeof AdminAmoRoute
   AdminAogRoute: typeof AdminAogRoute
@@ -720,12 +744,15 @@ export interface RootRouteChildren {
   AdminRevenueRoute: typeof AdminRevenueRoute
   AdminSuppliersRoute: typeof AdminSuppliersRoute
   AogIdRoute: typeof AogIdRoute
+  BlogAogResponseChecklistRoute: typeof BlogAogResponseChecklistRoute
+  BlogWhatDoesAogMeanInAviationRoute: typeof BlogWhatDoesAogMeanInAviationRoute
   PartsAirframeRoute: typeof PartsAirframeRoute
   SupplierLoginRoute: typeof SupplierLoginRoute
   SupplierProfileRoute: typeof SupplierProfileRoute
   SupplierQuoteHistoryRoute: typeof SupplierQuoteHistoryRoute
   SuppliersApplyRoute: typeof SuppliersApplyRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  BlogIndexRoute: typeof BlogIndexRoute
   SupplierIndexRoute: typeof SupplierIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiFilesIdRoute: typeof ApiFilesIdRoute
@@ -735,13 +762,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/what-does-aog-mean-in-aviation': {
-      id: '/what-does-aog-mean-in-aviation'
-      path: '/what-does-aog-mean-in-aviation'
-      fullPath: '/what-does-aog-mean-in-aviation'
-      preLoaderRoute: typeof WhatDoesAogMeanInAviationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/value-summary': {
       id: '/value-summary'
       path: '/value-summary'
@@ -959,6 +979,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SupplierIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/': {
       id: '/admin/'
       path: '/admin'
@@ -999,6 +1026,20 @@ declare module '@tanstack/react-router' {
       path: '/parts/$airframe'
       fullPath: '/parts/$airframe'
       preLoaderRoute: typeof PartsAirframeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/what-does-aog-mean-in-aviation': {
+      id: '/blog/what-does-aog-mean-in-aviation'
+      path: '/blog/what-does-aog-mean-in-aviation'
+      fullPath: '/blog/what-does-aog-mean-in-aviation'
+      preLoaderRoute: typeof BlogWhatDoesAogMeanInAviationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/aog-response-checklist': {
+      id: '/blog/aog-response-checklist'
+      path: '/blog/aog-response-checklist'
+      fullPath: '/blog/aog-response-checklist'
+      preLoaderRoute: typeof BlogAogResponseChecklistRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/aog/$id': {
@@ -1147,7 +1188,6 @@ const rootRouteChildren: RootRouteChildren = {
   SupplierTermsRoute: SupplierTermsRoute,
   TeamRoute: TeamRoute,
   ValueSummaryRoute: ValueSummaryRoute,
-  WhatDoesAogMeanInAviationRoute: WhatDoesAogMeanInAviationRoute,
   AdminAircraftRoute: AdminAircraftRoute,
   AdminAmoRoute: AdminAmoRoute,
   AdminAogRoute: AdminAogRoute,
@@ -1160,12 +1200,15 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRevenueRoute: AdminRevenueRoute,
   AdminSuppliersRoute: AdminSuppliersRoute,
   AogIdRoute: AogIdRoute,
+  BlogAogResponseChecklistRoute: BlogAogResponseChecklistRoute,
+  BlogWhatDoesAogMeanInAviationRoute: BlogWhatDoesAogMeanInAviationRoute,
   PartsAirframeRoute: PartsAirframeRoute,
   SupplierLoginRoute: SupplierLoginRoute,
   SupplierProfileRoute: SupplierProfileRoute,
   SupplierQuoteHistoryRoute: SupplierQuoteHistoryRoute,
   SuppliersApplyRoute: SuppliersApplyRoute,
   AdminIndexRoute: AdminIndexRoute,
+  BlogIndexRoute: BlogIndexRoute,
   SupplierIndexRoute: SupplierIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiFilesIdRoute: ApiFilesIdRoute,

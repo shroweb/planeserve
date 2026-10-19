@@ -2,8 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
 import { ArrowRightIcon } from "@/components/app/PlaneServeIcons";
+import { Wrench } from "lucide-react";
 
-export const Route = createFileRoute("/what-does-aog-mean-in-aviation")({
+export const Route = createFileRoute("/blog/what-does-aog-mean-in-aviation")({
   head: () => ({
     meta: [
       { title: "What Does AOG Mean in Aviation? Definition & True Downtime Costs" },
@@ -23,7 +24,7 @@ export const Route = createFileRoute("/what-does-aog-mean-in-aviation")({
       },
       {
         property: "og:url",
-        content: "https://www.aircraftprogram.com/what-does-aog-mean-in-aviation",
+        content: "https://www.aircraftprogram.com/blog/what-does-aog-mean-in-aviation",
       },
       { property: "og:type", content: "article" },
       { property: "article:published_time", content: "2026-10-19" },
@@ -63,7 +64,7 @@ function AogMeaningArticle() {
               url: "https://www.aircraftprogram.com",
             },
             mainEntityOfPage:
-              "https://www.aircraftprogram.com/what-does-aog-mean-in-aviation",
+              "https://www.aircraftprogram.com/blog/what-does-aog-mean-in-aviation",
           }),
         }}
       />
@@ -263,10 +264,10 @@ function AogMeaningArticle() {
           {/* ── CTA card ─────────────────────────────────────────────────── */}
           <div className="mt-10 rounded-sm border border-accent/25 bg-primary/5 p-8">
             <div className="flex h-10 w-10 items-center justify-center rounded-sm border border-accent/20 bg-accent/10">
-              <ArrowRightIcon className="h-5 w-5 text-accent" />
+              <Wrench className="h-5 w-5 text-accent" strokeWidth={1.5} />
             </div>
             <h3 className="mt-5 text-xl font-bold tracking-tight text-foreground">
-              🛠️ Protect Your Fleet Against AOG Downtime
+              Protect Your Fleet Against AOG Downtime
             </h3>
             <p className="mt-3 leading-7 text-foreground/80">
               <strong>Enrol your aircraft in the Aircraft Program</strong> and standardise your
