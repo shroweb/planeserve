@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
 import { ArrowRightIcon } from "@/components/app/PlaneServeIcons";
-import { ClipboardList, Wrench } from "lucide-react";
+import { ClipboardList, Clock, Wrench } from "lucide-react";
 
 export const Route = createFileRoute("/blog/")({
   head: () => ({
@@ -45,6 +45,14 @@ const posts = [
     description:
       "A step-by-step AOG response checklist for flight crews: cockpit fault logging, MEL deferral, AMO triage, parts sourcing, expedited logistics, and customs clearance.",
     date: "19 October 2026",
+  },
+  {
+    to: "/blog/retained-aog-procurement",
+    Icon: Clock,
+    title: "AOG Request: Why Retained Procurement Beats 2:00 AM Scrambling",
+    description:
+      "See how pre-enrolled aircraft information, pre-authorization, and a 24/7 AOG desk can help operators manage urgent aircraft parts procurement.",
+    date: "27 October 2026",
   },
 ];
 

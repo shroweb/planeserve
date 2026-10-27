@@ -48,6 +48,7 @@ import { Route as SupplierProfileRouteImport } from './routes/supplier/profile'
 import { Route as SupplierLoginRouteImport } from './routes/supplier/login'
 import { Route as PartsAirframeRouteImport } from './routes/parts.$airframe'
 import { Route as BlogWhatDoesAogMeanInAviationRouteImport } from './routes/blog/what-does-aog-mean-in-aviation'
+import { Route as BlogRetainedAogProcurementRouteImport } from './routes/blog/retained-aog-procurement'
 import { Route as BlogAogResponseChecklistRouteImport } from './routes/blog/aog-response-checklist'
 import { Route as AogIdRouteImport } from './routes/aog.$id'
 import { Route as AdminSuppliersRouteImport } from './routes/admin/suppliers'
@@ -262,6 +263,12 @@ const BlogWhatDoesAogMeanInAviationRoute =
     path: '/blog/what-does-aog-mean-in-aviation',
     getParentRoute: () => rootRouteImport,
   } as any)
+const BlogRetainedAogProcurementRoute =
+  BlogRetainedAogProcurementRouteImport.update({
+    id: '/blog/retained-aog-procurement',
+    path: '/blog/retained-aog-procurement',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const BlogAogResponseChecklistRoute =
   BlogAogResponseChecklistRouteImport.update({
     id: '/blog/aog-response-checklist',
@@ -393,6 +400,7 @@ export interface FileRoutesByFullPath {
   '/admin/suppliers': typeof AdminSuppliersRoute
   '/aog/$id': typeof AogIdRoute
   '/blog/aog-response-checklist': typeof BlogAogResponseChecklistRoute
+  '/blog/retained-aog-procurement': typeof BlogRetainedAogProcurementRoute
   '/blog/what-does-aog-mean-in-aviation': typeof BlogWhatDoesAogMeanInAviationRoute
   '/parts/$airframe': typeof PartsAirframeRoute
   '/supplier/login': typeof SupplierLoginRoute
@@ -451,6 +459,7 @@ export interface FileRoutesByTo {
   '/admin/suppliers': typeof AdminSuppliersRoute
   '/aog/$id': typeof AogIdRoute
   '/blog/aog-response-checklist': typeof BlogAogResponseChecklistRoute
+  '/blog/retained-aog-procurement': typeof BlogRetainedAogProcurementRoute
   '/blog/what-does-aog-mean-in-aviation': typeof BlogWhatDoesAogMeanInAviationRoute
   '/parts/$airframe': typeof PartsAirframeRoute
   '/supplier/login': typeof SupplierLoginRoute
@@ -510,6 +519,7 @@ export interface FileRoutesById {
   '/admin/suppliers': typeof AdminSuppliersRoute
   '/aog/$id': typeof AogIdRoute
   '/blog/aog-response-checklist': typeof BlogAogResponseChecklistRoute
+  '/blog/retained-aog-procurement': typeof BlogRetainedAogProcurementRoute
   '/blog/what-does-aog-mean-in-aviation': typeof BlogWhatDoesAogMeanInAviationRoute
   '/parts/$airframe': typeof PartsAirframeRoute
   '/supplier/login': typeof SupplierLoginRoute
@@ -570,6 +580,7 @@ export interface FileRouteTypes {
     | '/admin/suppliers'
     | '/aog/$id'
     | '/blog/aog-response-checklist'
+    | '/blog/retained-aog-procurement'
     | '/blog/what-does-aog-mean-in-aviation'
     | '/parts/$airframe'
     | '/supplier/login'
@@ -628,6 +639,7 @@ export interface FileRouteTypes {
     | '/admin/suppliers'
     | '/aog/$id'
     | '/blog/aog-response-checklist'
+    | '/blog/retained-aog-procurement'
     | '/blog/what-does-aog-mean-in-aviation'
     | '/parts/$airframe'
     | '/supplier/login'
@@ -686,6 +698,7 @@ export interface FileRouteTypes {
     | '/admin/suppliers'
     | '/aog/$id'
     | '/blog/aog-response-checklist'
+    | '/blog/retained-aog-procurement'
     | '/blog/what-does-aog-mean-in-aviation'
     | '/parts/$airframe'
     | '/supplier/login'
@@ -745,6 +758,7 @@ export interface RootRouteChildren {
   AdminSuppliersRoute: typeof AdminSuppliersRoute
   AogIdRoute: typeof AogIdRoute
   BlogAogResponseChecklistRoute: typeof BlogAogResponseChecklistRoute
+  BlogRetainedAogProcurementRoute: typeof BlogRetainedAogProcurementRoute
   BlogWhatDoesAogMeanInAviationRoute: typeof BlogWhatDoesAogMeanInAviationRoute
   PartsAirframeRoute: typeof PartsAirframeRoute
   SupplierLoginRoute: typeof SupplierLoginRoute
@@ -1035,6 +1049,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogWhatDoesAogMeanInAviationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/retained-aog-procurement': {
+      id: '/blog/retained-aog-procurement'
+      path: '/blog/retained-aog-procurement'
+      fullPath: '/blog/retained-aog-procurement'
+      preLoaderRoute: typeof BlogRetainedAogProcurementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog/aog-response-checklist': {
       id: '/blog/aog-response-checklist'
       path: '/blog/aog-response-checklist'
@@ -1201,6 +1222,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminSuppliersRoute: AdminSuppliersRoute,
   AogIdRoute: AogIdRoute,
   BlogAogResponseChecklistRoute: BlogAogResponseChecklistRoute,
+  BlogRetainedAogProcurementRoute: BlogRetainedAogProcurementRoute,
   BlogWhatDoesAogMeanInAviationRoute: BlogWhatDoesAogMeanInAviationRoute,
   PartsAirframeRoute: PartsAirframeRoute,
   SupplierLoginRoute: SupplierLoginRoute,
