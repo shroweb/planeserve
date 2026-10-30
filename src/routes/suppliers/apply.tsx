@@ -2,12 +2,20 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation } from "@tanstack/react-query";
 import { createSupplierApplication } from "@/lib/app.functions";
 import { PublicLayout } from "@/components/site/PublicLayout";
-import { Eyebrow, H2, Section } from "@/components/site/Section";
+import { Eyebrow, Section } from "@/components/site/Section";
 import supplierApplyImage from "@/assets/WhatsApp Image 2026-06-03 at 17.32.26 (2).jpeg";
 import { useState } from "react";
+import { pageHead } from "@/lib/seo";
 import { CheckCircle2, ChevronRight, ChevronLeft } from "lucide-react";
 
 export const Route = createFileRoute("/suppliers/apply")({
+  head: () =>
+    pageHead({
+      title: "Become an AOG Parts Supplier | Aircraft Program",
+      description:
+        "Apply to join the Aircraft Program supplier network. Quote on AOG requests for business aircraft parts, with applications reviewed within 24 hours.",
+      path: "/suppliers/apply",
+    }),
   component: SupplierApplyPage,
 });
 
@@ -202,7 +210,7 @@ function SupplierApplyPage() {
         <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
           <div>
             <Eyebrow>Supplier Network</Eyebrow>
-            <H2>Apply to source urgent aircraft parts.</H2>
+            <h1 className="mt-3 text-3xl font-semibold tracking-tight text-foreground md:text-4xl">Apply to source urgent aircraft parts.</h1>
             <p className="mt-5 text-sm leading-7 text-muted-foreground">
               Approved suppliers receive RFQs that match their aircraft coverage, ATA systems,
               inventory profile, geography, and response capability.

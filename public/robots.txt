@@ -16,5 +16,8 @@ Disallow: /parts-intelligence
 Disallow: /fleet-network
 Disallow: /aog-risk-index
 Disallow: /value-summary
+Disallow: /brand-guidelines
+Disallow: /ps-brand
+Disallow: /api/
 
 Sitemap: https://www.aircraftprogram.com/sitemap.xml

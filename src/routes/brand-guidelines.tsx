@@ -4,6 +4,7 @@ export const Route = createFileRoute("/brand-guidelines")({
   head: () => ({
     meta: [
       { title: "Aircraft Program Brand Guidelines" },
+      { name: "robots", content: "noindex,follow" },
       {
         name: "description",
         content:

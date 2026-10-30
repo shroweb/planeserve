@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { pageHead } from "@/lib/seo";
 import challengerHangar from "@/assets/challenger-mro-hangar.jpeg";
 import sourcingRamp from "@/assets/WhatsApp Image 2026-06-03 at 17.11.43.jpeg";
 import { PublicLayout } from "@/components/site/PublicLayout";
@@ -16,27 +17,13 @@ import {
 import { BookOpen, Shield, TrendingUp, Eye, Scale } from "lucide-react";
 
 export const Route = createFileRoute("/how-it-works")({
-  head: () => ({
-    meta: [
-      { title: "How it Works — The Aircraft Program AOG support journey" },
-      {
-        name: "description",
-        content:
-          "Learn how Aircraft Program moves your aircraft from 'grounded' to 'serviceable' using a retained support desk and pre-captured context.",
-      },
-      {
-        property: "og:title",
-        content: "How it Works — The Aircraft Program AOG support journey",
-      },
-      {
-        property: "og:description",
-        content:
-          "Learn how Aircraft Program moves your aircraft from 'grounded' to 'serviceable' using a retained support desk and pre-captured context.",
-      },
-      { property: "og:url", content: "https://www.aircraftprogram.com/how-it-works" },
-      { property: "og:type", content: "website" },
-    ],
-  }),
+  head: () =>
+    pageHead({
+      title: "How Retained AOG Support Works | Aircraft Program",
+      description:
+        "How Aircraft Program takes an aircraft from grounded to serviceable: a retained AOG desk, a pre-captured aircraft profile and a Parts Passport on every part.",
+      path: "/how-it-works",
+    }),
   component: HowItWorks,
 });
 
@@ -143,6 +130,8 @@ function HowItWorks() {
           </div>
           <div className="relative min-h-[320px] overflow-hidden rounded-sm border border-white/10">
             <img
+              fetchPriority="high"
+              decoding="async"
               src={sourcingRamp}
               alt="Twin-engine aircraft on the ramp before operational support"
               className="absolute inset-0 h-full w-full object-cover object-center"
@@ -237,6 +226,8 @@ function HowItWorks() {
             <div className="relative">
               <div className="aspect-[4/3] rounded-sm overflow-hidden">
                 <img
+                  loading="lazy"
+                  decoding="async"
                   src={challengerHangar}
                   alt="Challenger aircraft in MRO hangar"
                   className="h-full w-full object-cover object-center"

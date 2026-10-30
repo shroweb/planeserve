@@ -1,29 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { pageHead } from "@/lib/seo";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
 
 export const Route = createFileRoute("/subscriber-agreement")({
-  head: () => ({
-    meta: [
-      { title: "Subscriber Agreement — Aircraft Program" },
-      {
-        name: "description",
-        content:
-          "The terms and conditions for Aircraft Program subscription and 24/7 AOG parts desk support.",
-      },
-      {
-        property: "og:title",
-        content: "Subscriber Agreement — Aircraft Program",
-      },
-      {
-        property: "og:description",
-        content:
-          "The terms and conditions for Aircraft Program subscription and 24/7 AOG parts desk support.",
-      },
-      { property: "og:url", content: "https://www.aircraftprogram.com/subscriber-agreement" },
-      { property: "og:type", content: "website" },
-    ],
-  }),
+  head: () =>
+    pageHead({
+      title: "Subscriber Agreement — Aircraft Program",
+      description:
+        "The terms and conditions for Aircraft Program subscription and 24/7 AOG parts desk support.",
+      path: "/subscriber-agreement",
+    }),
   component: SubscriberAgreementPage,
 });
 

@@ -1,60 +1,39 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { pageHead } from "@/lib/seo";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
 import { ArrowRightIcon } from "@/components/app/PlaneServeIcons";
-import { ClipboardList, Clock, Wrench } from "lucide-react";
+import { Calculator, ClipboardList, Clock, FileCheck2, Scale, Truck, Wrench } from "lucide-react";
+import { BLOG_POSTS } from "@/lib/blog-posts";
 
 export const Route = createFileRoute("/blog/")({
-  head: () => ({
-    meta: [
-      { title: "AOG Insights — Aircraft Program Blog" },
-      {
-        name: "description",
-        content:
-          "Practical AOG guidance for aircraft owners and operators: definitions, downtime cost breakdowns, response checklists, and parts sourcing insight from the Aircraft Program desk.",
-      },
-      {
-        property: "og:title",
-        content: "AOG Insights — Aircraft Program Blog",
-      },
-      {
-        property: "og:description",
-        content:
-          "Practical AOG guidance for aircraft owners and operators: definitions, downtime cost breakdowns, response checklists, and parts sourcing insight from the Aircraft Program desk.",
-      },
-      { property: "og:url", content: "https://www.aircraftprogram.com/blog" },
-      { property: "og:type", content: "website" },
-    ],
-  }),
+  head: () =>
+    pageHead({
+      title: "AOG Insights & Guides | Aircraft Program Blog",
+      description:
+        "Practical AOG guidance for aircraft owners and operators: definitions, downtime cost breakdowns, response checklists, and parts sourcing insight from the Aircraft Program desk.",
+      path: "/blog",
+    }),
   component: BlogIndexPage,
 });
 
-const posts = [
-  {
-    to: "/blog/what-does-aog-mean-in-aviation",
-    Icon: Wrench,
-    title: "What Does AOG Mean in Aviation? Definition & True Downtime Costs",
-    description:
-      "Learn what AOG (Aircraft On Ground) means in aviation. Explore immediate operational costs, common causes, emergency MRO logistics, and compliance risks.",
-    date: "19 October 2026",
-  },
-  {
-    to: "/blog/aog-response-checklist",
-    Icon: ClipboardList,
-    title: "Aircraft AOG Response Checklist — What to Do When Grounded Off-Base",
-    description:
-      "A step-by-step AOG response checklist for flight crews: cockpit fault logging, MEL deferral, AMO triage, parts sourcing, expedited logistics, and customs clearance.",
-    date: "19 October 2026",
-  },
-  {
-    to: "/blog/retained-aog-procurement",
-    Icon: Clock,
-    title: "AOG Request: Why Retained Procurement Beats 2:00 AM Scrambling",
-    description:
-      "See how pre-enrolled aircraft information, pre-authorization, and a 24/7 AOG desk can help operators manage urgent aircraft parts procurement.",
-    date: "27 October 2026",
-  },
-];
+const ICONS = {
+  wrench: Wrench,
+  checklist: ClipboardList,
+  clock: Clock,
+  cost: Calculator,
+  docs: FileCheck2,
+  truck: Truck,
+  scale: Scale,
+};
+
+const posts = [...BLOG_POSTS].reverse().map((p) => ({
+  to: `/blog/${p.slug}` as const,
+  Icon: ICONS[p.icon],
+  title: p.title,
+  description: p.description,
+  date: p.displayDate,
+}));
 
 function BlogIndexPage() {
   return (
@@ -67,8 +46,8 @@ function BlogIndexPage() {
             Guidance from the <span className="text-accent">AOG desk.</span>
           </h1>
           <p className="mt-8 max-w-2xl text-base leading-8 text-white/65 md:text-lg">
-            Practical, operational writing for owners and operators — what AOG really costs, how
-            to respond when an aircraft is grounded off-base, and how to keep parts and paperwork
+            Practical, operational writing for owners and operators — what AOG really costs, how to
+            respond when an aircraft is grounded off-base, and how to keep parts and paperwork
             moving.
           </p>
         </div>

@@ -1,53 +1,31 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { pageHead } from "@/lib/seo";
 import { PublicLayout } from "@/components/site/PublicLayout";
+import { ArticleSchema, RelatedReading } from "@/components/site/ArticleLayout";
 import { Eyebrow } from "@/components/site/Section";
 import { ArrowRightIcon } from "@/components/app/PlaneServeIcons";
 
 const TITLE = "AOG Request: Why Retained Procurement Beats 2:00 AM Scrambling";
 const DESCRIPTION =
   "See how pre-enrolled aircraft information, pre-authorization, and a 24/7 AOG desk can help operators manage urgent aircraft parts procurement.";
-const URL = "https://www.aircraftprogram.com/blog/retained-aog-procurement";
 
 export const Route = createFileRoute("/blog/retained-aog-procurement")({
-  head: () => ({
-    meta: [
-      { title: TITLE },
-      { name: "description", content: DESCRIPTION },
-      { property: "og:title", content: TITLE },
-      { property: "og:description", content: DESCRIPTION },
-      { property: "og:url", content: URL },
-      { property: "og:type", content: "article" },
-      { property: "article:published_time", content: "2026-10-27" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: TITLE },
-      { name: "twitter:description", content: DESCRIPTION },
-    ],
-  }),
+  head: () =>
+    pageHead({
+      title: TITLE,
+      description: DESCRIPTION,
+      path: "/blog/retained-aog-procurement",
+      type: "article",
+      published: "2026-10-27",
+      modified: "2026-10-30",
+    }),
   component: RetainedAogProcurement,
 });
 
 function RetainedAogProcurement() {
   return (
     <PublicLayout>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Article",
-            headline: "Why Retained AOG Procurement Beats Open-Market Scrambling at 2:00 AM",
-            description: DESCRIPTION,
-            datePublished: "2026-10-27",
-            author: { "@type": "Organization", name: "Aircraft Program" },
-            publisher: {
-              "@type": "Organization",
-              name: "Aircraft Program",
-              url: "https://www.aircraftprogram.com",
-            },
-            mainEntityOfPage: URL,
-          }),
-        }}
-      />
+      <ArticleSchema slug="retained-aog-procurement" />
 
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <section className="brand-dark bg-[#041c2c] text-white">
@@ -232,7 +210,7 @@ function RetainedAogProcurement() {
             </p>
             <div className="mt-4 flex flex-col gap-3 sm:flex-row">
               <Link
-                to="/submit-aog"
+                to="/aog-request"
                 className="inline-flex items-center justify-center gap-2 rounded-sm bg-[#001b2e] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#002845]"
               >
                 Submit an AOG request <ArrowRightIcon className="h-4 w-4" />
@@ -247,6 +225,7 @@ function RetainedAogProcurement() {
           </div>
         </div>
       </article>
+      <RelatedReading current="retained-aog-procurement" />
     </PublicLayout>
   );
 }

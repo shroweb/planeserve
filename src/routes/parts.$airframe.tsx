@@ -1,19 +1,14 @@
-import { createFileRoute, Link, useParams } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, Link, notFound, redirect, useParams } from "@tanstack/react-router";
+import { pageHead } from "@/lib/seo";
+import { PartRequestForm } from "@/components/site/PartRequestForm";
 import { PublicLayout } from "@/components/site/PublicLayout";
-import { Eyebrow } from "@/components/site/Section";
-import { submitOneOffPartRequest } from "@/lib/app.functions";
 import {
   Check,
-  ArrowRight,
   ShieldCheck,
   Clock,
   FileCheck2,
   Plane,
-  AlertTriangle,
   Building2,
-  CheckCircle2,
-  Loader2,
   Wrench,
   Cpu,
   Layers,
@@ -31,9 +26,9 @@ interface AirframeData {
 }
 
 const AIRFRAME_DATABASE: Record<string, AirframeData> = {
-  bombardier: {
+  challenger: {
     title: "Bombardier Challenger & Global Aircraft Parts Sourcing",
-    name: "Bombardier",
+    name: "Challenger",
     category: "Super-Midsize & Ultra Long-Range Jets",
     description:
       "Rapid rotable procurement and AOG dispatch for Bombardier Challenger 300, 350, 604, 605, 650, and Global Express / 5000 / 6000 / 7500. Full FAA 8130-3 and EASA Form 1 trace.",
@@ -42,31 +37,50 @@ const AIRFRAME_DATABASE: Record<string, AirframeData> = {
       "Challenger 604 / 605 / 650",
       "Global Express / XRS",
       "Global 5000 / 6000 / 7500",
-      "Learjet 45 / 60 / 75",
     ],
     ataBreakdown: [
       {
         chapter: "ATA 29",
         title: "Hydraulic Power",
-        commonParts: ["Engine-driven hydraulic pumps", "Electric motor pumps (ACMP)", "Hydraulic accumulators", "PTU valves"],
+        commonParts: [
+          "Engine-driven hydraulic pumps",
+          "Electric motor pumps (ACMP)",
+          "Hydraulic accumulators",
+          "PTU valves",
+        ],
       },
       {
         chapter: "ATA 32",
         title: "Landing Gear & Brakes",
-        commonParts: ["Carbon brake heat packs", "Main & nose gear actuators", "Anti-skid control valves", "Wheel assemblies"],
+        commonParts: [
+          "Carbon brake heat packs",
+          "Main & nose gear actuators",
+          "Anti-skid control valves",
+          "Wheel assemblies",
+        ],
       },
       {
         chapter: "ATA 24",
         title: "Electrical Power",
-        commonParts: ["Integrated Drive Generators (IDG)", "Generator Control Units (GCU)", "Transformer Rectifier Units (TRU)"],
+        commonParts: [
+          "Integrated Drive Generators (IDG)",
+          "Generator Control Units (GCU)",
+          "Transformer Rectifier Units (TRU)",
+        ],
       },
       {
         chapter: "ATA 27",
         title: "Flight Controls",
-        commonParts: ["Power Flight Control Units (PFCU)", "Flap actuator gearboxes", "Elevator feel computers", "Horizontal stab actuators"],
+        commonParts: [
+          "Power Flight Control Units (PFCU)",
+          "Flap actuator gearboxes",
+          "Elevator feel computers",
+          "Horizontal stab actuators",
+        ],
       },
     ],
-    supplierHighlights: "Direct lines into Bombardier Authorized Service Facilities and surplus teardown inventory in Europe, North America, and UAE.",
+    supplierHighlights:
+      "Direct lines into Bombardier Authorized Service Facilities and surplus teardown inventory in Europe, North America, and UAE.",
   },
   citation: {
     title: "Cessna Citation Aircraft Parts Sourcing & Rotable Desk",
@@ -85,25 +99,42 @@ const AIRFRAME_DATABASE: Record<string, AirframeData> = {
       {
         chapter: "ATA 24",
         title: "Electrical Power",
-        commonParts: ["Starter-generators (Safran / APC)", "Emergency power supplies", "GCUs and main battery contactors"],
+        commonParts: [
+          "Starter-generators (Safran / APC)",
+          "Emergency power supplies",
+          "GCUs and main battery contactors",
+        ],
       },
       {
         chapter: "ATA 32",
         title: "Landing Gear & Brakes",
-        commonParts: ["Brake assemblies & wear pins", "Gear selector valves", "Nosewheel steering actuators"],
+        commonParts: [
+          "Brake assemblies & wear pins",
+          "Gear selector valves",
+          "Nosewheel steering actuators",
+        ],
       },
       {
         chapter: "ATA 34",
         title: "Navigation & Avionics",
-        commonParts: ["Garmin G1000/G3000 LRUs", "Collins Pro Line 21 displays", "AHRS units & ADC sensors"],
+        commonParts: [
+          "Garmin G1000/G3000 LRUs",
+          "Collins Pro Line 21 displays",
+          "AHRS units & ADC sensors",
+        ],
       },
       {
         chapter: "ATA 21",
         title: "Air Conditioning & Pressurization",
-        commonParts: ["Air cycle machines (ACM)", "Outflow valves", "Bleed air temperature control valves"],
+        commonParts: [
+          "Air cycle machines (ACM)",
+          "Outflow valves",
+          "Bleed air temperature control valves",
+        ],
       },
     ],
-    supplierHighlights: "Deep rotable stock agreements with Textron Aviation distributors, MRO parts pools, and certified 145 overhaul stations.",
+    supplierHighlights:
+      "Deep rotable stock agreements with Textron Aviation distributors, MRO parts pools, and certified 145 overhaul stations.",
   },
   gulfstream: {
     title: "Gulfstream Aircraft Parts Sourcing & AOG Desk",
@@ -122,29 +153,46 @@ const AIRFRAME_DATABASE: Record<string, AirframeData> = {
       {
         chapter: "ATA 49",
         title: "Airborne Auxiliary Power (APU)",
-        commonParts: ["Honeywell 36-150 / RE220 line components", "APU fuel control units", "Starter motors and igniter plugs"],
+        commonParts: [
+          "Honeywell 36-150 / RE220 line components",
+          "APU fuel control units",
+          "Starter motors and igniter plugs",
+        ],
       },
       {
         chapter: "ATA 27",
         title: "Flight Controls",
-        commonParts: ["Elevator & aileron hydraulic boosters", "Flap drive motors", "Rudder trim actuators"],
+        commonParts: [
+          "Elevator & aileron hydraulic boosters",
+          "Flap drive motors",
+          "Rudder trim actuators",
+        ],
       },
       {
         chapter: "ATA 29",
         title: "Hydraulics",
-        commonParts: ["Engine driven pumps (Abex/Eaton)", "Auxiliary DC hydraulic pump", "PTU and accumulator bottles"],
+        commonParts: [
+          "Engine driven pumps (Abex/Eaton)",
+          "Auxiliary DC hydraulic pump",
+          "PTU and accumulator bottles",
+        ],
       },
       {
         chapter: "ATA 34",
         title: "Avionics & Cockpit",
-        commonParts: ["PlaneView / Honeywell Primus Epic LRUs", "Display units (DU-885/DU-1310)", "EGPWS computers"],
+        commonParts: [
+          "PlaneView / Honeywell Primus Epic LRUs",
+          "Display units (DU-885/DU-1310)",
+          "EGPWS computers",
+        ],
       },
     ],
-    supplierHighlights: "Access to private flight department consignments, Part 145 rotable loan programs, and teardown packages globally.",
+    supplierHighlights:
+      "Access to private flight department consignments, Part 145 rotable loan programs, and teardown packages globally.",
   },
-  embraer: {
+  phenom: {
     title: "Embraer Phenom, Legacy & Praetor Parts Sourcing",
-    name: "Embraer Executive",
+    name: "Phenom",
     category: "Entry-Level, Midsize & Super-Midsize Jets",
     description:
       "Parts logistics and urgent AOG components for Embraer Phenom 100/300, Legacy 450/500/600/650, and Praetor 500/600. Dual-release documentation guaranteed.",
@@ -159,71 +207,272 @@ const AIRFRAME_DATABASE: Record<string, AirframeData> = {
       {
         chapter: "ATA 32",
         title: "Brakes & Steering",
-        commonParts: ["Brake-by-wire control units (BCU)", "Carbon brake assemblies", "Landing gear proximity sensors"],
+        commonParts: [
+          "Brake-by-wire control units (BCU)",
+          "Carbon brake assemblies",
+          "Landing gear proximity sensors",
+        ],
       },
       {
         chapter: "ATA 24",
         title: "Electrical & Generation",
-        commonParts: ["Brushless starter-generators", "Secondary power distribution boxes (SPDB)", "Inverters"],
+        commonParts: [
+          "Brushless starter-generators",
+          "Secondary power distribution boxes (SPDB)",
+          "Inverters",
+        ],
       },
       {
         chapter: "ATA 73",
         title: "Engine Fuel & Control",
-        commonParts: ["Pratt & Whitney PW535 / PW617 accessories", "Honeywell HTF7500E FADEC computers", "Fuel metering valves"],
+        commonParts: [
+          "Pratt & Whitney PW535 / PW617 accessories",
+          "Honeywell HTF7500E FADEC computers",
+          "Fuel metering valves",
+        ],
       },
     ],
-    supplierHighlights: "Pre-vetted European and US distributor pipelines with rapid dispatch into major business aviation hubs.",
+    supplierHighlights:
+      "Pre-vetted European and US distributor pipelines with rapid dispatch into major business aviation hubs.",
   },
   hawker: {
-    title: "Hawker & Beechcraft King Air Parts Sourcing",
-    name: "Hawker & Beechcraft",
-    category: "Midsize Jets & Twin Turboprops",
+    title: "Hawker & Beechcraft Jet Parts Sourcing",
+    name: "Hawker",
+    category: "Midsize Business Jets",
     description:
-      "Hard-to-source rotable components, structural assemblies, and engine accessories for Hawker 750/800XP/850XP/900XP and King Air 200/250/300/350.",
+      "Hard-to-source rotable components, structural assemblies, and engine accessories for Hawker 750, 800XP, 850XP and 900XP, plus Premier I/IA.",
     popularModels: [
       "Hawker 800XP / 850XP / 900XP",
       "Hawker 750 / 1000",
-      "King Air B200 / 250 / 260",
-      "King Air 350 / 350i / 360",
+      "Beechjet 400A / Hawker 400XP",
       "Premier I / IA",
     ],
     ataBreakdown: [
       {
         chapter: "ATA 71-80",
         title: "Powerplant & Accessories",
-        commonParts: ["TFE731 rotable accessories", "PT6A fuel nozzles and FCUs", "Starter-generators & bleed valves"],
+        commonParts: [
+          "TFE731 rotable accessories",
+          "Fuel control units",
+          "Starter-generators & bleed valves",
+        ],
       },
       {
         chapter: "ATA 27",
         title: "Flight Controls",
-        commonParts: ["Flap drive flex shafts and gearboxes", "Aileron trim actuators", "Rudder bias struts"],
+        commonParts: [
+          "Flap drive flex shafts and gearboxes",
+          "Aileron trim actuators",
+          "Rudder bias struts",
+        ],
       },
       {
         chapter: "ATA 30",
         title: "Ice & Rain Protection",
-        commonParts: ["TKS fluid metering pumps", "Windshield heat controllers", "Pneumatic de-ice boots"],
+        commonParts: [
+          "TKS fluid metering pumps",
+          "Windshield heat controllers",
+          "Wing and tail anti-ice components",
+        ],
       },
     ],
-    supplierHighlights: "Extensive rotable core exchange network and FAA/EASA certified teardown stock for legacy and in-production airframes.",
+    supplierHighlights:
+      "Extensive rotable core exchange network and FAA/EASA certified teardown stock for legacy and in-production airframes.",
+  },
+  "king-air": {
+    title: "Beechcraft King Air Parts Sourcing & AOG Support",
+    name: "King Air",
+    category: "Twin Turboprops",
+    description:
+      "AOG parts support for Beechcraft King Air 200, 250, 260, 300, 350 and 360 operators, including PT6A accessories, landing gear and de-ice components with full release documentation.",
+    popularModels: [
+      "King Air C90 / E90",
+      "King Air B200 / 250 / 260",
+      "King Air 300 / 350 / 350i",
+      "King Air 360",
+    ],
+    ataBreakdown: [
+      {
+        chapter: "ATA 71-80",
+        title: "PT6A Powerplant Accessories",
+        commonParts: ["Starter-generators", "Fuel control units (FCUs)", "Bleed air valves"],
+      },
+      {
+        chapter: "ATA 32",
+        title: "Landing Gear",
+        commonParts: ["Gear actuators", "Brake assemblies", "Gear position switches"],
+      },
+      {
+        chapter: "ATA 30",
+        title: "Ice & Rain Protection",
+        commonParts: [
+          "Pneumatic de-ice boots",
+          "De-ice controllers",
+          "Propeller de-ice components",
+        ],
+      },
+    ],
+    supplierHighlights:
+      "Sourcing across Textron distributors, independent rotable pools and certified overhaul stations, with core exchange logistics managed for you.",
+  },
+  falcon: {
+    title: "Dassault Falcon Parts Sourcing & AOG Support",
+    name: "Falcon",
+    category: "Large-Cabin Tri-Jets & Twin Jets",
+    description:
+      "AOG parts support for Dassault Falcon 900, 2000 and 7X/8X operators: avionics LRUs, hydraulics and thrust reverser components with FAA 8130-3 and EASA Form 1 documentation.",
+    popularModels: [
+      "Falcon 900B / 900EX / 900LX",
+      "Falcon 2000 / 2000EX / 2000LX",
+      "Falcon 7X / 8X",
+      "Falcon 50 / 50EX",
+    ],
+    ataBreakdown: [
+      {
+        chapter: "ATA 34",
+        title: "Avionics (EASy Cockpit)",
+        commonParts: ["Display units", "Flight management components", "Radio and navigation LRUs"],
+      },
+      {
+        chapter: "ATA 29",
+        title: "Hydraulics",
+        commonParts: ["Engine-driven pumps", "Accumulators", "Selector valves"],
+      },
+      {
+        chapter: "ATA 78",
+        title: "Thrust Reversers",
+        commonParts: ["Reverser actuators", "Position sensors", "Control valves"],
+      },
+    ],
+    supplierHighlights:
+      "European and North American supplier network, with customs documentation handled for cross-border dispatch of French-manufactured parts.",
+  },
+  learjet: {
+    title: "Learjet Parts Sourcing & AOG Support",
+    name: "Learjet",
+    category: "Light & Midsize Business Jets",
+    description:
+      "AOG parts support for Learjet 35, 45, 60 and 75 operators, including legacy components affected by obsolescence, with traceable documentation.",
+    popularModels: [
+      "Learjet 31A / 35A / 36A",
+      "Learjet 40 / 45 / 45XR",
+      "Learjet 55 / 60 / 60XR",
+      "Learjet 70 / 75",
+    ],
+    ataBreakdown: [
+      {
+        chapter: "ATA 32",
+        title: "Landing Gear & Brakes",
+        commonParts: ["Brake assemblies", "Anti-skid components", "Gear actuators"],
+      },
+      {
+        chapter: "ATA 24",
+        title: "Electrical Power",
+        commonParts: ["Starter-generators", "Generator control units", "Batteries"],
+      },
+      {
+        chapter: "ATA 21",
+        title: "Environmental Systems",
+        commonParts: ["Air cycle machines", "Bleed air valves", "Pressurization controllers"],
+      },
+    ],
+    supplierHighlights:
+      "Access to certified teardown stock and overhaul stations for out-of-production Learjet components, with trace documents verified before dispatch.",
+  },
+  helicopter: {
+    title: "Helicopter AOG Support & Parts Sourcing",
+    name: "Helicopter",
+    category: "Corporate, VIP & Utility Rotorcraft",
+    description:
+      "AOG parts procurement for corporate and VIP helicopters, including Leonardo AW109 and AW139, Airbus H125 and H145 and Bell 429: gearbox, rotor and turboshaft accessories.",
+    popularModels: [
+      "Leonardo AW109 / AW139",
+      "Airbus H125 / H130 / H145",
+      "Bell 407 / 429",
+      "Sikorsky S-76",
+    ],
+    ataBreakdown: [
+      {
+        chapter: "ATA 62-65",
+        title: "Rotors & Drive Systems",
+        commonParts: [
+          "Main and tail rotor pitch links",
+          "Tail rotor gearbox components",
+          "Drive shaft couplings",
+        ],
+      },
+      {
+        chapter: "ATA 24",
+        title: "Electrical Power",
+        commonParts: ["Starter-generators", "Inverters", "Batteries"],
+      },
+      {
+        chapter: "ATA 73",
+        title: "Engine Fuel & Control",
+        commonParts: ["Fuel control units", "FADEC components", "Fuel pumps"],
+      },
+    ],
+    supplierHighlights:
+      "A procurement partner for operators and MROs: we source, verify and deliver the part while your approved maintenance organisation fits it.",
   },
 };
 
+const SEO: Record<string, { title: string; h1: string }> = {
+  challenger: {
+    title: "Challenger 350 & 604 AOG Parts Support",
+    h1: "Challenger AOG Support & Parts Sourcing",
+  },
+  citation: {
+    title: "Citation AOG Support & Parts Sourcing",
+    h1: "Citation AOG Support & Parts Sourcing",
+  },
+  gulfstream: {
+    title: "Gulfstream AOG Support & Parts Sourcing",
+    h1: "Gulfstream AOG Support & Parts Sourcing",
+  },
+  phenom: { title: "Phenom 300 AOG Parts & Support", h1: "Phenom AOG Support & Parts Sourcing" },
+  hawker: {
+    title: "Hawker AOG Parts Sourcing & Support",
+    h1: "Hawker AOG Support & Parts Sourcing",
+  },
+  "king-air": {
+    title: "King Air AOG Parts & Support",
+    h1: "King Air AOG Support & Parts Sourcing",
+  },
+  falcon: {
+    title: "Falcon 2000 & 7X AOG Parts Support",
+    h1: "Falcon AOG Support & Parts Sourcing",
+  },
+  learjet: {
+    title: "Learjet AOG Parts Sourcing & Support",
+    h1: "Learjet AOG Support & Parts Sourcing",
+  },
+  helicopter: {
+    title: "Helicopter AOG Support & Parts",
+    h1: "Helicopter AOG Support & Parts Sourcing",
+  },
+};
+
+const REDIRECTS: Record<string, string> = { bombardier: "challenger", embraer: "phenom" };
+
 export const Route = createFileRoute("/parts/$airframe")({
+  beforeLoad: ({ params }) => {
+    const target = REDIRECTS[params.airframe.toLowerCase()];
+    if (target) {
+      throw redirect({ to: "/parts/$airframe", params: { airframe: target }, statusCode: 301 });
+    }
+  },
+  loader: ({ params }) => {
+    if (!AIRFRAME_DATABASE[params.airframe.toLowerCase()]) throw notFound();
+  },
   head: ({ params }) => {
-    const data = AIRFRAME_DATABASE[params.airframe.toLowerCase()] || {
-      title: "Business Jet Parts Sourcing Desk | Aircraft Program",
-      description: "Certified business jet parts sourcing direct to base or MRO. Trace-verified rotables and airframe components.",
-    };
-    return {
-      meta: [
-        { title: `${data.title} | Aircraft Program` },
-        { name: "description", content: data.description },
-        { property: "og:title", content: `${data.title} | Aircraft Program` },
-        { property: "og:description", content: data.description },
-        { property: "og:url", content: `https://www.aircraftprogram.com/parts/${params.airframe}` },
-        { property: "og:type", content: "website" },
-      ],
-    };
+    const key = params.airframe.toLowerCase();
+    const seo = SEO[key];
+    return pageHead({
+      title: `${seo?.title ?? "Business Jet Parts Sourcing"} | Aircraft Program`,
+      description: AIRFRAME_DATABASE[key]?.description ?? "Business jet parts sourcing desk.",
+      path: `/parts/${key}`,
+    });
   },
   component: AirframePartsPage,
 });
@@ -231,47 +480,7 @@ export const Route = createFileRoute("/parts/$airframe")({
 function AirframePartsPage() {
   const { airframe } = useParams({ from: "/parts/$airframe" });
   const airframeKey = airframe.toLowerCase();
-  const info = AIRFRAME_DATABASE[airframeKey] || AIRFRAME_DATABASE.bombardier;
-
-  const [submitting, setSubmitting] = useState(false);
-  const [submittedRef, setSubmittedRef] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    company: "",
-    aircraftType: info.popularModels[0] || `${info.name} Jet`,
-    aircraftReg: "",
-    partNumber: "",
-    partDescription: "",
-    condition: "Any Certified (Fastest)",
-    urgency: "AOG Grounded",
-    deliveryLocation: "",
-    additionalNotes: "",
-  });
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setErrorMessage(null);
-    setSubmitting(true);
-
-    try {
-      const res = await submitOneOffPartRequest({ data: formData });
-      if (res.ok) {
-        setSubmittedRef(res.reference);
-      } else {
-        setErrorMessage("Unable to submit parts request. Please check fields or email ops@aircraftprogram.com.");
-      }
-    } catch (err) {
-      setErrorMessage(
-        err instanceof Error ? err.message : "Submission error. Please email ops@aircraftprogram.com directly.",
-      );
-    } finally {
-      setSubmitting(false);
-    }
-  }
+  const info = AIRFRAME_DATABASE[airframeKey] ?? AIRFRAME_DATABASE.challenger;
 
   return (
     <PublicLayout>
@@ -292,7 +501,7 @@ function AirframePartsPage() {
               {info.category}
             </div>
             <h1 className="text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl">
-              {info.name} Parts Sourcing & AOG Desk
+              {SEO[airframeKey]?.h1 ?? `${info.name} Parts Sourcing & AOG Desk`}
             </h1>
             <p className="mt-6 text-base leading-relaxed text-white/75 md:text-lg">
               {info.description}
@@ -320,7 +529,8 @@ function AirframePartsPage() {
             <div>
               <h2 className="text-2xl font-bold text-foreground">Supported {info.name} Models</h2>
               <p className="mt-2 text-sm text-muted-foreground">
-                We maintain active parts lists, rotable exchange pools, and vendor relationships across these airframes.
+                We maintain active parts lists, rotable exchange pools, and vendor relationships
+                across these airframes.
               </p>
               <div className="mt-6 grid gap-2.5 sm:grid-cols-2">
                 {info.popularModels.map((model) => (
@@ -335,7 +545,9 @@ function AirframePartsPage() {
               </div>
 
               <div className="mt-8 rounded-xl border border-accent/20 bg-accent/5 p-5">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-accent">Supplier Network Advantage</h4>
+                <h4 className="text-xs font-bold uppercase tracking-wider text-accent">
+                  Supplier Network Advantage
+                </h4>
                 <p className="mt-2 text-sm text-foreground/80 leading-relaxed">
                   {info.supplierHighlights}
                 </p>
@@ -349,9 +561,14 @@ function AirframePartsPage() {
               </p>
               <div className="mt-6 space-y-4">
                 {info.ataBreakdown.map((ata) => (
-                  <div key={ata.chapter} className="rounded-xl border border-border bg-card p-4 shadow-sm">
+                  <div
+                    key={ata.chapter}
+                    className="rounded-xl border border-border bg-card p-4 shadow-sm"
+                  >
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold uppercase tracking-wider text-accent">{ata.chapter}</span>
+                      <span className="text-xs font-bold uppercase tracking-wider text-accent">
+                        {ata.chapter}
+                      </span>
                       <span className="text-sm font-semibold text-foreground">{ata.title}</span>
                     </div>
                     <ul className="mt-2.5 grid gap-1.5 sm:grid-cols-2 text-xs text-muted-foreground">
@@ -370,209 +587,14 @@ function AirframePartsPage() {
         </div>
       </section>
 
-      {/* ── Request Form ─────────────────────────────────────────────────── */}
-      <section className="py-20 bg-background border-b border-border">
-        <div className="mx-auto max-w-4xl px-6">
-          <div className="text-center max-w-xl mx-auto">
-            <Eyebrow>{info.name} Sourcing Desk</Eyebrow>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground">
-              Request a {info.name} Component
-            </h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Submit your required part number below. We cross-reference supplier inventory and provide pricing within 4 hours.
-            </p>
-          </div>
-
-          <div className="mt-12 rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm">
-            {submittedRef ? (
-              <div className="py-8 text-center">
-                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
-                  <CheckCircle2 className="h-8 w-8" />
-                </div>
-                <h3 className="mt-4 text-2xl font-bold text-foreground">Request Submitted</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Reference: <strong className="text-foreground font-mono bg-muted px-2 py-0.5 rounded">{submittedRef}</strong>
-                </p>
-                <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto">
-                  Our operations team has received your {info.name} sourcing request and is checking rotable availability now.
-                </p>
-                <div className="mt-6 flex justify-center gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setSubmittedRef(null)}
-                    className="rounded-lg border border-border px-5 py-2.5 text-sm font-medium hover:bg-muted"
-                  >
-                    Submit Another Component
-                  </button>
-                  <Link
-                    to="/enrol"
-                    className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-white hover:brightness-110"
-                  >
-                    Enrol for 24/7 Cover ($100/mo)
-                  </Link>
-                </div>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {errorMessage && (
-                  <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700 flex items-start gap-3">
-                    <AlertTriangle className="h-5 w-5 shrink-0 text-red-600" />
-                    <div>{errorMessage}</div>
-                  </div>
-                )}
-
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <label className="block text-xs font-medium text-foreground mb-1">
-                      {info.name} Model *
-                    </label>
-                    <select
-                      value={formData.aircraftType}
-                      onChange={(e) => setFormData({ ...formData, aircraftType: e.target.value })}
-                      className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
-                    >
-                      {info.popularModels.map((m) => (
-                        <option key={m} value={m}>
-                          {m}
-                        </option>
-                      ))}
-                      <option value={`Other ${info.name}`}>Other {info.name} Model</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-foreground mb-1">
-                      Tail / Registration Number
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. N123XX or G-XXXX"
-                      value={formData.aircraftReg}
-                      onChange={(e) => setFormData({ ...formData, aircraftReg: e.target.value })}
-                      className="w-full rounded-md border border-input bg-background px-3.5 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-medium text-foreground mb-1">
-                      Part Number (P/N) *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. 50-0123-45"
-                      value={formData.partNumber}
-                      onChange={(e) => setFormData({ ...formData, partNumber: e.target.value })}
-                      className="w-full rounded-md border border-input bg-background px-3.5 py-2 text-sm font-mono text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-foreground mb-1">
-                      Part Description / ATA System
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Starter Generator, Hydraulic Valve"
-                      value={formData.partDescription}
-                      onChange={(e) => setFormData({ ...formData, partDescription: e.target.value })}
-                      className="w-full rounded-md border border-input bg-background px-3.5 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-medium text-foreground mb-1">
-                      Condition Required *
-                    </label>
-                    <select
-                      value={formData.condition}
-                      onChange={(e) => setFormData({ ...formData, condition: e.target.value })}
-                      className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
-                    >
-                      <option value="Any Certified (Fastest)">Any Certified (Fastest)</option>
-                      <option value="Factory New / New Surplus (FN/NS)">Factory New / New Surplus</option>
-                      <option value="Overhauled (OH)">Overhauled (OH)</option>
-                      <option value="Serviceable (SV)">Serviceable (SV)</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-foreground mb-1">
-                      Urgency *
-                    </label>
-                    <select
-                      value={formData.urgency}
-                      onChange={(e) => setFormData({ ...formData, urgency: e.target.value })}
-                      className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
-                    >
-                      <option value="AOG Grounded">🚨 Aircraft Grounded (AOG)</option>
-                      <option value="Dispatch Critical (Next 24-48h)">⚠️ Dispatch Critical (24–48h)</option>
-                      <option value="Planned Maintenance / Stock">📦 Planned Maintenance</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="pt-4 border-t border-border">
-                  <label className="block text-xs font-medium text-foreground mb-1">
-                    Delivery Destination / Airport ICAO / MRO *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. EGGW (Luton), KTEB (Teterboro), or Hangar Name"
-                    value={formData.deliveryLocation}
-                    onChange={(e) => setFormData({ ...formData, deliveryLocation: e.target.value })}
-                    className="w-full rounded-md border border-input bg-background px-3.5 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
-                  />
-                </div>
-
-                <div className="pt-4 border-t border-border grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <label className="block text-xs font-medium text-foreground mb-1">Full Name *</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Your name"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full rounded-md border border-input bg-background px-3.5 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-foreground mb-1">Business Email *</label>
-                    <input
-                      type="email"
-                      required
-                      placeholder="name@flightdept.com"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full rounded-md border border-input bg-background px-3.5 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
-                    />
-                  </div>
-                </div>
-
-                <div className="pt-4 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <span className="text-xs text-muted-foreground">
-                    Handling fee of US$150–250 applies upon quote acceptance.
-                  </span>
-                  <button
-                    type="submit"
-                    disabled={submitting}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-7 py-3 text-sm font-semibold text-white transition hover:brightness-110 disabled:opacity-50"
-                  >
-                    {submitting ? (
-                      <>
-                        <Loader2 className="h-4 w-4 animate-spin" /> Submitting...
-                      </>
-                    ) : (
-                      <>
-                        Request {info.name} Part <ArrowRight className="h-4 w-4" />
-                      </>
-                    )}
-                  </button>
-                </div>
-              </form>
-            )}
-          </div>
-        </div>
-      </section>
+      <PartRequestForm
+        label={info.name}
+        eyebrow={`${info.name} Sourcing Desk`}
+        heading={`Request a ${info.name} Component`}
+        intro="Submit your required part number below. We cross-reference supplier inventory and provide pricing within 4 hours."
+        models={info.popularModels}
+        submitLabel={`Request ${info.name} Part`}
+      />
 
       {/* ── Cross-Links to Other Airframes ──────────────────────────────── */}
       <section className="py-16 bg-muted/20">

@@ -1,45 +1,22 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { pageHead } from "@/lib/seo";
 import { PublicLayout } from "@/components/site/PublicLayout";
+import { ArticleSchema, RelatedReading } from "@/components/site/ArticleLayout";
 import { Eyebrow } from "@/components/site/Section";
 import { ArrowRightIcon } from "@/components/app/PlaneServeIcons";
 import { ClipboardList, Plane } from "lucide-react";
 
 export const Route = createFileRoute("/blog/aog-response-checklist")({
-  head: () => ({
-    meta: [
-      { title: "Aircraft AOG Response Checklist — What to Do When Grounded Off-Base" },
-      {
-        name: "description",
-        content:
-          "A step-by-step AOG response checklist for flight crews: cockpit fault logging, MEL deferral, AMO triage, parts sourcing, expedited logistics, and customs clearance.",
-      },
-      {
-        property: "og:title",
-        content: "Aircraft AOG Response Checklist — What to Do When Grounded Off-Base",
-      },
-      {
-        property: "og:description",
-        content:
-          "A step-by-step AOG response checklist for flight crews: cockpit fault logging, MEL deferral, AMO triage, parts sourcing, expedited logistics, and customs clearance.",
-      },
-      {
-        property: "og:url",
-        content: "https://www.aircraftprogram.com/blog/aog-response-checklist",
-      },
-      { property: "og:type", content: "article" },
-      { property: "article:published_time", content: "2026-10-19" },
-      { name: "twitter:card", content: "summary" },
-      {
-        name: "twitter:title",
-        content: "Aircraft AOG Response Checklist — What to Do When Grounded Off-Base",
-      },
-      {
-        name: "twitter:description",
-        content:
-          "A step-by-step AOG response checklist for flight crews: cockpit fault logging, MEL deferral, AMO triage, parts sourcing, expedited logistics, and customs clearance.",
-      },
-    ],
-  }),
+  head: () =>
+    pageHead({
+      title: "AOG Response Checklist: What to Do When Grounded Off-Base",
+      description:
+        "A step-by-step AOG response checklist for flight crews: cockpit fault logging, MEL deferral, AMO triage, parts sourcing, expedited logistics, and customs clearance.",
+      path: "/blog/aog-response-checklist",
+      type: "article",
+      published: "2026-10-19",
+      modified: "2026-10-30",
+    }),
   component: AogResponseChecklist,
 });
 
@@ -48,27 +25,7 @@ const PDF_HREF = "/aog-cockpit-checklist.pdf";
 function AogResponseChecklist() {
   return (
     <PublicLayout>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Article",
-            headline:
-              "The Aircraft AOG Response Checklist: What to Do When Grounded Away from Home Base",
-            description:
-              "A structured, step-by-step workflow for navigating an off-base AOG event — from initial cockpit fault logging to final airworthiness dispatch.",
-            datePublished: "2026-10-19",
-            author: { "@type": "Organization", name: "Aircraft Program" },
-            publisher: {
-              "@type": "Organization",
-              name: "Aircraft Program",
-              url: "https://www.aircraftprogram.com",
-            },
-            mainEntityOfPage: "https://www.aircraftprogram.com/blog/aog-response-checklist",
-          }),
-        }}
-      />
+      <ArticleSchema slug="aog-response-checklist" />
 
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <section className="brand-dark bg-[#041c2c] text-white">
@@ -237,9 +194,7 @@ function AogResponseChecklist() {
 
           {/* 6 */}
           <Section title="6. Navigating International Customs Clearance Hurdles">
-            <p>
-              Crossing international borders during an AOG requires proactive documentation:
-            </p>
+            <p>Crossing international borders during an AOG requires proactive documentation:</p>
             <Bullet
               title="Pre-Clear Customs Documentation:"
               body='Ensure commercial invoices explicitly state "CRITICAL AOG AIRCRAFT PARTS - IMMEDIATE DISPATCH."'
@@ -257,8 +212,8 @@ function AogResponseChecklist() {
           {/* 7 */}
           <Section title="7. The Pre-Enrollment Advantage: Saving 4+ Hours in Triage">
             <p>
-              In a live emergency, administrative delays (credit checks, account creation,
-              insurance verification) add hours of unnecessary downtime:
+              In a live emergency, administrative delays (credit checks, account creation, insurance
+              verification) add hours of unnecessary downtime:
             </p>
             <Bullet
               title="Active Aircraft Program Files:"
@@ -312,7 +267,7 @@ function AogResponseChecklist() {
               </p>
               <div className="mt-4 flex flex-col gap-3 sm:flex-row">
                 <Link
-                  to="/submit-aog"
+                  to="/aog-request"
                   className="inline-flex items-center justify-center gap-2 rounded-sm bg-[#001b2e] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#002845]"
                 >
                   Activate 24/7 AOG Support Desk <ArrowRightIcon className="h-4 w-4" />
@@ -348,7 +303,7 @@ function AogResponseChecklist() {
               Enrol Aircraft <ArrowRightIcon className="h-4 w-4" />
             </Link>
             <Link
-              to="/submit-aog"
+              to="/aog-request"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-sm border border-white/20 px-8 py-4 text-sm font-semibold text-white hover:bg-white/5"
             >
               Submit an AOG request
@@ -356,6 +311,7 @@ function AogResponseChecklist() {
           </div>
         </div>
       </section>
+      <RelatedReading current="aog-response-checklist" />
     </PublicLayout>
   );
 }

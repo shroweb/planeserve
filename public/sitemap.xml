@@ -1,94 +1,189 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Home Page -->
   <url>
     <loc>https://www.aircraftprogram.com/</loc>
-    <lastmod>2026-07-19</lastmod>
+    <lastmod>2026-10-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-  <!-- Services -->
+  <url>
+    <loc>https://www.aircraftprogram.com/aog</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.aircraftprogram.com/aog-request</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
   <url>
     <loc>https://www.aircraftprogram.com/services</loc>
-    <lastmod>2026-07-19</lastmod>
+    <lastmod>2026-10-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- How It Works -->
   <url>
     <loc>https://www.aircraftprogram.com/how-it-works</loc>
-    <lastmod>2026-07-19</lastmod>
+    <lastmod>2026-10-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- Pricing -->
   <url>
     <loc>https://www.aircraftprogram.com/pricing</loc>
-    <lastmod>2026-07-19</lastmod>
+    <lastmod>2026-10-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- About -->
+  <url>
+    <loc>https://www.aircraftprogram.com/parts-sourcing</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.aircraftprogram.com/parts-passport</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.aircraftprogram.com/parts/king-air</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.aircraftprogram.com/parts/citation</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.aircraftprogram.com/parts/challenger</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.aircraftprogram.com/parts/learjet</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.aircraftprogram.com/parts/falcon</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.aircraftprogram.com/parts/gulfstream</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.aircraftprogram.com/parts/phenom</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.aircraftprogram.com/parts/hawker</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.aircraftprogram.com/parts/helicopter</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
   <url>
     <loc>https://www.aircraftprogram.com/about</loc>
-    <lastmod>2026-07-19</lastmod>
+    <lastmod>2026-10-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  <!-- Contact -->
   <url>
     <loc>https://www.aircraftprogram.com/contact</loc>
-    <lastmod>2026-07-19</lastmod>
+    <lastmod>2026-10-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  <!-- Subscriber Agreement -->
   <url>
-    <loc>https://www.aircraftprogram.com/subscriber-agreement</loc>
-    <lastmod>2026-07-19</lastmod>
+    <loc>https://www.aircraftprogram.com/suppliers/apply</loc>
+    <lastmod>2026-10-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
-  <!-- Supplier Terms -->
-  <url>
-    <loc>https://www.aircraftprogram.com/supplier-terms</loc>
-    <lastmod>2026-07-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <!-- Privacy Policy -->
-  <url>
-    <loc>https://www.aircraftprogram.com/privacy</loc>
-    <lastmod>2026-07-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <!-- Blog Index -->
   <url>
     <loc>https://www.aircraftprogram.com/blog</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- What Does AOG Mean in Aviation -->
   <url>
     <loc>https://www.aircraftprogram.com/blog/what-does-aog-mean-in-aviation</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  <!-- AOG Response Checklist -->
   <url>
     <loc>https://www.aircraftprogram.com/blog/aog-response-checklist</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-10-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  <!-- Retained AOG Procurement -->
   <url>
     <loc>https://www.aircraftprogram.com/blog/retained-aog-procurement</loc>
-    <lastmod>2026-10-27</lastmod>
+    <lastmod>2026-10-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.aircraftprogram.com/blog/cost-of-aog</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.aircraftprogram.com/blog/easa-form-1-vs-faa-8130-3</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.aircraftprogram.com/blog/aog-logistics</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.aircraftprogram.com/blog/aog-desk-vs-parts-broker</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.aircraftprogram.com/subscriber-agreement</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.aircraftprogram.com/supplier-terms</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.aircraftprogram.com/privacy</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
   </url>
 </urlset>

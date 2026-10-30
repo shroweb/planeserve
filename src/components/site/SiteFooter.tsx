@@ -23,8 +23,10 @@ export function SiteFooter() {
             title="Product"
             items={[
               { to: "/how-it-works", label: "How it works" },
+              { to: "/aog", label: "AOG service" },
               { to: "/services", label: "Services" },
               { to: "/parts-sourcing", label: "Parts Sourcing Desk" },
+              { to: "/parts-passport", label: "Parts Passport" },
               { to: "/parts-sourcing", label: "Surplus Inventory Purchasing" },
               { to: "/pricing", label: "Pricing" },
               { to: "/enrol", label: "Enrol aircraft" },
@@ -37,7 +39,7 @@ export function SiteFooter() {
             <ul className="space-y-2.5">
               <li>
                 <Link
-                  to="/submit-aog"
+                  to="/aog-request"
                   className="inline-flex items-center gap-2 rounded-sm bg-accent px-3 py-1.5 text-xs font-bold text-white uppercase tracking-wider hover:opacity-90 transition-opacity"
                 >
                   Submit AOG

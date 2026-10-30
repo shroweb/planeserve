@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { pageHead } from "@/lib/seo";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
 import twinTurboprop from "@/assets/twin-turboprop-tarmac.jpeg";
@@ -12,27 +13,13 @@ import {
 } from "@/components/app/PlaneServeIcons";
 
 export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title: "About Aircraft Program — Founded by James Moon" },
-      {
-        name: "description",
-        content:
-          "The story behind Aircraft Program, founded by aviation entrepreneur James Moon as a structured answer to hard-to-source aircraft parts and AOG support.",
-      },
-      {
-        property: "og:title",
-        content: "About Aircraft Program — Founded by James Moon",
-      },
-      {
-        property: "og:description",
-        content:
-          "The story behind Aircraft Program, founded by aviation entrepreneur James Moon as a structured answer to hard-to-source aircraft parts and AOG support.",
-      },
-      { property: "og:url", content: "https://www.aircraftprogram.com/about" },
-      { property: "og:type", content: "website" },
-    ],
-  }),
+  head: () =>
+    pageHead({
+      title: "About Aircraft Program — Founded by James Moon",
+      description:
+        "The story behind Aircraft Program, founded by aviation entrepreneur James Moon as a structured answer to hard-to-source aircraft parts and AOG support.",
+      path: "/about",
+    }),
   component: AboutPage,
 });
 
@@ -42,6 +29,8 @@ function AboutPage() {
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <section className="brand-dark relative min-h-[55vh] overflow-hidden bg-[#001b2e] text-white flex items-end">
         <img
+          fetchPriority="high"
+          decoding="async"
           src={aboutHero}
           alt="Legacy aircraft on the ramp, ready for AOG support"
           className="absolute inset-0 h-full w-full object-cover object-center"
@@ -110,6 +99,8 @@ function AboutPage() {
 
             <div className="brand-dark relative min-h-[360px] overflow-hidden bg-[#001b2e] shadow-sm sm:min-h-[430px] lg:min-h-[560px]">
               <img
+                loading="lazy"
+                decoding="async"
                 src={twinTurboprop}
                 alt="Twin turboprop aircraft on the tarmac"
                 className="absolute inset-0 h-full w-full object-cover object-center"

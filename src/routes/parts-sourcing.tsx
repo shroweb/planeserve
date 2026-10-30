@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { pageHead } from "@/lib/seo";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
 import { submitOneOffPartRequest } from "@/lib/app.functions";
@@ -21,39 +22,21 @@ import {
 } from "lucide-react";
 
 export const Route = createFileRoute("/parts-sourcing")({
-  head: () => ({
-    meta: [
-      { title: "Aircraft Parts Sourcing & AOG Desk | Aircraft Program" },
-      {
-        name: "description",
-        content:
-          "Certified business jet parts sourcing direct to your base or MRO. Trace-verified rotables and consumables (FAA 8130-3 / EASA Form 1) with 4-hour quote turnaround. Enrolled priority or one-off sourcing.",
-      },
-      {
-        name: "keywords",
-        content:
-          "aircraft parts sourcing, business jet parts, AOG parts supplier, aviation parts procurement, FAA 8130-3, EASA Form 1, Challenger parts, Citation parts, Gulfstream parts, aircraft rotable components",
-      },
-      {
-        property: "og:title",
-        content: "Aircraft Parts Sourcing & AOG Procurement Desk — Aircraft Program",
-      },
-      {
-        property: "og:description",
-        content:
-          "We locate, vet, and procure certified business jet components with full airworthiness documentation direct to your base or MRO. Enrol for $100/mo or submit a one-off request.",
-      },
-      { property: "og:url", content: "https://www.aircraftprogram.com/parts-sourcing" },
-      { property: "og:type", content: "website" },
-    ],
-  }),
+  head: () =>
+    pageHead({
+      title: "Business Jet AOG Parts Procurement | Aircraft Program",
+      description:
+        "Certified business jet parts sourcing direct to your base or MRO. Trace-verified rotables and consumables (FAA 8130-3 / EASA Form 1), quoted within hours by the AOG desk.",
+      path: "/parts-sourcing",
+    }),
   component: PartsSourcingPage,
 });
 
 const AIRFRAMES = [
   {
     make: "Bombardier",
-    models: "Challenger 300 / 350 / 604 / 605 · Global Express / 5000 / 6000 / 7500 · Learjet 45 / 75",
+    models:
+      "Challenger 300 / 350 / 604 / 605 · Global Express / 5000 / 6000 / 7500 · Learjet 45 / 75",
     rotables: "Hydraulic pumps, starters, bleed valves, PFCUs, avionics LRUs, windshields",
     slug: "/parts/bombardier",
   },
@@ -138,11 +121,15 @@ function PartsSourcingPage() {
       if (res.ok) {
         setSubmittedRef(res.reference);
       } else {
-        setErrorMessage("Unable to submit parts request. Please check fields or contact ops@aircraftprogram.com.");
+        setErrorMessage(
+          "Unable to submit parts request. Please check fields or contact ops@aircraftprogram.com.",
+        );
       }
     } catch (err) {
       setErrorMessage(
-        err instanceof Error ? err.message : "Submission error. Please email ops@aircraftprogram.com directly.",
+        err instanceof Error
+          ? err.message
+          : "Submission error. Please email ops@aircraftprogram.com directly.",
       );
     } finally {
       setSubmitting(false);
@@ -174,14 +161,16 @@ function PartsSourcingPage() {
           name: "Enrolled Priority Sourcing",
           price: "100.00",
           priceCurrency: "USD",
-          description: "24/7 priority sourcing desk, zero handling fees, pre-captured aircraft configuration.",
+          description:
+            "24/7 priority sourcing desk, zero handling fees, pre-captured aircraft configuration.",
         },
         {
           "@type": "Offer",
           name: "One-Off Parts Sourcing",
           price: "150.00",
           priceCurrency: "USD",
-          description: "Case-by-case sourcing desk review with 4-hour turnaround for non-enrolled aircraft.",
+          description:
+            "Case-by-case sourcing desk review with 4-hour turnaround for non-enrolled aircraft.",
         },
       ],
     },
@@ -210,8 +199,8 @@ function PartsSourcingPage() {
             </h1>
 
             <p className="mt-6 text-base leading-relaxed text-white/75 md:text-lg">
-              We locate, vet, and procure certified business jet components — with full airworthiness
-              documentation — direct to your base or MRO.
+              We locate, vet, and procure certified business jet components — with full
+              airworthiness documentation — direct to your base or MRO.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-xs font-medium text-white/60">
@@ -232,7 +221,9 @@ function PartsSourcingPage() {
           {/* ── Funnel Fork: Enrolled vs One-Off ─────────────────────────── */}
           <div className="mt-16 text-center">
             <h2 className="text-xl font-semibold text-white">How would you like to proceed?</h2>
-            <p className="mt-1 text-sm text-white/60">Choose the option that best fits your situation.</p>
+            <p className="mt-1 text-sm text-white/60">
+              Choose the option that best fits your situation.
+            </p>
 
             <div className="mt-8 grid gap-8 md:grid-cols-2 max-w-4xl mx-auto text-left">
               {/* Option 1: Enrolled Priority (Upsell) */}
@@ -249,8 +240,8 @@ function PartsSourcingPage() {
                     Enrol your aircraft — get priority access
                   </h3>
                   <p className="mt-3 text-sm leading-relaxed text-white/70">
-                    Enrolled aircraft are our first priority. Your desk is active 24/7, we already know
-                    your aircraft, and parts move faster.
+                    Enrolled aircraft are our first priority. Your desk is active 24/7, we already
+                    know your aircraft, and parts move faster.
                   </p>
 
                   <ul className="mt-6 space-y-3 text-sm text-white/90">
@@ -258,7 +249,9 @@ function PartsSourcingPage() {
                       <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent/20 text-accent">
                         <Check className="h-3.5 w-3.5" strokeWidth={3} />
                       </div>
-                      <span><strong>Immediate response</strong> — no intake delay</span>
+                      <span>
+                        <strong>Immediate response</strong> — no intake delay
+                      </span>
                     </li>
                     <li className="flex items-start gap-3">
                       <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent/20 text-accent">
@@ -276,13 +269,17 @@ function PartsSourcingPage() {
                       <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent/20 text-accent">
                         <Check className="h-3.5 w-3.5" strokeWidth={3} />
                       </div>
-                      <span><strong>All-in pricing</strong>, no surprise handling fees</span>
+                      <span>
+                        <strong>All-in pricing</strong>, no surprise handling fees
+                      </span>
                     </li>
                     <li className="flex items-start gap-3">
                       <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent/20 text-accent">
                         <Check className="h-3.5 w-3.5" strokeWidth={3} />
                       </div>
-                      <span><strong>US$100 / month</strong> — cancel any time</span>
+                      <span>
+                        <strong>US$100 / month</strong> — cancel any time
+                      </span>
                     </li>
                   </ul>
                 </div>
@@ -307,8 +304,8 @@ function PartsSourcingPage() {
                     Not ready to enrol — submit a one-off request
                   </h3>
                   <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                    We source parts for non-enrolled aircraft on a case-by-case basis. A standard handling fee
-                    applies in addition to the part cost and sourcing commission.
+                    We source parts for non-enrolled aircraft on a case-by-case basis. A standard
+                    handling fee applies in addition to the part cost and sourcing commission.
                   </p>
 
                   <ul className="mt-6 space-y-3 text-sm text-slate-700">
@@ -328,7 +325,9 @@ function PartsSourcingPage() {
                       <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-900">
                         <Check className="h-3.5 w-3.5" strokeWidth={3} />
                       </div>
-                      <span>Handling fee: <strong>US$150–250 per request</strong></span>
+                      <span>
+                        Handling fee: <strong>US$150–250 per request</strong>
+                      </span>
                     </li>
                     <li className="flex items-start gap-3">
                       <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-900">
@@ -365,7 +364,8 @@ function PartsSourcingPage() {
           <div className="max-w-2xl">
             <h2 className="text-2xl font-bold text-foreground">How one-off sourcing works</h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              For non-enrolled aircraft. Enrolled subscribers skip steps 1–2 with pre-configured fleet profiles.
+              For non-enrolled aircraft. Enrolled subscribers skip steps 1–2 with pre-configured
+              fleet profiles.
             </p>
           </div>
 
@@ -375,8 +375,8 @@ function PartsSourcingPage() {
               <div className="text-xs font-bold uppercase tracking-wider text-accent">STEP 01</div>
               <h3 className="mt-3 text-lg font-semibold text-foreground">Submit your request</h3>
               <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                Tell us the aircraft type, part number, current location, and urgency. We acknowledge
-                receipt immediately and log your intake file.
+                Tell us the aircraft type, part number, current location, and urgency. We
+                acknowledge receipt immediately and log your intake file.
               </p>
             </div>
 
@@ -385,8 +385,8 @@ function PartsSourcingPage() {
               <div className="text-xs font-bold uppercase tracking-wider text-accent">STEP 02</div>
               <h3 className="mt-3 text-lg font-semibold text-foreground">Desk review & quote</h3>
               <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                We search our global vetted supplier network for availability and clean documentation. You receive
-                pricing, trace status, and handling fees within 4 hours.
+                We search our global vetted supplier network for availability and clean
+                documentation. You receive pricing, trace status, and handling fees within 4 hours.
               </p>
             </div>
 
@@ -395,8 +395,8 @@ function PartsSourcingPage() {
               <div className="text-xs font-bold uppercase tracking-wider text-accent">STEP 03</div>
               <h3 className="mt-3 text-lg font-semibold text-foreground">Approval & procurement</h3>
               <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                Once approved, we procure the part as your disclosed agent, verify documentation on dispatch,
-                and coordinate direct freight to your base or MRO.
+                Once approved, we procure the part as your disclosed agent, verify documentation on
+                dispatch, and coordinate direct freight to your base or MRO.
               </p>
             </div>
           </div>
@@ -412,8 +412,8 @@ function PartsSourcingPage() {
               Submit a Parts Sourcing Request
             </h2>
             <p className="mt-3 text-sm text-muted-foreground">
-              Fill out the details below. Our operations desk will review parts inventory across our distributor
-              network and quote within 4 business hours.
+              Fill out the details below. Our operations desk will review parts inventory across our
+              distributor network and quote within 4 business hours.
             </p>
           </div>
 
@@ -426,8 +426,11 @@ function PartsSourcingPage() {
                 <h3 className="mt-4 text-2xl font-bold text-foreground">Request Received</h3>
                 <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto">
                   Your parts sourcing reference is{" "}
-                  <strong className="text-foreground font-mono bg-muted px-2 py-0.5 rounded">{submittedRef}</strong>.
-                  Our operations desk is checking supplier availability and will quote within 4 business hours.
+                  <strong className="text-foreground font-mono bg-muted px-2 py-0.5 rounded">
+                    {submittedRef}
+                  </strong>
+                  . Our operations desk is checking supplier availability and will quote within 4
+                  business hours.
                 </p>
                 <div className="mt-8 flex justify-center gap-4">
                   <button
@@ -523,7 +526,9 @@ function PartsSourcingPage() {
                         type="text"
                         placeholder="e.g. Main Hydraulic Pump, Brake Assembly"
                         value={formData.partDescription}
-                        onChange={(e) => setFormData({ ...formData, partDescription: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, partDescription: e.target.value })
+                        }
                         className="w-full rounded-md border border-input bg-background px-3.5 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
                       />
                     </div>
@@ -537,11 +542,19 @@ function PartsSourcingPage() {
                         onChange={(e) => setFormData({ ...formData, condition: e.target.value })}
                         className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
                       >
-                        <option value="Any Certified (Fastest)">Any Certified (Fastest Availability)</option>
-                        <option value="Factory New / New Surplus (FN/NS)">Factory New / New Surplus (FN / NS)</option>
+                        <option value="Any Certified (Fastest)">
+                          Any Certified (Fastest Availability)
+                        </option>
+                        <option value="Factory New / New Surplus (FN/NS)">
+                          Factory New / New Surplus (FN / NS)
+                        </option>
                         <option value="Overhauled (OH)">Overhauled (OH)</option>
-                        <option value="Serviceable / Repaired (SV/RP)">Serviceable / Repaired (SV / RP)</option>
-                        <option value="Exchange Core Return Available">Exchange (Core Return Ready)</option>
+                        <option value="Serviceable / Repaired (SV/RP)">
+                          Serviceable / Repaired (SV / RP)
+                        </option>
+                        <option value="Exchange Core Return Available">
+                          Exchange (Core Return Ready)
+                        </option>
                       </select>
                     </div>
                     <div>
@@ -554,8 +567,12 @@ function PartsSourcingPage() {
                         className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent font-medium"
                       >
                         <option value="AOG Grounded">🚨 Aircraft Grounded (AOG)</option>
-                        <option value="Dispatch Critical (Next 24-48h)">⚠️ Dispatch Critical (Next 24–48h)</option>
-                        <option value="Planned Maintenance / Stock">📦 Planned Maintenance / Routine Sourcing</option>
+                        <option value="Dispatch Critical (Next 24-48h)">
+                          ⚠️ Dispatch Critical (Next 24–48h)
+                        </option>
+                        <option value="Planned Maintenance / Stock">
+                          📦 Planned Maintenance / Routine Sourcing
+                        </option>
                       </select>
                     </div>
                   </div>
@@ -575,7 +592,9 @@ function PartsSourcingPage() {
                       required
                       placeholder="e.g. EGGW (London Luton), KTEB (Teterboro), or Maintenance Hangar Name"
                       value={formData.deliveryLocation}
-                      onChange={(e) => setFormData({ ...formData, deliveryLocation: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, deliveryLocation: e.target.value })
+                      }
                       className="w-full rounded-md border border-input bg-background px-3.5 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
                     />
                   </div>
@@ -647,7 +666,9 @@ function PartsSourcingPage() {
                       rows={3}
                       placeholder="Specify serial restrictions, modification status, alternate part numbers, or target lead-time requirements..."
                       value={formData.additionalNotes}
-                      onChange={(e) => setFormData({ ...formData, additionalNotes: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, additionalNotes: e.target.value })
+                      }
                       className="w-full rounded-md border border-input bg-background px-3.5 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
                     />
                   </div>
@@ -655,7 +676,8 @@ function PartsSourcingPage() {
 
                 <div className="pt-4 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
                   <p className="text-xs text-muted-foreground">
-                    Handling fee of US$150–250 applies only upon quote approval. No upfront fee to submit.
+                    Handling fee of US$150–250 applies only upon quote approval. No upfront fee to
+                    submit.
                   </p>
                   <button
                     type="submit"
@@ -736,7 +758,9 @@ function PartsSourcingPage() {
               Aircraft &amp; Surplus Inventory Purchasing
             </h2>
             <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-              We actively purchase surplus rotable components, avionics packages, excess inventory, and complete end-of-life business aircraft directly from owners, operators, and maintenance facilities worldwide.
+              We actively purchase surplus rotable components, avionics packages, excess inventory,
+              and complete end-of-life business aircraft directly from owners, operators, and
+              maintenance facilities worldwide.
             </p>
           </div>
 
@@ -749,7 +773,9 @@ function PartsSourcingPage() {
                 Surplus Parts Acquisition
               </h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                We purchase certified rotables, hydraulics, starters, avionics LRUs, and airframe components in all conditions, supported by verifiable trace documentation (FAA 8130-3 / EASA Form 1).
+                We purchase certified rotables, hydraulics, starters, avionics LRUs, and airframe
+                components in all conditions, supported by verifiable trace documentation (FAA
+                8130-3 / EASA Form 1).
               </p>
             </div>
 
@@ -761,7 +787,9 @@ function PartsSourcingPage() {
                 End-of-Life Aircraft Buyout
               </h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                We acquire complete business aircraft nearing retirement or teardown. We handle rotable component recovery for overhaul and ensure responsible, compliant airframe dismantling.
+                We acquire complete business aircraft nearing retirement or teardown. We handle
+                rotable component recovery for overhaul and ensure responsible, compliant airframe
+                dismantling.
               </p>
             </div>
 
@@ -773,7 +801,8 @@ function PartsSourcingPage() {
                 Cash Buyout or Credit
               </h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Choose outright capital buyout for immediate cash release, or apply credits against your ongoing parts procurement and Aircraft Program coverage.
+                Choose outright capital buyout for immediate cash release, or apply credits against
+                your ongoing parts procurement and Aircraft Program coverage.
               </p>
             </div>
 
@@ -785,7 +814,9 @@ function PartsSourcingPage() {
                 Consignment Management
               </h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                For high-value, slower-moving components, our desk can catalog, warehouse, and market your inventory directly across our international network of operators and MROs.
+                For high-value, slower-moving components, our desk can catalog, warehouse, and
+                market your inventory directly across our international network of operators and
+                MROs.
               </p>
             </div>
           </div>
@@ -796,7 +827,8 @@ function PartsSourcingPage() {
                 Have surplus inventory or an aircraft to liquidate?
               </h3>
               <p className="mt-1 text-sm text-muted-foreground">
-                Send your inventory listing (Excel / CSV) with part numbers, serials, and tag status to our acquisitions desk.
+                Send your inventory listing (Excel / CSV) with part numbers, serials, and tag status
+                to our acquisitions desk.
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-3 shrink-0">
@@ -834,9 +866,7 @@ function PartsSourcingPage() {
                   <HelpCircle className="h-4 w-4 text-accent shrink-0" />
                   {faq.q}
                 </h3>
-                <p className="mt-2.5 text-sm text-muted-foreground leading-relaxed pl-6">
-                  {faq.a}
-                </p>
+                <p className="mt-2.5 text-sm text-muted-foreground leading-relaxed pl-6">{faq.a}</p>
               </div>
             ))}
           </div>

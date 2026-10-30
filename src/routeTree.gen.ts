@@ -21,6 +21,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrePositioningRouteImport } from './routes/pre-positioning'
 import { Route as PartsSourcingRouteImport } from './routes/parts-sourcing'
+import { Route as PartsPassportRouteImport } from './routes/parts-passport'
 import { Route as PartsIntelligenceRouteImport } from './routes/parts-intelligence'
 import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as MessagesRouteImport } from './routes/messages'
@@ -34,7 +35,9 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BrandGuidelinesRouteImport } from './routes/brand-guidelines'
 import { Route as BillingRouteImport } from './routes/billing'
 import { Route as AogRiskIndexRouteImport } from './routes/aog-risk-index'
+import { Route as AogRequestRouteImport } from './routes/aog-request'
 import { Route as AogCasesRouteImport } from './routes/aog-cases'
+import { Route as AogRouteImport } from './routes/aog'
 import { Route as AircraftRouteImport } from './routes/aircraft'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as AboutRouteImport } from './routes/about'
@@ -49,7 +52,11 @@ import { Route as SupplierLoginRouteImport } from './routes/supplier/login'
 import { Route as PartsAirframeRouteImport } from './routes/parts.$airframe'
 import { Route as BlogWhatDoesAogMeanInAviationRouteImport } from './routes/blog/what-does-aog-mean-in-aviation'
 import { Route as BlogRetainedAogProcurementRouteImport } from './routes/blog/retained-aog-procurement'
+import { Route as BlogEasaForm1VsFaa81303RouteImport } from './routes/blog/easa-form-1-vs-faa-8130-3'
+import { Route as BlogCostOfAogRouteImport } from './routes/blog/cost-of-aog'
 import { Route as BlogAogResponseChecklistRouteImport } from './routes/blog/aog-response-checklist'
+import { Route as BlogAogLogisticsRouteImport } from './routes/blog/aog-logistics'
+import { Route as BlogAogDeskVsPartsBrokerRouteImport } from './routes/blog/aog-desk-vs-parts-broker'
 import { Route as AogIdRouteImport } from './routes/aog.$id'
 import { Route as AdminSuppliersRouteImport } from './routes/admin/suppliers'
 import { Route as AdminRevenueRouteImport } from './routes/admin/revenue'
@@ -127,6 +134,11 @@ const PartsSourcingRoute = PartsSourcingRouteImport.update({
   path: '/parts-sourcing',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PartsPassportRoute = PartsPassportRouteImport.update({
+  id: '/parts-passport',
+  path: '/parts-passport',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PartsIntelligenceRoute = PartsIntelligenceRouteImport.update({
   id: '/parts-intelligence',
   path: '/parts-intelligence',
@@ -192,9 +204,19 @@ const AogRiskIndexRoute = AogRiskIndexRouteImport.update({
   path: '/aog-risk-index',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AogRequestRoute = AogRequestRouteImport.update({
+  id: '/aog-request',
+  path: '/aog-request',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AogCasesRoute = AogCasesRouteImport.update({
   id: '/aog-cases',
   path: '/aog-cases',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AogRoute = AogRouteImport.update({
+  id: '/aog',
+  path: '/aog',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AircraftRoute = AircraftRouteImport.update({
@@ -269,16 +291,37 @@ const BlogRetainedAogProcurementRoute =
     path: '/blog/retained-aog-procurement',
     getParentRoute: () => rootRouteImport,
   } as any)
+const BlogEasaForm1VsFaa81303Route = BlogEasaForm1VsFaa81303RouteImport.update({
+  id: '/blog/easa-form-1-vs-faa-8130-3',
+  path: '/blog/easa-form-1-vs-faa-8130-3',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogCostOfAogRoute = BlogCostOfAogRouteImport.update({
+  id: '/blog/cost-of-aog',
+  path: '/blog/cost-of-aog',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogAogResponseChecklistRoute =
   BlogAogResponseChecklistRouteImport.update({
     id: '/blog/aog-response-checklist',
     path: '/blog/aog-response-checklist',
     getParentRoute: () => rootRouteImport,
   } as any)
-const AogIdRoute = AogIdRouteImport.update({
-  id: '/aog/$id',
-  path: '/aog/$id',
+const BlogAogLogisticsRoute = BlogAogLogisticsRouteImport.update({
+  id: '/blog/aog-logistics',
+  path: '/blog/aog-logistics',
   getParentRoute: () => rootRouteImport,
+} as any)
+const BlogAogDeskVsPartsBrokerRoute =
+  BlogAogDeskVsPartsBrokerRouteImport.update({
+    id: '/blog/aog-desk-vs-parts-broker',
+    path: '/blog/aog-desk-vs-parts-broker',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AogIdRoute = AogIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AogRoute,
 } as any)
 const AdminSuppliersRoute = AdminSuppliersRouteImport.update({
   id: '/admin/suppliers',
@@ -361,7 +404,9 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
   '/aircraft': typeof AircraftRoute
+  '/aog': typeof AogRouteWithChildren
   '/aog-cases': typeof AogCasesRoute
+  '/aog-request': typeof AogRequestRoute
   '/aog-risk-index': typeof AogRiskIndexRoute
   '/billing': typeof BillingRoute
   '/brand-guidelines': typeof BrandGuidelinesRoute
@@ -375,6 +420,7 @@ export interface FileRoutesByFullPath {
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/parts-intelligence': typeof PartsIntelligenceRoute
+  '/parts-passport': typeof PartsPassportRoute
   '/parts-sourcing': typeof PartsSourcingRoute
   '/pre-positioning': typeof PrePositioningRoute
   '/pricing': typeof PricingRoute
@@ -399,7 +445,11 @@ export interface FileRoutesByFullPath {
   '/admin/revenue': typeof AdminRevenueRoute
   '/admin/suppliers': typeof AdminSuppliersRoute
   '/aog/$id': typeof AogIdRoute
+  '/blog/aog-desk-vs-parts-broker': typeof BlogAogDeskVsPartsBrokerRoute
+  '/blog/aog-logistics': typeof BlogAogLogisticsRoute
   '/blog/aog-response-checklist': typeof BlogAogResponseChecklistRoute
+  '/blog/cost-of-aog': typeof BlogCostOfAogRoute
+  '/blog/easa-form-1-vs-faa-8130-3': typeof BlogEasaForm1VsFaa81303Route
   '/blog/retained-aog-procurement': typeof BlogRetainedAogProcurementRoute
   '/blog/what-does-aog-mean-in-aviation': typeof BlogWhatDoesAogMeanInAviationRoute
   '/parts/$airframe': typeof PartsAirframeRoute
@@ -420,7 +470,9 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
   '/aircraft': typeof AircraftRoute
+  '/aog': typeof AogRouteWithChildren
   '/aog-cases': typeof AogCasesRoute
+  '/aog-request': typeof AogRequestRoute
   '/aog-risk-index': typeof AogRiskIndexRoute
   '/billing': typeof BillingRoute
   '/brand-guidelines': typeof BrandGuidelinesRoute
@@ -434,6 +486,7 @@ export interface FileRoutesByTo {
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/parts-intelligence': typeof PartsIntelligenceRoute
+  '/parts-passport': typeof PartsPassportRoute
   '/parts-sourcing': typeof PartsSourcingRoute
   '/pre-positioning': typeof PrePositioningRoute
   '/pricing': typeof PricingRoute
@@ -458,7 +511,11 @@ export interface FileRoutesByTo {
   '/admin/revenue': typeof AdminRevenueRoute
   '/admin/suppliers': typeof AdminSuppliersRoute
   '/aog/$id': typeof AogIdRoute
+  '/blog/aog-desk-vs-parts-broker': typeof BlogAogDeskVsPartsBrokerRoute
+  '/blog/aog-logistics': typeof BlogAogLogisticsRoute
   '/blog/aog-response-checklist': typeof BlogAogResponseChecklistRoute
+  '/blog/cost-of-aog': typeof BlogCostOfAogRoute
+  '/blog/easa-form-1-vs-faa-8130-3': typeof BlogEasaForm1VsFaa81303Route
   '/blog/retained-aog-procurement': typeof BlogRetainedAogProcurementRoute
   '/blog/what-does-aog-mean-in-aviation': typeof BlogWhatDoesAogMeanInAviationRoute
   '/parts/$airframe': typeof PartsAirframeRoute
@@ -480,7 +537,9 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
   '/aircraft': typeof AircraftRoute
+  '/aog': typeof AogRouteWithChildren
   '/aog-cases': typeof AogCasesRoute
+  '/aog-request': typeof AogRequestRoute
   '/aog-risk-index': typeof AogRiskIndexRoute
   '/billing': typeof BillingRoute
   '/brand-guidelines': typeof BrandGuidelinesRoute
@@ -494,6 +553,7 @@ export interface FileRoutesById {
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/parts-intelligence': typeof PartsIntelligenceRoute
+  '/parts-passport': typeof PartsPassportRoute
   '/parts-sourcing': typeof PartsSourcingRoute
   '/pre-positioning': typeof PrePositioningRoute
   '/pricing': typeof PricingRoute
@@ -518,7 +578,11 @@ export interface FileRoutesById {
   '/admin/revenue': typeof AdminRevenueRoute
   '/admin/suppliers': typeof AdminSuppliersRoute
   '/aog/$id': typeof AogIdRoute
+  '/blog/aog-desk-vs-parts-broker': typeof BlogAogDeskVsPartsBrokerRoute
+  '/blog/aog-logistics': typeof BlogAogLogisticsRoute
   '/blog/aog-response-checklist': typeof BlogAogResponseChecklistRoute
+  '/blog/cost-of-aog': typeof BlogCostOfAogRoute
+  '/blog/easa-form-1-vs-faa-8130-3': typeof BlogEasaForm1VsFaa81303Route
   '/blog/retained-aog-procurement': typeof BlogRetainedAogProcurementRoute
   '/blog/what-does-aog-mean-in-aviation': typeof BlogWhatDoesAogMeanInAviationRoute
   '/parts/$airframe': typeof PartsAirframeRoute
@@ -541,7 +605,9 @@ export interface FileRouteTypes {
     | '/about'
     | '/account'
     | '/aircraft'
+    | '/aog'
     | '/aog-cases'
+    | '/aog-request'
     | '/aog-risk-index'
     | '/billing'
     | '/brand-guidelines'
@@ -555,6 +621,7 @@ export interface FileRouteTypes {
     | '/messages'
     | '/notifications'
     | '/parts-intelligence'
+    | '/parts-passport'
     | '/parts-sourcing'
     | '/pre-positioning'
     | '/pricing'
@@ -579,7 +646,11 @@ export interface FileRouteTypes {
     | '/admin/revenue'
     | '/admin/suppliers'
     | '/aog/$id'
+    | '/blog/aog-desk-vs-parts-broker'
+    | '/blog/aog-logistics'
     | '/blog/aog-response-checklist'
+    | '/blog/cost-of-aog'
+    | '/blog/easa-form-1-vs-faa-8130-3'
     | '/blog/retained-aog-procurement'
     | '/blog/what-does-aog-mean-in-aviation'
     | '/parts/$airframe'
@@ -600,7 +671,9 @@ export interface FileRouteTypes {
     | '/about'
     | '/account'
     | '/aircraft'
+    | '/aog'
     | '/aog-cases'
+    | '/aog-request'
     | '/aog-risk-index'
     | '/billing'
     | '/brand-guidelines'
@@ -614,6 +687,7 @@ export interface FileRouteTypes {
     | '/messages'
     | '/notifications'
     | '/parts-intelligence'
+    | '/parts-passport'
     | '/parts-sourcing'
     | '/pre-positioning'
     | '/pricing'
@@ -638,7 +712,11 @@ export interface FileRouteTypes {
     | '/admin/revenue'
     | '/admin/suppliers'
     | '/aog/$id'
+    | '/blog/aog-desk-vs-parts-broker'
+    | '/blog/aog-logistics'
     | '/blog/aog-response-checklist'
+    | '/blog/cost-of-aog'
+    | '/blog/easa-form-1-vs-faa-8130-3'
     | '/blog/retained-aog-procurement'
     | '/blog/what-does-aog-mean-in-aviation'
     | '/parts/$airframe'
@@ -659,7 +737,9 @@ export interface FileRouteTypes {
     | '/about'
     | '/account'
     | '/aircraft'
+    | '/aog'
     | '/aog-cases'
+    | '/aog-request'
     | '/aog-risk-index'
     | '/billing'
     | '/brand-guidelines'
@@ -673,6 +753,7 @@ export interface FileRouteTypes {
     | '/messages'
     | '/notifications'
     | '/parts-intelligence'
+    | '/parts-passport'
     | '/parts-sourcing'
     | '/pre-positioning'
     | '/pricing'
@@ -697,7 +778,11 @@ export interface FileRouteTypes {
     | '/admin/revenue'
     | '/admin/suppliers'
     | '/aog/$id'
+    | '/blog/aog-desk-vs-parts-broker'
+    | '/blog/aog-logistics'
     | '/blog/aog-response-checklist'
+    | '/blog/cost-of-aog'
+    | '/blog/easa-form-1-vs-faa-8130-3'
     | '/blog/retained-aog-procurement'
     | '/blog/what-does-aog-mean-in-aviation'
     | '/parts/$airframe'
@@ -719,7 +804,9 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AccountRoute: typeof AccountRoute
   AircraftRoute: typeof AircraftRoute
+  AogRoute: typeof AogRouteWithChildren
   AogCasesRoute: typeof AogCasesRoute
+  AogRequestRoute: typeof AogRequestRoute
   AogRiskIndexRoute: typeof AogRiskIndexRoute
   BillingRoute: typeof BillingRoute
   BrandGuidelinesRoute: typeof BrandGuidelinesRoute
@@ -733,6 +820,7 @@ export interface RootRouteChildren {
   MessagesRoute: typeof MessagesRoute
   NotificationsRoute: typeof NotificationsRoute
   PartsIntelligenceRoute: typeof PartsIntelligenceRoute
+  PartsPassportRoute: typeof PartsPassportRoute
   PartsSourcingRoute: typeof PartsSourcingRoute
   PrePositioningRoute: typeof PrePositioningRoute
   PricingRoute: typeof PricingRoute
@@ -756,8 +844,11 @@ export interface RootRouteChildren {
   AdminPartsRequestsRoute: typeof AdminPartsRequestsRoute
   AdminRevenueRoute: typeof AdminRevenueRoute
   AdminSuppliersRoute: typeof AdminSuppliersRoute
-  AogIdRoute: typeof AogIdRoute
+  BlogAogDeskVsPartsBrokerRoute: typeof BlogAogDeskVsPartsBrokerRoute
+  BlogAogLogisticsRoute: typeof BlogAogLogisticsRoute
   BlogAogResponseChecklistRoute: typeof BlogAogResponseChecklistRoute
+  BlogCostOfAogRoute: typeof BlogCostOfAogRoute
+  BlogEasaForm1VsFaa81303Route: typeof BlogEasaForm1VsFaa81303Route
   BlogRetainedAogProcurementRoute: typeof BlogRetainedAogProcurementRoute
   BlogWhatDoesAogMeanInAviationRoute: typeof BlogWhatDoesAogMeanInAviationRoute
   PartsAirframeRoute: typeof PartsAirframeRoute
@@ -860,6 +951,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PartsSourcingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/parts-passport': {
+      id: '/parts-passport'
+      path: '/parts-passport'
+      fullPath: '/parts-passport'
+      preLoaderRoute: typeof PartsPassportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/parts-intelligence': {
       id: '/parts-intelligence'
       path: '/parts-intelligence'
@@ -951,11 +1049,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AogRiskIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/aog-request': {
+      id: '/aog-request'
+      path: '/aog-request'
+      fullPath: '/aog-request'
+      preLoaderRoute: typeof AogRequestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/aog-cases': {
       id: '/aog-cases'
       path: '/aog-cases'
       fullPath: '/aog-cases'
       preLoaderRoute: typeof AogCasesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aog': {
+      id: '/aog'
+      path: '/aog'
+      fullPath: '/aog'
+      preLoaderRoute: typeof AogRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/aircraft': {
@@ -1056,6 +1168,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogRetainedAogProcurementRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/easa-form-1-vs-faa-8130-3': {
+      id: '/blog/easa-form-1-vs-faa-8130-3'
+      path: '/blog/easa-form-1-vs-faa-8130-3'
+      fullPath: '/blog/easa-form-1-vs-faa-8130-3'
+      preLoaderRoute: typeof BlogEasaForm1VsFaa81303RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/cost-of-aog': {
+      id: '/blog/cost-of-aog'
+      path: '/blog/cost-of-aog'
+      fullPath: '/blog/cost-of-aog'
+      preLoaderRoute: typeof BlogCostOfAogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog/aog-response-checklist': {
       id: '/blog/aog-response-checklist'
       path: '/blog/aog-response-checklist'
@@ -1063,12 +1189,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogAogResponseChecklistRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/aog-logistics': {
+      id: '/blog/aog-logistics'
+      path: '/blog/aog-logistics'
+      fullPath: '/blog/aog-logistics'
+      preLoaderRoute: typeof BlogAogLogisticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/aog-desk-vs-parts-broker': {
+      id: '/blog/aog-desk-vs-parts-broker'
+      path: '/blog/aog-desk-vs-parts-broker'
+      fullPath: '/blog/aog-desk-vs-parts-broker'
+      preLoaderRoute: typeof BlogAogDeskVsPartsBrokerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/aog/$id': {
       id: '/aog/$id'
-      path: '/aog/$id'
+      path: '/$id'
       fullPath: '/aog/$id'
       preLoaderRoute: typeof AogIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AogRoute
     }
     '/admin/suppliers': {
       id: '/admin/suppliers'
@@ -1178,12 +1318,24 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AogRouteChildren {
+  AogIdRoute: typeof AogIdRoute
+}
+
+const AogRouteChildren: AogRouteChildren = {
+  AogIdRoute: AogIdRoute,
+}
+
+const AogRouteWithChildren = AogRoute._addFileChildren(AogRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AccountRoute: AccountRoute,
   AircraftRoute: AircraftRoute,
+  AogRoute: AogRouteWithChildren,
   AogCasesRoute: AogCasesRoute,
+  AogRequestRoute: AogRequestRoute,
   AogRiskIndexRoute: AogRiskIndexRoute,
   BillingRoute: BillingRoute,
   BrandGuidelinesRoute: BrandGuidelinesRoute,
@@ -1197,6 +1349,7 @@ const rootRouteChildren: RootRouteChildren = {
   MessagesRoute: MessagesRoute,
   NotificationsRoute: NotificationsRoute,
   PartsIntelligenceRoute: PartsIntelligenceRoute,
+  PartsPassportRoute: PartsPassportRoute,
   PartsSourcingRoute: PartsSourcingRoute,
   PrePositioningRoute: PrePositioningRoute,
   PricingRoute: PricingRoute,
@@ -1220,8 +1373,11 @@ const rootRouteChildren: RootRouteChildren = {
   AdminPartsRequestsRoute: AdminPartsRequestsRoute,
   AdminRevenueRoute: AdminRevenueRoute,
   AdminSuppliersRoute: AdminSuppliersRoute,
-  AogIdRoute: AogIdRoute,
+  BlogAogDeskVsPartsBrokerRoute: BlogAogDeskVsPartsBrokerRoute,
+  BlogAogLogisticsRoute: BlogAogLogisticsRoute,
   BlogAogResponseChecklistRoute: BlogAogResponseChecklistRoute,
+  BlogCostOfAogRoute: BlogCostOfAogRoute,
+  BlogEasaForm1VsFaa81303Route: BlogEasaForm1VsFaa81303Route,
   BlogRetainedAogProcurementRoute: BlogRetainedAogProcurementRoute,
   BlogWhatDoesAogMeanInAviationRoute: BlogWhatDoesAogMeanInAviationRoute,
   PartsAirframeRoute: PartsAirframeRoute,

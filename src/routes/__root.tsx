@@ -11,6 +11,7 @@ import { useEffect } from "react";
 
 import appCss from "../styles.css?url";
 import { Toaster } from "@/components/ui/sonner";
+import { ORGANIZATION_LD, OG_IMAGE, WEBSITE_LD, jsonLd } from "@/lib/seo";
 
 function NotFoundComponent() {
   return (
@@ -98,7 +99,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Retained AOG support for private and business aircraft, with smart aircraft profiles, sourcing triage and operational updates.",
       },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { property: "og:site_name", content: "Aircraft Program" },
+      { property: "og:locale", content: "en_GB" },
+      { property: "og:image", content: OG_IMAGE },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: OG_IMAGE },
       { name: "twitter:title", content: "Aircraft Program" },
       {
         name: "twitter:description",
@@ -127,6 +132,10 @@ function RootShell({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={jsonLd([ORGANIZATION_LD, WEBSITE_LD])}
+        />
         {/* Google tag (gtag.js) */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZW3MNRX6B2" />
         <script

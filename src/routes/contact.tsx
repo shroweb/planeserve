@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { pageHead } from "@/lib/seo";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
 import { ArrowRightIcon, AircraftIcon, SlaIcon } from "@/components/app/PlaneServeIcons";
@@ -7,27 +8,13 @@ import { Mail } from "lucide-react";
 import { useState } from "react";
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: "Contact — Aircraft Program" },
-      {
-        name: "description",
-        content:
-          "Talk to the Aircraft Program operations desk. For new enrolments, active AOG support, supplier enquiries, or general questions.",
-      },
-      {
-        property: "og:title",
-        content: "Contact — Aircraft Program",
-      },
-      {
-        property: "og:description",
-        content:
-          "Talk to the Aircraft Program operations desk. For new enrolments, active AOG support, supplier enquiries, or general questions.",
-      },
-      { property: "og:url", content: "https://www.aircraftprogram.com/contact" },
-      { property: "og:type", content: "website" },
-    ],
-  }),
+  head: () =>
+    pageHead({
+      title: "AOG Contact — 24/7 AOG Desk | Aircraft Program",
+      description:
+        "AOG contact for business jet and turboprop operators: reach the Aircraft Program desk for active AOG, new enrolments, supplier enquiries or general questions.",
+      path: "/contact",
+    }),
   component: ContactPage,
 });
 
@@ -53,6 +40,8 @@ function ContactPage() {
       {/* Hero */}
       <section className="brand-dark relative overflow-hidden bg-[oklch(0.13_0.025_250)] text-white">
         <img
+          fetchPriority="high"
+          decoding="async"
           src={contactAircraft}
           alt="Aircraft in hangar maintenance setting"
           className="absolute inset-0 h-full w-full object-cover object-[58%_48%]"
@@ -91,7 +80,10 @@ function ContactPage() {
                   Operations desk
                 </div>
                 <div className="space-y-4">
-                  <a href="mailto:desk@aircraftprogram.com" className="flex items-center gap-3 group">
+                  <a
+                    href="mailto:desk@aircraftprogram.com"
+                    className="flex items-center gap-3 group"
+                  >
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-sm border border-border bg-card group-hover:border-accent/40 transition-colors">
                       <Mail className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
                     </div>

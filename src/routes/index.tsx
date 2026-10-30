@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { pageHead } from "@/lib/seo";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
 import heroImage from "@/assets/WhatsApp Image 2026-06-28 at 10.29.12.jpeg";
@@ -19,27 +20,13 @@ import {
 import { useState, useEffect } from "react";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Aircraft Program — AOG parts support for aircraft that cannot wait" },
-      {
-        name: "description",
-        content:
-          "Aircraft Program is a retained AOG parts support service for aircraft owners and operators, with aircraft details ready before downtime starts.",
-      },
-      {
-        property: "og:title",
-        content: "Aircraft Program — AOG parts support for aircraft that cannot wait",
-      },
-      {
-        property: "og:description",
-        content:
-          "Aircraft Program is a retained AOG parts support service for aircraft owners and operators, with aircraft details ready before downtime starts.",
-      },
-      { property: "og:url", content: "https://www.aircraftprogram.com/" },
-      { property: "og:type", content: "website" },
-    ],
-  }),
+  head: () =>
+    pageHead({
+      title: "Retained AOG Support for Business Jets | Aircraft Program",
+      description:
+        "Retained AOG service for business jets and turboprops: a 24/7 AOG desk, AOG parts procurement and a Parts Passport, set up before you are grounded.",
+      path: "/",
+    }),
   component: Home,
 });
 
@@ -84,6 +71,10 @@ function Home() {
         <img
           src={heroImage}
           alt="Business aircraft on the ramp outside a maintenance hangar"
+          width={1086}
+          height={724}
+          fetchPriority="high"
+          decoding="async"
           className="absolute inset-0 h-full w-full object-cover object-[56%_46%] md:object-[58%_48%]"
         />
         <div className="absolute inset-0 bg-[#001b2e]/10" />
@@ -101,9 +92,9 @@ function Home() {
           </h1>
           <div className="max-w-3xl">
             <p className="mt-7 max-w-xl text-base leading-8 text-white/75 md:text-lg">
-              Aircraft Program is an enrolment program for aircraft owners and operators. Enrol your
-              aircraft, put your details on file, and the desk is ready to source parts the moment
-              you go AOG.
+              Aircraft Program is a retained AOG service for business jet, turboprop and helicopter
+              owners and operators. Enrol your aircraft, put your details on file, and the 24/7 AOG
+              desk is ready to source parts the moment you go AOG.
             </p>
             <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <Link
@@ -129,6 +120,27 @@ function Home() {
               Takes 5 minutes to enrol · No contract · Cancel any time
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* ── Explore ───────────────────────────────────────────────────────── */}
+      <section className="border-b border-border bg-background">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-8 gap-y-3 px-6 py-5 text-sm">
+          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            Explore
+          </span>
+          <Link to="/aog" className="font-medium text-foreground hover:text-accent">
+            AOG service
+          </Link>
+          <Link to="/aog-request" className="font-medium text-foreground hover:text-accent">
+            Submit an AOG request
+          </Link>
+          <Link to="/parts-passport" className="font-medium text-foreground hover:text-accent">
+            Parts Passport
+          </Link>
+          <Link to="/blog" className="font-medium text-foreground hover:text-accent">
+            AOG guides
+          </Link>
         </div>
       </section>
 
@@ -449,6 +461,10 @@ function Home() {
             <img
               src={founderAircraft}
               alt="Business aircraft in a maintenance hangar"
+              width={1600}
+              height={1067}
+              loading="lazy"
+              decoding="async"
               className="absolute inset-0 h-full w-full object-cover object-top"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#001b2e] via-[#001b2e]/10 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-[#001b2e]" />
@@ -570,6 +586,10 @@ function Home() {
             <img
               src={citationDusk}
               alt="Business jet on the ramp at dusk"
+              width={1600}
+              height={1227}
+              loading="lazy"
+              decoding="async"
               className="absolute inset-0 h-full w-full object-cover object-center"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-[#001b2e]/20 via-transparent to-[#001b2e]" />

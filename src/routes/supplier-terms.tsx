@@ -1,27 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { pageHead } from "@/lib/seo";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
 
 export const Route = createFileRoute("/supplier-terms")({
-  head: () => ({
-    meta: [
-      { title: "Supplier Terms & Conditions — Aircraft Program" },
-      {
-        name: "description",
-        content: "Aircraft Program Supplier Terms and Conditions. General terms governing all aircraft parts procurement and supplier network transactions.",
-      },
-      {
-        property: "og:title",
-        content: "Supplier Terms & Conditions — Aircraft Program",
-      },
-      {
-        property: "og:description",
-        content: "Aircraft Program Supplier Terms and Conditions. General terms governing all aircraft parts procurement and supplier network transactions.",
-      },
-      { property: "og:url", content: "https://www.aircraftprogram.com/supplier-terms" },
-      { property: "og:type", content: "website" },
-    ],
-  }),
+  head: () =>
+    pageHead({
+      title: "Supplier Terms & Conditions — Aircraft Program",
+      description:
+      "Aircraft Program Supplier Terms and Conditions. General terms governing all aircraft parts procurement and supplier network transactions.",
+      path: "/supplier-terms",
+    }),
   component: SupplierTermsPage,
 });
 

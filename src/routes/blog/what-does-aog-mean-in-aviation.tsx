@@ -1,73 +1,29 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { pageHead } from "@/lib/seo";
 import { PublicLayout } from "@/components/site/PublicLayout";
+import { ArticleSchema, RelatedReading } from "@/components/site/ArticleLayout";
 import { Eyebrow } from "@/components/site/Section";
 import { ArrowRightIcon } from "@/components/app/PlaneServeIcons";
 import { Wrench } from "lucide-react";
 
 export const Route = createFileRoute("/blog/what-does-aog-mean-in-aviation")({
-  head: () => ({
-    meta: [
-      { title: "What Does AOG Mean in Aviation? Definition & True Downtime Costs" },
-      {
-        name: "description",
-        content:
-          "Learn what AOG (Aircraft On Ground) means in aviation. Explore immediate operational costs, common causes, emergency MRO logistics, and compliance risks.",
-      },
-      {
-        property: "og:title",
-        content: "What Does AOG Mean in Aviation? Definition & True Downtime Costs",
-      },
-      {
-        property: "og:description",
-        content:
-          "Learn what AOG (Aircraft On Ground) means in aviation. Explore immediate operational costs, common causes, emergency MRO logistics, and compliance risks.",
-      },
-      {
-        property: "og:url",
-        content: "https://www.aircraftprogram.com/blog/what-does-aog-mean-in-aviation",
-      },
-      { property: "og:type", content: "article" },
-      { property: "article:published_time", content: "2026-10-19" },
-      { name: "twitter:card", content: "summary" },
-      {
-        name: "twitter:title",
-        content: "What Does AOG Mean in Aviation? Definition & True Downtime Costs",
-      },
-      {
-        name: "twitter:description",
-        content:
-          "Learn what AOG (Aircraft On Ground) means in aviation. Explore immediate operational costs, common causes, emergency MRO logistics, and compliance risks.",
-      },
-    ],
-  }),
+  head: () =>
+    pageHead({
+      title: "What Does AOG Mean in Aviation? Definition & Costs",
+      description:
+        "Learn what AOG (Aircraft On Ground) means in aviation. Explore immediate operational costs, common causes, emergency MRO logistics, and compliance risks.",
+      path: "/blog/what-does-aog-mean-in-aviation",
+      type: "article",
+      published: "2026-10-19",
+      modified: "2026-10-30",
+    }),
   component: AogMeaningArticle,
 });
 
 function AogMeaningArticle() {
   return (
     <PublicLayout>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Article",
-            headline:
-              "What Does AOG Mean in Aviation? The Anatomy and True Cost of an Aircraft On Ground Incident",
-            description:
-              "Learn what AOG (Aircraft On Ground) means in aviation. Explore immediate operational costs, common causes, emergency MRO logistics, and compliance risks.",
-            datePublished: "2026-10-19",
-            author: { "@type": "Organization", name: "Aircraft Program" },
-            publisher: {
-              "@type": "Organization",
-              name: "Aircraft Program",
-              url: "https://www.aircraftprogram.com",
-            },
-            mainEntityOfPage:
-              "https://www.aircraftprogram.com/blog/what-does-aog-mean-in-aviation",
-          }),
-        }}
-      />
+      <ArticleSchema slug="what-does-aog-mean-in-aviation" />
 
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <section className="brand-dark bg-[#041c2c] text-white">
@@ -120,8 +76,8 @@ function AogMeaningArticle() {
           {/* 2 */}
           <Section title="2. The Immediate Operational Domino Effect">
             <p>
-              An AOG incident rarely affects just a single flight; it triggers a cascading series
-              of operational bottlenecks:
+              An AOG incident rarely affects just a single flight; it triggers a cascading series of
+              operational bottlenecks:
             </p>
             <Bullet
               title="Passenger Stranding & VIP Disruption:"
@@ -256,8 +212,8 @@ function AogMeaningArticle() {
               establish a rigorous response framework.
             </p>
             <p className="mt-4 italic leading-7 text-muted-foreground">
-              Would you like help outlining a customized AOG Initial Response Protocol checklist
-              for your flight operations team?
+              Would you like help outlining a customized AOG Initial Response Protocol checklist for
+              your flight operations team?
             </p>
           </div>
 
@@ -310,7 +266,7 @@ function AogMeaningArticle() {
               Enrol Aircraft <ArrowRightIcon className="h-4 w-4" />
             </Link>
             <Link
-              to="/submit-aog"
+              to="/aog-request"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-sm border border-white/20 px-8 py-4 text-sm font-semibold text-white hover:bg-white/5"
             >
               Submit an AOG request
@@ -318,6 +274,7 @@ function AogMeaningArticle() {
           </div>
         </div>
       </section>
+      <RelatedReading current="what-does-aog-mean-in-aviation" />
     </PublicLayout>
   );
 }

@@ -1,37 +1,61 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { SITE_URL, jsonLd, pageHead } from "@/lib/seo";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
 import { ArrowRightIcon, ClearedIcon, CoverIcon, AogIcon } from "@/components/app/PlaneServeIcons";
 import { HelpCircle, Info } from "lucide-react";
 
 export const Route = createFileRoute("/pricing")({
-  head: () => ({
-    meta: [
-      { title: "Pricing — Simple retained support per aircraft" },
-      {
-        name: "description",
-        content:
-          "Simple retained AOG support for enrolled aircraft, with clear sourcing options and approval before any part is ordered.",
-      },
-      {
-        property: "og:title",
-        content: "Pricing — Simple retained support per aircraft",
-      },
-      {
-        property: "og:description",
-        content:
-          "Simple retained AOG support for enrolled aircraft, with clear sourcing options and approval before any part is ordered.",
-      },
-      { property: "og:url", content: "https://www.aircraftprogram.com/pricing" },
-      { property: "og:type", content: "website" },
-    ],
-  }),
+  head: () =>
+    pageHead({
+      title: "AOG Support Pricing — From US$100/mo | Aircraft Program",
+      description:
+        "Retained AOG support from US$100 per aircraft per month, or US$1,000 per year. 24/7 AOG intake, a global sourcing desk and approval before any part is ordered.",
+      path: "/pricing",
+    }),
   component: Pricing,
 });
 
 function Pricing() {
   return (
     <PublicLayout>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={jsonLd({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          name: "Retained AOG support",
+          provider: { "@id": `${SITE_URL}/#organization` },
+          offers: [
+            {
+              "@type": "Offer",
+              name: "Monthly cover",
+              price: "100",
+              priceCurrency: "USD",
+              url: `${SITE_URL}/pricing`,
+              priceSpecification: {
+                "@type": "UnitPriceSpecification",
+                price: "100",
+                priceCurrency: "USD",
+                unitText: "per aircraft per month",
+              },
+            },
+            {
+              "@type": "Offer",
+              name: "Annual program",
+              price: "1000",
+              priceCurrency: "USD",
+              url: `${SITE_URL}/pricing`,
+              priceSpecification: {
+                "@type": "UnitPriceSpecification",
+                price: "1000",
+                priceCurrency: "USD",
+                unitText: "per aircraft per year",
+              },
+            },
+          ],
+        })}
+      />
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <section className="brand-dark bg-[#001b2e] text-white">
         <div className="mx-auto max-w-7xl px-6 py-24 text-center">

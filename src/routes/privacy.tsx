@@ -1,29 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { pageHead } from "@/lib/seo";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { Eyebrow } from "@/components/site/Section";
 
 export const Route = createFileRoute("/privacy")({
-  head: () => ({
-    meta: [
-      { title: "Privacy Policy — Aircraft Program" },
-      {
-        name: "description",
-        content:
-          "Aircraft Program Privacy Policy. Learn how we handle your personal and aircraft data under UK GDPR.",
-      },
-      {
-        property: "og:title",
-        content: "Privacy Policy — Aircraft Program",
-      },
-      {
-        property: "og:description",
-        content:
-          "Aircraft Program Privacy Policy. Learn how we handle your personal and aircraft data under UK GDPR.",
-      },
-      { property: "og:url", content: "https://www.aircraftprogram.com/privacy" },
-      { property: "og:type", content: "website" },
-    ],
-  }),
+  head: () =>
+    pageHead({
+      title: "Privacy Policy — Aircraft Program",
+      description:
+        "Aircraft Program Privacy Policy. Learn how we handle your personal and aircraft data under UK GDPR.",
+      path: "/privacy",
+    }),
   component: PrivacyPage,
 });
 

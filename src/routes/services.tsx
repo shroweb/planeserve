@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { pageHead } from "@/lib/seo";
 import jetEngineDetail from "@/assets/jet-engine-detail-sunset.jpeg";
 import supplierNetworkImage from "@/assets/WhatsApp Image 2026-06-03 at 17.09.58 (3).jpeg";
 import { PublicLayout } from "@/components/site/PublicLayout";
@@ -15,27 +16,13 @@ import {
 } from "@/components/app/PlaneServeIcons";
 
 export const Route = createFileRoute("/services")({
-  head: () => ({
-    meta: [
-      { title: "Services — AOG cover for enrolled business aircraft" },
-      {
-        name: "description",
-        content:
-          "Explore Aircraft Program coverage: AOG parts sourcing, supplier outreach, trace verification and dispatch coordination for enrolled aircraft.",
-      },
-      {
-        property: "og:title",
-        content: "Services — AOG cover for enrolled business aircraft",
-      },
-      {
-        property: "og:description",
-        content:
-          "Explore Aircraft Program coverage: AOG parts sourcing, supplier outreach, trace verification and dispatch coordination for enrolled aircraft.",
-      },
-      { property: "og:url", content: "https://www.aircraftprogram.com/services" },
-      { property: "og:type", content: "website" },
-    ],
-  }),
+  head: () =>
+    pageHead({
+      title: "AOG Services & Parts Procurement | Aircraft Program",
+      description:
+        "AOG services for enrolled business aircraft: 24/7 AOG desk, AOG parts procurement, supplier outreach, trace verification and dispatch coordination.",
+      path: "/services",
+    }),
   component: ServicesPage,
 });
 
@@ -136,6 +123,8 @@ function ServicesPage() {
       {/* ── Image strip ──────────────────────────────────────────────────── */}
       <div className="relative h-[280px] overflow-hidden">
         <img
+          fetchPriority="high"
+          decoding="async"
           src={jetEngineDetail}
           alt="Business jet engine detail at sunset"
           className="absolute inset-0 h-full w-full object-cover object-center"
@@ -202,6 +191,8 @@ function ServicesPage() {
         <div className="mx-auto grid max-w-7xl gap-0 px-6 py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch">
           <div className="relative min-h-[320px] overflow-hidden rounded-sm border border-white/10">
             <img
+              loading="lazy"
+              decoding="async"
               src={supplierNetworkImage}
               alt="Business jet on the ramp during support preparation"
               className="absolute inset-0 h-full w-full object-cover object-center"
